@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gui name="stundenplaner" version="1">
+<MenuBar>
+  <Menu name="file">
+          <Action name="schuljahr_waehlen" />
+          <Action name="change_database" />
+	  <Action name="dump_db" />
+	  <Action name="read_db" />
+	  <Action name="noch eine" />
+	  <Action name="add_fzm"/>
+  </Menu>
+  <Menu name="eigenes">
+          <text> "Tools" </text>
+          <Action name="change_database" />
+          <Action name="fehlzeitmeldung" />
+	  <Action name="read_db" />
+          <Action name="add_objectview" />
+  </Menu>
+</MenuBar>
+<ToolBar name="mainToolBar" fullWidth="false" newline="false">
+        <Action name="change_database" />
+        <Action name="add_objectview" />
+</ToolBar>
+</gui>

@@ -1,0 +1,11 @@
+<persistence package="Service">
+	
+<class name="SKalender" tname="skalender" version="0.2">
+	<association name="Weeks" table="kalender_weeks" priCol="kalender_id" ascCol="klasse_id" ascClass="gui/data/WeekMap"></association>
+	<association name="Days" table="kalender_days" priCol="kalender_id" ascCol="days_id" ascClass="gui/data/DayMap"></association>
+</class>
+
+<class name="SStundenplan" tname="sstundenplan" version="0.2">
+	<association name="TemplateEintraege" table="sstundenplan_teintraege" priCol="sstundenplan_id" ascCol="template_id" ascClass="datamodel/stundenplantemplateeintrag"></association>
+</class>
+</persistence>

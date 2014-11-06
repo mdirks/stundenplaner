@@ -1,0 +1,15 @@
+<stundenplan>
+	
+<tag nummer="1">
+	<stunde nummer="1,2" fach="Ma" kurs="GK13"></stunde>
+	<stunde nummer="2,3" fach="Ph" kurs="LK13"></stunde>
+	<stunde nummer="5" fach="Ph"	kurs="11.3"></stunde>
+	<stunde	nummer="7,8" fach="Ph" kurs="GK12-1"></stunde>
+</tag>
+
+<tag nummer="2">
+	<stunde nummer="1" fach="Ph" kurs="LK13"></stunde>
+</tag>
+	
+	
+	

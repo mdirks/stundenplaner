@@ -1,0 +1,44 @@
+<persistence package="Gui_Mapviews">
+
+	<class name="ThemaItem" tname="themaitem" version="0.2">
+                <baseclass name="PObjectGraphicsItem" />
+		<reference name="Thema" getter="getThema" refClass="datamodel/thema"></reference>
+		
+	</class>
+	
+
+	
+	
+        <class name="PObjectGraphicsItem" tname="pobjectgraphicsitem" version="0.4">
+		<reference name="Object" refClass="persistence/PObject" getter="getObject"></reference>
+		<property name="x"  type="double" cname="xpos" ctype="real" getter="x" setter="setX"></property>
+		<property name="y"  type="double" cname="ypos" ctype="real" getter="y" setter="setY"></property>
+		<property name="width"  type="int" cname="width" ctype="integer" getter="width" setter="setWidth"></property>
+		<property name="height"  type="int" cname="height" ctype="integer" getter="height" setter="setHeight"></property>
+		<property name="Color"  type="int" cname="color" ctype="integer" getter="getColor" setter="setColor"></property>
+	</class>
+	
+        <class name="SchultagGraphicsItem" tname="schultaggraphicsitem" base="PObjectGraphicsItem" version="0.1">
+	</class>
+        <class name="StundenplaneintragGraphicsItem" tname="stundenplaneintraggraphicsitem" base="PObjectGraphicsItem" version="0.1">
+	</class>
+	<class name="GenericMap" tname="genericmap" version="0.3">
+                <association name="GraphicsItems" table="map_item" priCol="map_id" ascCol="item_id" ascClass="PObjectGraphicsItem" getter="getGraphicsItems"></association>
+	</class>
+	
+	<class name="ThemaMap" tname="themamap" version="0.3">
+                <association name="GraphicsItems" table="map_item" priCol="map_id" ascCol="item_id" ascClass="PObjectGraphicsItem" getter="getGraphicsItems"></association>
+	</class>
+	
+	
+	<class name="DayMap" tname="daymap" version="0.2">
+                <association name="GraphicsItems" table="map_item" priCol="map_id" ascCol="item_id" ascClass="PObjectGraphicsItem" getter="getGraphicsItems"></association>
+	</class>
+	
+	<class name="WeekMap" tname="weekmap" version="0.4">
+                <association name="GraphicsItems" table="map_item" priCol="map_id" ascCol="item_id" ascClass="PObjectGraphicsItem" getter="getGraphicsItems"></association>
+		<reference name="Stundenplan" refClass="datamodel/stundenplan"></reference>
+		<property name="StartDate" type="QDate" cname="datum" ctype="varchar(30)" getter="getStartDate" setter="setStartDate"></property>
+	</class>
+	
+</persistence>

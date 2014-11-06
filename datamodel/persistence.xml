@@ -1,0 +1,272 @@
+<persistence package="Datamodel">
+
+		
+	
+<class name="tag" tname="tag" version="0.2">
+	<property name="Datum" type="QDate" cname="datum" ctype="varchar(30)" getter="getDatum" setter="setDatum"></property>
+</class>
+  
+ 
+<class name="notizholder" tname="notizholder" version="0.4">
+	<association name="Notizen" table="klasse_notiz" priCol="klasse_id" ascCol="notiz_id" ascClass="notiz"></association>
+	<association name="Materialien" table="klasse_material" priCol="klasse_id" ascCol="material_id" ascClass="material"></association>
+</class>
+
+
+
+
+<class name="klasse" tname="klasse" base="notizholder" version="0.8">
+	<association name="Stunden" table="klasse_stunde" priCol="klasse_id" ascCol="stunde_id" ascClass="stunde"></association>
+	<association name="Schueler" table="klasse_schueler" priCol="klasse_id" ascCol="schueler_id" ascClass="schueler"></association>
+	<association name="Teilleistungen" table="klasse_leistung" priCol="klasse_id" ascCol="teilleistung_id" ascClass="teilleistung"></association>
+	<association name="StundenplanTemplates" table="klasse_templates" priCol="klasse_id" ascCol="template_id" ascClass="stundenplantemplateeintrag"></association>
+	<reference name="Sitzplan"  refClass="datamodel/sitzplan"></reference>
+	<reference name="Kursbuch"  refClass="datamodel/kursbuch"></reference>
+	<reference name="Schuljahr"  refClass="datamodel/schuljahr"></reference>
+</class>
+  
+   
+
+<class name="stundenplan" tname="stundenplan" base="notizholder" version="0.3">
+	<association name="TemplateEintraege" table="stundenplan_template" priCol="stundenplan_id" ascCol="template_id" ascClass="stundenplantemplateeintrag"></association>
+</class>
+
+
+<class name="stundenplaneintrag" tname="stundenplaneintrag" base="notizholder" version="0.11">
+	<property name="Datum" type="QDate" cname="datum" ctype="varchar(30)" getter="getDatum" setter="setDatum"></property>
+	<property name="Verlauf" type="string" cname="verlauf" ctype="text" getter="getVerlauf" setter="setVerlauf"></property>
+	<reference name="Klasse"  refClass="datamodel/klasse"></reference>
+	<reference name="Stunde" refClass="datamodel/stunde"></reference>
+	<reference name="Template" refClass="datamodel/stundenplantemplateeintrag"></reference>
+	<reference name="KursbuchEintrag" refClass="datamodel/krusbucheintrag"></reference>
+	<association name="Bewertungen" table="stundenplaneintrag_bewertung" priCol="stundenplaneintrag_id" ascCol="bewertung_id" ascClass="stundenbewertung"></association>
+	<association name="Fehlzeiten" table="stundenplaneintrag_fehlzeit" priCol="stundenplaneintrag_id" ascCol="fehlzeit_id" ascClass="fehlzeit"></association>
+	<property name="Doppelstunde" type="bool" cname="doppelstunde" ctype="bool" getter="getDoppelstunde" setter="setDoppelstunde"></property>
+	<property name="Tag" type="int" cname="tag" ctype="int" getter="getTag" setter="setTag"></property>
+	<property name="NrStunde" type="int" cname="stunde" ctype="int" getter="getNrStunde" setter="setNrStunde"></property>
+</class>
+
+<class name="stundenplantemplate" tname="stundenplantemplate"  version="0.3">
+	<association name="Eintraege" table="stundenplan_eintrag" priCol="stundenplan_id" ascCol="eintrag_id" ascClass="stundenplantemplateeintrag"></association>
+</class>
+
+<class name="stundenplantemplateeintrag" tname="stundenplantemplateeintrag"  version="0.7">
+	<property name="DatumBegin" type="QDate" cname="datumbegin" ctype="varchar(30)" getter="getDatumBegin" setter="setDatumBegin"></property>
+	<property name="DatumEnde" type="QDate" cname="datumende" ctype="varchar(30)" getter="getDatumEnde" setter="setDatumEnde"></property>
+	<property name="Tag" type="int" cname="tag" ctype="int" getter="getTag" setter="setTag"></property>
+	<property name="NrStunde" type="int" cname="stunde" ctype="int" getter="getNrStunde" setter="setNrStunde"></property>
+	<reference name="Klasse"  refClass="datamodel/klasse"></reference>
+	<property name="Doppelstunde" type="bool" cname="doppelstunde" ctype="bool" getter="getDoppelstunde" setter="setDoppelstunde"></property>
+	<association name="Eintraege" table="stundenplantemplateeintrag_eintrag" priCol="template_id" ascCol="eintrag_id" ascClass="stundenplaneintrag"></association>
+</class>
+
+<class name="schueler" tname="schueler" base="notizholder" version="0.6">
+	<association name="Noten" table="schueler_note" priCol="schueler_id" ascCol="note_id" ascClass="note"></association>
+	<association name="Fehlzeiten" table="schueler_fehlzeit" priCol="schueler_id" ascCol="fehlzeit_id" ascClass="fehlzeit"></association>
+	<association name="Stundenbewertungen" table="schueler_bewertung" priCol="schueler_id" ascCol="bewertung_id" ascClass="stundenbewertung"></association>
+	<reference name="Klasse"  refClass="datamodel/klasse"></reference>
+	<property name="Vorname" type="string" cname="vorname" ctype="varchar(30)" getter="getVorname" setter="setVorname"></property>
+	<property name="Nachname" type="string" cname="nachname" ctype="varchar(30)" getter="getNachname" setter="setNachname"></property>
+	<property name="Tutor" type="string" cname="tutor" ctype="varchar(30)" getter="getTutor" setter="setTutor"></property>
+</class>
+
+<class name="sitzplan" tname="sitzplan"  version="0.2">
+	<association name="Plaetze" table="sitzplan_plaetze" priCol="sitzplan_id" ascCol="platz_id" ascClass="platz"></association>
+	<reference name="Klasse"  refClass="datamodel/klasse"></reference>
+	<property name="Reihen" type="int" cname="reihen" ctype="int" getter="getReihen" setter="setReihen"></property>
+	<property name="Spalten" type="int" cname="spalten" ctype="int" getter="getSpalten" setter="setSpalten"></property>
+</class>	
+
+<class name="platz" tname="platz" version="0.5">
+	<property name="Reihe" type="int" cname="reihe" ctype="int" getter="getReihe" setter="setReihe"></property>
+	<property name="Spalte" type="int" cname="spalte" ctype="int" getter="getSpalte" setter="setSpalte"></property>
+	<reference name="Schueler"  refClass="datamodel/schueler"></reference>
+	<association name="Noten" table="platz_note" priCol="platz_id" ascCol="note_id" ascClass="note"> </association>
+</class>
+
+<class name="note" tname="note"  version="0.6">
+	<reference name="Schueler"  refClass="datamodel/schueler"></reference>
+	<property name="Punkte" type="int" cname="punkte" ctype="int" getter="getPunkte" setter="setPunkte"></property>
+	<property name="Bemerkung" type="string" cname="bemerkung" ctype="text" getter="getBemerkung" setter="setBemerkung"></property>
+	<property name="Datum" type="QDateTime" cname="datum" ctype="varchar(30)" getter="getDatum" setter="setDatum"></property>
+	<property name="IsAt" type="bool" cname="at" ctype="bool" getter="getIsAt" setter="setIsAt"></property>
+	<property name="IsKl" type="bool" cname="klausur" ctype="bool" getter="getIsKlausur" setter="setIsKlausur"></property>
+</class>
+	
+
+	
+<class name="notiz" tname="notiz" version="0.4">
+	<property name="Title" type="string" cname="title" ctype="varchar(30)" getter="getTitle" setter="setTitle"></property>
+	<property name="Body" type="string" cname="body" ctype="text" getter="getBody" setter="setBody"></property>
+</class>
+
+
+
+
+<class name="stunde" tname="stunde" base="notizholder" version="1.1">
+ 	<reference name="Thema"  refClass="datamodel/thema"></reference>
+	<association name="Opos" table="stunde_opo" priCol="stunde_id" ascCol="opo_id" ascClass="opo"> </association>
+	<association name="Materialien" table="stunde_material" priCol="stunde_id" ascCol="material_id" ascClass="material"></association>
+	<property name="Verlauf" type="string" cname="verlauf" ctype="text" getter="getVerlauf" setter="setVerlauf"></property>
+	<property name="Title" type="string" cname="title" ctype="varchar(30)" getter="getTitle" setter="setTitle"></property>
+</class>
+
+<class name="krusbucheintrag" tname="krusbucheintrag"  version="0.11">
+	<property name="Stunde" type="string" cname="stunde" ctype="varchar(30)" getter="getStunde" setter="setStunde"></property>
+	<property name="Eintrag" type="string" cname="eintrag" ctype="text" getter="getEintrag" setter="setEintrag"></property>
+	<property name="Bemerkung" type="string" cname="bemerkung" ctype="text" getter="getBemerkung" setter="setBemerkung"></property>
+	<property name="Details" type="string" cname="details" ctype="text" getter="getDetails" setter="setDetails"></property>
+	<property name="Datum" type="QDate" cname="datum" ctype="varchar(30)" getter="getDatum" setter="setDatum"></property>
+	<reference name="Kursbuch"  refClass="datamodel/kursbuch"></reference>
+	<reference name="StundenplanEintrag"  refClass="datamodel/stundenplaneintrag"></reference>
+</class>
+
+<class name="kursbuch" tname="kursbuch"  version="0.61">
+	<reference name="Klasse"  refClass="datamodel/klasse"></reference>
+	<reference name="Klausur1a"  refClass="datamodel/teilleistung" zusatz="kl1a"></reference>
+	<reference name="Klausur1b"  refClass="datamodel/teilleistung" zusatz="kl1b"></reference>
+	<reference name="Klausur2a"  refClass="datamodel/teilleistung" zusatz="kl2a"></reference>
+	<reference name="Klausur2b"  refClass="datamodel/teilleistung" zusatz="kl2b"></reference>
+	<reference name="At1"  refClass="datamodel/teilleistung" zusatz="at1"></reference>
+	<reference name="At2"  refClass="datamodel/teilleistung" zusatz="at2"></reference>
+	<reference name="G1"  refClass="datamodel/teilleistung" zusatz="g1"></reference>
+	<reference name="G2"  refClass="datamodel/teilleistung" zusatz="g2"></reference>
+	<association name="Eintraege" table="kursbuch_eintraege" priCol="kursbuch_id" ascCol="eintrag_id" ascClass="krusbucheintrag"></association>
+</class>
+
+<class name="opo" tname="opo" version="0.2">
+	<property name="title" type="string" cname="title" ctype="varchar(30)" getter="getTitle" setter="setTitle"></property>
+	<association name="Materialien" table="opo_material" priCol="opo_id" ascCol="material_id" ascClass="material"></association>
+</class>
+
+<class name="reihe" tname="reihe" base="notizholder" version="0.4">
+	<property name="thema" type="string" cname="thema" ctype="varchar(30)" getter="getThema" setter="setThema"></property>
+	<property name="Verlauf" type="string" cname="verlauf" ctype="text" getter="getVerlauf" setter="setVerlauf"></property>
+	<association name="Stunden" table="reihe_stunde" priCol="reihe_id" ascCol="stunde_id" ascClass="stunde"></association>
+</class>
+
+<class name="material" tname="material" version="0.6">
+	<property name="title" type="string" cname="title" ctype="varchar(50)" getter="getTitle" setter="setTitle"></property>
+	<property name="FileName" type="string" cname="filename" ctype="varchar(80)" getter="getFileName" setter="setFileName"></property>
+</class>
+
+<class name="schultag" tname="schultag" base="notizholder" version="0.2">
+	<property name="Datum" type="QDateTime" cname="datum" ctype="varchar(30)" getter="getDatum" setter="setDatum"></property>
+	<association name="Eintraege" table="schultag_eintrag" priCol="schultag_id" ascCol="eintrag_id" ascClass="stundenplaneintrag"></association>
+</class>
+ 
+
+ 
+<class name="task" tname="task" version="0.2">
+	<property name="Datum" type="QDate" cname="datum" ctype="varchar(30)" getter="getDatum" setter="setDatum"></property>
+        <reference name="Bezugsobjekt"  refClass="orm/persistence/PObject"></reference>
+</class>
+
+
+
+<class name="thema" tname="thema" base="notizholder" version="0.7">
+        <property name="title" type="string" cname="title" ctype="varchar(30)" getter="getTitle" setter="setTitle"></property>
+	<property name="Inhalt" type="string" cname="inhalt" ctype="text" getter="getInhalt" setter="setInhalt"></property>
+	<association name="Related" table="thema_related" priCol="thema_id" ascCol="related_id" ascClass="thema"></association>
+	<association name="Sub" table="thema_sub" priCol="thema_id" ascCol="sub_id" ascClass="thema"></association>
+	<association name="Lernkarten" table="thema_karte" priCol="thema_id" ascCol="karte_id" ascClass="lernkarte"></association>
+	<reference name="Lernkartensatz"  refClass="datamodel/lernkartensatz"></reference>
+</class>
+
+<class name="fehlzeit" tname="fehlzeit" base="notizholder" version="0.3">
+	<property name="Datum" type="QDateTime" cname="von" ctype="varchar(30)" getter="getVon" setter="setVon"></property>
+	<property name="Datum" type="QDateTime" cname="bis" ctype="varchar(30)" getter="getBis" setter="setBis"></property>
+	<reference name="Schueler"  refClass="datamodel/schueler"></reference>
+	<reference name="Stundenplaneintrag"  refClass="datamodel/stundenplaneintrag"></reference>
+	<property name="Bemerkung" type="string" cname="bemerkung" ctype="text" getter="getBemerkung" setter="setBemerkung"></property>
+	<property name="Entschuldigt" type="bool" cname="entschuldigt" ctype="bool" getter="getEntschuldigt" setter="setEntschuldigt"></property>
+</class>
+
+<class name="stundenbewertung" tname="stundenbewertung" version="0.4">
+	<property name="Bewertung" type="string" cname="bewertung" ctype="varchar(30)" getter="getBewertung" setter="setBewertung"></property>
+	<property name="Bemerkung" type="string" cname="bemerkung" ctype="text" getter="getBemerkung" setter="setBemerkung"></property>
+	<property name="Gefehlt" type="bool" cname="fehlzeit" ctype="bool" getter="getGefehlt" setter="setGefehlt"></property>
+	<reference name="Stundenplaneintrag"  refClass="datamodel/stundenplaneintrag"></reference>
+	<reference name="Schueler"  refClass="datamodel/schueler"></reference>
+</class>
+
+
+
+<class name="lernkarte" tname="lernkarte" version="0.5">
+        <property name="Vorn" type="KUrl" cname="vorn" ctype="varchar(30)"></property>
+        <property name="Hinten" type="KUrl" cname="hinten" ctype="varchar(30)"></property>
+	<property name="SourceVorn" type="string" cname="sourcevorn" ctype="text"></property>
+	<property name="SourceHinten" type="string" cname="sourcehinten" ctype="text"></property>
+	<property name="Compiled" type="bool" cname="compiled" ctype="bool"></property>
+	
+</class>
+
+<class name="lernkartensatz" tname="lernkartensatz" version="0.1">
+	<association name="Lernkarten" table="lernkartensatz_lernkarte" priCol="satz_id" ascCol="karte_id" ascClass="lernkarte"></association>
+</class>
+
+<class name="klausur" tname="klausur" base="teilleistung" version="0.3">
+	<association name="Materialien" table="klausur_material" priCol="klausur_id" ascCol="material_id" ascClass="material"></association>
+</class>
+
+<class name="teilleistung" tname="teilleistung" version="0.1">
+	<association name="Noten" table="teilleistung_note" priCol="teilleistung_id" ascCol="note_id" ascClass="note"></association>
+	<reference name="Klasse" refClass="datamodel/klasse"></reference>
+</class>
+
+<class name="teilleistungberechnet" tname="teilleistungberechnet" base="teilleistung" version="0.1">
+	<association name="Teilleistungen" table="teilleistungberechnet_teilleistungen" priCol="teilleistungb_id" ascCol="teilleistung_id" ascClass="teilleistung"></association>
+	<reference name="Klasse" refClass="datamodel/klasse"></reference>
+</class>
+
+<class name="schuljahr" tname="schuljahr" version="0.4">
+	<property name="Von" type="QDate" cname="von" ctype="varchar(30)"></property>
+	<property name="Bis" type="QDate" cname="bis" ctype="varchar(30)"></property>
+	<association name="Klassen" table="schuljahr_klasse" priCol="schuljahr_id" ascCol="klasse_id" ascClass="klasse"></association>
+	<association name="Ferien" table="schuljahr_ferien" priCol="schuljahr_id" ascCol="ferien_id" ascClass="ferien"></association>
+	<reference name="Stundenplana"  refClass="datamodel/stundenplan"></reference>
+</class>
+
+<class name="ferientag" tname="ferientag" version="0.1">
+		<property name="Datum" type="QDate" cname="datum" ctype="varchar(30)"></property>
+		<property name="Title" type="string" cname="title" ctype="varchar(30)"></property>	
+</class>
+
+<class name="ferien" tname="ferien" version="0.1">
+	<property name="Von" type="QDate" cname="von" ctype="varchar(30)"></property>
+	<property name="Bis" type="QDate" cname="bis" ctype="varchar(30)"></property>
+	<property name="Title" type="string" cname="title" ctype="varchar(30)"></property>	
+</class>
+<class name="teilleistung" tname="teilleistung" version="0.1">
+	<reference name="Klasse" refClass="datamodel/klasse"></reference>
+	<association name="Noten" table="teilleistung_note" priCol="leistung_id" ascCol="note_id" ascClass="note"></association>
+</class>
+
+<class name="tutorium" tname="tutorium" version="0.1">
+	<reference name="Klasse" refClass="datamodel/klasse"></reference>
+	<association name="Fehlzeitmeldungen" table="tutorium_fehlzeitmeldung" priCol="tutorium_id" ascCol="fehlzeitmeldung_id" ascClass="fehlzeitmeldung"></association>
+</class>
+
+<class name="meldung" tname="meldung" version="0.1">
+	<property name="Datum" type="QDate" cname="datum" ctype="varchar(30)"></property>
+	<reference name="Schueler"  refClass="datamodel/schueler"></reference>
+	<property name="Bemerkung" type="string" cname="bemerkung" ctype="text" getter="getBemerkung" setter="setBemerkung"></property>
+</class>
+
+
+<class name="fehlzeitmeldung" tname="fehlzeitmeldung" base="meldung" version="0.3">
+</class>
+
+<class name="krankmeldung" tname="krankmeldung" base="meldung" version="0.3">
+</class>
+
+<class name="lektuere" tname="lektuere" base="material" version="0.3">
+      <association name="Notizen" table="lektuere_notizen" priCol="lektuere_id" ascCol="notiz_id" ascClass="lektuerenotiz"></association>
+      <reference name="Lernkartensatz" refClass="datamodel/lernkartensatz"></reference>
+</class>
+
+<class name="lektuerenotiz" tname="lektuerenotiz" base="notiz" version="0.3">
+        <property name="Seite" type="int" cname="notiz" ctype="int"></property>
+</class>
+
+</persistence>

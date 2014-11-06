@@ -1,0 +1,7 @@
+<persistence package="GuiActions">
+
+<class name="ModeLesen" tname="modelesen" base="datamodel/notizholder" version="0.3">
+    <association name="Texte" table="modelesen_texte" priCol="modelesen_id" ascCol="text_id" ascClass="datamodel/lektuere"></association>
+</class>
+
+</persistence>
