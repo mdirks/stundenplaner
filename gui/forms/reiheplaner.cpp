@@ -28,28 +28,97 @@
 #include "orm/repository/repositoryproperty.h"
 #include "orm/transactions/transactions.h"
 #include "gui/base/guiobjectfactory.h"
+#include "orm/transactions/transactions.h"
+#include "gui/mapviews/genericmapview.h"
 //#include "actions/createaction.h"
 //#include <qvbox.h>
 #include <QLayout>
 #include <QTableWidget>
-
+#include <QLabel>
 #include <list>
 
 using namespace std;
 
-ReihePlaner::ReihePlaner(reihe *r, QWidget *parent, const char *name)
+ReiheBrowser::ReiheBrowser(RepositoryProperty *rp, PObject *po, QWidget *p)
+    : QWidget(p)
+{
+    m_rp = rp;
+    m_po = po;
+    box= new PObjectComboBox(rp,po);
+    planer = new ReihePlaner();
+    /*
+    reiheMap = new ReiheMap();
+    GenericMapView *view = new GenericMapView(this);
+    view->setScene(reiheMap);
+    */
+    QVBoxLayout *l = new QVBoxLayout(this);
+    l->addWidget(box);
+    l->addWidget(planer);
+    //l->addWidget(view);
+
+    connect(box,SIGNAL(currentIndexChanged(int)),this,SLOT(indexChanged(int)));
+    connect(box,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
+}
+
+void ReiheBrowser::indexChanged(int i)
+{
+        PObject *o = box->getObject(i);
+        if(reihe *r = dynamic_cast<reihe*>(o)){
+            planer->setReihe(r);
+            //reiheMap->setReihe(r);
+        }
+
+}
+
+
+void ReiheBrowser::nameChanged(QString newName)
+{
+    PObject *o=box->getObject(box->currentIndex());
+    if(reihe* r=dynamic_cast<reihe*>(o))
+    {
+        Transactions::getCurrentTransaction()->add(r);
+        r->setName(newName.toStdString());
+    }
+}
+
+void ReiheBrowser::setParentObject(PObject *po)
+{
+    m_po = po;
+    box->setParentObject(po);
+}
+
+ReihePlanerItem::ReihePlanerItem(stunde *st, QListWidget *parent)
     : QWidget(parent)
 {
-	this-> m_r = r;
 
-	QVBoxLayout *l = new QVBoxLayout(this);
+    QHBoxLayout *hl = new QHBoxLayout();
+    QLabel *la = new QLabel();
+    la->setPixmap(GuiConfig::getInstance()->getIcon(st).scaledToHeight(12));
+    hl->addWidget(la);
+
+    QVBoxLayout *l = new QVBoxLayout();
+    la = new QLabel(st->getName().c_str());
+    l->addWidget(la);
+    l->addWidget(new QLabel(QString("Verlauf: \n %1").arg(st->getVerlauf().c_str())));
+
+    hl->addLayout(l);
+    //
+
+
+    setLayout(hl);
+    //setText(st->getName().c_str());
+}
+
+
+ReihePlaner::ReihePlaner(reihe *r, QWidget *parent)
+    : QWidget(parent)
+{
+    QVBoxLayout *l = new QVBoxLayout(this);
 	l->setMargin(20);
-	
-	list<stunde*> *list_stunden=r->getStunden();
-	
-    m_table = new QTableWidget(1,4,this);
-	setNumRows(list_stunden->size()*2+1);
-	l->addWidget(m_table);
+    listW = new QListWidget(this);
+    l->addWidget(listW);
+
+
 
 	pm = GuiConfig::getInstance()->getIcon("stunde");
 
@@ -60,16 +129,35 @@ ReihePlaner::ReihePlaner(reihe *r, QWidget *parent, const char *name)
 	rp_opos = re->getProperty("Opos");
 	rp_material = re->getProperty("Materialien");
 	
-	//m_table->setColumnWidth(0,400);
-	m_table->setColumnWidth(2,120);
-	m_table->setColumnWidth(3,120);
-    //m_table->setColumnStretchable(1,true);
+
+    connect(listW, SIGNAL(currentCellChanged(int,int,int,int)), this, SLOT(currentChanged(int,int,int,int)));
+
+    if(r){
+        setReihe(r);
+    }
+}
+
+void ReihePlaner::setReihe(reihe *r)
+{
+    m_r = r;
+    listW->clear();
+
+    list<stunde*> *list_stunden=r->getStunden();
+    setNumRows(list_stunden->size()*2+1);
 
 	int i=0;	
 	for(list<stunde*>::iterator it = list_stunden->begin(); it!= list_stunden->end(); it++){
         // todo : m_table->setPixmap(i,0,pm);
 		
-		StringEditor *str_editor = new StringEditor((*it), rp_name, m_table);	
+        QListWidgetItem *item = new QListWidgetItem();
+        item->setSizeHint(QSize(0,50));
+        ReihePlanerItem *itemWidget = new ReihePlanerItem((*it),listW);
+        listW->addItem(item);
+        listW->setItemWidget(item, itemWidget);
+        //itemWidget->show();
+
+        /*
+        StringEditor *str_editor = new StringEditor((*it), rp_name, m_table);
 		m_table->setCellWidget(i,1,str_editor);
 		m_table->setRowHeight(i,60);
 
@@ -88,9 +176,12 @@ ReihePlaner::ReihePlaner(reihe *r, QWidget *parent, const char *name)
 		m_table->setCellWidget(i+1,3,material_view);
 		
         i+=2;
+        */
+
+
 	}
 
-	connect(m_table, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
+
 }
 
 
@@ -98,10 +189,11 @@ ReihePlaner::~ReihePlaner()
 {
 }
 
-void ReihePlaner::currentChanged(int row, int col)
+void ReihePlaner::currentChanged(int row, int col, int prow, int pcol)
 {
 	
 	qDebug("PObjectTable::currentChanged");
+    /*
 	if(row == numRows()-1){
 		qDebug("Adding element");
 
@@ -139,7 +231,7 @@ void ReihePlaner::currentChanged(int row, int col)
 	} else {
         qDebug() << QString("Current changed: %1, %2").arg(row).arg(col);
 	}
-	
+    */
 }
 
 int ReihePlaner::numRows(){
@@ -148,6 +240,6 @@ int ReihePlaner::numRows(){
 
 void ReihePlaner::setNumRows(int num)
 {
-    m_table->setRowCount(num);
+    //m_table->setRowCount(num);
 	num_rows=num;
 }

@@ -9,6 +9,7 @@
 #include "modelesenmapper.h"
 
 #include <QPixmap>
+#include <QVBoxLayout>
 
 
 ModeLesen* ModeLesen::instance=0;
@@ -39,20 +40,30 @@ ModeLesen::ModeLesen()
     splitter = new QSplitter(Qt::Horizontal,sw);
 
     browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
+    //browser->setFitToView(true);
     RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("ModeLesen")->getProperty("Texte");
     viewer = new TextViewer(rp,0,sw);
-    lkViewer = new LernkarteViewer(0,0,LernkarteViewer::Vertical);
+    lkViewer = new LernkarteViewer(0,0,LernkarteViewer::Stacked);
+
+    QWidget *notew = new QWidget(splitter);
+    QVBoxLayout *l= new QVBoxLayout(notew);
+    l->addWidget(browser);
+    l->addWidget(lkViewer);
+
+    browser->hide();
+    lkViewer->hide();
+    /*
     stack=new QStackedWidget(splitter);
     blankWidget = new QWidget(stack);
     stack->addWidget(browser);
     stack->addWidget(lkViewer);
     stack->addWidget(blankWidget);
     stack->setCurrentWidget(blankWidget);
-
+    */
     //AdaptingSplitter *splitter2=new AdaptingSplitter(browser,viewer,splitter);
     splitter->addWidget(viewer);
-    splitter->addWidget(stack);
-
+    //splitter->addWidget(stack);
+    splitter->addWidget(notew);
 
 
 }
@@ -112,21 +123,37 @@ void ModeLesen::setActivePage(int i)
 
 void ModeLesen::showNotizeditor()
 {
+    if(browser->isVisible()){
+        browser->hide();
+    } else {
+        browser->show();
+    }
+    /*
     if(stack->currentWidget()!=browser)
     {
         stack->setCurrentWidget(browser);
     } else {
         stack->setCurrentWidget(blankWidget);
     }
+    */
 }
 
 void ModeLesen::showLernkarten()
 {
+    if(lkViewer->isVisible()){
+        lkViewer->hide();
+    } else {
+        lkViewer->show();
+    }
+
+    /*
     if(stack->currentWidget()!=lkViewer){
         stack->setCurrentWidget(lkViewer);
     } else {
         stack->setCurrentWidget(blankWidget);
     }
+    */
+
 }
 
 void ModeLesen::activateObject(PObject *o)

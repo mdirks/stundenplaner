@@ -66,14 +66,14 @@ void TestRunner::init_tests()
 	
     listTests->push_back( new TestStunde() );
     listTests->push_back( new TestLektuere() );
+    listTests->push_back( new TestQDateTime() );
 
     /*
     listTests->push_back( new TestSStundenplan() );
 	listTests->push_back( new TestStundenplanTemplateEintrag() );
 	listTests->push_back( new TestKlasse() );
 	listTests->push_back( new TestSitzplan() );
-	listTests->push_back( new TestQDateTime() );
-	listTests->push_back( new TestReadCsvlistAction() );
+    listTests->push_back( new TestReadCsvlistAction() );
 	listTests->push_back( new TestIndirectRepositoryProperty() );
 	listTests->push_back( new TestSKalender() );
 	listTests->push_back( new TestSchueler() );

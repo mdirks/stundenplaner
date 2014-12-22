@@ -11,7 +11,12 @@ SOURCES += $$system(ls forms/*.cpp)
 
 HEADERS += \
     *.h \
-    forms/textviewer.h
+    forms/textviewer.h \
+    data/reihemap.h \
+    actions/modematerail.h \
+    guiservice.h \
+    draganddrop/pobjectdroptarget.h \
+    actions/servicelatex.h
 
 HEADERS += $$system(ls mapviews/*.h) $$system(ls data/*.h) $$system(ls draganddrop/*.h)
 HEADERS += $$system(ls actions/*.h) $$system(ls base/*.h) $$system(ls dialogs/*.h)

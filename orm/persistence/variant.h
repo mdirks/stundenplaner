@@ -13,6 +13,7 @@
 #define VARIANT_H
 
 #include <string>
+#include <map>
 
 #include <QDateTime>
 #include <QVariant>
@@ -51,7 +52,8 @@ public:
      
 private:
 	QVariant qv;
-	string stdstr;
+    string stdstr;
+    static map<wstring,string> map_replace;
 
 };
 

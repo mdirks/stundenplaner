@@ -13,7 +13,21 @@
 #include <QString>
 #include <QDebug>
 
-Variant::Variant(){}
+map<wstring,string> create_map() {
+  map<wstring, string> m;
+  m[wstring(L"Okt")] = "Oct";
+  m[wstring(L"Dez")] = "Dec";
+  m[wstring(L"Mär")] = "Mar";
+  m[wstring(L"Mai")] = "May";
+  return m;
+}
+
+
+map<wstring,string> Variant::map_replace=create_map();
+
+Variant::Variant(){
+
+}
 
 Variant::~Variant(){}
 
@@ -77,9 +91,14 @@ Variant& Variant::operator=(const Variant& v)
 
 QDateTime Variant::asQDateTime()
 {
-	QString st = qv.toString();
-	QDateTime datetime = QDateTime::fromString(st);
-    qDebug() << QString("Variant: returning %1 vor %2").arg(datetime.toString()).arg(st);
+    QString st = qv.toString();
+    for(map<wstring,string>::iterator it = map_replace.begin(); it!=map_replace.end(); it++){
+        //qDebug() << QString("Replacing %1 with %2").arg(it->first.c_str()).arg(it->second.c_str());
+        st.replace(QString::fromStdWString(it->first), it->second.c_str());
+        //qDebug() << QString("Gave: %1").arg(st);
+    }
+    QDateTime datetime = QDateTime::fromString(st);
+    //qDebug() << QString("Variant: returning %1 vor %2").arg(datetime.toString()).arg(st);
 	return datetime;
 	//return qv.toDateTime();
 }
@@ -93,8 +112,7 @@ string Variant::asstring()
 	   stdstr = "";
 	 }
 	
-	//qDebug(QString("Variant conversion to %1").arg(stdstr));
-	return stdstr;
+    return stdstr;
 }
 
 double Variant::asdouble()
@@ -111,9 +129,16 @@ QDate Variant::asQDate()
 {
 	//return qv.toDate();
 	QString st = qv.toString();
-	QDate date = QDate::fromString(st);
-
-    qDebug() << QString("Variant: returning %1 vor %2").arg(date.toString()).arg(st);
+    for(map<wstring,string>::iterator it = map_replace.begin(); it!=map_replace.end(); it++){
+        //qDebug() << QString("Replacing %1 with %2").arg(it->first.c_str()).arg(it->second.c_str());
+        QString ist=QString::fromStdWString(it->first);
+        QString soll = it->second.c_str();
+        st.replace(ist, soll);
+        //qDebug() << QString("Gave: %1").arg(st);
+    }
+    QDate date = QDate::fromString(st);
+    //QDate date=qv.toDate();
+    //qDebug() << QString("Variant: returning %1 vor %2").arg(date.toString()).arg(st);
 	return date;
 	//QDate::fromString(qv.toString());
 }

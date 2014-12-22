@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Thu Oct 23 20:53:55 2014
+ // Written on Fri Nov 7 15:38:32 2014
 // 
  #ifndef stundenplantemplateeintragMAPPER_H 
  #define stundenplantemplateeintragMAPPER_H 
@@ -19,6 +19,7 @@
 #include "orm/persistence/persistenceclass.h" 
  #include "stundenplantemplateeintrag.h" 
 #include "stundenplaneintrag.h" 
+#include "reihe.h" 
 #include "datamodel/klasse.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
@@ -57,6 +58,7 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<stundenplaneintrag*> * findEintraege(int pri_id);
+  list<reihe*> * findReihen(int pri_id);
 klasse * findKlasse(int pri_id);
 
 protected:
@@ -69,6 +71,7 @@ protected:
    string *columnTypes;
     string *columns;
   Association<stundenplantemplateeintrag, stundenplaneintrag> *asc_Eintraege;
+ Association<stundenplantemplateeintrag, reihe> *asc_Reihen;
   
  
  };

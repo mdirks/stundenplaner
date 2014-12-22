@@ -191,13 +191,13 @@ void AbstractMapper::checkTable(){
 			if(q.isValid()){
 				if(q.value(1).isValid()){
                     string cn = q.value(0).toString().toStdString();
-                    qDebug() << QString("Erasing column %1").arg(cn.c_str());
+                    //qDebug() << QString("Erasing column %1").arg(cn.c_str());
                     map<string,string>::iterator it = column_map.find(cn);
 					if(it != column_map.end()){
 						column_map.erase(it);
-                        qDebug() << "Erase done";
+                        //qDebug() << "Erase done";
 					} else {
-                        qDebug() << QString("Strange column %1 not in list").arg(cn.c_str());
+                        //qDebug() << QString("Strange column %1 not in list").arg(cn.c_str());
 					}
 				}
 			}

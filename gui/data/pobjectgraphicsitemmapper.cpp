@@ -125,13 +125,12 @@ void PObjectGraphicsItemmapper::save(PObject *realSubject)
 void PObjectGraphicsItemmapper::init(PObject* inito, Variant *res)
  {
  	PObjectGraphicsItem *o = (PObjectGraphicsItem*) inito;
-    o->setX( res[0].asdouble());
+	o->setX( res[0].asdouble());
  	o->setY( res[1].asdouble());
  	o->setZValue( res[2].asdouble());
  	o->setWidth( res[3].asint());
  	o->setHeight( res[4].asint());
  	o->setColor( res[5].asint());
-    o->resetSize();
  	inito->init();
 }
 

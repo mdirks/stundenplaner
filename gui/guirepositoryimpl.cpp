@@ -75,6 +75,8 @@
 #include "gui/actions/modeplanung.h"
 #include "gui/actions/modelesen.h"
 #include "gui/actions/modelesenmapper.h"
+#include "gui/actions/modematerail.h"
+#include "gui/actions/servicelatex.h"
 
 
 #include <QPixmap>
@@ -422,8 +424,10 @@ void GuiRepositoryImpl::initGui()
 
     //rightToolBar = new QToolBar(stundeplaner);
     //stundeplaner->addToolBar(Qt::RightToolBarArea,rightToolBar);
-    leftToolBar = new QToolBar(stundeplaner);
-    stundeplaner->addToolBar(Qt::LeftToolBarArea,leftToolBar);
+    modeToolBar = new QToolBar(stundeplaner);
+    stundeplaner->addToolBar(Qt::LeftToolBarArea,modeToolBar);
+    serviceToolBar = new QToolBar(stundeplaner);
+    stundeplaner->addToolBar(Qt::LeftToolBarArea,serviceToolBar);
 
 
     setMainFrame(stundeplaner);
@@ -489,7 +493,8 @@ void GuiRepositoryImpl::initGui()
 
     addMode(ModePlanung::getInstance());
     addMode(ModeLesen::getInstance());
-
+    addMode(ModeMaterial::getInstance());
+    addService(ServiceLatex::getInstance());
 }
 
 void GuiRepositoryImpl::setSelectedObject(PObject *o)
@@ -511,9 +516,19 @@ void GuiRepositoryImpl::setActiveMode(GuiMode *mode)
 void GuiRepositoryImpl::addMode(GuiMode *mode)
 {
     //stundeplaner->addMode(mode);
-    leftToolBar->addAction(mode);
+    modeToolBar->addAction(mode);
 
 }
+
+void GuiRepositoryImpl::addService(GuiService *serv)
+{
+    //stundeplaner->addMode(mode);
+    GuiServiceToolButton *tb = new GuiServiceToolButton(serv,serviceToolBar);
+    tb->setIcon(serv->icon());
+    serviceToolBar->addWidget(tb);
+
+}
+
 
 KParts::Part* GuiRepositoryImpl::getPdfPart(QWidget* parent)
 {	

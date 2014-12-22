@@ -54,17 +54,19 @@ LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteV
     RepositoryProperty *rp= 0;
     rp=Repository::getInstance()->getRepositoryEntry("lernkarte")->getProperty("SourceVorn");
     viewerVorn = new TextPropertyViewer(0,rp,this);
-    viewerVorn->setFitToView(true);
+    //viewerVorn->setFitToView(true);
     viewerVorn->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     viewerVorn->setMinimumSize(300,200);
     viewerVorn->setHeader(header);
     viewerVorn->setFooter(footer);
+    viewerVorn->setBackgroundColor(QColor(255, 255, 255, 127));
     rp= Repository::getInstance()->getRepositoryEntry("lernkarte")->getProperty("SourceHinten");
     viewerHinten= new TextPropertyViewer(0,rp,this);
-    viewerHinten->setFitToView(true);
+    //viewerHinten->setFitToView(true);
     viewerHinten->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     viewerHinten->setHeader(header);
     viewerHinten->setFooter(footer);
+    viewerHinten->setBackgroundColor(QColor(255, 0, 0, 27));
 
 
     rp=Repository::getInstance()->getRepositoryEntry("lernkartensatz")->getProperty("Lernkarten");
@@ -74,7 +76,7 @@ LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteV
     QVBoxLayout *topLayout = new QVBoxLayout(this);
     QToolBar *toolBar = new QToolBar(this);
     toolBar->addWidget(combo);
-    //topLayout->addWidget(toolBar);
+    topLayout->addWidget(toolBar);
 
 
     if(ori==Horizontal){
@@ -104,7 +106,8 @@ LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteV
         displayWidget->show();
     } else if(ori==Stacked){
         QWidget *displayWidget = new QWidget(this);
-        QGridLayout *gl = new QGridLayout(displayWidget);
+        QVBoxLayout *gl = new QVBoxLayout(displayWidget);
+
         stack=new QStackedWidget(displayWidget);
 
         viewerVorn->setParent(stack);
@@ -113,16 +116,17 @@ LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteV
         viewerHinten->setParent(stack);
         stack->addWidget(viewerHinten);
 
+        /*
         gl->addWidget(new QLabel("1",displayWidget),0,0,2,1);
         gl->addWidget(stack,1,0);
         gl->addWidget(new QLabel("2",displayWidget),1,1);
-        gl->setColumnStretch(1,10);
+        gl->setColumnStretch(0,10);
         gl->setRowStretch(0,10);
+        */
 
+        gl->addWidget(stack);
         topLayout->addWidget(displayWidget);
-        stack->show();
-        displayWidget->show();
-        setSizePolicy(viewerVorn->sizePolicy());
+        //setSizePolicy(viewerVorn->sizePolicy());
     }
 
 
@@ -260,6 +264,7 @@ void LernkarteViewer::keyPressEvent ( QKeyEvent * e )
 {
 	qDebug("LernkarteViewer::keyPressEvent ");
     if(e->key() == Qt::Key_Space || e->key() == Qt::Key_Down){
+        showVorn();
 		advance();
     } else if(e->key() == Qt::Key_Backspace || e->key() == Qt::Key_Right || e->key() == Qt::Key_Left){
 		switchDisplay();
@@ -291,8 +296,8 @@ void LernkarteViewerEditor::startEdit(lernkarte *lk, bool vorn)
 void LernkarteViewerEditor::stopEdit()
 {
     TextPropertyEditor::stopEdit();
-    viewer->compileVorn(this->lk,true);
-	viewer->compileHinten(this->lk,true);
+    //viewer->compileVorn(this->lk,true);
+    //viewer->compileHinten(this->lk,true);
 	viewer->showLabels();
 	
 }

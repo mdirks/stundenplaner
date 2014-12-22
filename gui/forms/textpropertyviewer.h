@@ -22,6 +22,7 @@
 #include <QScrollArea>
 #include <QResizeEvent>
 #include <QStackedWidget>
+#include <QColor>
 
 class TextPropertyLabel : public QScrollArea
 {
@@ -71,6 +72,8 @@ public:
 
     void setFooter(QString f);
     void setHeader(QString f);
+    void setBackgroundColor(QColor c);
+
     QSize sizeHint();
 
 public slots:
@@ -89,6 +92,7 @@ protected:
 
 private:
     QString getFileName();
+    void setDisplayPixmapToLabel(QPixmap dpm);
 
 
 public:
@@ -110,6 +114,7 @@ private:
     QPixmap displayPm;
     QStackedWidget *stack;
        QSize displaySize;
+       QColor bgColor;
 };
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>

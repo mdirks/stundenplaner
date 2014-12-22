@@ -5,6 +5,7 @@
 #include "services/skalender.h"
 #include "datamodel/stundenplaneintrag.h"
 #include "gui/forms/pobjecteditor3.h"
+#include "orm/repository/repository.h"
 
 #include <QIcon>
 #include <QLabel>
@@ -24,7 +25,7 @@ ModePlanung::ModePlanung() :
 
 
     dp=0;
-
+    spl=0;
 }
 
 ModePlanung* ModePlanung::getInstance()
@@ -49,16 +50,19 @@ void ModePlanung::setupMode()
     QStackedWidget *sw=rep->getCentralWidget();
 
     rep->setActiveMode(this);
-    QSplitter *spl = new QSplitter(Qt::Horizontal,sw);
-    if(dp==0){
+    if(spl==0){
+        spl = new QSplitter(Qt::Horizontal,sw);
 
         dp = new DoublePane();
+        dp->showFormAtTop(rep->getFormForObject(SKalender::getInstance(),dp));
+        dp->setStretchFactor(1,10);
         spl->addWidget(dp);
-        spl->addWidget(new QLabel("Empty"));
+        RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("stundenplantemplateeintrag")->getProperty("Reihen");
+        browser = new ReiheBrowser(rp,0,sw);
+        spl->addWidget(browser);
 
         sw->addWidget(spl);
-        dp->showFormAtTop(rep->getFormForObject(SKalender::getInstance(),dp));
-    }
+        }
     sw->setCurrentWidget(spl);
 
 
@@ -68,6 +72,9 @@ void ModePlanung::activateObject(PObject *o)
 {
     if(stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o))
     {
+        if(stundenplantemplateeintrag *ste=se->getTemplate()){
+            browser->setParentObject(ste);
+        }
         if(klasse *kl = se->getKlasse()){
             QWidget *editor=GuiRepository::getInstance()->getFormForObject(se,dp);
             sitzplan *sp = kl->getSitzplan();

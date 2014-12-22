@@ -21,7 +21,7 @@
         <class name="SchultagGraphicsItem" tname="schultaggraphicsitem" base="PObjectGraphicsItem" version="0.1">
 	</class>
 	
-        <class name="PlatzGraphicsItem" tname="platzGraphicsitem" base="PObjectGraphicsItem" version="0.3">
+        <class name="PlatzGraphicsItem" tname="platzgraphicsitem" base="PObjectGraphicsItem" version="0.4">
 		<reference name="Platz" refClass="datamodel/platz" getter="getPlatz"></reference>
 		<property name="x"  type="double" cname="xpos" ctype="real" getter="x" setter="setX"></property>
 		<property name="y"  type="double" cname="ypos" ctype="real" getter="y" setter="setY"></property>

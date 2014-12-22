@@ -145,7 +145,9 @@ int main(int argc, char *argv[])
     KApplication app;
     GuiRepository::showSplashScreen();
 
-	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    QLocale::setDefault(QLocale::German);
+    //setenv("LC_ALL","de_DE.UTF-8");
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
     MappingControler::setDatabaseName(args->arg(0) /*GuiConfig::getInstance()->getDatabaseName()*/);
     MappingControler::getInstance();
    

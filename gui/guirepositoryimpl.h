@@ -74,6 +74,7 @@ public:
     KParts::Part *getPart(QWidget *parent, QString qs1, QString qs2);
 
     void addMode(GuiMode *mode);
+    void addService(GuiService *serv);
     void setActiveMode(GuiMode *mode);
 
     QStackedWidget* getCentralWidget();
@@ -139,7 +140,7 @@ protected:
     map<QString, QString> mapIcons;
 
 private:
-    QToolBar *leftToolBar;
+    QToolBar *modeToolBar, *serviceToolBar;
 
 };
 

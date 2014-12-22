@@ -23,6 +23,7 @@
 #include <QScrollArea>
 #include <QChar>
 #include <QSizePolicy>
+#include <QPainter>
 
 QString TextPropertyViewer::StandardHeader = QString("\\documentclass[12pt]{article} \\pagestyle{empty}"
                                                         "\\usepackage{ngerman} "
@@ -34,17 +35,18 @@ QString TextPropertyViewer::StandardHeader = QString("\\documentclass[12pt]{arti
 QString TextPropertyViewer::StandardFooter = QString("\n\\end{document}");
 
 TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw) :
-    QWidget(pw), header(StandardHeader), footer(StandardFooter), tmpDir(QDir::current().path() + QDir::separator() + "tmp")
+    QWidget(pw), header(StandardHeader), footer(StandardFooter),
+    tmpDir(QDir::current().path() + QDir::separator() + "tmp"), bgColor(Qt::lightGray)
 {
 	this->parent = parent;
 	this->prop=0;
 	displayString=dT;
-
+    fit=false;
 
     label = new TextPropertyLabel(this);
     editor = new TextPropertyEditor(parent,dT,this);
-    editor->setMinimumHeight(10);
-
+    label->setMinimumHeight(10);
+    hidden=false;
 
     stack= new QStackedWidget(this);
     QVBoxLayout *l = new QVBoxLayout(this);
@@ -69,12 +71,14 @@ TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw)
 }
 
 TextPropertyViewer::TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw) :
-    QWidget(pw), header(StandardHeader), footer(StandardFooter), tmpDir(QDir::current().path() + QDir::separator() + "tmp")
+    QWidget(pw), header(StandardHeader), footer(StandardFooter),
+    tmpDir(QDir::current().path() + QDir::separator() + "tmp"),bgColor(Qt::lightGray)
 {
 	this->parent = parent;
 	this->prop = prop;
 	displayString=QString("Shouldnt be used");
-
+    hidden=false;
+    fit=false;
     editor = new TextPropertyEditor(parent,prop,0);
     label = new TextPropertyLabel(this);
 
@@ -123,6 +127,10 @@ void TextPropertyViewer::setFooter(QString f)
     this->footer=f;
 }
 
+void TextPropertyViewer::setBackgroundColor(QColor c)
+{
+    bgColor=c;
+}
 
 TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, QString displayString, QWidget *pw) :
     KDialog(pw)
@@ -182,7 +190,11 @@ TextPropertyEditorDialog::~TextPropertyEditorDialog()
 
 QString TextPropertyViewer::getFileName()
 {
-    return tmpDir.filePath(QString("%1%2.pdf").arg(parent->getID()).arg(prop->getName().c_str()));
+    if(prop){
+        return tmpDir.filePath(QString("%1%2.pdf").arg(parent->getID()).arg(prop->getName().c_str()));
+    } else {
+        return tmpDir.filePath(QString("%1.pdf").arg(parent->getID()));
+    }
 }
 
 void TextPropertyViewer::setHidden(bool h)
@@ -214,15 +226,17 @@ void TextPropertyViewer::readVorn()
             QImage image = doc->page(0)->renderToImage();
             if(!image.isNull()){
                 displayPm=QPixmap::fromImage(image);
-                /*
-                if(fit){
-                    displayPm=displayPm.scaledToWidth(this->width());
-                }
-                */
-                label->setPixmap(displayPm);
-                if(fit){
-                    resize(displayPm.size());
-                }
+
+
+
+                //if(fit){
+                //    label->setPixmap(displayPm.scaled(label->size()));
+                    //resize(displayPm.size());
+                //} else {
+                     setDisplayPixmapToLabel(displayPm);
+                //}
+
+
             } else {
                 label->setText("Failed to read image");
             }
@@ -233,6 +247,26 @@ void TextPropertyViewer::readVorn()
     }
 
 }
+
+void TextPropertyViewer::setDisplayPixmapToLabel(QPixmap dpm)
+{
+    if(label->size().width() > dpm.size().width())
+    {
+        QPixmap *pm = new QPixmap(label->size());
+        pm->fill(bgColor);
+
+        QPainter *painter= new QPainter(pm);
+        int x = pm->size().width()/2 - dpm.size().width()/2;
+        int y = pm->size().height()/3*1- dpm.size().height()/2;
+
+        painter->drawPixmap(x,y,dpm);
+        painter->end();
+        label->setPixmap(*pm);
+    } else {
+        label->setPixmap(dpm);
+    }
+}
+
 
 void TextPropertyViewer::setScrollBarPolicy(Qt::ScrollBarPolicy policy){
     label->setVerticalScrollBarPolicy(policy);

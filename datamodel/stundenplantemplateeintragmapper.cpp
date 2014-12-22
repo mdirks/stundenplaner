@@ -28,7 +28,7 @@
 
  stundenplantemplateeintragmapper::stundenplantemplateeintragmapper()
   {
- 	version = "0.7";
+ 	version = "0.8";
 	columns = new string[5];
  	columnTypes = new string[5];
  	columns[0] = "datumbegin";
@@ -49,6 +49,9 @@
 asc_Eintraege = new Association<stundenplantemplateeintrag, stundenplaneintrag>("stundenplantemplateeintrag_eintrag","template_id","eintrag_id","stundenplaneintrag", &stundenplantemplateeintrag::addToEintraege, &stundenplantemplateeintrag::deleteFromEintraege);
 mapAssociations["Eintraege"] = asc_Eintraege;
 registerAssociation( asc_Eintraege);
+asc_Reihen = new Association<stundenplantemplateeintrag, reihe>("stundenplantemplateeintrag_reihe","template_id","reihe_id","reihe", &stundenplantemplateeintrag::addToReihen, &stundenplantemplateeintrag::deleteFromReihen);
+mapAssociations["Reihen"] = asc_Reihen;
+registerAssociation( asc_Reihen);
 mapReferences["Klasse"] = new Reference("stundenplantemplateeintrag","datamodel/klasse");
 }
 
@@ -119,6 +122,8 @@ void stundenplantemplateeintragmapper::save(PObject *realSubject)
     db->save(realSubject);
 	asc_Eintraege -> save(realSubject, o->getEintraege() );
 
+	asc_Reihen -> save(realSubject, o->getReihen() );
+
 	mapReferences[ "Klasse" ] -> save(realSubject, (PObject*) o->getKlasse());
 }
 
@@ -147,6 +152,12 @@ list<stundenplaneintrag*> * stundenplantemplateeintragmapper::findEintraege(int 
  	}
 
 
+list<reihe*> * stundenplantemplateeintragmapper::findReihen(int pri_id) 
+ { 
+ 	return asc_Reihen ->  findAssociates( pri_id );
+ 	}
+
+
 RepositoryEntry* stundenplantemplateeintragmapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "stundenplantemplateeintrag" ); 
@@ -157,6 +168,7 @@ RepositoryEntry* stundenplantemplateeintragmapper::getRepositoryEntry()
 	entry->addProperty( new NumericProperty< int,stundenplantemplateeintrag> ( "NrStunde", "int" , &stundenplantemplateeintrag::getNrStunde,&stundenplantemplateeintrag::setNrStunde ) ); 
 	entry->addProperty( new BooleanProperty< stundenplantemplateeintrag> ( "Doppelstunde", "bool" , &stundenplantemplateeintrag::getDoppelstunde,&stundenplantemplateeintrag::setDoppelstunde ) ); 
 	entry->addProperty( new CollectionPropertyImpl<stundenplaneintrag,stundenplantemplateeintrag>( "Eintraege" , "stundenplaneintrag", &stundenplantemplateeintrag::getEintraege, &stundenplantemplateeintrag::addToEintraege, &stundenplantemplateeintrag::deleteFromEintraege  ) ); 
+	entry->addProperty( new CollectionPropertyImpl<reihe,stundenplantemplateeintrag>( "Reihen" , "reihe", &stundenplantemplateeintrag::getReihen, &stundenplantemplateeintrag::addToReihen, &stundenplantemplateeintrag::deleteFromReihen  ) ); 
 	entry->addProperty( new PObjectProperty<klasse,stundenplantemplateeintrag>( "Klasse" , "klasse", &stundenplantemplateeintrag::getKlasse,&stundenplantemplateeintrag::setKlasse ) ); 
 	return entry;
  }

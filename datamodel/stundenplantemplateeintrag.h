@@ -15,6 +15,7 @@
 #include "datamodel/klasse.h"
 #include "orm/transactions/transactionobject.h"
 #include "datamodel/stundenplaneintrag.h"
+#include "datamodel/reihe.h"
 #include <list>
 
 using namespace std;
@@ -41,6 +42,10 @@ public:
     void addToEintraege(stundenplaneintrag *se);
     void deleteFromEintraege(stundenplaneintrag *se);
     list<stundenplaneintrag*>* getEintraege();
+    void addToReihen(reihe *r);
+    void deleteFromReihen(reihe *r);
+    list<reihe*>* getReihen();
+
     stundenplaneintrag* getEintrag(QDate date);
     QDate getDatumBegin();
     QDate getDatumEnde();
@@ -56,6 +61,7 @@ private:
 	klasse *kl;
 	bool is_doppel;
 	list<stundenplaneintrag*> *list_eintraege;
+    list<reihe*> *list_reihen;
 	QDate dateEnde, dateBegin;
 
 };

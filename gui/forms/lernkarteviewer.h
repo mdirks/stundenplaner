@@ -90,8 +90,8 @@ public:
 
 	void setLernkarte(lernkarte *lk);
 	void setLernkartensatz(lernkartensatz *ls);
-	void compileVorn(lernkarte *lk, bool reload=false);
-	void compileHinten(lernkarte *lk, bool reload=false);
+    //void compileVorn(lernkarte *lk, bool reload=false);
+    //void compileHinten(lernkarte *lk, bool reload=false);
 
     QSize sizeHint();
 
@@ -111,7 +111,7 @@ public slots:
 	void switchDisplay();
     void showHinten();
 	void showVorn();
-    void showEditor(bool vorn);
+    //void showEditor(bool vorn);
 	void showLabels();
 
 private:

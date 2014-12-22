@@ -23,7 +23,8 @@ stundenplantemplateeintrag::stundenplantemplateeintrag()
 	tag=0;
 	kl=0;
 	is_doppel = false;
-        list_eintraege=0;
+    list_eintraege=0;
+    list_reihen=0;
 }
 
  stundenplantemplateeintrag::~stundenplantemplateeintrag()
@@ -236,6 +237,25 @@ void stundenplantemplateeintrag::setDatumBegin(QDate date)
     this->dateBegin=date;
 }
 
+
+list<reihe*>* stundenplantemplateeintrag::getReihen()
+{
+    if(!list_reihen){
+        list_reihen = stundenplantemplateeintragmapper::getInstance()->findReihen(getID());
+        //list_reihen->sort(DateMemberCompare<stundenplaneintrag>());
+    }
+    return list_reihen;
+}
+
+void stundenplantemplateeintrag::addToReihen(reihe *r)
+{
+    getReihen()->push_back(r);
+}
+
+void stundenplantemplateeintrag::deleteFromReihen(reihe *r)
+{
+    getReihen()->remove(r);
+}
 
 /*!
     \fn stundenplantemplateeintrag::getNaechsten(stundenplaneintrag *se)

@@ -23,6 +23,7 @@
 #include "orm/repository/repositoryproperty.h"
 #include "services/filter/filter.h"
 #include "pobjecttable.h"
+#include "gui/draganddrop/pobjectdroptarget.h"
 
 
 //#include <kiconview.h>
@@ -52,7 +53,7 @@ using namespace std;
 
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
-class PObjectIconView : public QListWidget, public KXMLGUIClient, public PropertyEditor
+class PObjectIconView : public QListWidget, public KXMLGUIClient, public PropertyEditor, public PObjectDropTarget
 {
 Q_OBJECT
 
@@ -117,7 +118,7 @@ protected:
 
 private:
     //virtual QDragData* dragObject();
-    void handleDrop(QDropEvent *e);
+    //void handleDrop(QDropEvent *e);
 
 private:
 	bool typed, isLoaded;

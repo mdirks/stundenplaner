@@ -60,15 +60,15 @@ list<RepositoryProperty*>* PropertyListChooser::selectedProperties()
 {
 	list<RepositoryProperty*> *result = new list<RepositoryProperty*>();
 
-    qDebug() << "Warning: PropertyListChooser::selectedProperties() not implemented";
-    /*
-    QTreeWidgetItem *child = viewSelected->topLevelItem(1);
-	PropertyChooserItem *pci = dynamic_cast<PropertyChooserItem*>(child);
-	while(pci){
-		result->push_back(pci->getProperty());
-		pci = dynamic_cast<PropertyChooserItem*>(pci->nextSibling());
+
+    for(int i=0; i<viewSelected->topLevelItemCount(); i++){
+        QTreeWidgetItem *child = viewSelected->topLevelItem(i);
+        PropertyChooserItem *pci = dynamic_cast<PropertyChooserItem*>(child);
+        if(pci){
+            result->push_back(pci->getProperty());
+        }
 	}
-    */
+
 	return result;
 }
 
@@ -83,22 +83,20 @@ void PropertyListChooser::addSelected()
 
 void PropertyListChooser::removeSelected()
 {
-    qDebug() << "Warning: PropertyListChooser::removeSelected() not implemented";
-    /*
-    PropertyChooserItem *selectedItem = dynamic_cast<PropertyChooserItem*>(viewChooser->selectedItem());
-	if(selectedItem){
-		viewSelected->takeItem(selectedItem);
-	}
-    */
+    //qDebug() << "Warning: PropertyListChooser::removeSelected() not implemented";
+
+    PropertyChooserItem *selectedItem = dynamic_cast<PropertyChooserItem*>(
+                viewChooser->takeTopLevelItem(viewChooser->currentColumn()));
+
 }
 
 void PropertyListChooser::addProperty(RepositoryEntry *re, RepositoryProperty* rp)
 {
-    qDebug() << "Warning: PropertyListChooser::addProperty() not implemented";
-    /*
-    new PropertyChooserItem(re, rp,viewSelected);
-	viewSelected->triggerUpdate();
-    */
+    //qDebug() << "Warning: PropertyListChooser::addProperty() not implemented";
+
+    viewSelected->addTopLevelItem(new PropertyChooserItem(re, rp,viewSelected));
+    //viewSelected->triggerUpdate();
+
 
 }
 PropertyChooser::PropertyChooser(AbstractMapper *mapper, QWidget *parent)
@@ -126,16 +124,17 @@ PropertyChooser::~PropertyChooser()
 
 RepositoryProperty* PropertyChooser::selectedProperty()
 {
-    qDebug() << "Warning: PropertyChooser::selectedProperty() not implemented";
-    return 0;
-    /*
-    PropertyChooserItem *selectedItem = dynamic_cast<PropertyChooserItem*>(QListView::selectedItem());
+    //qDebug() << "Warning: PropertyChooser::selectedProperty() not implemented";
+    //return 0;
+
+    PropertyChooserItem *selectedItem = dynamic_cast<PropertyChooserItem*>(
+                currentItem());
 	if(selectedItem){
 		return selectedItem->getProperty();
 	} else {
 		return 0;
 	}
-    */
+
 }
 
 

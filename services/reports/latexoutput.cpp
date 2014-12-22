@@ -56,7 +56,7 @@ void LatexOutput::edit()
 {
     qDebug() << QString("Editing %1").arg(this->fileName());
 	//new KRun(this->name());
-    KRun::runCommand(QString("kile %1").arg(this->fileName()),0);
+    KRun::runCommand(QString("texmaker %1").arg(this->fileName()),0);
 
 }
 

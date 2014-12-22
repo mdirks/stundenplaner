@@ -26,6 +26,7 @@
 #include "splashscreen.h"
 #include "gui/base/guicontroler.h"
 #include "guimode.h"
+#include "guiservice.h"
 
 #include <kglobal.h>
 #include <kconfig.h>
@@ -69,6 +70,7 @@ public:
                          Qt::DockWidgetArea area = Qt::RightDockWidgetArea)=0;
    virtual void addIconView(PObjectIconView *iv, QString label, QString short_label)=0;
     virtual void addMode(GuiMode *mode)=0;
+    virtual void addService(GuiService *serv)=0;
 
    virtual QMenu* getPopup(QString identifier) = 0;
    

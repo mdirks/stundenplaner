@@ -430,21 +430,8 @@ void PObjectIconView::mousePressEvent(QMouseEvent *e)
 
 void PObjectIconView::dropEvent(QDropEvent *e)
 {
-    handleDrop(e);
-}
-/*!
-    \fn PObjectIconView::handleDrop(QDropEvent *e)
- */
-void PObjectIconView::handleDrop(QDropEvent *e)
-{
-    qDebug() << "PObjectIconView::handleDrop";
-    if(e->mimeData()->hasFormat("application/pobject"))
-    {
-        PObject* o= PObjectData::decode(e->mimeData()->data("application/pobject"));
-        e->accept();
-        if(!o){
-            qDebug() << "GenericMapView::contentsDropEvent: Strange, how to decode this data?";
-        }
+    PObject *o=handlePObjectDrop(e);
+    if(o){
         if(clName.isEmpty()){
             addObject(o);
         }else if(clName == o->getClassName().c_str()){
@@ -452,10 +439,12 @@ void PObjectIconView::handleDrop(QDropEvent *e)
         }else{
             qDebug() << "Drop: Cannot handle object";
         }
-    }else{
+    } else {
         qDebug() << "Drop: Cannot handle object";
     }
+
 }
+
 
 
 /*!

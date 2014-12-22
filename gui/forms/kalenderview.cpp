@@ -79,6 +79,8 @@ KalenderView::KalenderView(QWidget *parent, const char *name)
 
 	la->addWidget(mapView,10);
     la->addWidget(buttonWidget);
+
+    setMinimumSize(800,410);
 }
 
 

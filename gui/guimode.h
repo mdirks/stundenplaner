@@ -21,7 +21,7 @@ public:
 
 public slots:
     void doSetupMode();
-    void nocheiner();
+    //void nocheiner();
 };
 
 #endif // GUIMODE_H

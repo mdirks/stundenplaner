@@ -50,7 +50,7 @@
 	<association name="Eintraege" table="stundenplan_eintrag" priCol="stundenplan_id" ascCol="eintrag_id" ascClass="stundenplantemplateeintrag"></association>
 </class>
 
-<class name="stundenplantemplateeintrag" tname="stundenplantemplateeintrag"  version="0.7">
+<class name="stundenplantemplateeintrag" tname="stundenplantemplateeintrag"  version="0.8">
 	<property name="DatumBegin" type="QDate" cname="datumbegin" ctype="varchar(30)" getter="getDatumBegin" setter="setDatumBegin"></property>
 	<property name="DatumEnde" type="QDate" cname="datumende" ctype="varchar(30)" getter="getDatumEnde" setter="setDatumEnde"></property>
 	<property name="Tag" type="int" cname="tag" ctype="int" getter="getTag" setter="setTag"></property>
@@ -58,6 +58,7 @@
 	<reference name="Klasse"  refClass="datamodel/klasse"></reference>
 	<property name="Doppelstunde" type="bool" cname="doppelstunde" ctype="bool" getter="getDoppelstunde" setter="setDoppelstunde"></property>
 	<association name="Eintraege" table="stundenplantemplateeintrag_eintrag" priCol="template_id" ascCol="eintrag_id" ascClass="stundenplaneintrag"></association>
+        <association name="Reihen" table="stundenplantemplateeintrag_reihe" priCol="template_id" ascCol="reihe_id" ascClass="reihe"></association>
 </class>
 
 <class name="schueler" tname="schueler" base="notizholder" version="0.6">

@@ -28,9 +28,9 @@
 
  PlatzGraphicsItemmapper::PlatzGraphicsItemmapper()
   {
- 	version = "0.3";
-	columns = new string[6];
- 	columnTypes = new string[6];
+ 	version = "0.4";
+	columns = new string[12];
+ 	columnTypes = new string[12];
  	columns[0] = "xpos";
  	columnTypes[0] = "real";
 	mapProperties["xpos"] = new Property("xpos");
@@ -48,6 +48,24 @@
 	mapProperties["height"] = new Property("height");
 	columns[5] = "color";
  	columnTypes[5] = "integer";
+	mapProperties["color"] = new Property("color");
+	columns[6] = "xpos";
+ 	columnTypes[6] = "real";
+	mapProperties["xpos"] = new Property("xpos");
+	columns[7] = "ypos";
+ 	columnTypes[7] = "real";
+	mapProperties["ypos"] = new Property("ypos");
+	columns[8] = "zpos";
+ 	columnTypes[8] = "real";
+	mapProperties["zpos"] = new Property("zpos");
+	columns[9] = "width";
+ 	columnTypes[9] = "integer";
+	mapProperties["width"] = new Property("width");
+	columns[10] = "height";
+ 	columnTypes[10] = "integer";
+	mapProperties["height"] = new Property("height");
+	columns[11] = "color";
+ 	columnTypes[11] = "integer";
 	mapProperties["color"] = new Property("color");
 mapReferences["Platz"] = new Reference("PlatzGraphicsItem","datamodel/platz");
 }
@@ -70,7 +88,7 @@ PlatzGraphicsItemmapper::~PlatzGraphicsItemmapper(){}
 
  string PlatzGraphicsItemmapper::getTableName()
  {
-     return string("platzGraphicsitem");
+     return string("platzgraphicsitem");
  }
  
  string PlatzGraphicsItemmapper::getClassName()
@@ -90,13 +108,13 @@ PlatzGraphicsItemmapper::~PlatzGraphicsItemmapper(){}
  
  int PlatzGraphicsItemmapper::getColumnCount()
  {
-     return 6;
+     return 12;
  }
 
 
  string* PlatzGraphicsItemmapper::getValues(PObject *realSubject)
  {
- 	string *values = new string[6];  
+ 	string *values = new string[12];  
  	PlatzGraphicsItem *o = (PlatzGraphicsItem*) realSubject;
 	values[0] = to_string(o->x());
 	values[1] = to_string(o->y());
@@ -104,6 +122,12 @@ PlatzGraphicsItemmapper::~PlatzGraphicsItemmapper(){}
 	values[3] = to_string(o->width());
 	values[4] = to_string(o->height());
 	values[5] = to_string(o->getColor());
+	values[6] = to_string(o->x());
+	values[7] = to_string(o->y());
+	values[8] = to_string(o->z());
+	values[9] = to_string(o->width());
+	values[10] = to_string(o->height());
+	values[11] = to_string(o->getColor());
 return values;
  }
 
@@ -132,6 +156,12 @@ void PlatzGraphicsItemmapper::init(PObject* inito, Variant *res)
  	o->setWidth( res[3].asint());
  	o->setHeight( res[4].asint());
  	o->setColor( res[5].asint());
+ 	o->setX( res[6].asdouble());
+ 	o->setY( res[7].asdouble());
+ 	o->setZValue( res[8].asdouble());
+ 	o->setWidth( res[9].asint());
+ 	o->setHeight( res[10].asint());
+ 	o->setColor( res[11].asint());
  	inito->init();
 }
 
@@ -146,6 +176,12 @@ RepositoryEntry* PlatzGraphicsItemmapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "PlatzGraphicsItem" ); 
 	entry->addProperty( new StringProperty<PlatzGraphicsItem>("Name", "string", &PlatzGraphicsItem::getName, &PlatzGraphicsItem::setName, false) );
+	entry->addProperty( new NumericProperty< double,PlatzGraphicsItem> ( "x", "double" , &PlatzGraphicsItem::x,&PlatzGraphicsItem::setX ) ); 
+	entry->addProperty( new NumericProperty< double,PlatzGraphicsItem> ( "y", "double" , &PlatzGraphicsItem::y,&PlatzGraphicsItem::setY ) ); 
+	entry->addProperty( new NumericProperty< double,PlatzGraphicsItem> ( "z", "double" , &PlatzGraphicsItem::z,&PlatzGraphicsItem::setZValue ) ); 
+	entry->addProperty( new NumericProperty< int,PlatzGraphicsItem> ( "width", "int" , &PlatzGraphicsItem::width,&PlatzGraphicsItem::setWidth ) ); 
+	entry->addProperty( new NumericProperty< int,PlatzGraphicsItem> ( "height", "int" , &PlatzGraphicsItem::height,&PlatzGraphicsItem::setHeight ) ); 
+	entry->addProperty( new NumericProperty< int,PlatzGraphicsItem> ( "Color", "int" , &PlatzGraphicsItem::getColor,&PlatzGraphicsItem::setColor ) ); 
 	entry->addProperty( new NumericProperty< double,PlatzGraphicsItem> ( "x", "double" , &PlatzGraphicsItem::x,&PlatzGraphicsItem::setX ) ); 
 	entry->addProperty( new NumericProperty< double,PlatzGraphicsItem> ( "y", "double" , &PlatzGraphicsItem::y,&PlatzGraphicsItem::setY ) ); 
 	entry->addProperty( new NumericProperty< double,PlatzGraphicsItem> ( "z", "double" , &PlatzGraphicsItem::z,&PlatzGraphicsItem::setZValue ) ); 

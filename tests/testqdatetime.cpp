@@ -30,6 +30,8 @@
 #include "orm/persistence/database.h"
 #include "services/actions/createaction.h"
 #include <map>
+#include "stdlib.h"
+#include <QDebug>
 
 using namespace std;
 
@@ -46,6 +48,16 @@ TestQDateTime::~TestQDateTime()
 void TestQDateTime::run()
 {
 	map<QDateTime,stunde*> mapTimeStunde;
+    QLocale::setDefault(QLocale::German);
+    //setenv("LC_ALL","de_DE.UTF-8",1);
+    // test basic Date handling
+    qDebug() << QDate::currentDate().toString();
+    QDate date = QDate::fromString("Mo Dec 22 2014");
+    if(!date.isValid()){fail("could not read QDate from string");return;}
+
+    Variant v = QVariant("Di Mai 26 2015");
+    date=v.asQDate();
+    if(!date.isValid()){fail("could not get date from variant");return;}
 
 	DataModelRepository::getInstance();
 	stunde *st = (stunde*) CreateAction::getInstance()->create("stunde");

@@ -124,8 +124,9 @@ void GenericMapView::mousePressEvent( QMouseEvent* e )
             if(PObjectGraphicsItem *citem = dynamic_cast<PObjectGraphicsItem*>(movingItem)){
                 Transactions::getCurrentTransaction()->add(citem);
             }
+            GuiRepository::getInstance()->setSelectedObject(selectedItem->getObject());
     	}
-        GuiRepository::getInstance()->setSelectedObject(selectedItem->getObject());
+
      }
      getMap()->update();
 }

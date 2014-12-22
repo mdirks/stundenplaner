@@ -22,11 +22,15 @@
 
 #include "datamodel/reihe.h"
 #include "orm/repository/repositoryproperty.h"
+#include "pobjectcombobox.h"
+#include "gui/data/reihemap.h"
 
 #include <QWidget>
 #include <QTableWidget>
-
+#include <QListWidget>
 #include <QPixmap>
+
+#include <list>
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>
@@ -36,21 +40,53 @@ class ReihePlaner : public QWidget {
 Q_OBJECT
 
 public:
-    ReihePlaner(reihe *r, QWidget *parent=0, const char *name=0);
+    ReihePlaner(reihe *r=0, QWidget *parent=0);
     ~ReihePlaner();
     int numRows();
     void setNumRows(int num);
+    void setReihe(reihe *r);
+
 
 public slots:
-	void currentChanged(int row, int col);
+    void currentChanged(int row, int col, int prow, int pcol);
 
 private:
 	reihe *m_r;
-    QTableWidget *m_table;
+    QListWidget *listW;
 	RepositoryProperty *rp_verlauf, *rp_name, *rp_opos, *rp_material;
 	int num_rows;
 	QPixmap pm;
 
+
+};
+
+
+class ReihePlanerItem : public QWidget {
+
+public:
+    ReihePlanerItem(stunde *st, QListWidget *parent=0);
+
+};
+
+
+class ReiheBrowser : public QWidget {
+
+Q_OBJECT
+
+public:
+    ReiheBrowser(RepositoryProperty *rp, PObject *po, QWidget *p=0);
+    void setParentObject(PObject *po);
+
+public slots:
+    void indexChanged(int i);
+    void nameChanged(QString s);
+
+private:
+    RepositoryProperty *m_rp;
+    PObject *m_po;
+    PObjectComboBox *box;
+    ReihePlaner *planer;
+    //ReiheMap *reiheMap;
 
 };
 
