@@ -3,6 +3,8 @@
 #include <QHBoxLayout>
 #include <QGraphicsProxyWidget>
 
+//Jup funktioniert auch mobil
+
 PObjectDisplay::PObjectDisplay(QWidget *parent,list<PObject*> *olist)
     : QGraphicsView(parent)
 {
