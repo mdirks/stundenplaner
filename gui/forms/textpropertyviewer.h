@@ -43,7 +43,8 @@ protected:
 
 signals:
 	void editRequested();
-	
+    void labelClicked();
+
 	//void switchRequested();
 	//void nextRequested();
 	
@@ -58,11 +59,12 @@ class TextPropertyViewer : public QWidget
 Q_OBJECT
 
 public:
-	TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw=0L);
-	TextPropertyViewer(PObject *parent, QString displayString, QWidget *pw=0L);
+    TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw=0L, double w=18.0, double h=28.0);
+    TextPropertyViewer(PObject *parent, QString displayString, QWidget *pw=0L);
 	~TextPropertyViewer();
 
     void setParentObject(PObject *o);
+    void setProperty(RepositoryProperty *p);
 
 	QString getCompileStringVorn();
 	void compileVorn(bool reload);
@@ -115,6 +117,7 @@ private:
     QStackedWidget *stack;
        QSize displaySize;
        QColor bgColor;
+     double width,height;
 };
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>

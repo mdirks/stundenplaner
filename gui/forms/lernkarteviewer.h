@@ -71,6 +71,8 @@ private:
 
 
 
+
+
 class LernkarteViewer : public QWidget
 {
 Q_OBJECT
@@ -85,11 +87,11 @@ public:
 
 
 public:
-    LernkarteViewer(lernkartensatz* ls, QWidget *parent=0,LernkarteViewer::Orientation=LernkarteViewer::Horizontal);
-	~LernkarteViewer();
+    LernkarteViewer(QWidget *parent=0,LernkarteViewer::Orientation=LernkarteViewer::Horizontal);
+    ~LernkarteViewer();
 
-	void setLernkarte(lernkarte *lk);
-	void setLernkartensatz(lernkartensatz *ls);
+    void setLernkarte(lernkarte *lk);
+    //void setLernkartensatz(lernkartensatz *ls);
     //void compileVorn(lernkarte *lk, bool reload=false);
     //void compileHinten(lernkarte *lk, bool reload=false);
 
@@ -98,43 +100,69 @@ public:
 public:
     static QString header, footer;
 
+//protected:
+//	void keyPressEvent ( QKeyEvent * e );
 protected:
-	void keyPressEvent ( QKeyEvent * e );
-
+    void keyPressEvent ( QKeyEvent * e );
+    void mousePressEvent(QMouseEvent *e);
 private:
 
+
+signals:
+    void nextRequested();
 
 public slots:
-    void setSelected(int i);
+    //void setSelected(int i);
     //void showCurrent();
-    void advance();
-	void switchDisplay();
+    //void advance();
+    void switchDisplay();
     void showHinten();
-	void showVorn();
+    void showVorn();
     //void showEditor(bool vorn);
-	void showLabels();
+    void showLabels();
 
 private:
-	lernkarte* active_lk;
-	KParts::ReadOnlyPart *pdf_part;
+    lernkarte* active_lk;
+    KParts::ReadOnlyPart *pdf_part;
 
     TextPropertyViewer *viewerVorn, *viewerHinten;
     //LernkarteViewerLabel *label_vorn, *label_hinten;
     //LernkarteViewerEditor *editor_vorn, *editor_hinten;
-    PObjectComboBox *combo;
-	lernkartensatz *ls;
-	list<lernkarte*> *list_karten;
-	list<lernkarte*>::iterator it_ak;
-	bool showsVorn;
-	QDir tmpDir;
+    //PObjectComboBox *combo;
+    //lernkartensatz *ls;
+    list<lernkarte*> *list_karten;
+    list<lernkarte*>::iterator it_ak;
+    bool showsVorn;
+    QDir tmpDir;
      QProcess *pvorn, *phinten;
      QStackedWidget *stack;
-     int currentIndex;
+    // int currentIndex;
     LernkarteViewer::Orientation orientation;
 
 };
 
 
+class LernkartensatzViewer : public QWidget
+{
+Q_OBJECT
 
+public:
+    LernkartensatzViewer(lernkartensatz* ls, QWidget *parent=0,LernkarteViewer::Orientation=LernkarteViewer::Horizontal);
+    ~LernkartensatzViewer();
+
+    void setLernkartensatz(lernkartensatz *ls);
+    QSize sizeHint();
+
+
+public slots:
+    void setSelected(int i);
+    void advance();
+
+private:
+    LernkarteViewer *karteViewer;
+    PObjectComboBox *combo;
+    lernkartensatz *ls;
+    int currentIndex;
+};
 
 #endif

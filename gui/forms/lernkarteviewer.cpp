@@ -43,8 +43,26 @@
 QString LernkarteViewer::header = "\\documentclass[11pt]{extarticle}\\usepackage[paperheight=100mm,paperwidth=50mm,landscape]{geometry}\\pagestyle{empty}\\oddsidemargin=-22mm\\textwidth=98mm\\begin{document}\\sffamily\\vspace*{\\fill}";
 QString LernkarteViewer::footer = "\\vspace*{2cm}\\mbox{}\\vspace*{\\fill}\\end{document}";
 
-LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteViewer::Orientation ori)
- : tmpDir(QDir::current().path() + QDir::separator() + "tmp"), ls(ls), orientation(ori), QWidget(parent)
+
+LernkartensatzViewer::LernkartensatzViewer(lernkartensatz *ls, QWidget *parent, LernkarteViewer::Orientation ori)
+    : QWidget(parent),ls(ls)
+{
+    RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("lernkartensatz")->getProperty("Lernkarten");
+    this->combo = new PObjectComboBox(rp,ls,this);
+    connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(setSelected(int)));
+
+    this->karteViewer = new LernkarteViewer(parent,ori);
+    connect(karteViewer,SIGNAL(nextRequested()),this,SLOT(advance()));
+
+    QVBoxLayout *topLayout = new QVBoxLayout(this);
+    QToolBar *toolBar = new QToolBar(this);
+    toolBar->addWidget(combo);
+    topLayout->addWidget(toolBar);
+    topLayout->addWidget(karteViewer);
+}
+
+LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation ori)
+ : tmpDir(QDir::current().path() + QDir::separator() + "tmp"),  orientation(ori), QWidget(parent)
 {
 	pdf_part=0;
     list_karten=0;
@@ -69,14 +87,18 @@ LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteV
     viewerHinten->setBackgroundColor(QColor(255, 0, 0, 27));
 
 
+    /*
     rp=Repository::getInstance()->getRepositoryEntry("lernkartensatz")->getProperty("Lernkarten");
     combo = new PObjectComboBox(rp,ls,this);
     connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(setSelected(int)));
+    */
 
-    QVBoxLayout *topLayout = new QVBoxLayout(this);
-    QToolBar *toolBar = new QToolBar(this);
-    toolBar->addWidget(combo);
-    topLayout->addWidget(toolBar);
+    QVBoxLayout *topLayout = new QVBoxLayout();
+    topLayout->setContentsMargins(0,0,0,0);
+    topLayout->setSpacing(0);
+    //QToolBar *toolBar = new QToolBar(this);
+    //toolBar->addWidget(combo);
+    //topLayout->addWidget(toolBar);
 
 
     if(ori==Horizontal){
@@ -94,7 +116,7 @@ LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteV
         QGridLayout *gl = new QGridLayout(displayWidget);
 
         gl->addWidget(new QLabel("1"),0,0);
-        gl->addWidget(toolBar,1,1);
+        //gl->addWidget(toolBar,1,1);
         gl->addWidget(viewerVorn,1,2);
         gl->addWidget(viewerHinten,1,3);
         gl->addWidget(new QLabel("2"),0,1);
@@ -105,11 +127,9 @@ LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteV
         topLayout->setSpacing(0);
         displayWidget->show();
     } else if(ori==Stacked){
-        QWidget *displayWidget = new QWidget(this);
-        QVBoxLayout *gl = new QVBoxLayout(displayWidget);
-
-        stack=new QStackedWidget(displayWidget);
-
+        stack=new QStackedWidget(this);
+        //stack->setContentsMargins(0,0,0,0);
+        stack->setStyleSheet("background-color:white;");
         viewerVorn->setParent(stack);
         viewerVorn->setMinimumSize(100,100);
         stack->addWidget(viewerVorn);
@@ -124,19 +144,27 @@ LernkarteViewer::LernkarteViewer(lernkartensatz *ls, QWidget *parent, LernkarteV
         gl->setRowStretch(0,10);
         */
 
-        gl->addWidget(stack);
-        topLayout->addWidget(displayWidget);
+        //gl->addWidget(stack);
+
+        topLayout->addWidget(stack);
+        this->setStyleSheet("background-color:red;");
+        this->setContentsMargins(0,0,0,0);
+        this->setLayout(topLayout);
+        //topLayout->addWidget(displayWidget);
         //setSizePolicy(viewerVorn->sizePolicy());
     }
 
 
 
-    if(list_karten && !list_karten->empty()){
-        setLernkarte(*list_karten->begin());
-    }
+
     showVorn();
 
 
+}
+
+QSize LernkartensatzViewer::sizeHint()
+{
+    return karteViewer->sizeHint();
 }
 
 QSize LernkarteViewer::sizeHint()
@@ -149,14 +177,24 @@ QSize LernkarteViewer::sizeHint()
 
 }
 
+void LernkarteViewer::mousePressEvent(QMouseEvent *e)
+{
+    if(e->button() == Qt::RightButton){
+        if(showsVorn){
+            showHinten();
+        } else {
+            showVorn();
+        }
+    }
 
+}
 
-void LernkarteViewer::setSelected(int i)
+void LernkartensatzViewer::setSelected(int i)
 {
     PObject *o = combo->getObject(i);
     if(lernkarte *lk=dynamic_cast<lernkarte*>(o)){
         //it_ak=std::find(list_karten->begin(),list_karten->end(),lk);
-        setLernkarte(lk);
+        karteViewer->setLernkarte(lk);
     }
 }
 
@@ -164,8 +202,11 @@ LernkarteViewer::~LernkarteViewer()
 {
 }
 
+LernkartensatzViewer::~LernkartensatzViewer()
+{
+}
 
-void LernkarteViewer::setLernkartensatz(lernkartensatz *ls)
+void LernkartensatzViewer::setLernkartensatz(lernkartensatz *ls)
 {
 	this->ls = ls;
     if(ls){
@@ -205,6 +246,7 @@ void LernkarteViewer::showVorn()
     if(orientation==Stacked){
         stack->setCurrentWidget(viewerVorn);
     }
+    viewerHinten->stopEdit();
     viewerHinten->setHidden(true);
     viewerHinten->readVorn();
     viewerVorn->setHidden(false);
@@ -219,11 +261,11 @@ void LernkarteViewer::showHinten()
     if(orientation==Stacked){
         stack->setCurrentWidget(viewerHinten);
     }
-    viewerHinten->setHidden(false);
-    viewerVorn->setHidden(false);
-    viewerHinten->readVorn();
+    viewerVorn->stopEdit();
+    viewerVorn->setHidden(true);
     viewerVorn->readVorn();
-	//label_vorn->hide();
+    viewerHinten->setHidden(false);
+    viewerHinten->readVorn();
     viewerHinten->setFocus();
 	showsVorn=false;
 }
@@ -248,7 +290,7 @@ void LernkarteViewer::showLabels()
 
 
 
-void LernkarteViewer::advance()
+void LernkartensatzViewer::advance()
 {
     int i=combo->currentIndex()+1;
     if(i>=(combo->model()->rowCount()-1)) i=0;
@@ -265,12 +307,12 @@ void LernkarteViewer::keyPressEvent ( QKeyEvent * e )
 	qDebug("LernkarteViewer::keyPressEvent ");
     if(e->key() == Qt::Key_Space || e->key() == Qt::Key_Down){
         showVorn();
-		advance();
+        emit nextRequested();
     } else if(e->key() == Qt::Key_Backspace || e->key() == Qt::Key_Right || e->key() == Qt::Key_Left){
 		switchDisplay();
-	} else {
+    } else  {
 		e->ignore();
-	}
+    }
 }
 
 LernkarteViewerEditor::LernkarteViewerEditor(LernkarteViewer *vw, QWidget *parent)

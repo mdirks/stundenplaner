@@ -13,6 +13,7 @@ PObjectComboBox::PObjectComboBox(list<PObject*> *ol,QWidget *parent) :
     currentObject=0;
 
     this->olist=ol;
+    this->prop=0;
 
 
     QString String = "border: 0px solid black;";
@@ -59,6 +60,13 @@ void PObjectComboBox::load()
         load(olist);
     }
 
+}
+
+void PObjectComboBox::setObjectList(list<PObject*> *olist)
+{
+    this->olist=olist;
+    load();
+    setCurrentIndex(0);
 }
 
 void PObjectComboBox::setParentObject(PObject *o)

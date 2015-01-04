@@ -28,7 +28,7 @@
 QString TextPropertyViewer::StandardHeader = QString("\\documentclass[12pt]{article} \\pagestyle{empty}"
                                                         "\\usepackage{ngerman} "
                                                        "\\oddsidemargin -1cm \n \\topmargin -3.0cm"
-                                                       "\\textheight 28cm \\textwidth 18.0cm"
+                                                       "\\textheight %1cm \\textwidth %2cm"
                                                         "\\parindent=0pt \\parskip=0.15 true in"
                                                        "\\begin{document}\\sffamily\n");
 
@@ -50,6 +50,7 @@ TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw)
 
     stack= new QStackedWidget(this);
     QVBoxLayout *l = new QVBoxLayout(this);
+    l->setContentsMargins(0,0,0,0);
     l->addWidget(stack);
     stack->addWidget(label);
     stack->addWidget(editor);
@@ -70,9 +71,9 @@ TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw)
 
 }
 
-TextPropertyViewer::TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw) :
+TextPropertyViewer::TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw, double w, double h) :
     QWidget(pw), header(StandardHeader), footer(StandardFooter),
-    tmpDir(QDir::current().path() + QDir::separator() + "tmp"),bgColor(Qt::lightGray)
+    tmpDir(QDir::current().path() + QDir::separator() + "tmp"),bgColor(Qt::lightGray),width(w), height(h)
 {
 	this->parent = parent;
 	this->prop = prop;
@@ -85,6 +86,7 @@ TextPropertyViewer::TextPropertyViewer(PObject *parent, RepositoryProperty *prop
 
     stack= new QStackedWidget(this);
     QVBoxLayout *l = new QVBoxLayout(this);
+    l->setContentsMargins(0,0,0,0);
     l->addWidget(stack);
     stack->addWidget(label);
     stack->addWidget(editor);
@@ -115,6 +117,11 @@ void TextPropertyViewer::setParentObject(PObject *o)
    editor->setParentObject(o);
    compileVorn(true);
 
+}
+
+void TextPropertyViewer::setProperty(RepositoryProperty *p)
+{
+    this->prop = p;
 }
 
 void TextPropertyViewer::setHeader(QString h)
@@ -320,7 +327,7 @@ void TextPropertyViewer::compileError( QProcess::ProcessError error)
         return "Failed to open file";
     }
     QTextStream stream(&texFile);
-    stream << header;
+    stream << header.arg(height).arg(width);
     /*
     stream << "\\documentclass[12pt]{article} \\pagestyle{empty}";
     stream << "\\usepackage{ngerman} ";
@@ -412,10 +419,13 @@ void TextPropertyViewer::keyPressEvent ( QKeyEvent * e )
             qDebug() << QString("TextPropertyEditorDialog::keyPressEvent unknown key %1,%2").arg(e->text()).arg(e->key());
 			//emit applyRequested();
 		}
-	} else {
+    } else if(e->key()<128){
+        label->emitEditRequested();
+        //QWidget::keyPressEvent(e);
+    } else {
         //label->emitEditRequested();
         QWidget::keyPressEvent(e);
-	}
+    }
 }
 // void TextPropertyEditorDialog::stopEdit()
 // {
@@ -465,6 +475,8 @@ TextPropertyLabel::TextPropertyLabel(QWidget *parent, const char *name)
     setWidget(label);
 
 }
+
+
 
 void TextPropertyLabel::mouseDoubleClickEvent ( QMouseEvent * e )
 {

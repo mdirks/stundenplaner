@@ -24,6 +24,8 @@
 #include "orm/repository/repositoryproperty.h"
 #include "pobjectcombobox.h"
 #include "gui/data/reihemap.h"
+#include "pobjecticonview.h"
+#include "pobjectlistprovider.h"
 
 #include <QWidget>
 #include <QTableWidget>
@@ -49,6 +51,7 @@ public:
 
 public slots:
     void currentChanged(int row, int col, int prow, int pcol);
+    void activate(QListWidgetItem *item);
 
 private:
 	reihe *m_r;
@@ -85,8 +88,10 @@ private:
     RepositoryProperty *m_rp;
     PObject *m_po;
     PObjectComboBox *box;
-    ReihePlaner *planer;
+    //ReihePlaner *planer;
+    PObjectIconView *planer;
     //ReiheMap *reiheMap;
+    RpListProvider *provider;
 
 };
 

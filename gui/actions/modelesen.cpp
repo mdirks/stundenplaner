@@ -43,7 +43,7 @@ ModeLesen::ModeLesen()
     //browser->setFitToView(true);
     RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("ModeLesen")->getProperty("Texte");
     viewer = new TextViewer(rp,0,sw);
-    lkViewer = new LernkarteViewer(0,0,LernkarteViewer::Stacked);
+    lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Stacked);
 
     QWidget *notew = new QWidget(splitter);
     QVBoxLayout *l= new QVBoxLayout(notew);

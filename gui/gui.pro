@@ -16,7 +16,10 @@ HEADERS += \
     actions/modematerail.h \
     guiservice.h \
     draganddrop/pobjectdroptarget.h \
-    actions/servicelatex.h
+    actions/servicelatex.h \
+    forms/pobjectdisplay.h \
+    actions/modelernen.h \
+    forms/pobjectlistprovider.h
 
 HEADERS += $$system(ls mapviews/*.h) $$system(ls data/*.h) $$system(ls draganddrop/*.h)
 HEADERS += $$system(ls actions/*.h) $$system(ls base/*.h) $$system(ls dialogs/*.h)

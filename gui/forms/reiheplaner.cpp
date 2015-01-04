@@ -45,7 +45,11 @@ ReiheBrowser::ReiheBrowser(RepositoryProperty *rp, PObject *po, QWidget *p)
     m_rp = rp;
     m_po = po;
     box= new PObjectComboBox(rp,po);
-    planer = new ReihePlaner();
+    //planer = new ReihePlaner();
+    planer = new PObjectIconView();
+
+    RepositoryProperty *rp_verlauf = Repository::getInstance()->getRepositoryEntry("stunde")->getProperty("Verlauf");
+    planer->setDisplayProperty(rp_verlauf);
     /*
     reiheMap = new ReiheMap();
     GenericMapView *view = new GenericMapView(this);
@@ -64,7 +68,10 @@ void ReiheBrowser::indexChanged(int i)
 {
         PObject *o = box->getObject(i);
         if(reihe *r = dynamic_cast<reihe*>(o)){
-            planer->setReihe(r);
+            //planer->setReihe(r);
+            RepositoryProperty *rp_stunden = Repository::getInstance()->getRepositoryEntry("reihe")->getProperty("Stunden");
+            planer->setObjectListProvider(new RpListProvider(rp_stunden,r));
+            //planer->reload();
             //reiheMap->setReihe(r);
         }
 
@@ -95,17 +102,18 @@ ReihePlanerItem::ReihePlanerItem(stunde *st, QListWidget *parent)
     QLabel *la = new QLabel();
     la->setPixmap(GuiConfig::getInstance()->getIcon(st).scaledToHeight(12));
     hl->addWidget(la);
+    hl->addWidget(new QLabel(st->getName().c_str()));
 
     QVBoxLayout *l = new QVBoxLayout();
-    la = new QLabel(st->getName().c_str());
-    l->addWidget(la);
-    l->addWidget(new QLabel(QString("Verlauf: \n %1").arg(st->getVerlauf().c_str())));
 
-    hl->addLayout(l);
+    l->addLayout(hl);
+    RepositoryProperty *rp = Repository::getInstance()->getRepositoryEntry("stunde")->getProperty("Verlauf");
+    l->addWidget(new TextPropertyViewer(st,rp,this));
+
     //
 
 
-    setLayout(hl);
+    setLayout(l);
     //setText(st->getName().c_str());
 }
 
@@ -116,6 +124,7 @@ ReihePlaner::ReihePlaner(reihe *r, QWidget *parent)
     QVBoxLayout *l = new QVBoxLayout(this);
 	l->setMargin(20);
     listW = new QListWidget(this);
+    connect(listW,SIGNAL(itemActivated(QListWidgetItem*)),this,SLOT(activate(QListWidgetItem*)));
     l->addWidget(listW);
 
 
@@ -180,6 +189,7 @@ void ReihePlaner::setReihe(reihe *r)
 
 
 	}
+    listW->addItem(new QListWidgetItem("Neue Stunde",listW));
 
 
 }
@@ -232,6 +242,16 @@ void ReihePlaner::currentChanged(int row, int col, int prow, int pcol)
         qDebug() << QString("Current changed: %1, %2").arg(row).arg(col);
 	}
     */
+}
+
+void ReihePlaner::activate(QListWidgetItem *item)
+{
+    if(item->text() == "Neue Stunde"){
+        stunde *st = (stunde*) GuiObjectFactory::getInstance()->create("stunde");
+        Transactions::getCurrentTransaction()->add(m_r);
+        m_r->addToStunden(st);
+        setReihe(m_r);
+    }
 }
 
 int ReihePlaner::numRows(){

@@ -43,7 +43,7 @@ private:
     static ModeLesen *instance;
     TextViewer *viewer;
     TextPropertyBrowser *browser;
-    LernkarteViewer *lkViewer;
+    LernkartensatzViewer *lkViewer;
 
     list<lektuere*> *list_texte;
     lektuere *activeText;

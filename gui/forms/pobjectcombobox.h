@@ -20,6 +20,7 @@ public:
     void load();
 
     void setParentObject(PObject *o);
+    void setObjectList(list<PObject*> *olist);
 
 
     PObject* getCurrentObject();

@@ -24,6 +24,7 @@
 #include "services/filter/filter.h"
 #include "pobjecttable.h"
 #include "gui/draganddrop/pobjectdroptarget.h"
+#include "gui/forms/pobjectlistprovider.h"
 
 
 //#include <kiconview.h>
@@ -70,19 +71,24 @@ public:
 	void deleteObject(PObjectIconViewItem *item);
 
 	void stopEdit();
-    	void startEdit(RepositoryProperty *rp, PObject *parent);
-    	void startEdit();
-    	//list<KAction*>* initActions(KActionCollection *parent=0);
+    void startEdit(RepositoryProperty *rp, PObject *parent);
+    void startEdit();
+
     QMenu* getPopupMenu();
     list<PObject*>* getObjectList();
-    AbstractMapper* getMapper();
-    RepositoryProperty* getProperty();
-    PObject* getParentObject();
-    void setMapper(AbstractMapper *mapper);
+    //AbstractMapper* getMapper();
+
+    //void setMapper(AbstractMapper *mapper);
 	PObject* getSelected();
     virtual void 	startDrag ( Qt::DropActions supportedActions );
     void setTableView(PObjectTable *table);
     PObjectTable* getTableView();
+
+
+
+    void setDisplayProperty(RepositoryProperty *p);
+    void setObjectListProvider(PObjectListProvider *prov);
+    PObjectListProvider* getProvider();
 
 protected:
 	//QPopupMenu*  getDatenPopupForSelected();
@@ -92,14 +98,16 @@ private:
 	bool editing;
 	list<PObject*> *olist;
     PObjectTable *tableView;
+    RepositoryProperty *displayProp;
 
 public slots:
     void activateItem(QListWidgetItem *item);
+    void changeCurrent(QListWidgetItem *current,QListWidgetItem *previous);
     void reload();
     //void newIconView();
     //void configureView();
     void renameObject(QListWidgetItem* item);
-    PObjectIconViewItem* createItem(PObject* o);
+    PObjectIconViewItemBase* createItem(PObject* o);
     //void selectIcon();
     void selectFile();
 
@@ -119,14 +127,17 @@ protected:
 private:
     //virtual QDragData* dragObject();
     //void handleDrop(QDropEvent *e);
+    void doCommonSetup();
 
 private:
 	bool typed, isLoaded;
 	QString clName, typedMimeType;
-	RepositoryProperty *prop;
-	PObject *parentObject;
+    //RepositoryProperty *prop;
+    //PObject *parentObject;
     QMenu *pmenu;
 	Filter *filter;
+    QWidget *prevWidget;
+    PObjectListProvider *provider;
 };
 
 

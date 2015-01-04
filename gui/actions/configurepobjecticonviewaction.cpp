@@ -28,6 +28,8 @@
 #include "orm/repository/repositoryproperty.h"
 #include "orm/repository/collectionproperty.h"
 #include "orm/transactions/transactions.h"
+#include "gui/forms/pobjectlistprovider.h"
+#include "orm/mapping/mappingcontroler.h"
 
 #include <QDebug>
 
@@ -50,7 +52,7 @@ ConfigurePObjectIconViewAction::~ConfigurePObjectIconViewAction()
  */
 void ConfigurePObjectIconViewAction::configure()
 {
-    iconView->setMapper(GuiCreateAction::chooseMapper());
+    iconView->setObjectListProvider(new MapperListProvider(GuiCreateAction::chooseMapper()));
 }
 
 void ConfigurePObjectIconViewAction::newIconView()
@@ -60,7 +62,9 @@ void ConfigurePObjectIconViewAction::newIconView()
 }
 void ConfigurePObjectIconViewAction::chooseProperty()
 {
-	AbstractMapper *mapper = iconView->getMapper();
+    PObjectListProvider *prov = iconView->getProvider();
+    QString className = prov->getClassName();
+    AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName(className.toStdString());
 	if(mapper){
 		RepositoryProperty *rp = PropertyChooserDialog::chooseProperty(mapper);
 		if(rp){
@@ -71,17 +75,11 @@ void ConfigurePObjectIconViewAction::chooseProperty()
 }
 void ConfigurePObjectIconViewAction::addNewObject()
 {
-	PObject *o;
-	RepositoryProperty *prop = iconView->getProperty();
-	PObject *parentObject = iconView->getParentObject();
-	if(prop && parentObject){
-		//string className = prop->getType();
-		o = GuiCreateAction::getInstance()->create(prop->getType());
-		
-	} else if(AbstractMapper *mapper=iconView->getMapper()) {
-		 o = GuiCreateAction::getInstance()->create(mapper->getClassName());
-	}
-	iconView->addObject(o);
+    PObjectListProvider *prov = iconView->getProvider();
+    if(prov){
+        PObject *o = prov->addNewObject();
+        if(o) iconView->addObject(o);
+    }
 }
 
 void ConfigurePObjectIconViewAction::deleteSelected()
@@ -89,19 +87,10 @@ void ConfigurePObjectIconViewAction::deleteSelected()
 	PObjectIconViewItem *item = static_cast<PObjectIconViewItem*>(iconView->currentItem());
 	if(item){
 		PObject *o = item->getObject();
-		RepositoryProperty *prop=iconView->getProperty();
-		PObject *parentObject = iconView->getParentObject();
-		if(prop && parentObject && prop->isCollection()){
-			CollectionProperty *colProp = dynamic_cast<CollectionProperty*>(prop);
-			if(colProp){
-				colProp->remove( o,parentObject);
-			}
-			delete item;
-		} else if (AbstractMapper *mapper = iconView->getMapper()){
-			mapper->remove(o);
-			Transactions::getCurrentTransaction()->add(o);
-			delete item;
-		}
+        PObjectListProvider *prov = iconView->getProvider();
+        prov->deleteObject(o);
+        delete item;
+
 	}
 }
 
@@ -123,10 +112,9 @@ void ConfigurePObjectIconViewAction::selectIcon()
 
 void ConfigurePObjectIconViewAction::createFilter()
 {
-	if(AbstractMapper *mapper = iconView->getMapper()){
-		if(RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry(mapper->getClassName())){
+    PObjectListProvider *prov = iconView->getProvider();
+    if(RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry(prov->getClassName().toStdString())){
 			FilterEditorDialog::createFilter(re);
-		}
 	} else {
         qDebug() << "ConfigurePObjectIconViewAction::createFilter : mapper not set, aborting";
 	}

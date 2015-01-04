@@ -77,6 +77,7 @@
 #include "gui/actions/modelesenmapper.h"
 #include "gui/actions/modematerail.h"
 #include "gui/actions/servicelatex.h"
+#include "gui/actions/modelernen.h"
 
 
 #include <QPixmap>
@@ -270,12 +271,12 @@ QWidget* GuiRepositoryImpl::getFormForObject(PObject *o, QWidget *parent, list<R
         form->setToolTip(QString("Wochenuebersicht"));
 	} else if (className == "lernkarte"){
 		lernkarte *lk = dynamic_cast<lernkarte*>(o);
-		LernkarteViewer *lkv = new LernkarteViewer(0,parent);
+        LernkarteViewer *lkv = new LernkarteViewer(parent);
 		lkv->setLernkarte(lk);
 		form=lkv;
 	} else if (className == "lernkartensatz"){
 		lernkartensatz *ls = dynamic_cast<lernkartensatz*>(o);
-		LernkarteViewer *lkv = new LernkarteViewer(ls,parent);
+        LernkartensatzViewer *lkv = new LernkartensatzViewer(ls,parent);
 		//lkv->setLernkartensatz(ls);
 		form=lkv;
 	
@@ -494,6 +495,7 @@ void GuiRepositoryImpl::initGui()
     addMode(ModePlanung::getInstance());
     addMode(ModeLesen::getInstance());
     addMode(ModeMaterial::getInstance());
+    addMode(new ModeLernen());
     addService(ServiceLatex::getInstance());
 }
 
