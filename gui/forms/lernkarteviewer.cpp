@@ -113,17 +113,15 @@ LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation o
         displayWidget->show();
     } else if(ori==Vertical){
         QWidget *displayWidget = new QWidget(this);
-        QGridLayout *gl = new QGridLayout(displayWidget);
+        QVBoxLayout *gl = new QVBoxLayout(displayWidget);
 
-        gl->addWidget(new QLabel("1"),0,0);
+        //gl->addWidget(new QLabel("1"),0,0);
         //gl->addWidget(toolBar,1,1);
-        gl->addWidget(viewerVorn,1,2);
-        gl->addWidget(viewerHinten,1,3);
-        gl->addWidget(new QLabel("2"),0,1);
-        gl->setColumnStretch(0,10);
-        gl->setRowStretch(0,10);
+        gl->addWidget(viewerVorn);
+        gl->addWidget(viewerHinten);
 
-        topLayout->addWidget(displayWidget,10);
+
+        topLayout->addWidget(displayWidget);
         topLayout->setSpacing(0);
         displayWidget->show();
     } else if(ori==Stacked){
@@ -136,24 +134,15 @@ LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation o
         viewerHinten->setParent(stack);
         stack->addWidget(viewerHinten);
 
-        /*
-        gl->addWidget(new QLabel("1",displayWidget),0,0,2,1);
-        gl->addWidget(stack,1,0);
-        gl->addWidget(new QLabel("2",displayWidget),1,1);
-        gl->setColumnStretch(0,10);
-        gl->setRowStretch(0,10);
-        */
-
-        //gl->addWidget(stack);
 
         topLayout->addWidget(stack);
         this->setStyleSheet("background-color:red;");
-        this->setContentsMargins(0,0,0,0);
-        this->setLayout(topLayout);
+
         //topLayout->addWidget(displayWidget);
         //setSizePolicy(viewerVorn->sizePolicy());
     }
-
+    this->setContentsMargins(0,0,0,0);
+    this->setLayout(topLayout);
 
 
 
@@ -209,9 +198,11 @@ LernkartensatzViewer::~LernkartensatzViewer()
 void LernkartensatzViewer::setLernkartensatz(lernkartensatz *ls)
 {
 	this->ls = ls;
-    if(ls){
-        combo->setParentObject(ls);
-    }
+    RepositoryProperty *rp = Repository::getInstance()->
+                                getRepositoryEntry("lernkartensatz")->
+                                getProperty("Lernkarten");
+    PObjectListProvider *prov = new RpListProvider(rp,ls);
+    combo->setProvider(prov);
 }
 
 /*

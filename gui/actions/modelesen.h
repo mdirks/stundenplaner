@@ -22,6 +22,7 @@ public:
 
     void setupMode();
     void tearDownMode();
+    void close();
 
     void activateObject(PObject *o);
     void showForm(QWidget *w);

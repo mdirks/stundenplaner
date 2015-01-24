@@ -62,7 +62,7 @@ void ModePlanung::setupMode()
         spl->addWidget(browser);
 
         sw->addWidget(spl);
-        }
+    }
     sw->setCurrentWidget(spl);
 
 

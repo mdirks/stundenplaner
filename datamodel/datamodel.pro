@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = datamodel
-
+CONFIG += staticlib
 SOURCES += \
     *.cpp
 

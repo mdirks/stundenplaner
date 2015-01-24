@@ -6,27 +6,29 @@
 TextViewer::TextViewer(QWidget *parent) :
     QWidget(parent)
 {
-    viewer = new PdfViewer(this);
-    toolBar = new QToolBar(this);
-    combo = new PObjectComboBox(0,this);
-
-    viewer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-
-    toolBar->addWidget(combo);
-
-    QVBoxLayout *l=new QVBoxLayout(this);
-    l->addWidget(toolBar);
-    l->addWidget(viewer);
-
-    connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(selectionChanged(int)));
+    provider=0;
+    doCommonSetup();
 }
 
 TextViewer::TextViewer(RepositoryProperty *rp, PObject *parent, QWidget *pw)
     : QWidget(pw)
 {
+    provider=new RpListProvider(rp,parent);
+    doCommonSetup();
+}
+
+TextViewer::TextViewer(PObjectListProvider *prov,QWidget *pw)
+    : QWidget(pw)
+{
+    provider = prov;
+    doCommonSetup();
+}
+
+void TextViewer::doCommonSetup()
+{
     viewer = new PdfViewer(this);
     toolBar = new QToolBar(this);
-    combo = new PObjectComboBox(rp,parent,this);
+    combo = new PObjectComboBox(provider,this);
 
     viewer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
 
@@ -37,6 +39,7 @@ TextViewer::TextViewer(RepositoryProperty *rp, PObject *parent, QWidget *pw)
     l->addWidget(viewer);
 
     connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(selectionChanged(int)));
+
 }
 
 void TextViewer::load(){
@@ -48,11 +51,13 @@ void TextViewer::setParentObject(PObject *o)
     combo->setParentObject(o);
 }
 
+/*
 void TextViewer::setTextList(list<lektuere *> *tl)
 {
     this->tlist = tl;
     combo->load((list<PObject*>*) tl);
 }
+*/
 
 void TextViewer::setPage(int i)
 {

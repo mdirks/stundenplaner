@@ -161,7 +161,8 @@ void DatabaseImpl_Q::close()
 {
     if(connection.isValid()){
         connection.close();
-    cache.clear();
+        cache.clear();
+        connection=QSqlDatabase(); // invalid dummy
     }
 }
 void DatabaseImpl_Q::deleteObject(PObject *object){

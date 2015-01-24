@@ -3,6 +3,7 @@
 
 #include "orm/persistence/pobject.h"
 #include "orm/repository/repositoryproperty.h"
+#include "pobjectlistprovider.h"
 
 #include <list>
 
@@ -13,22 +14,24 @@ class PObjectComboBox : public QComboBox
 {
     Q_OBJECT
 public:
-    PObjectComboBox(list<PObject*> *olist, QWidget *parent = 0);
+
+    PObjectComboBox(QWidget *parent = 0);
+    PObjectComboBox(PObjectListProvider *prov, QWidget *parent = 0);
     PObjectComboBox(RepositoryProperty *rp, PObject *parent, QWidget *pw = 0);
     
-    void load(list<PObject*> *ol);
     void load();
-
-    void setParentObject(PObject *o);
-    void setObjectList(list<PObject*> *olist);
-
-
+    void setProvider(PObjectListProvider *prov);
+    void setParentObject(PObject *po);
     PObject* getCurrentObject();
-    PObject* addNewObject();
-
     PObject* getObject(int i);
 
+private:
+    void doCommonSetup();
+    int getIndex(PObject *o);
+    PObject* addNewObject();
 
+    void reload();
+    void load(list<PObject*> *ol);
 
 signals:
     
@@ -38,10 +41,11 @@ public slots:
 
 private:
     PObject *currentObject;
-    list<PObject*> *olist;
+    //list<PObject*> *olist;
     QPixmap icon;
-    RepositoryProperty *prop;
+    //RepositoryProperty *prop;
     PObject *parent;
+    PObjectListProvider *provider;
 };
 
 #endif // POBJECTCOMBOBOX_H

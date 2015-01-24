@@ -78,6 +78,7 @@
 #include "gui/actions/modematerail.h"
 #include "gui/actions/servicelatex.h"
 #include "gui/actions/modelernen.h"
+#include "gui/actions/servicexml.h"
 
 
 #include <QPixmap>
@@ -129,7 +130,7 @@ GuiRepositoryImpl::GuiRepositoryImpl()
 	
 	activeEditors = new list<PropertyEditor*>();
 	activeIconViews = new list<PObjectIconView*>();
-	
+    modelist = new list<GuiMode*>();
 	
 	listMappers = new list<AbstractMapper*>();
 	listMappers->push_back(ThemaItemmapper::getInstance());
@@ -497,6 +498,7 @@ void GuiRepositoryImpl::initGui()
     addMode(ModeMaterial::getInstance());
     addMode(new ModeLernen());
     addService(ServiceLatex::getInstance());
+    addService(new ServiceXml());
 }
 
 void GuiRepositoryImpl::setSelectedObject(PObject *o)
@@ -517,7 +519,7 @@ void GuiRepositoryImpl::setActiveMode(GuiMode *mode)
 
 void GuiRepositoryImpl::addMode(GuiMode *mode)
 {
-    //stundeplaner->addMode(mode);
+    modelist->push_back(mode);
     modeToolBar->addAction(mode);
 
 }
@@ -924,8 +926,9 @@ void GuiRepositoryImpl::closeGui()
 {
     SKalender::close();
 
-    if(stundeplaner){
-	//stundeplaner->slotDumpDatabase();
+    for(list<GuiMode*>::iterator it = modelist->begin(); it!=modelist->end(); it++)
+    {
+        (*it)->close();
     }
 }
 

@@ -155,10 +155,10 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
         pmenu->addAction("Konfigurieren", confAction, SLOT(configure()));
         pmenu->addAction("Icon wählen", confAction, SLOT(selectIcon()));
 
-        /*
-		action = new KAction("Delete Item", KStdAccel::shortcut(KStdAccel::New), confAction,SLOT(deleteSelected()), iconView, "del");
-		action->plug(pmenu);
+
+        pmenu->addAction("Löschen",  confAction,SLOT(deleteSelected()));
 	
+        /*
 		action = new KAction("Choose Property", KStdAccel::shortcut(KStdAccel::New), confAction,SLOT(chooseProperty()), iconView, "del");
 		action->plug(pmenu);
 	

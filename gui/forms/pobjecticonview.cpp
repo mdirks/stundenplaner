@@ -46,11 +46,7 @@ using namespace std;
 PObjectIconView::PObjectIconView(QWidget *parent)
  : QListWidget(parent), KXMLGUIClient()
 {
-    /*
-    olist=0;
-    this->mapper =0;
-	this->prop = 0;
-    */
+
     provider=0;
 
 
@@ -76,11 +72,7 @@ PObjectIconView::PObjectIconView(AbstractMapper *mapper, QWidget *parent)
  : QListWidget(parent), KXMLGUIClient()
 {
     provider = new MapperListProvider(mapper);
-    /*
-    this->olist = 0;
-    this->prop =0;
-    this->mapper = mapper;
-    */
+
 
     if(mapper){
         this->icon = GuiConfig::getInstance()->getIcon( mapper->getClassName().c_str() );
@@ -123,8 +115,9 @@ void PObjectIconView::doCommonSetup()
 
     isLoaded=false;
 
+
     connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(activateItem(QListWidgetItem *)));
-    //connect(this,SIGNAL(itemChanged(QListWidgetItem *)), this, SLOT( renameObject(QListWidgetItem *)) );
+    connect(this,SIGNAL(itemChanged(QListWidgetItem *)), this, SLOT( renameObject(QListWidgetItem *)) );
     connect(this,SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this,SLOT(changeCurrent(QListWidgetItem*,QListWidgetItem*)));
     setAcceptDrops(true);

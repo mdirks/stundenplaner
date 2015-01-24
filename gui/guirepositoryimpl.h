@@ -117,7 +117,7 @@ private:
     SitzplanMap*  getMapForSitzplan(sitzplan *sp);
     
 	list<PropertyEditor*> *activeEditors;
-   
+    list<GuiMode*> *modelist;
 
     
 private:

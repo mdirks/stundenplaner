@@ -1,6 +1,7 @@
 #include "pobjectlistprovider.h"
 #include "orm/transactions/transactions.h"
 #include "orm/repository/collectionproperty.h"
+#include "orm/mapping/mappingcontroler.h"
 #include "gui/actions/guicreateaction.h"
 
 PObject* PObjectListProvider::addNewObject()
@@ -64,16 +65,25 @@ void RpListProvider::addObject(PObject *o)
 {
     if(rp && parentObject)
     {
+        Transaction *t=Transactions::getCurrentTransaction();
+        t->add(parentObject);
         if(CollectionProperty *cp = dynamic_cast<CollectionProperty*>(rp)){
             //startEdit();
             cp->add(o,parentObject);
         }
     }
+
+
 }
 
 QString RpListProvider::getClassName()
 {
     return rp->getType().c_str();
+}
+
+void RpListProvider::setParentObject(PObject *po)
+{
+    this->parentObject=po;
 }
 
 void RpListProvider::deleteObject(PObject *o)
@@ -82,6 +92,12 @@ void RpListProvider::deleteObject(PObject *o)
     if(colProp){
         colProp->remove( o,parentObject);
     }
+}
+
+
+MapperListProvider::MapperListProvider(QString className)
+{
+    this->mapper=MappingControler::getInstance()->getMapperByName(className.toStdString());
 }
 
 MapperListProvider::MapperListProvider(AbstractMapper *mapper)

@@ -39,7 +39,7 @@ void PdfViewer::dragMoveEvent(QDragMoveEvent* e)
  */
  void PdfViewer::dropEvent(QDropEvent *e)
 {
-     qDebug("PdfViewer : Drop");
+    qDebug("PdfViewer : Drop");
 
     QPoint eventPos = e->pos();
     QPointF graphicsPos = mapToScene(eventPos);

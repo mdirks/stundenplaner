@@ -3,6 +3,7 @@
 #include "gui/guirepository.h"
 #include "gui/forms/pobjectdisplay.h"
 #include "orm/mapping/mappingcontroler.h"
+#include "gui/forms/pobjectlistprovider.h"
 
 #include <QStackedWidget>
 #include <QHBoxLayout>
@@ -23,42 +24,45 @@ ModeLernen::ModeLernen()
 
 
 
-    GuiRepository *guirep=GuiRepository::getInstance();
-    QStackedWidget *sw=guirep->getCentralWidget();
-
+    mainWidget=0;
     toolBar=0;
-    mainWidget = new QWidget(sw);
 
-    combo = new PObjectComboBox(0,mainWidget);
-    objectDisplay = new PObjectDisplay(mainWidget);
-    objectDisplay->setPrototype(new LernkarteDisplayItem());
-    editor = new PObjectIconView(mainWidget);
-    editor->setMinimumWidth(400);
-    editor->hide();
-
-    QVBoxLayout *l = new QVBoxLayout();
-    l->addWidget(combo);
-    l->addWidget(objectDisplay);
-    QHBoxLayout *vl = new QHBoxLayout();
-    vl->addLayout(l);
-    vl->addWidget(editor);
-    mainWidget->setLayout(vl);
-
-    connect(combo,SIGNAL(activated(int)),this,SLOT(newListSelected(int)));
 
 }
 
 void ModeLernen::setupMode()
 {
-    AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName("lernkartensatz");
-    list<PObject*> *lkslist=mapper->find_gen();
-    combo->setObjectList(lkslist);
 
     GuiRepository *guirep=GuiRepository::getInstance();
     QStackedWidget *sw=guirep->getCentralWidget();
 
     guirep->setActiveMode(this);
-    sw->addWidget(mainWidget);
+    if(!mainWidget){
+        mainWidget = new QWidget(sw);
+
+        PObjectListProvider *prov=new MapperListProvider("lernkartensatz");
+        combo=new PObjectComboBox(prov,mainWidget);
+
+        objectDisplay = new PObjectDisplay(mainWidget);
+        objectDisplay->setPrototype(new LernkarteDisplayItem());
+        editor = new PObjectIconView(mainWidget);
+        editor->setMinimumWidth(400);
+        editor->hide();
+
+        QVBoxLayout *l = new QVBoxLayout();
+        l->addWidget(combo);
+        l->addWidget(objectDisplay);
+        QHBoxLayout *vl = new QHBoxLayout();
+        vl->addLayout(l);
+        vl->addWidget(editor);
+        mainWidget->setLayout(vl);
+        sw->addWidget(mainWidget);
+
+        connect(combo,SIGNAL(activated(int)),this,SLOT(newListSelected(int)));
+    }
+    sw->setCurrentWidget(mainWidget);
+
+
     if(!toolBar){
         toolBar = new QToolBar(guirep->getMainFrame());
         QPixmap pm = GuiConfig::getInstance()->getIcon("Karteneditor");

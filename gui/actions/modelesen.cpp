@@ -5,11 +5,14 @@
 #include "orm/repository/repository.h"
 #include "orm/repository/repositoryproperty.h"
 #include "gui/actions/guicreateaction.h"
+#include "gui/forms/pobjectlistprovider.h"
 #include "orm/transactions/transactions.h"
+#include "datamodel/lektuere.h"
 #include "modelesenmapper.h"
 
 #include <QPixmap>
 #include <QVBoxLayout>
+#include <QList>
 
 
 ModeLesen* ModeLesen::instance=0;
@@ -29,41 +32,9 @@ ModeLesen::ModeLesen()
     }
     setIcon(pm);
 
-    RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry("lektuere");
-    RepositoryProperty *colProp = re->getProperty("Notizen");
-    re = Repository::getInstance()->getRepositoryEntry("lektuerenotiz");
-    RepositoryProperty *dispProp = re->getProperty("Body");
 
-    GuiRepository *guirep=GuiRepository::getInstance();
-    QStackedWidget *sw=guirep->getCentralWidget();
 
-    splitter = new QSplitter(Qt::Horizontal,sw);
-
-    browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
-    //browser->setFitToView(true);
-    RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("ModeLesen")->getProperty("Texte");
-    viewer = new TextViewer(rp,0,sw);
-    lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Stacked);
-
-    QWidget *notew = new QWidget(splitter);
-    QVBoxLayout *l= new QVBoxLayout(notew);
-    l->addWidget(browser);
-    l->addWidget(lkViewer);
-
-    browser->hide();
-    lkViewer->hide();
-    /*
-    stack=new QStackedWidget(splitter);
-    blankWidget = new QWidget(stack);
-    stack->addWidget(browser);
-    stack->addWidget(lkViewer);
-    stack->addWidget(blankWidget);
-    stack->setCurrentWidget(blankWidget);
-    */
-    //AdaptingSplitter *splitter2=new AdaptingSplitter(browser,viewer,splitter);
-    splitter->addWidget(viewer);
-    //splitter->addWidget(stack);
-    splitter->addWidget(notew);
+    splitter = 0;
 
 
 }
@@ -92,12 +63,38 @@ void ModeLesen::setupMode()
 
     guirep->setActiveMode(this);
 
-    sw->addWidget(splitter);
-    viewer->setParentObject(this);
-    viewer->load();
+    if(!splitter){
+        RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry("lektuere");
+        RepositoryProperty *colProp = re->getProperty("Notizen");
+        re = Repository::getInstance()->getRepositoryEntry("lektuerenotiz");
+        RepositoryProperty *dispProp = re->getProperty("Body");
+
+        splitter = new QSplitter(Qt::Horizontal,sw);
+
+        browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
+        PObjectListProvider *prov = new MapperListProvider("lektuere");
+        viewer = new TextViewer(prov,sw);
+        lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Vertical);
+
+        QWidget *notew = new QWidget(splitter);
+        QVBoxLayout *l= new QVBoxLayout(notew);
+        l->addWidget(browser);
+        l->addWidget(lkViewer);
+
+
+
+        splitter->addWidget(viewer);
+        splitter->addWidget(notew);
+        QList<int> sizes;
+        sizes << 600 << 500 << 10;
+        splitter->setSizes(sizes);
+        sw->addWidget(splitter);
+
+        browser->hide();
+        lkViewer->hide();
+    }
     sw->setCurrentWidget(splitter);
 
-    //guirep->addTool(browser,"Notizen","Notizen");
     if(!toolBar){
         toolBar = new QToolBar(guirep->getMainFrame());
         QPixmap pm = GuiConfig::getInstance()->getIcon("Notizeditor");
@@ -109,6 +106,26 @@ void ModeLesen::setupMode()
     } else {
         toolBar->show();
     }
+}
+
+void ModeLesen::close()
+{
+    GuiRepository *guirep=GuiRepository::getInstance();
+    QStackedWidget *sw=guirep->getCentralWidget();
+
+    if(splitter){
+        sw->removeWidget(splitter);
+        delete(splitter);
+        splitter=0;
+    }
+    if(toolBar){
+        toolBar->deleteLater();
+        toolBar=0;
+    }
+
+    list_texte=0;
+    activeText=0;
+    toolBar = 0;
 }
 
 void ModeLesen::tearDownMode()

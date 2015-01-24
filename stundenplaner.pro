@@ -1,11 +1,12 @@
 TEMPLATE = subdirs
-TARGET = stundenplaner
+CONFIG += build_all
 SUBDIRS += \
+    orm \
     datamodel \
-    main \
     gui \
     services \
-    orm \
+    main \
+
 
 
 

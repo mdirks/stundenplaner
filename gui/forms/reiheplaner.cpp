@@ -94,6 +94,7 @@ void ReiheBrowser::setParentObject(PObject *po)
     box->setParentObject(po);
 }
 
+
 ReihePlanerItem::ReihePlanerItem(stunde *st, QListWidget *parent)
     : QWidget(parent)
 {

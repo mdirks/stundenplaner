@@ -6,6 +6,7 @@
 #include "orm/mapping/abstractmapper.h"
 
 #include <QString>
+#include <QDebug>
 #include <list>
 
 class PObjectListProvider
@@ -16,6 +17,7 @@ public:
     virtual QString getClassName()=0;
     PObject* addNewObject();
     virtual void deleteObject(PObject *o)=0;
+    virtual void setParentObject(PObject *o){qDebug()<<"PObjectListProvider: setParentObject empty";}
 };
 
 class PoLListProvider : public PObjectListProvider
@@ -35,11 +37,12 @@ private:
 class RpListProvider : public PObjectListProvider
 {
 public:
-    RpListProvider(RepositoryProperty *rp, PObject *parentObject);
+    RpListProvider(RepositoryProperty *rp, PObject *parentObject=0);
     list<PObject*> *objectList();
     void addObject(PObject *o);
     QString getClassName();
     void deleteObject(PObject *o);
+    void setParentObject(PObject *po);
 
 private:
     PObject *parentObject;
@@ -51,6 +54,7 @@ class MapperListProvider : public PObjectListProvider
 {
 public:
     MapperListProvider(AbstractMapper *mapper);
+    MapperListProvider(QString className);
     list<PObject*> *objectList();
     void addObject(PObject *o);
     QString getClassName();

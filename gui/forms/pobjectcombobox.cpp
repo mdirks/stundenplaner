@@ -7,36 +7,34 @@
 
 #define HEIGHT 17
 
-PObjectComboBox::PObjectComboBox(list<PObject*> *ol,QWidget *parent) :
+PObjectComboBox::PObjectComboBox(QWidget *parent) :
     QComboBox(parent)
 {
-    currentObject=0;
+    provider =0;
 
-    this->olist=ol;
-    this->prop=0;
-
-
-    QString String = "border: 0px solid black;";
-    setStyleSheet(String );
-    setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-    setEditable(true);
-    setInsertPolicy(QComboBox::InsertAtCurrent);
-    setFixedHeight(HEIGHT);
-    if(olist){
-        load(olist);
-    }
-
-    connect(this,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
-
+    doCommonSetup();
 }
 
 PObjectComboBox::PObjectComboBox(RepositoryProperty *rp, PObject *parent, QWidget *pw)
     : QComboBox(pw)
 {
-    this->prop=rp;
-    this->parent=parent;
-    this->olist=0;
+    provider = new RpListProvider(rp,parent);
 
+    doCommonSetup();
+
+}
+
+PObjectComboBox::PObjectComboBox(PObjectListProvider *prov, QWidget *pw)
+    : QComboBox(pw)
+{
+    provider=prov;
+
+    doCommonSetup();
+}
+
+void PObjectComboBox::doCommonSetup()
+{
+    currentObject=0;
 
     QString String = "border: 0px solid black;";
     setStyleSheet(String );
@@ -45,34 +43,74 @@ PObjectComboBox::PObjectComboBox(RepositoryProperty *rp, PObject *parent, QWidge
     setInsertPolicy(QComboBox::InsertAtCurrent);
     setFixedHeight(HEIGHT);
 
+    if(provider){
+        icon=GuiConfig::getInstance()->getIcon(provider->getClassName());
+    }
+
     load();
+
     connect(this,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
     connect(this,SIGNAL(currentIndexChanged(QString)),this,SLOT(indexChanged(QString)));
+
 }
 
 void PObjectComboBox::load()
 {
-    if(prop && parent)
-    {
-        olist=prop->asCollection(parent);
+    if(provider){
+        load(provider->objectList());
+        //isLoaded=true;
+        addItem("Create new item");
     }
-    if(olist){
-        load(olist);
-    }
-
 }
 
+void PObjectComboBox::reload()
+{
+    clear();
+    load();
+}
+
+
+
+
+void PObjectComboBox::load(list<PObject*> *olist)
+{
+    if(olist){
+        for(list<PObject*>::iterator it=olist->begin(); it!=olist->end(); it++)
+        {
+            addItem(icon,(*it)->getName().c_str());
+        }
+
+
+
+    }
+    if(!olist || olist->size()==0){
+        addItem("..");
+    }
+}
+
+/*
 void PObjectComboBox::setObjectList(list<PObject*> *olist)
 {
     this->olist=olist;
     load();
     setCurrentIndex(0);
 }
+*/
+
 
 void PObjectComboBox::setParentObject(PObject *o)
 {
-    this->parent=o;
-    if(prop) load();
+    if(provider){
+        provider->setParentObject(o);
+        reload();
+    }
+}
+
+
+void PObjectComboBox::setProvider(PObjectListProvider *prov)
+{
+    this->provider=prov;
+    if(provider) reload();
 }
 
 void PObjectComboBox::indexChanged(QString text)
@@ -82,34 +120,20 @@ void PObjectComboBox::indexChanged(QString text)
     }
 }
 
-void PObjectComboBox::load(list<PObject*> *ol)
-{
-    this->olist=ol;
 
-    if(olist){
-        if(olist->size()>0){
-            icon=GuiConfig::getInstance()->getIcon(olist->front());
-        }
-
-        clear();
-        for(list<PObject*>::iterator it=olist->begin(); it!=olist->end(); it++)
-        {
-            addItem(icon,(*it)->getName().c_str());
-        }
-
-        if(olist->size()==0){
-            addItem("..");
-        }
-    }
-
-    if(prop && parent){
-        addItem("Create new item");
-    }
-}
 
 
 PObject* PObjectComboBox::addNewObject()
 {
+    if(provider){
+        PObject *o = provider->addNewObject();
+        if(o){
+            reload();
+            setCurrentIndex(getIndex(o));
+        }
+    }
+
+    /*
     PObject *o=0;
     if(prop && parent){
         Transaction *t=Transactions::getCurrentTransaction();
@@ -122,18 +146,42 @@ PObject* PObjectComboBox::addNewObject()
         }
         load();
     }
+    */
 
 }
 
 PObject* PObjectComboBox::getObject(int i)
 {
     PObject *o=0;
-    if(olist && i<olist->size() && i>-1){
-        std::list<PObject*>::iterator it = olist->begin();
-        std::advance(it,i);
-        o=*it;
+    if(provider){
+        list<PObject*> *olist=provider->objectList();
+        if(olist && i<olist->size() && i>-1){
+            std::list<PObject*>::iterator it = olist->begin();
+            std::advance(it,i);
+            o=*it;
+        }
     }
     return o;
+}
+
+int PObjectComboBox::getIndex(PObject *o)
+{
+    int i=-1;
+    if(provider){
+        list<PObject*> *olist=provider->objectList();
+        if(olist){
+            std::list<PObject*>::iterator it = olist->begin();
+            int count=0;
+            while(i<0 && it != olist->end()){
+                if(o==*it){
+                    i=count;
+                }
+                count++;
+                it++;
+            }
+        }
+    }
+    return i;
 }
 
 

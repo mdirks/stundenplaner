@@ -1,6 +1,10 @@
 TEMPLATE = lib
 TARGET = gui
 
+CONFIG += qt
+CONFIG += staticlib
+
+
 SOURCES += \
     *.cpp
 
@@ -19,7 +23,8 @@ HEADERS += \
     actions/servicelatex.h \
     forms/pobjectdisplay.h \
     actions/modelernen.h \
-    forms/pobjectlistprovider.h
+    forms/pobjectlistprovider.h \
+    actions/servicexml.h
 
 HEADERS += $$system(ls mapviews/*.h) $$system(ls data/*.h) $$system(ls draganddrop/*.h)
 HEADERS += $$system(ls actions/*.h) $$system(ls base/*.h) $$system(ls dialogs/*.h)
@@ -44,7 +49,6 @@ INCLUDEPATH += ..
 INCLUDEPATH += /usr/include/KDE actions base data dialogs dragandrop forms mapviews
 INCLUDEPATH += /usr/include/poppler/qt4
 
-CONFIG += qt
 QT+=sql xml
 
 OTHER_FILES += \

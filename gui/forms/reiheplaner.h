@@ -76,6 +76,7 @@ class ReiheBrowser : public QWidget {
 
 Q_OBJECT
 
+
 public:
     ReiheBrowser(RepositoryProperty *rp, PObject *po, QWidget *p=0);
     void setParentObject(PObject *po);

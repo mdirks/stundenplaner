@@ -4,6 +4,7 @@
 #include "gui/forms/pdfviewer.h"
 #include "gui/forms/pobjectcombobox.h"
 #include "datamodel/lektuere.h"
+#include "pobjectlistprovider.h"
 
 #include <QWidget>
 #include <QToolBar>
@@ -17,11 +18,16 @@ class TextViewer : public QWidget
 public:
     explicit TextViewer(QWidget *parent = 0);
     TextViewer(RepositoryProperty *rp,PObject *parent, QWidget *pw=0);
+    TextViewer(PObjectListProvider *provider, QWidget *pw=0);
     
-    void setTextList(list<lektuere*> *tlist);
     void setPage(int i);
     void load();
+
+private:
+    void doCommonSetup();
+    //void setTextList(list<lektuere*> *tlist);
     void setParentObject(PObject *o);
+
 
 signals:
     void textChanged(lektuere *l);
@@ -37,6 +43,7 @@ private:
     QToolBar *toolBar;
     list<lektuere*> *tlist;
     lektuere *activeText;
+    PObjectListProvider *provider;
 };
 
 #endif // TEXTVIEWER_H

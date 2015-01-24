@@ -233,17 +233,7 @@ void TextPropertyViewer::readVorn()
             QImage image = doc->page(0)->renderToImage();
             if(!image.isNull()){
                 displayPm=QPixmap::fromImage(image);
-
-
-
-                //if(fit){
-                //    label->setPixmap(displayPm.scaled(label->size()));
-                    //resize(displayPm.size());
-                //} else {
-                     setDisplayPixmapToLabel(displayPm);
-                //}
-
-
+                setDisplayPixmapToLabel(displayPm);
             } else {
                 label->setText("Failed to read image");
             }
@@ -264,7 +254,7 @@ void TextPropertyViewer::setDisplayPixmapToLabel(QPixmap dpm)
 
         QPainter *painter= new QPainter(pm);
         int x = pm->size().width()/2 - dpm.size().width()/2;
-        int y = pm->size().height()/3*1- dpm.size().height()/2;
+        int y = pm->size().height()/2- dpm.size().height()/2;
 
         painter->drawPixmap(x,y,dpm);
         painter->end();

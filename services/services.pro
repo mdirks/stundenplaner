@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = services
-
+CONFIG += staticlib
 SOURCES += \
     *.cpp
 

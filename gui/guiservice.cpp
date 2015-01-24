@@ -13,7 +13,7 @@ GuiServiceToolButton::GuiServiceToolButton(GuiService *s, QWidget *parent) : QTo
 
     setAcceptDrops(true);
     if(s){
-        connect(this, SIGNAL(pressed()), s, SLOT(setupMode()));
+        connect(this, SIGNAL(pressed()), s, SLOT(doSetupMode()));
     }
 }
 
