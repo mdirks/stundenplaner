@@ -28,6 +28,7 @@
 #include "orm/repository/repositoryproperty.h"
 #include "orm/transactions/transactions.h"
 #include "gui/base/guiobjectfactory.h"
+#include "gui/forms/stringeditor.h"
 #include "orm/transactions/transactions.h"
 #include "gui/mapviews/genericmapview.h"
 //#include "actions/createaction.h"
@@ -73,6 +74,8 @@ void ReiheBrowser::indexChanged(int i)
             planer->setObjectListProvider(new RpListProvider(rp_stunden,r));
             //planer->reload();
             //reiheMap->setReihe(r);
+        } else {
+            planer->clear();
         }
 
 }
@@ -100,18 +103,18 @@ ReihePlanerItem::ReihePlanerItem(stunde *st, QListWidget *parent)
 {
 
     QHBoxLayout *hl = new QHBoxLayout();
+    RepositoryProperty *rpName = Repository::getInstance()->getRepositoryEntry("stunde")->getProperty("Name");
+    StringEditor *nameEditor = new StringEditor(st,rpName,this);
     QLabel *la = new QLabel();
     la->setPixmap(GuiConfig::getInstance()->getIcon(st).scaledToHeight(12));
     hl->addWidget(la);
-    hl->addWidget(new QLabel(st->getName().c_str()));
+    hl->addWidget(nameEditor);
 
     QVBoxLayout *l = new QVBoxLayout();
 
     l->addLayout(hl);
     RepositoryProperty *rp = Repository::getInstance()->getRepositoryEntry("stunde")->getProperty("Verlauf");
     l->addWidget(new TextPropertyViewer(st,rp,this));
-
-    //
 
 
     setLayout(l);

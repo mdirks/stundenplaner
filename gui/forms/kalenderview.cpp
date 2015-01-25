@@ -34,14 +34,6 @@ KalenderView::KalenderView(QWidget *parent, const char *name)
 	skal=SKalender::getInstance();
 	QVBoxLayout *la = new QVBoxLayout(this);
 
-    /*
-    QWidget *buttonWidget = new QWidget(this);
-	QHBoxLayout *bla = new QHBoxLayout(buttonWidget);
-    btor = new QPushButton(">", buttonWidget);
-	btol = new QPushButton("<", buttonWidget);
-	bset = new QPushButton("Ok", buttonWidget);
-	dateWidget = new KDateWidget(buttonWidget);
-    */
 
     QToolBar *buttonWidget = new QToolBar(this);
     buttonWidget->setContentsMargins(0,0,0,0);
@@ -56,31 +48,17 @@ KalenderView::KalenderView(QWidget *parent, const char *name)
     buttonWidget->addAction(">",this, SLOT(incrementWeek()));
     buttonWidget->addWidget(empty);
     dateWidget = new KDateWidget();
-    //buttonWidget->addWidget(dateWidget);
-    buttonWidget->addAction("Wähle",this,SLOT(setWeek()));
 
-    //connect(btor, SIGNAL(clicked()), this, SLOT(incrementWeek()));
-    //connect(btol, SIGNAL(clicked()), this, SLOT(decrementWeek()));
-    //connect(bset, SIGNAL(clicked()), this, SLOT(setWeek()));
-
-    /*
-    bla->setContentsMargins(0,0,0,0);
-	bla->addWidget(btol);
-	bla->addWidget(dateWidget);
-	bla->addWidget(bset,10);
-	bla->addWidget(btor);
-    */
 
 	mapView = new WeekMapView(this);
     mapView->setStyleSheet("border: 0px");
-	//WeekMapViewControler *controler = new WeekMapViewControler(mapView);
     la->setSpacing(0);
     la->setContentsMargins(0,0,0,0);
 
 	la->addWidget(mapView,10);
     la->addWidget(buttonWidget);
 
-    setMinimumSize(800,410);
+    //setMinimumSize(800,410);
 }
 
 

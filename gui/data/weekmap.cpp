@@ -23,46 +23,76 @@
 #define POD_WIDTH  170.0
 #define HEADER_HEIGHT  60.0
 
-WeekMap::WeekMap()
+WeekMap::WeekMap(WeekMap::Orientation o)
  : GenericMap(0,0) //GenericMap(5*POD_WIDTH,3*POD_HEIGHT+HEADER_HEIGHT)
 {
-	setMapper(WeekMapmapper::getInstance());
+    setMapper(WeekMapmapper::getInstance());
 
 	pod_width=POD_WIDTH;
 	pod_height=POD_HEIGHT;
 	header_height=HEADER_HEIGHT;
 
-    GenericMap::setSceneRect(0,0,6*pod_width,2.5*pod_height+header_height);
+    ori=o;
+
+
 	sp=0;
-	
-	list_speintr = new list<QGraphicsItem*>();
-	
-	QString nameofdays[7] = {"Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Wochenende"};
+    list_speintr = new list<QGraphicsItem*>();
 
 
+    doElementLayout();
 
-	for(int i = 0; i<6; i++){
-        IconGraphicsItem *ici = new IconGraphicsItem(i*pod_width,0,pod_width,header_height,nameofdays[i],"config-date",this);
-        ici->setBrush(QColor(175,203,230));
-        ici->setPen(QColor(130,130,130));
-        ici->show();
-        ici->setZValue(-1.0);
-        QGraphicsScene::addItem(ici);
-        dayheaders[i] = ici;
-        for(int j = 0; j<3; j++){
-            partofdays[3*i+j] = new QGraphicsRectItem(i*pod_width,header_height+j*pod_height,pod_width,pod_height);
-			int greyscale = 230 - j*10;
-			partofdays[3*i+j] -> setBrush(QColor(greyscale,greyscale,greyscale));
-			partofdays[3*i+j] -> setPen(QColor(130,130,130));
-			partofdays[3*i+j]->show();
-            //partofdays[3*i+j]->setZValue(-1.0);
-            partofdays[3*i+j]->setZValue(-1.0);
-            QGraphicsScene::addItem(partofdays[3*i+j]);
-        }
-	}
     update();
 
 	
+}
+
+void WeekMap::doElementLayout()
+{
+    if(ori==Vertical){
+        GenericMap::setSceneRect(0,0,3*pod_width,5*pod_height+2*header_height);
+    } else {
+        GenericMap::setSceneRect(0,0,6*pod_width,2.5*pod_height+header_height);
+    }
+
+    QString nameofdays[7] = {"Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Wochenende"};
+
+    for(int k=0; k<2; k++){
+        for(int i = 0; i<3; i++){
+            int col,row,ind;
+            if(ori==Vertical){
+                col=i;
+                row=k;
+            } else {
+                col=3*k+i;
+                row=0;
+            }
+            ind=3*k+i;
+            int rowsep=row*(header_height+2.5*pod_height);
+
+            /*
+            IconGraphicsItem *ici = new IconGraphicsItem(col*pod_width,rowsep,pod_width,header_height,
+                                                         nameofdays[ind],"config-date",this);
+            ici->setBrush(QColor(175,203,230));
+            ici->setPen(QColor(130,130,130));
+            ici->show();
+            ici->setZValue(-1.0);
+            QGraphicsScene::addItem(ici);
+            dayheaders[ind] = ici;
+            */
+            dayheaders[ind]=0;
+            for(int j = 0; j<3; j++){
+                partofdays[3*ind+j] = new QGraphicsRectItem(col*pod_width,rowsep+header_height+j*pod_height,
+                                                          pod_width,pod_height);
+                int greyscale = 230 - j*10;
+                partofdays[3*ind+j] -> setBrush(QColor(greyscale,greyscale,greyscale));
+                partofdays[3*ind+j] -> setPen(QColor(130,130,130));
+                partofdays[3*ind+j]->show();
+                //partofdays[3*i+j]->setZValue(-1.0);
+                partofdays[3*ind+j]->setZValue(-1.0);
+                QGraphicsScene::addItem(partofdays[3*ind+j]);
+            }
+        }
+    }
 }
 
 
@@ -94,18 +124,24 @@ QPoint WeekMap::getPositionForDate(QDateTime datetime)
 QPoint WeekMap::getPositionForDate(QDateTime datetime)
 {
 	int x,y,h,d;
-        
+
+    int rowsep=0;
+
 	d = datetime.date().dayOfWeek();
 	if(d>6) d=6;
-	x= (d-1)*pod_width+5;
+    if(d>3){
+        rowsep=header_height+2.5*pod_height;
+        d=d-3;
+    }
+    x= (d-1)*pod_width+5;
 
 	h = datetime.time().hour();
 	if(h>6){
 		h=h-7;
-		y = h*pod_height/6 + header_height;
+        y = h*pod_height/6 + header_height+rowsep;
 		
 	} else if (h<7){
-		y = 10;
+        y = 10+rowsep;
 		qDebug("Weekmap: Found early hour !?");
 	} 
 
@@ -133,17 +169,39 @@ void WeekMap::setStartDate(QDate date)
 {
     	this->start_date = date;
 	
-	for(int i = 0; i<5; i++){
-        removeItem(dayheaders[i]);
-        delete dayheaders[i];
-		QString nameofday = date.addDays(i+1).toString();
-		IconGraphicsItem *ici = new IconGraphicsItem(i*pod_width,0,pod_width,header_height,nameofday,"config-date",this);
-		dayheaders[i] = ici;
-		ici->setBrush(QColor(175,203,230));
-        ici->setZValue(-1.0);
-		ici->show();
-        QGraphicsScene::addItem(dayheaders[i]);
-	}
+
+    for(int k=0; k<2; k++){
+        for(int i = 0; i<3; i++){
+
+            int col,row,ind;
+
+            if(ori==Vertical){
+                col=i;
+                row=k;
+            } else {
+                col=3*k+i;
+                row=0;
+            }
+            ind=3*k+i;
+
+            int rowsep=row*(header_height+2.5*pod_height);
+
+            if(dayheaders[ind]){
+                removeItem(dayheaders[ind]);
+                delete dayheaders[ind];
+            }
+            QString nameofday = date.addDays(ind+1).toString();
+            IconGraphicsItem *ici = new IconGraphicsItem(col*pod_width,rowsep,pod_width,header_height,
+                                                         nameofday,"config-date",this);
+            ici->setBrush(QColor(175,203,230));
+            ici->setPen(QColor(130,130,130));
+            ici->show();
+            ici->setZValue(-1.0);
+            QGraphicsScene::addItem(ici);
+            dayheaders[ind] = ici;
+        }
+    }
+
 }
 
 /*!

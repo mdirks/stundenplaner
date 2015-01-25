@@ -87,6 +87,7 @@ public:
 
 
     void setDisplayProperty(RepositoryProperty *p);
+    void setDisplayProperties(list<RepositoryProperty*> *listRp);
     void setObjectListProvider(PObjectListProvider *prov);
     PObjectListProvider* getProvider();
 
@@ -98,7 +99,7 @@ private:
 	bool editing;
 	list<PObject*> *olist;
     PObjectTable *tableView;
-    RepositoryProperty *displayProp;
+    list<RepositoryProperty*> *displayPropList;
 
 public slots:
     void activateItem(QListWidgetItem *item);

@@ -23,6 +23,11 @@ ModePlanung::ModePlanung() :
     }
     setIcon(pm);
 
+    sePropertyList = new list<RepositoryProperty*>();
+    RepositoryEntry *re=Repository::getInstance()->getRepositoryEntry("stundenplaneintrag");
+    sePropertyList->push_back(re->getProperty("Verlauf"));
+    sePropertyList->push_back(re->getProperty("Notizen"));
+    sePropertyList->push_back(re->getProperty("Materialien"));
 
     dp=0;
     spl=0;
@@ -53,13 +58,22 @@ void ModePlanung::setupMode()
     if(spl==0){
         spl = new QSplitter(Qt::Horizontal,sw);
 
+        /*
         dp = new DoublePane();
         dp->showFormAtTop(rep->getFormForObject(SKalender::getInstance(),dp));
         dp->setStretchFactor(1,10);
         spl->addWidget(dp);
+        */
+        QWidget *w = rep->getFormForObject(SKalender::getInstance(),dp);
+        spl->addWidget(w);
+
+        dp = new DoublePane();
+
         RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("stundenplantemplateeintrag")->getProperty("Reihen");
         browser = new ReiheBrowser(rp,0,sw);
-        spl->addWidget(browser);
+        dp->showFormAtBottom(browser);
+
+        spl->addWidget(dp);
 
         sw->addWidget(spl);
     }
@@ -75,16 +89,20 @@ void ModePlanung::activateObject(PObject *o)
         if(stundenplantemplateeintrag *ste=se->getTemplate()){
             browser->setParentObject(ste);
         }
+
+
         if(klasse *kl = se->getKlasse()){
-            QWidget *editor=GuiRepository::getInstance()->getFormForObject(se,dp);
+            //QWidget *editor=GuiRepository::getInstance()->getFormForObject(se,dp);
+            QWidget *editor=new PObjectEditor3(se,dp,sePropertyList);
+            dp->showFormAtTop(editor);
+
             sitzplan *sp = kl->getSitzplan();
             if(sp){
                 QWidget *w = GuiRepository::getInstance()->getFormForObject(sp,editor);
-                if(PObjectEditor3 *e = dynamic_cast<PObjectEditor3*>(editor)){
-                    e->addEditor(w, "Sitzplan");
-                }
+                dp->showFormAtBottom(w);
+
             }
-            dp->showFormAtBottom(editor);
+
         }
     }
 }

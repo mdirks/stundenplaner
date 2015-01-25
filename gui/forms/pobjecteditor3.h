@@ -21,6 +21,8 @@
 #include "orm/repository/repositoryproperty.h"
 #include "gui/base/editrequestor.h"
 
+#include <list>
+
 /**	The standard form for PObjects, with dynamically generated fields.
 
 	For a given object, editing fields are put together in the constructor based on information obtained via the repository.
@@ -36,14 +38,20 @@ public:
     PObjectEditor3(PObject *o, QWidget *parent=0, list<RepositoryProperty*> *properties=0);
     ~PObjectEditor3();
 
+    //void setObject(PObject *o);
+
 public:
 	EditRequestor *editRequestor;
     void addProperty(RepositoryProperty *rp);
     void addEditor(QWidget *w, QString title);
 
 private:
+    void doCommonSetup();
+
+private:
 	PObject *mo;
 	RepositoryEntry *entry;
+    list<RepositoryProperty*> *properties;
     QTabWidget *mainTab, *colTab;
 	
 };

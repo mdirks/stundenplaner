@@ -4,6 +4,8 @@
 #include "gui/guimode.h"
 #include "gui/base/doublepane.h"
 #include "gui/forms/reiheplaner.h"
+#include "orm/repository/repository.h"
+#include "orm/repository/repositoryentry.h"
 
 #include <QSplitter>
 
@@ -23,6 +25,7 @@ private:
     DoublePane *dp;
     QSplitter *spl;
     ReiheBrowser *browser;
+    list<RepositoryProperty*> *sePropertyList;
 };
 
 #endif // MODEPLANUNG_H

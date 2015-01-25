@@ -40,7 +40,7 @@
 
 
 
-PObjectEditor3::PObjectEditor3(PObject *o, QWidget *parent, list<RepositoryProperty*> *properties)
+PObjectEditor3::PObjectEditor3(PObject *o, QWidget *parent, list<RepositoryProperty*> *propList)
     : QWidget(parent) /*QScrollArea()*/
 {
 	
@@ -50,12 +50,21 @@ PObjectEditor3::PObjectEditor3(PObject *o, QWidget *parent, list<RepositoryPrope
 
 
 
-	if(properties==0){
+    if(propList==0){
 		properties = entry->getAllProperties(true);
-	}
+    } else {
+        properties = propList;
+    }
     if(!properties) return;
 
 
+    doCommonSetup();
+
+}
+
+
+void PObjectEditor3::doCommonSetup()
+{
     QSplitter *splitter = new QSplitter(this);
     mainTab = new QTabWidget(this);
     mainTab->setContentsMargins(0,0,0,0);
@@ -72,18 +81,18 @@ PObjectEditor3::PObjectEditor3(PObject *o, QWidget *parent, list<RepositoryPrope
     QFormLayout *flayout = new QFormLayout();
     dataPane->setLayout(flayout);
     for(list<RepositoryProperty*>::iterator it=properties->begin(); it != properties->end(); it++){
-			RepositoryProperty *prop = (*it);
+            RepositoryProperty *prop = (*it);
 
 
 
-			if(prop->isString()){
+            if(prop->isString()){
                     flayout -> addRow(prop->getName().c_str(),
                                         new StringEditor(mo,prop,mainTab));
-			} else if(prop->isText()){
+            } else if(prop->isText()){
                     list_txt_prop->push_back(prop);
                     /*
                     w = new TextPropertyViewer(mo,prop,mainTab);
-					w->setMinimumHeight(500);
+                    w->setMinimumHeight(500);
                     flayout -> addRow( prop->getName().c_str(), w );
                     */
 
@@ -93,17 +102,17 @@ PObjectEditor3::PObjectEditor3(PObject *o, QWidget *parent, list<RepositoryPrope
             } else if(prop->isDate()){
                     flayout->addRow( prop->getName().c_str(),
                                        new DateEditor(mo,prop,mainTab) );
-			} else if(prop->isPObject()){
+            } else if(prop->isPObject()){
                     flayout->addRow(prop->getName().c_str(),
                                    new PObjectLabel(*it,mo,this) );
                     //list_po_prop->push_back(prop);
-			} else if(prop->isNumeric()){
+            } else if(prop->isNumeric()){
                     flayout -> addRow(prop->getName().c_str(),
                                       new StringEditor(mo,prop,mainTab));
-			} else if(prop->isBoolean()){
+            } else if(prop->isBoolean()){
                     flayout -> addRow(prop->getName().c_str(),
                                         new BooleanEditor(mo,prop,mainTab));
-			}
+            }
 
         }
         mainTab->addTab(dataPane,"Daten");
@@ -130,40 +139,25 @@ PObjectEditor3::PObjectEditor3(PObject *o, QWidget *parent, list<RepositoryPrope
 
         }
 
-        /*
-		list<RepositoryProperty*>::iterator it = list_po_prop->begin();
-			while(it != list_po_prop->end()){
-				QWidget* dw = new QWidget(mainTab);
-                QGridLayout *l = new QGridLayout(dw);
 
-                l -> addWidget(new QLabel(QString::fromStdString((*it)->getName()),dw),1,1);
-				PObjectLabel *olabel= new PObjectLabel(*it,mo,dw);
-				
-				l->addWidget( olabel, 1,2);
-		
-				it++;
-				if(it != list_po_prop->end()){
-                    l -> addWidget(new QLabel(QString::fromStdString((*it)->getName()),dw),1,3);
-					PObjectLabel *olabel= new PObjectLabel(*it,mo,dw);
-					l->addWidget( olabel, 1,4 );
-					it++;
-				}
-				layout->addWidget(dw);
-			}
-        */
 
 
         splitter->addWidget(mainTab);
         splitter->addWidget(colTab);
-        splitter->setStretchFactor(1,10);
+        splitter->setStretchFactor(0,10);
 
         QGridLayout *l=new QGridLayout(this);
         l->addWidget(splitter,0,0);
         //setWidget(splitter);
 
-
 }
 
+/*
+void PObjectEditor3::setObject(PObject *o)
+{
+    this->mo = o;
+}
+*/
 
 PObjectEditor3::~PObjectEditor3()
 {

@@ -12,6 +12,12 @@
 #include "pobjecticonviewitem.h"
 #include "textpropertyviewer.h"
 #include "textpropertyeditor.h"
+#include "stringeditor.h"
+#include "gui/base/guiconfig.h"
+#include "orm/repository/repository.h"
+#include "orm/repository/repositoryproperty.h"
+#include "orm/transactions/transactions.h"
+
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QMouseEvent>
@@ -40,37 +46,62 @@ PObjectIconViewItem::~PObjectIconViewItem()
 }
 
 
-PObjectIconViewItemE::PObjectIconViewItemE(PObject *o, RepositoryProperty *rp, QListWidget *iv, QPixmap &icon)
+PObjectIconViewItemE::PObjectIconViewItemE(PObject *o, list<RepositoryProperty*> *listRp, QListWidget *iv, QPixmap &icon)
  : PObjectIconViewItemBase(o,iv)
 {
     widget = new QWidget(iv);
     QVBoxLayout *l= new QVBoxLayout();
     label1a=new QLabel();
     label1a->setPixmap(icon.scaledToHeight(12));
-    label1b=new ActiveLabel(o->getName().c_str(),widget);
+    label1b=new ActiveLabel(o,widget);
     connect(label1b,SIGNAL(clicked()),this,SLOT(editRequested()));
     QHBoxLayout *lh = new QHBoxLayout();
     lh->addWidget(label1a);
     lh->addWidget(label1b);
     lh->setStretch(1,100);
+
+    QStackedWidget *sw = new QStackedWidget(widget);
+    for(list<RepositoryProperty*>::iterator it = listRp->begin(); it!=listRp->end();it++){
+        RepositoryProperty *rp = (*it);
+        QWidget *editor=0;
+        if(rp->isText()){
+            TextPropertyViewer *v = new TextPropertyViewer(o,rp,widget,6.0,28.0);
+            v->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+            editor=v;
+        }
+        if(editor){
+            int i=sw->addWidget(editor);
+            PropertyButton *b = new PropertyButton(rp,i,editor,sw,widget);
+            connect(b,SIGNAL(resized()),this,SLOT(setNewSize()));
+            lh->addWidget(b);
+
+        }
+    }
+
     l->addLayout(lh);
-    label2=new TextPropertyViewer(o,rp,widget,6.0,28.0);
-    label2->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    l->addWidget(label2);
+    l->addWidget(sw);
     widget->setLayout(l);
 
-    label2->hide();
+    sw->hide();
     iv->setItemWidget(this,widget);
     setSizeHint(widget->sizeHint());
 }
 
 void PObjectIconViewItemE::showFull(bool full)
 {
+    /*
     if(full){
-        label2->show();
+        sw->show();
     }else {
-        label2->hide();
+        sw->hide();
     }
+    */
+    setSizeHint(widget->sizeHint());
+}
+
+void PObjectIconViewItemE::setNewSize()
+{
     setSizeHint(widget->sizeHint());
 }
 
@@ -86,10 +117,12 @@ void PObjectIconViewItem::setText(QString &text)
     QListWidgetItem::setText(text);
 }
 */
+/*
 void PObjectIconViewItemE::setDisplayProperty(RepositoryProperty *p)
 {
     label2->setProperty(p);
 }
+*/
 
 /*!
     \fn PObjectIconViewItem::getObject()
@@ -105,8 +138,60 @@ void PObjectIconViewItemE::editRequested()
     lv->editItem(this);
 }
 
+ActiveLabel::ActiveLabel(PObject *po,  QWidget *parent)
+    : QStackedWidget(parent)
+{
+    nameEditor = 0;
+    this->po=po;
+
+    if(po){
+        RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry(po->getClassName());
+        if(re ){
+            RepositoryProperty *rpName = re->getProperty("Name");
+            nameEditor = new StringEditor(po,rpName,parent);
+            connect(nameEditor,SIGNAL(returnPressed()),this,SLOT(stopEdit()));
+            addWidget(nameEditor);
+
+        }
+        nameLabel = new QLabel(po->getName().c_str());
+        addWidget(nameLabel);
+        setCurrentWidget(nameLabel);
+    }
+}
+
+void ActiveLabel::stopEdit()
+{
+    if(nameEditor && po){
+        nameEditor->stopEdit();
+        nameLabel->setText(po->getName().c_str());
+        setCurrentWidget(nameLabel);
+    }
+}
+
 void ActiveLabel::mouseDoubleClickEvent( QMouseEvent * e ) {
     if(e->button() == Qt::LeftButton)
-        emit clicked();
-    QLabel::mouseDoubleClickEvent(e);
+        setCurrentWidget(nameEditor);
+        Transactions::getCurrentTransaction()->add(po);
+    QStackedWidget::mouseDoubleClickEvent(e);
+}
+
+PropertyButton :: PropertyButton(RepositoryProperty *rp, int i, QWidget *editor, QStackedWidget *editorStack, QWidget *parent)
+    : QToolButton(parent)
+{
+    this->ind=i;
+    this->editor = editor;
+    this->editorStack = editorStack;
+    setIcon(GuiConfig::getInstance()->getIcon(rp));
+    connect(this,SIGNAL(clicked()),this,SLOT(switchVisible()));
+}
+
+void PropertyButton::switchVisible()
+{
+    if(editorStack->isVisible() && editorStack->currentIndex()==ind){
+        editorStack->hide();
+    } else {
+        editorStack->show();
+        editorStack->setCurrentWidget(editor);
+    }
+    emit resized();
 }

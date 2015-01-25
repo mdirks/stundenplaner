@@ -134,15 +134,19 @@ void SitzplanMapViewControler::addFehlzeit()
 		if(schueler *s = pl->getSchueler()){
 			fehlzeit *fz = (fehlzeit*) GuiCreateAction::getInstance()->create("fehlzeit");
 			stundenplaneintrag *se = smapView->getStundenplaneintrag();
-			fz->setStundenplaneintrag(se);
-			fz->setSchueler(s);
+            if(se){
+                fz->setStundenplaneintrag(se);
+                fz->setSchueler(s);
 
-            fz->setVon(QDateTime(se->getDatum()));
-            fz->setBis(QDateTime(se->getDatum()));
-			s->addToFehlzeiten(fz);
-			se->addToFehlzeiten(fz);
-			Transactions::getCurrentTransaction()->add(s);
-			Transactions::getCurrentTransaction()->add(se);
+                fz->setVon(QDateTime(se->getDatum()));
+                fz->setBis(QDateTime(se->getDatum()));
+                s->addToFehlzeiten(fz);
+                se->addToFehlzeiten(fz);
+                Transactions::getCurrentTransaction()->add(s);
+                Transactions::getCurrentTransaction()->add(se);
+            } else {
+                qDebug() << "SitzplanMapViewControler::addFehlzeit : could not get se";
+            }
 	
 			/* If edit after create required uncoment here*/
 			//GuiRepository::getInstance()->showDialogForObject(fz);

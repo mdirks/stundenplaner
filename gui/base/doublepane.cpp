@@ -35,7 +35,7 @@ MyPane::MyPane(QWidget *parent) : QWidget(parent)
     //box->setStyleSheet("QComboBox {border: 0px; color: grey}");
     box->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     box->setContentsMargins(0,0,0,0);
-    tb->addWidget(box);
+    //tb->addWidget(box);
 
 
     stackedWidget = new QStackedWidget(this);

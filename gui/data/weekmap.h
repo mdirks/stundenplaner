@@ -37,7 +37,12 @@ using namespace std;
 class WeekMap : public GenericMap
 {
 public:
-    WeekMap();
+    enum Orientation {
+        Horizontal=0,
+        Vertical=1
+    };
+
+    WeekMap(WeekMap::Orientation=Vertical);
     ~WeekMap();
     QDate getStartDate();
     void setStartDate(QDate date);
@@ -55,7 +60,7 @@ protected:
 	QPoint getPositionForDate(QDateTime date);
     	QTime getTimeForStunde(int nrs);
 	//QPoint getPositionForDate(QDate date, int stunde);
-    
+        void doElementLayout();
 
 private:
     QGraphicsRectItem* partofdays[7*3];
@@ -65,6 +70,7 @@ private:
 	stundenplan *sp;
 	list<stundenplaneintrag*> *list_eintraege;
 	list<QGraphicsItem*> *list_speintr;
+    WeekMap::Orientation ori;
 
 	
 };

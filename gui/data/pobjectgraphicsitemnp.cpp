@@ -208,7 +208,7 @@ void PObjectGraphicsItemNP::paint ( QPainter  *painter,
 }
 
 QColor PObjectGraphicsItemNP::getFirstColor(){
-	return QColor(130,130,130);
+    return QColor(230,130,130);
 }
 
 QColor PObjectGraphicsItemNP::getSecondColor(){

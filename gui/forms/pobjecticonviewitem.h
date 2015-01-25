@@ -17,8 +17,13 @@
 #include "orm/persistence/pobject.h"
 #include "textpropertyviewer.h"
 #include "orm/repository/repositoryproperty.h"
+#include "gui/forms/stringeditor.h"
+
+#include <QToolButton>
+#include <list>
 
 class ActiveLabel;
+class PropertyButton;
 
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>
@@ -55,36 +60,61 @@ class PObjectIconViewItemE : public QObject, public PObjectIconViewItemBase
 {
     Q_OBJECT
 public:
-    PObjectIconViewItemE(PObject *o, RepositoryProperty *rp, QListWidget *iv, QPixmap &icon);
+    PObjectIconViewItemE(PObject *o, list<RepositoryProperty*> *listRp, QListWidget *iv, QPixmap &icon);
     ~PObjectIconViewItemE();
 
-    void setDisplayProperty(RepositoryProperty *p);
+    //void setDisplayProperty(RepositoryProperty *p);
     void showFull(bool full);
 
 public slots:
      void editRequested();
+     void setNewSize();
 
 private:
     QWidget *widget;
     QLabel *label1a;
     ActiveLabel *label1b;
-    TextPropertyViewer *label2;
+    //TextPropertyViewer *label2;
+    QStackedWidget *sw;
 
 
 
 };
 
-class ActiveLabel : public QLabel
+class ActiveLabel : public QStackedWidget
 {
 Q_OBJECT
 public:
-    ActiveLabel(QString text, QWidget *parent=0) : QLabel(text,parent){}
-
+    ActiveLabel(PObject *po, QWidget *parent=0);
 protected:
     void mouseDoubleClickEvent( QMouseEvent * e );
 
+public slots:
+    void stopEdit();
+
 signals:
     void clicked();
+
+private:
+    PObject *po;
+    StringEditor *nameEditor;
+    QLabel *nameLabel;
 };
 
+class PropertyButton : public QToolButton
+{
+Q_OBJECT
+public:
+    PropertyButton(RepositoryProperty *rp, int i,QWidget *editor, QStackedWidget *editorStack, QWidget *parent);
+public slots:
+    void switchVisible();
+
+signals:
+    void resized();
+
+private:
+    int ind;
+    QWidget *editor;
+    QStackedWidget *editorStack;
+};
 #endif

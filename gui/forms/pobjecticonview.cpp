@@ -111,7 +111,7 @@ void PObjectIconView::doCommonSetup()
     this->pmenu = 0;
     this->tableView=0;
     this->prevWidget=0;
-    this->displayProp=0;
+    this->displayPropList=0;
 
     isLoaded=false;
 
@@ -201,8 +201,8 @@ PObjectIconViewItemBase* PObjectIconView::createItem(PObject *o)
 
 	if(o){
         icon = GuiConfig::getInstance()->getIcon(o);
-        if(displayProp){
-            item = new PObjectIconViewItemE(o,displayProp,this,icon);
+        if(displayPropList){
+            item = new PObjectIconViewItemE(o,displayPropList,this,icon);
         } else {
             item = new PObjectIconViewItem(o,this,icon);
         }
@@ -283,11 +283,16 @@ void PObjectIconView::dragMoveEvent(QDragMoveEvent *e)
 
 void PObjectIconView::setDisplayProperty(RepositoryProperty *p)
 {
-    this->displayProp=p;
+    this->displayPropList = new list<RepositoryProperty*>();
+    displayPropList->push_back(p);
     reload();
 }
 
-
+void PObjectIconView::setDisplayProperties(list<RepositoryProperty*> *listRp)
+{
+    this->displayPropList = listRp;
+    reload();
+}
 
 void PObjectIconView::startDrag ( Qt::DropActions supportedActions ){
     PObject *o=getSelected();
