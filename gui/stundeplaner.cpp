@@ -138,8 +138,13 @@ void StundePlanerApp::initActions()
   action->setIcon(GuiConfig::getInstance()->getIcon("fehlzeitmeldung"));
   action->setText("Fehlzeitmeldung");
 
-  actionCollection()->addAction("dump_database", this, SLOT(slotDumpDatabase()));
-  actionCollection()->addAction("read_database", this, SLOT(slotReadDatabase()));
+  action=actionCollection()->addAction("dump_database", this, SLOT(slotDumpDatabase()));
+  action->setIcon(GuiConfig::getInstance()->getIcon("DumpDB"));
+  action->setText("DB sichern");
+
+  action=actionCollection()->addAction("read_database", this, SLOT(slotReadDatabase()));
+  action->setIcon(GuiConfig::getInstance()->getIcon("ReadDB"));
+  action->setText("DB lesen");
 
   action= actionCollection()->addAction("add_objectview", this, SLOT(slotNewObjectIconView()));
   action->setIcon(GuiConfig::getInstance()->getIcon("objectview"));
@@ -378,14 +383,16 @@ void StundePlanerApp::slotChangeDatabase()
 
 void StundePlanerApp::slotDumpDatabase()
 {
-	QString fileName = KFileDialog::getOpenFileName();
+    QString fileName = KFileDialog::getSaveFileName();
 	dumpDatabase(fileName);
 }
 
 void StundePlanerApp::dumpDatabase(QString fileName)
 {
     QString dbName = GuiConfig::getInstance()->getDatabaseName();
-    KRun::runCommand(QString("mysqldump --user=root --password=duodisc %1 > %2").arg(dbName).arg(fileName),this);
+    QString com = QString("mysqldump --user=root %1 > %2").arg(dbName).arg(fileName);
+    qDebug() << com;
+    KRun::runCommand(com,this);
 }
 
 void StundePlanerApp::slotReadDatabase()
@@ -394,7 +401,7 @@ void StundePlanerApp::slotReadDatabase()
 	QString dbName = KInputDialog::getText("Datenbank einlesen","Datenbankname",Database::getDatabaseName());
 
 	QString pstring = QString("mysql");
-    QString astring = QString("--user=root --password=duodisc %1 < %2").arg(dbName).arg(fileName);
+    QString astring = QString("--user=root  %1 < %2").arg(dbName).arg(fileName);
     qDebug() << QString("Creating process %1 with %2").arg(pstring).arg(astring);
 	p = new QProcess(this);
 	//p->addArgument(astring);

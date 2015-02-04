@@ -23,8 +23,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-#include "qapplication.h"
-#include "qmessagebox.h"
+//#include "qapplication.h"
+//#include "qmessagebox.h"
 
 
 #include "qobject.h"

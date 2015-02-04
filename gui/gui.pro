@@ -6,7 +6,8 @@ CONFIG += staticlib
 
 
 SOURCES += \
-    *.cpp
+    *.cpp \
+    actions/modenotes.cpp
 
 SOURCES += $$system(ls mapviews/*.cpp) $$system(ls data/*.cpp) $$system(ls draganddrop/*.cpp)
 SOURCES += $$system(ls actions/*.cpp) $$system(ls base/*.cpp) $$system(ls dialogs/*.cpp)
@@ -24,7 +25,8 @@ HEADERS += \
     forms/pobjectdisplay.h \
     actions/modelernen.h \
     forms/pobjectlistprovider.h \
-    actions/servicexml.h
+    actions/servicexml.h \
+    actions/modenotes.h
 
 HEADERS += $$system(ls mapviews/*.h) $$system(ls data/*.h) $$system(ls draganddrop/*.h)
 HEADERS += $$system(ls actions/*.h) $$system(ls base/*.h) $$system(ls dialogs/*.h)

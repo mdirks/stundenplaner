@@ -41,33 +41,8 @@ TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw)
 	this->parent = parent;
 	this->prop=0;
 	displayString=dT;
-    fit=false;
 
-    label = new TextPropertyLabel(this);
-    editor = new TextPropertyEditor(parent,dT,this);
-    label->setMinimumHeight(10);
-    hidden=false;
-
-    stack= new QStackedWidget(this);
-    QVBoxLayout *l = new QVBoxLayout(this);
-    l->setContentsMargins(0,0,0,0);
-    l->addWidget(stack);
-    stack->addWidget(label);
-    stack->addWidget(editor);
-
-	connect(label, SIGNAL(editRequested()), this, SLOT(editVorn()));
-    connect(this, SIGNAL(applyRequested()), this, SLOT(stopEdit()));
-
-	if (!tmpDir.exists())
-                if (!tmpDir.mkdir(tmpDir.path()))
-      			{
-        			QMessageBox::warning(this, "Cannot make directory", "Could not create directory ");
-                }
-    stack->setCurrentWidget(label);
-	editing=false;
-	label->setFocus();	
-
-	compileVorn(true);
+    doCommonSetup();
 
 }
 
@@ -78,37 +53,50 @@ TextPropertyViewer::TextPropertyViewer(PObject *parent, RepositoryProperty *prop
 	this->parent = parent;
 	this->prop = prop;
 	displayString=QString("Shouldnt be used");
+
+
+    doCommonSetup();
+
+}
+
+void TextPropertyViewer::doCommonSetup()
+{
+    label = new TextPropertyLabel(this);
+    label->setFrameStyle(QFrame::NoFrame);
+    editor = new TextPropertyEditor(parent,prop,this);
+    editor->setFrameStyle(QFrame::NoFrame);
+    label->setMinimumHeight(10);
     hidden=false;
     fit=false;
-    editor = new TextPropertyEditor(parent,prop,0);
-    label = new TextPropertyLabel(this);
-
 
     stack= new QStackedWidget(this);
+    stack->setFrameStyle(QFrame::NoFrame);
+    stack->setContentsMargins(0,0,0,0);
+
     QVBoxLayout *l = new QVBoxLayout(this);
     l->setContentsMargins(0,0,0,0);
+    l->setSpacing(0);
     l->addWidget(stack);
     stack->addWidget(label);
     stack->addWidget(editor);
 
-	connect(label, SIGNAL(editRequested()), this, SLOT(editVorn()));
+    connect(label, SIGNAL(editRequested()), this, SLOT(editVorn()));
     connect(this, SIGNAL(applyRequested()), this, SLOT(stopEdit()));
 
-	if (!tmpDir.exists())
+    if (!tmpDir.exists())
                 if (!tmpDir.mkdir(tmpDir.path()))
-      			{
-        			QMessageBox::warning(this, "Cannot make directory", "Could not create directory ");
-			}
-
+                {
+                    QMessageBox::warning(this, "Cannot make directory", "Could not create directory ");
+                }
     stack->setCurrentWidget(label);
-	editing=false;
-
-    //todo label->setFocusPolicy(QWidget::StrongFocus);
-	label->setFocus();	
+    editing=false;
+    label->setFocus();
 
     if(parent){
         compileVorn(true);
     }
+
+
 }
 
 void TextPropertyViewer::setParentObject(PObject *o)
@@ -197,10 +185,12 @@ TextPropertyEditorDialog::~TextPropertyEditorDialog()
 
 QString TextPropertyViewer::getFileName()
 {
-    if(prop){
+    if(prop && parent){
         return tmpDir.filePath(QString("%1%2.pdf").arg(parent->getID()).arg(prop->getName().c_str()));
-    } else {
+    } else if(parent) {
         return tmpDir.filePath(QString("%1.pdf").arg(parent->getID()));
+    } else {
+        return "nani.pdf";
     }
 }
 
@@ -326,7 +316,7 @@ void TextPropertyViewer::compileError( QProcess::ProcessError error)
     stream << "\\parindent=0pt \\parskip=0.15 true in";
     stream << "\\begin{document}\\sffamily\n";
     */
-    if(prop){
+    if(prop && parent){
         stream << prop->asString(parent).c_str();
     } else {
         stream << displayString;

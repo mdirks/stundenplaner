@@ -148,8 +148,11 @@ int main(int argc, char *argv[])
     QLocale::setDefault(QLocale::German);
     //setenv("LC_ALL","de_DE.UTF-8");
     KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-    MappingControler::setDatabaseName(args->arg(0) /*GuiConfig::getInstance()->getDatabaseName()*/);
+    MappingControler::setDatabaseName(args->arg(0));
     MappingControler::getInstance();
+
+    GuiConfig::getInstance()->setDatabaseName(args->arg(0));
+
    
     DataModelRepository::getInstance();
     GuiRepository *rp=GuiRepository::getInstance();

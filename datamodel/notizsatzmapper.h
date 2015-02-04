@@ -10,15 +10,15 @@
  // 
  // Written on Mo. Feb 2 20:21:15 2015
 // 
- #ifndef stundenplanMAPPER_H 
- #define stundenplanMAPPER_H 
+ #ifndef notizsatzMAPPER_H 
+ #define notizsatzMAPPER_H 
  
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
 #include "orm/persistence/persistenceclass.h" 
- #include "stundenplan.h" 
-#include "stundenplantemplateeintrag.h" 
+ #include "notizsatz.h" 
+#include "notiz.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -31,17 +31,16 @@
  #include "orm/repository/booleanproperty.h"
  #include "orm/repository/datetimeproperty.h"
  #include "orm/repository/repositoryenabled.h"
- #include "notizholdermapper.h"
-
+ 
  /** 
  @author Marcus Dirks 
  */ 
- class stundenplanmapper : public notizholdermapper 
+ class notizsatzmapper : public AbstractMapper, public RepositoryEnabled
 {
  public:
-     static stundenplanmapper* getInstance();
-     ~stundenplanmapper();
-     static stundenplan* create();
+     static notizsatzmapper* getInstance();
+     ~notizsatzmapper();
+     static notizsatz* create();
 
      string getTableName();
      string getClassName();
@@ -52,22 +51,22 @@
      void save();
      void save(PObject *realSubject);
      PObject* createNewObject();
-     list<stundenplan*>* find();
+     list<notizsatz*>* find();
     void init(PObject* o, Variant* res);
     RepositoryEntry *getRepositoryEntry();
 
-  list<stundenplantemplateeintrag*> * findTemplateEintraege(int pri_id);
+  list<notiz*> * findNotizen(int pri_id);
 
 protected:
-     stundenplanmapper();
+     notizsatzmapper();
  
  private:
-    static stundenplanmapper* instance;
+    static notizsatzmapper* instance;
  
 
    string *columnTypes;
     string *columns;
-  Association<stundenplan, stundenplantemplateeintrag> *asc_TemplateEintraege;
+  Association<notizsatz, notiz> *asc_Notizen;
   
  
  };

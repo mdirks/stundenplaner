@@ -4,8 +4,8 @@
   <Menu name="file">
           <Action name="schuljahr_waehlen" />
           <Action name="change_database" />
-	  <Action name="dump_db" />
-	  <Action name="read_db" />
+          <Action name="dump_database" />
+          <Action name="read_database" />
 	  <Action name="noch eine" />
 	  <Action name="add_fzm"/>
   </Menu>

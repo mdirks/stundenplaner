@@ -2,10 +2,12 @@ TEMPLATE = lib
 TARGET = datamodel
 CONFIG += staticlib
 SOURCES += \
-    *.cpp
+    *.cpp \
+    notizsatz.cpp
 
 HEADERS += \
-    *.h
+    *.h \
+    notizsatz.h
 
 OTHER_FILES += \
     persistence.xml

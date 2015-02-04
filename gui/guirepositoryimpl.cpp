@@ -79,7 +79,7 @@
 #include "gui/actions/servicelatex.h"
 #include "gui/actions/modelernen.h"
 #include "gui/actions/servicexml.h"
-
+#include "gui/actions/modenotes.h"
 
 #include <QPixmap>
 //#include <qscrollview.h>
@@ -497,6 +497,7 @@ void GuiRepositoryImpl::initGui()
     addMode(ModeLesen::getInstance());
     addMode(ModeMaterial::getInstance());
     addMode(new ModeLernen());
+    addMode(new ModeNotes());
     addService(ServiceLatex::getInstance());
     addService(new ServiceXml());
 }

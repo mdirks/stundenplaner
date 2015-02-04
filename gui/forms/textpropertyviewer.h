@@ -95,6 +95,8 @@ protected:
 private:
     QString getFileName();
     void setDisplayPixmapToLabel(QPixmap dpm);
+    void doCommonSetup();
+
 
 
 public:

@@ -61,7 +61,8 @@ Q_OBJECT
 public:
 	PObjectIconView(QWidget *parent=0);
 	PObjectIconView(list<PObject*> *olist, QWidget *parent=0);
-	PObjectIconView(AbstractMapper *mapper, QWidget *parent=0);
+    PObjectIconView(AbstractMapper *mapper, QWidget *parent=0);
+    PObjectIconView(QString className, QWidget *parent=0);
     	PObjectIconView(RepositoryProperty *prop, PObject *parentObject, QWidget *parent=0);
 
     	~PObjectIconView();
@@ -80,6 +81,8 @@ public:
 
     //void setMapper(AbstractMapper *mapper);
 	PObject* getSelected();
+    PObject* getCurrent();
+
     virtual void 	startDrag ( Qt::DropActions supportedActions );
     void setTableView(PObjectTable *table);
     PObjectTable* getTableView();
@@ -114,6 +117,9 @@ public slots:
 
     void show();
     void chooseFilter();
+
+signals:
+    void currentChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *e);

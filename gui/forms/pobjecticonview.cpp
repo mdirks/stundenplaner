@@ -68,6 +68,25 @@ PObjectIconView::PObjectIconView(list<PObject*> *olist, QWidget *parent)
 }
 
 
+PObjectIconView::PObjectIconView(QString className, QWidget *parent)
+ : QListWidget(parent), KXMLGUIClient()
+{
+    provider = new MapperListProvider(className);
+
+
+    if(!className.isEmpty()){
+        this->icon = GuiConfig::getInstance()->getIcon( className );
+        typed = true;
+        clName = className;
+        typedMimeType = QString("application/pobject/").append(clName);
+    }
+
+    doCommonSetup();
+
+}
+
+
+
 PObjectIconView::PObjectIconView(AbstractMapper *mapper, QWidget *parent)
  : QListWidget(parent), KXMLGUIClient()
 {
@@ -137,6 +156,7 @@ void PObjectIconView::changeCurrent(QListWidgetItem *current, QListWidgetItem *p
     if(citem){
         citem->showFull(true);
     }
+    emit currentChanged();
 }
 
 
@@ -224,6 +244,20 @@ PObject* PObjectIconView::getSelected()
     }
 	return o;
 }
+
+PObject* PObjectIconView::getCurrent()
+{
+    PObject *o = 0;
+    QListWidgetItem *item = QListWidget::currentItem();
+    if(item){
+        PObjectIconViewItem *pitem = dynamic_cast<PObjectIconViewItem*>(item);
+        if(pitem){
+            o = pitem -> getObject();
+        }
+    }
+    return o;
+}
+
 
 /*!
     \fn PObjectIconView::activateItem(PObjectIconViewItem *item)
