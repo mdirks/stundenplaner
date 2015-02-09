@@ -273,4 +273,8 @@
 <class name="notizsatz" tname="notizsatz" version="0.1">
         <association name="Notizen" table="notizsatz_notiz" priCol="satz_id" ascCol="notiz_id" ascClass="notiz"></association>
 </class>
+
+<class name="materialsatz" tname="materialsatz" version="0.1">
+<association name="Materialien" table="materialsatz_material" priCol="satz_id" ascCol="material_id" ascClass="material"></association>
+</class>
 </persistence>

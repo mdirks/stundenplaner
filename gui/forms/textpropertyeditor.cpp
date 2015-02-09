@@ -18,7 +18,7 @@
 TextPropertyEditor::TextPropertyEditor(QWidget *parent)
  : QTextEdit(parent)
 {
-    //connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
+    connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
     setLineWrapMode(QTextEdit::NoWrap);
 }
 
@@ -27,7 +27,7 @@ TextPropertyEditor::TextPropertyEditor(PObject *o, RepositoryProperty *prop, QWi
 {
     setLineWrapMode(QTextEdit::NoWrap);
     setText(property->asString( parent ).c_str());
-    //connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
+    connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
 }
 
 
@@ -36,7 +36,7 @@ TextPropertyEditor::TextPropertyEditor(PObject *o, QString displayString, QWidge
 {
     setLineWrapMode(QTextEdit::NoWrap);
     setText(displayString);
-	//connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
+    connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
 }
 
 
@@ -62,8 +62,9 @@ void TextPropertyEditor::startEdit(RepositoryProperty *prop, PObject *parent)
 void TextPropertyEditor::startEdit()
 {
     if(!editing){
-        QString propString  = QString::fromStdString(property->asString(parent));
-        setText(propString);
+        //QString propString  = QString::fromStdString(property->asString(parent));
+        //setText(propString);
+
 		GuiControler::getInstance()->addActiveEditor(this);
 		editing = true;
 		Transactions::getCurrentTransaction()->add(parent);

@@ -1,5 +1,7 @@
 #include "guimode.h"
 
+#include "guirepository.h"
+
 GuiMode::GuiMode(QString title)
     : QAction(title,0)
 {
@@ -8,5 +10,5 @@ GuiMode::GuiMode(QString title)
 
 void GuiMode::doSetupMode()
 {
-    setupMode();
+    GuiRepository::getInstance()->setActiveMode(this);
 }

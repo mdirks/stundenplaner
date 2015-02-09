@@ -38,6 +38,7 @@ TextPropertyBrowser::TextPropertyBrowser(PObject *po, RepositoryProperty *cP, Re
 
 
     QVBoxLayout *l= new QVBoxLayout(this);
+    l->setContentsMargins(0,0,0,0);
     l->addWidget(toolBar);
     l->addWidget(viewer);
 

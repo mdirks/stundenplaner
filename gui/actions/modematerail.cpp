@@ -2,6 +2,7 @@
 #include "gui/guirepository.h"
 #include "gui/base/guiconfig.h"
 #include "gui/actions/guicreateaction.h"
+#include "orm/repository/repository.h"
 
 #include <QStackedWidget>
 #include <QSplitter>
@@ -11,23 +12,19 @@
 ModeMaterial* ModeMaterial::instance=0;
 
 ModeMaterial::ModeMaterial()
-    : GuiMode("Material")
+    : GuiMode("Material"),
+      ui(new Ui::ModeMaterial)
 {
+
     QPixmap pm = GuiConfig::getInstance()->getIcon("ModeMaterial");
-    /*
-    if(pm.isNull()){
-        GuiConfig::getInstance()->selectIcon("ModePlanung");
-        pm = GuiConfig::getInstance()->getIcon("ModePlanung");
-    }
-    */
     setIcon(pm);
 
-    editor = new QTextEdit();
-    viewer = new PdfViewer();
+    //editor = new QTextEdit();
+    //viewer = new PdfViewer();
     toolBar=0;
     activeMaterial=0;
     //splitter=0;
-    mainPanel=0;
+    displayWidget=0;
 
 
 }
@@ -42,16 +39,29 @@ ModeMaterial* ModeMaterial::getInstance()
 
 void ModeMaterial::setupMode()
 {
-
     GuiRepository *guirep=GuiRepository::getInstance();
-    guirep->setActiveMode(this);
+    //guirep->setActiveMode(this);
     QStackedWidget *sw=guirep->getCentralWidget();
-    if(!mainPanel){
-        mainPanel = new QWidget(sw);
-        sw->addWidget(mainPanel);
-    } else {
-        sw->setCurrentWidget(mainPanel);
+
+    if(!displayWidget){
+        displayWidget=new QWidget(sw);
+        ui->setupUi(displayWidget);
+        //displayWidget->show();
+        sw->addWidget(displayWidget);
+
+        ui->viewSaetze->setObjectListProvider(new MapperListProvider("materialsatz"));
+
+        connect(ui->viewSaetze,SIGNAL(currentChanged()),this,SLOT(changeSatz()));
+        connect(ui->viewMaterialien,SIGNAL(currentChanged()),this,SLOT(changeMaterial()));
     }
+
+    sw->setCurrentWidget(displayWidget);
+
+    RepositoryProperty *rp= Repository::getInstance()->getRepositoryEntry("materialsatz")->getProperty("Materialien");
+    prov = new RpListProvider(rp);
+
+
+
 
     if(!toolBar){
         toolBar = new QToolBar(guirep->getMainFrame());
@@ -68,26 +78,71 @@ void ModeMaterial::setupMode()
     }
 }
 
+void ModeMaterial::changeMaterial()
+{
+    PObject *o = ui->viewMaterialien->getCurrent();
+    if(material *m=dynamic_cast<material*>(o)){
+        open(m);
+    }
+}
+
+void ModeMaterial::changeSatz()
+{
+    if(prov){
+        PObject *o=ui->viewSaetze->getCurrent();
+        if(o){
+            prov->setParentObject(o);
+            ui->viewMaterialien->setObjectListProvider(prov);
+            ui->viewMaterialien->setCurrentRow(0);
+        }
+    }
+}
+
+
+
 void ModeMaterial::setupLatex()
 {
-    GuiRepository *guirep=GuiRepository::getInstance();
+    ui->editor->clear();
+    ui->viewer->close();
+    QFile *f=activeMaterial->getFile();
+    f->open(QIODevice::ReadOnly);
+    QTextStream in(f);
+    ui->editor->setText(in.readAll());
+    f->close();
+}
 
-    QSplitter *splitter = new QSplitter(Qt::Horizontal,mainPanel);
-    splitter->addWidget(editor);
-    splitter->addWidget(viewer);
+void ModeMaterial::setupTxt()
+{
+    ui->editor->clear();
+    ui->viewer->close();
+    QFile *f=activeMaterial->getFile();
+    f->open(QIODevice::ReadOnly);
+    QTextStream in(f);
+    ui->editor->setText(in.readAll());
+    f->close();
+}
 
-    QVBoxLayout *l=new QVBoxLayout(mainPanel);
-    l->addWidget(splitter);
+void ModeMaterial::setupPdf()
+{
+    ui->editor->clear();
+    ui->viewer->loadNewFile(activeMaterial->getFileName().c_str());
+}
 
-    //sw->setCurrentWidget(splitter);
+void ModeMaterial::setupJap()
+{
+    genericSetup();
+}
 
-    if(activeMaterial){
-        QFile *f = activeMaterial->getFile();
-        f->open(QIODevice::ReadOnly);
-        QTextStream in(f);
-        editor->setText(in.readAll());
-        f->close();
-    }
+
+void ModeMaterial::genericSetup()
+{
+    ui->editor->clear();
+    ui->viewer->close();
+    QFile *f=activeMaterial->getFile();
+    f->open(QIODevice::ReadOnly);
+    QTextStream in(f);
+    ui->editor->setText(in.readAll());
+    f->close();
 }
 
 void ModeMaterial::tearDownMode()
@@ -95,8 +150,20 @@ void ModeMaterial::tearDownMode()
     if(toolBar) toolBar->hide();
 }
 
-void ModeMaterial::open()
+
+void ModeMaterial::open(material *m)
 {
+    activeMaterial=m;
+    QFile *f = activeMaterial->getFile();
+    if(f->fileName().contains(".tex")){
+        setupLatex();
+    } else if(f->fileName().contains(".txt")){
+        setupTxt();
+    } else if(f->fileName().contains(".pdf")){
+        setupPdf();
+    } else if(f->fileName().contains(".jap")){
+        setupJap();
+    }
 
 }
 
@@ -106,7 +173,7 @@ void ModeMaterial::save()
         QFile *f=activeMaterial->getFile();
         f->open(QIODevice::WriteOnly);
         QTextStream out(f);
-        out << editor->toPlainText() << endl;
+        out << ui->editor->toPlainText() << endl;
         f->close();
     }
 
@@ -117,7 +184,6 @@ void ModeMaterial::createNew()
     PObject *o =  GuiCreateAction::getInstance()->create("material");
     activeMaterial = dynamic_cast<material*>(o);
     if(activeMaterial){
-        activeMaterial->getFile()->fileName().contains(".tex");
-        setupLatex();
+        open(activeMaterial);
     }
 }

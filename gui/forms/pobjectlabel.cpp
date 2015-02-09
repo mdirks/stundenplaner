@@ -126,7 +126,7 @@ void PObjectLabel::setLabelText(){
 PObject* PObjectLabel::getObject(){
 	PObject *result = 0;
 	if(AbstractPropertyEditor::property){
-		result =  AbstractPropertyEditor::property->asPObject( AbstractPropertyEditor::parent);
+        result =  AbstractPropertyEditor::property->asPObject( AbstractPropertyEditor::parentObject);
 	} else if(my_object){
 		return my_object;
 	}
@@ -203,7 +203,7 @@ void PObjectLabel::setObject(PObject *o)
 {
     //if(o){
     qDebug() << QString("PObjectLabel::dragLeaveEvent: setObject to %1").arg((long) o);
-	AbstractPropertyEditor::property->set(o,AbstractPropertyEditor::parent);
+    AbstractPropertyEditor::property->set(o,AbstractPropertyEditor::parentObject);
 	setLabelText();
 	emit objectChanged();
 }

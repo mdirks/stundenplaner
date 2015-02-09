@@ -50,6 +50,7 @@
 #include "lektueremapper.h"
 #include "lektuerenotizmapper.h"
 #include "notizsatzmapper.h"
+#include "materialsatzmapper.h"
 
 #include "orm/persistence/database.h"
 #include "orm/repository/repository.h"
@@ -102,8 +103,7 @@ DataModelRepository::DataModelRepository()
     listMappers->push_back(lektueremapper::getInstance());
     listMappers->push_back(lektuerenotizmapper::getInstance());
     listMappers->push_back(notizsatzmapper::getInstance());
-	
-
+    listMappers->push_back(materialsatzmapper::getInstance());
 
 	
 	

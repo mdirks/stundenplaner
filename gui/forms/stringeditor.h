@@ -35,8 +35,8 @@ public slots:
     void startEdit();
     
 private:
-     PObject *parent;
-     RepositoryProperty *property;
+     //PObject *parent;
+     //RepositoryProperty *property;
      bool editing;
     
 };

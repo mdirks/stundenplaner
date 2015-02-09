@@ -343,7 +343,7 @@ PObject* DatabaseImpl_Q::create(PersistenceClass *persObj){
 		
 		int id = getNewId();
 		o->setID(id);
-        string name=persObj->getClassName() + "(Neu, " + to_string(id) + ")";
+        string name=persObj->getClassName() + "(" + to_string(id) + ")";
 		o->setName(name);
 		
 		QString insert_query_string("insert into %1 (id,name) values (%2,\"%3\");");

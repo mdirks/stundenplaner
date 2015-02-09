@@ -408,7 +408,7 @@ void StundePlanerApp::slotReadDatabase()
 	
     QString program = "mysql";
     QStringList arguments;
-    arguments << "--user=root" << "--password=duodisc" << dbName << fileName;
+    arguments << "--user=root"  << dbName << fileName;
     p->start(program,arguments);
     connect(p,SIGNAL(processExited()),this,SLOT(slotDatabaseReadFinished()));
     GuiConfig::getInstance()->setDatabaseName(dbName);
@@ -421,7 +421,7 @@ void StundePlanerApp::slotDatabaseReadFinished(){
         if(MappingControler::getInstance()->initNewDatabase(dbName.toStdString())){
 			SStundenplan::getInstance()->close();
             SKalender::getInstance()->close;
-			//GuiConfig::getInstance()->setDatabaseName(dbName);
+            //GuiConfig::getInstance()->setDatab<< "--password=duodisc"aseName(dbName);
 			GuiRepository::getInstance()->showInfo("Datenbank gelesen",QString("Datenbank %1 wurde geoeffnet").arg(dbName));
 		} else {
 			GuiRepository::getInstance()->showInfo("Ungueltige Datenbank",QString("Konnte Datenbank %1 nicht oeffnen").arg(dbName));

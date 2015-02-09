@@ -14,13 +14,13 @@
 #include "gui/base/guicontroler.h"
 
 AbstractPropertyEditor::AbstractPropertyEditor()
- : parent(0), property(0)
+ : parentObject(0), property(0)
 {
 	editRequestor = new EditRequestor();
 }
 
 AbstractPropertyEditor::AbstractPropertyEditor(PObject *o, RepositoryProperty *p)
- : parent(o), property(p)
+ : parentObject(o), property(p)
 {
 	editRequestor = new EditRequestor();
 }
@@ -48,6 +48,6 @@ void AbstractPropertyEditor::startEdit()
  */
 void AbstractPropertyEditor::stopEdit()
 {
-    	if(parent) parent->save();
+        if(parentObject) parentObject->save();
 	editing=false;
 }

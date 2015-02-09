@@ -35,6 +35,7 @@ void TextViewer::doCommonSetup()
     toolBar->addWidget(combo);
 
     QVBoxLayout *l=new QVBoxLayout(this);
+    l->setContentsMargins(0,0,0,0);
     l->addWidget(toolBar);
     l->addWidget(viewer);
 

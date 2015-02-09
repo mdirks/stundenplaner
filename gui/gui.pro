@@ -7,7 +7,8 @@ CONFIG += staticlib
 
 SOURCES += \
     *.cpp \
-    actions/modenotes.cpp
+    actions/modenotes.cpp \
+    forms/testform.cpp
 
 SOURCES += $$system(ls mapviews/*.cpp) $$system(ls data/*.cpp) $$system(ls draganddrop/*.cpp)
 SOURCES += $$system(ls actions/*.cpp) $$system(ls base/*.cpp) $$system(ls dialogs/*.cpp)
@@ -26,7 +27,8 @@ HEADERS += \
     actions/modelernen.h \
     forms/pobjectlistprovider.h \
     actions/servicexml.h \
-    actions/modenotes.h
+    actions/modenotes.h \
+    forms/testform.h
 
 HEADERS += $$system(ls mapviews/*.h) $$system(ls data/*.h) $$system(ls draganddrop/*.h)
 HEADERS += $$system(ls actions/*.h) $$system(ls base/*.h) $$system(ls dialogs/*.h)
@@ -56,3 +58,7 @@ QT+=sql xml
 OTHER_FILES += \
     actions/persistence.xml\
     stundenplanerui.rc
+
+FORMS += \
+    forms/testform.ui \
+    actions/modematerial.ui

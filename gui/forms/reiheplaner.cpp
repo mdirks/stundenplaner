@@ -93,6 +93,7 @@ void ReiheBrowser::nameChanged(QString newName)
 
 void ReiheBrowser::setParentObject(PObject *po)
 {
+    planer->clear();
     m_po = po;
     box->setParentObject(po);
 }

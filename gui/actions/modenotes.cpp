@@ -25,11 +25,14 @@ ModeNotes::ModeNotes()
     editorWidget=0;
     toolBar=0;
 
-    QPixmap pm = GuiConfig::getInstance()->getIcon("ModeNotes");
+    QPixmap pm = GuiConfig::getInstance()->getIcon("ModeNote");
+
+    /*
     if(pm.isNull()){
         GuiConfig::getInstance()->selectIcon("ModeNotes");
         pm = GuiConfig::getInstance()->getIcon("ModeNotes");
     }
+    */
 
 
     setIcon(pm);

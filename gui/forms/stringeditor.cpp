@@ -13,35 +13,37 @@
 
 #include "gui/base/guicontroler.h"
 
-StringEditor::StringEditor(QWidget *parent) : QLineEdit(parent) 
+StringEditor::StringEditor(QWidget *parent) : QLineEdit(parent), AbstractPropertyEditor()
 {
-	connect(this,SIGNAL(textChanged(QString &)),this,SLOT(startEdit()));
+    connect(this,SIGNAL(textChanged(QString &)),this,SLOT(startEdit(const QString &text)));
 };
  
-StringEditor::StringEditor(PObject *o, RepositoryProperty *prop, QWidget *p) : parent(o), property(prop), QLineEdit(p)
+StringEditor::StringEditor(PObject *o, RepositoryProperty *prop, QWidget *p) :
+    QLineEdit(p), AbstractPropertyEditor(o,prop)
 {
-	this->property = prop;
-	this->parent = o;
+    //this->property = prop;
+    //this->parentObject = o;
 	
-    setText(property->asString( parent ).c_str());
+    setText(AbstractPropertyEditor::property->asString( parentObject ).c_str());
 
-	connect(this,SIGNAL(textChanged(const QString &)),this,SLOT(startEdit()));
+    connect(this,SIGNAL(textChanged(const QString &)),this,SLOT(startEdit(const QString &text)));
+    //connect(this,SIGNAL(returnPressed()),this,SLOT(stopEdit()));
 }
 
 
 
 void StringEditor::startEdit(RepositoryProperty *prop, PObject *o)
 {
-	this->property = prop;
-	this->parent = o;
+    this->AbstractPropertyEditor::property = prop;
+    this->parentObject = o;
 	
-    setText(property->asString( parent ).c_str());
+    setText(AbstractPropertyEditor::property->asString( parentObject ).c_str());
 	AbstractPropertyEditor::startEdit();
 }
  
 void StringEditor::stopEdit()
 {
-    property->fromString(text().toStdString(), parent);
+    AbstractPropertyEditor::property->fromString(text().toStdString(), parentObject);
 	AbstractPropertyEditor::stopEdit();
 	//editing = false;
 	//parent->save();
@@ -65,7 +67,7 @@ void StringEditor::startEdit()
     if(!editing){
 	GuiControler::getInstance()->addActiveEditor(this);
 	editing=true;
-   }
+    }
    */
    
 

@@ -143,6 +143,13 @@ int main(int argc, char *argv[])
 	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
  
     KApplication app;
+
+   /*
+     app.setStyleSheet("* {border: 0px solid lightgray; padding: 0px; margin: 0px; spacing: 0px} \
+                      QScrollBar {border: 2px solid transparent}\
+                      QComboBox { color: blue; background-color: grey  }");
+    */
+
     GuiRepository::showSplashScreen();
 
     QLocale::setDefault(QLocale::German);

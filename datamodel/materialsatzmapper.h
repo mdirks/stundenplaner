@@ -10,16 +10,15 @@
  // 
  // Written on Sa. Feb 7 17:49:10 2015
 // 
- #ifndef stundenbewertungMAPPER_H 
- #define stundenbewertungMAPPER_H 
+ #ifndef materialsatzMAPPER_H 
+ #define materialsatzMAPPER_H 
  
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
 #include "orm/persistence/persistenceclass.h" 
- #include "stundenbewertung.h" 
-#include "datamodel/stundenplaneintrag.h" 
-#include "datamodel/schueler.h" 
+ #include "materialsatz.h" 
+#include "material.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -36,12 +35,12 @@
  /** 
  @author Marcus Dirks 
  */ 
- class stundenbewertungmapper : public AbstractMapper, public RepositoryEnabled
+ class materialsatzmapper : public AbstractMapper, public RepositoryEnabled
 {
  public:
-     static stundenbewertungmapper* getInstance();
-     ~stundenbewertungmapper();
-     static stundenbewertung* create();
+     static materialsatzmapper* getInstance();
+     ~materialsatzmapper();
+     static materialsatz* create();
 
      string getTableName();
      string getClassName();
@@ -52,23 +51,23 @@
      void save();
      void save(PObject *realSubject);
      PObject* createNewObject();
-     list<stundenbewertung*>* find();
+     list<materialsatz*>* find();
     void init(PObject* o, Variant* res);
     RepositoryEntry *getRepositoryEntry();
 
-stundenplaneintrag * findStundenplaneintrag(int pri_id);
-schueler * findSchueler(int pri_id);
+  list<material*> * findMaterialien(int pri_id);
 
 protected:
-     stundenbewertungmapper();
+     materialsatzmapper();
  
  private:
-    static stundenbewertungmapper* instance;
+    static materialsatzmapper* instance;
  
 
    string *columnTypes;
     string *columns;
-   
+  Association<materialsatz, material> *asc_Materialien;
+  
  
  };
  

@@ -379,13 +379,10 @@ void PObjectIconView::dropEvent(QDropEvent *e)
 {
     PObject *o=handlePObjectDrop(e);
     if(o){
-        if(clName.isEmpty()){
-            addObject(o);
-        }else if(clName == o->getClassName().c_str()){
-            addObject(o);
-        }else{
-            qDebug() << "Drop: Cannot handle object";
+        if(provider){
+            provider->addObject(o);
         }
+        addObject(o);
     } else {
         qDebug() << "Drop: Cannot handle object";
     }
@@ -402,6 +399,7 @@ void PObjectIconView::addObject(PObject *o)
     if(!o) return;
     startEdit();
     createItem(o);
+
 
     /*
 	if(prop && parentObject)

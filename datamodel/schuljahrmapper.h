@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Mo. Feb 2 20:21:15 2015
+ // Written on Sa. Feb 7 17:49:10 2015
 // 
  #ifndef schuljahrMAPPER_H 
  #define schuljahrMAPPER_H 

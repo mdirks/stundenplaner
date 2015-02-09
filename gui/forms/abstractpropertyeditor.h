@@ -42,7 +42,7 @@ protected:
 
 protected:
 	
-	PObject *parent;
+    PObject *parentObject;
         RepositoryProperty *property;
 };
 

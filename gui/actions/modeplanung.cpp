@@ -31,7 +31,9 @@ ModePlanung::ModePlanung() :
 
     dp=0;
     spl=0;
+    toolBar=0;
 }
+
 
 ModePlanung* ModePlanung::getInstance()
 {
@@ -54,7 +56,7 @@ void ModePlanung::setupMode()
     GuiRepository *rep=GuiRepository::getInstance();
     QStackedWidget *sw=rep->getCentralWidget();
 
-    rep->setActiveMode(this);
+    //rep->setActiveMode(this);
     if(spl==0){
         spl = new QSplitter(Qt::Horizontal,sw);
 
@@ -67,18 +69,37 @@ void ModePlanung::setupMode()
         QWidget *w = rep->getFormForObject(SKalender::getInstance(),dp);
         spl->addWidget(w);
 
+        stack = new QStackedWidget(sw);
+
         dp = new DoublePane();
+        stack->addWidget(dp);
 
-        RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("stundenplantemplateeintrag")->getProperty("Reihen");
+        RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("stundenplantemplateeintrag")
+                                        ->getProperty("Reihen");
         browser = new ReiheBrowser(rp,0,sw);
-        dp->showFormAtBottom(browser);
+        stack->addWidget(browser);
+        browser->hide();
 
-        spl->addWidget(dp);
+        spl->addWidget(stack);
+
 
         sw->addWidget(spl);
     }
     sw->setCurrentWidget(spl);
+    if(!toolBar){
+        toolBar = new QToolBar(rep->getMainFrame());
+        QPixmap pm = GuiConfig::getInstance()->getIcon("ReihePlaner");
+        toolBar->addAction(pm," ",this,SLOT(showReihePlaner()));
 
+        /*
+        pm = GuiConfig::getInstance()->getIcon("Lernkarten");
+        toolBar->addAction(pm,"",this,SLOT(showLernkarten()));
+        */
+
+        rep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
+    } else {
+        toolBar->show();
+    }
 
 }
 
@@ -105,4 +126,18 @@ void ModePlanung::activateObject(PObject *o)
 
         }
     }
+}
+
+void ModePlanung::showReihePlaner()
+{
+    if(stack->currentWidget()==browser){
+        stack->setCurrentWidget(dp);
+    } else {
+        stack->setCurrentWidget(browser);
+    }
+
+}
+void ModePlanung::tearDownMode()
+{
+    toolBar->hide();
 }

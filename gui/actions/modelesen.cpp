@@ -78,6 +78,7 @@ void ModeLesen::setupMode()
 
         QWidget *notew = new QWidget(splitter);
         QVBoxLayout *l= new QVBoxLayout(notew);
+        l->setContentsMargins(0,0,0,0);
         l->addWidget(browser);
         l->addWidget(lkViewer);
 

@@ -65,7 +65,8 @@ void GenericMapViewControler::createNewItem()
 {
 	PObject* o = GuiCreateAction::getInstance()->createObject();
 	mapView->getMap()->addItem(o,pos);
-	mapView->getMap()->save();
+    Transactions::getCurrentTransaction()->add(mapView->getMap());
+    //mapView->getMap()->save();
 }
 
 
