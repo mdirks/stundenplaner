@@ -22,6 +22,7 @@
 #include "orm/repository/repositoryproperty.h"
 #include "gui/base/propertyeditor.h"
 #include "gui/forms/pobjecticonview.h"
+#include "gui/mapviews/sitzplanmapview.h"
 #include "datamodel/stundenplan.h"
 #include "splashscreen.h"
 #include "gui/base/guicontroler.h"
@@ -59,6 +60,7 @@ public slots:
 
 public:
     virtual QWidget* getFormForObject(PObject *o,QWidget *parent=0, list<RepositoryProperty*> *properties=0)=0;
+    virtual SitzplanMapView* getFormForSitzplan(sitzplan *sp)=0;
     virtual void setSelectedObject(PObject *o)=0;
     virtual QStackedWidget* getCentralWidget()=0;
     virtual void setCentralWidget(QStackedWidget *sw)=0;

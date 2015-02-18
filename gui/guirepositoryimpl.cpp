@@ -250,19 +250,9 @@ QWidget* GuiRepositoryImpl::getFormForObject(PObject *o, QWidget *parent, list<R
 		ReihePlaner *rp = new ReihePlaner(rh);
 		form = rp;
 	} else if (className == "sitzplan"){
-		sitzplan *sp = dynamic_cast<sitzplan*>(o);
-		//SeatMap *sm = new SeatMap(sp,parent);
-		qDebug("SitzplanMapView : looking for SitzplanMap");
-		SitzplanMap *spm = getMapForSitzplan(sp);
-		qDebug("SitzplanMapView : DONE looking for SitzplanMap");
-		SitzplanMapView *spmv = new SitzplanMapView();
-		qDebug("SitzplanMapView : setting SitzplanMap");
-		spmv -> setMap(spm);
-		qDebug("SitzplanMapView : DONE setting SitzplanMap");
-		//form =sm;
-		new SitzplanMapViewControler(spmv);
-		form = spmv;
-        form->setToolTip(QString("Sitzplan %1").arg(sp->getKlasse()->getName().c_str()));
+        sitzplan *sp = dynamic_cast<sitzplan*>(o);
+        form=getFormForSitzplan(sp);
+
 	} else  if (className == "SKalender"){
         SKalender *sk = dynamic_cast<SKalender*>(o);
 		KalenderView *kw = new KalenderView(parent);
@@ -293,6 +283,28 @@ QWidget* GuiRepositoryImpl::getFormForObject(PObject *o, QWidget *parent, list<R
 	}
     form->setWindowIcon(GuiConfig::getInstance()->getIcon(className.c_str()));
 	return form;
+}
+
+SitzplanMapView* GuiRepositoryImpl::getFormForSitzplan(sitzplan *sp)
+{
+    SitzplanMapView *spmv=0;
+    if(sp){
+        SitzplanMap *spm = getMapForSitzplan(sp);
+        if(spm){
+            spmv = new SitzplanMapView();
+            spmv -> setMap(spm);
+
+            new SitzplanMapViewControler(spmv);
+            //spmv->setToolTip(QString("Sitzplan %1").arg(sp->getKlasse()->getName().c_str()));
+            if(sp->getKlasse()){
+                spmv->setToolTip(sp->getKlasse()->getName().c_str());
+            } else {
+                spmv->setToolTip("Empty klasse");
+            }
+
+        }
+    }
+    return spmv;
 }
 
 void GuiRepositoryImpl::showForm(QWidget *w){

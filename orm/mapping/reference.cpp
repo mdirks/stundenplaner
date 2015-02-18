@@ -66,6 +66,9 @@ PObject* Reference::findReferee(int pri_id)
 			if(q.isValid() && q.value(0).isValid()){
                 int ref_id = q.value(0).toInt();
 				res = db->loadObjectById(ref_id);
+                if(!res){
+                    qDebug() << QString("Reference::findReferee FAILED  for %1,%2").arg(table.c_str()).arg(pri_id);
+                }
 				//res = db->load(ref_class,ref_id);
 			} else {
 				//qWarning(QString("Reference::findReferee: could not get referee %1, invalid entry for id %2").arg(ref_class).arg(pri_id)); 

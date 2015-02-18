@@ -70,7 +70,7 @@ list<AssocieType*> * Association<PrimaryType, AssocieType>::findAssociates(int p
 		while(q.next()){
             int asc_id = q.value(0).toInt();
 			PObject *o = db->loadObjectById(asc_id); //load by id only to allow polymorphic content
-			//PObject *o = db->load(clname, asc_id);
+            //PObject *o = db->load(clname, asc_id);
 			if(o){
 				AssocieType *at = dynamic_cast<AssocieType*>(o);
 				if(at){
@@ -79,7 +79,8 @@ list<AssocieType*> * Association<PrimaryType, AssocieType>::findAssociates(int p
                     qDebug() << QString("Association::findAssociates: object from Database with wrong type");
 				}
 			} else {
-                qDebug() << QString("Association::findAssociates: could not get object from Database");
+                qDebug() << QString("Association::findAssociates: \
+                                    FAILED to get object (%1) from Database").arg(clname.c_str());
 			}
 			//result->push_back(  db->load(asc_class, asc_id) );
 		}

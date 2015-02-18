@@ -65,6 +65,10 @@ PObject* AbstractMapper::findReference(string ref_name, int pri_id)
     Reference *ref = mapReferences[ref_name];
     if(ref){
     	ob = ref->findReferee(pri_id);
+        if(!ob){
+            qWarning() << QString("AbstractMapper::findReference FAILED for \
+                                  %1,%2,%3").arg(getClassName().c_str()).arg(pri_id).arg(ref_name.c_str());
+        }
     } else {
        qWarning() << QString("AbstractMapper::findReference : Could not find reference : ").append(ref_name.c_str());
     }

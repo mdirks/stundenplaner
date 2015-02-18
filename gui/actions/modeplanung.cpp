@@ -119,8 +119,9 @@ void ModePlanung::activateObject(PObject *o)
 
             sitzplan *sp = kl->getSitzplan();
             if(sp){
-                QWidget *w = GuiRepository::getInstance()->getFormForObject(sp,editor);
-                dp->showFormAtBottom(w);
+                SitzplanMapView *spmv = GuiRepository::getInstance()->getFormForSitzplan(sp);
+                spmv->setStundenplaneintrag(se);
+                dp->showFormAtBottom(spmv);
 
             }
 

@@ -457,7 +457,7 @@ PObject * DatabaseImpl_Q::load(string className, int id) {
 					}
 					persObj->init(o,res);
 					delete[] res;
-                    qDebug() << QString("DatabseImpl_Q: Loading ok: %1, %2").arg(className.c_str()).arg(id);
+                    //qDebug() << QString("DatabseImpl_Q: Loading ok: %1, %2").arg(className.c_str()).arg(id);
 				} else {
                     qDebug() << QString("DatabseImpl_Q: found invalid entry %1, %2 -- deleting").arg(className.c_str()).arg(id);
 					QString qs = QString("delete from idtoname where id = %1;").arg(id);
@@ -474,7 +474,7 @@ PObject * DatabaseImpl_Q::load(string className, int id) {
 			cache[id]=o;
 	
 		} else {
-            qDebug() << QString("DatabaseImpl_Q::load(): Found object in cache: %1, %2").arg(className.c_str()).arg(id);
+            //qDebug() << QString("DatabaseImpl_Q::load(): Found object in cache: %1, %2").arg(className.c_str()).arg(id);
 		}
 	}
 	
@@ -653,7 +653,8 @@ PObject* DatabaseImpl_Q::loadObjectById(int id)
 				//qDebug(QString("DatabaseImpl_Q::loadObjectById(): Found for id : ").append(className));
                 o=load(className.toStdString(), id);
 			}else{
-                qWarning() << QString("DatabaseImpl_Q::loadObjectById : failed, could not get valid classname for id");
+                qWarning() << QString("DatabaseImpl_Q::loadObjectById : \
+                                      failed, could not get valid classname for id %1").arg(id);
 			}
 		} else {
             qWarning() << QString("DatabaseImpl_Q::loadObjectById : Failed to load > ").append(qs);
