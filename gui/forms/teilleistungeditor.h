@@ -58,6 +58,7 @@ public slots:
     void editTeilleistung();
 	void addTeilleistungBerechnet();
     void configure();
+    void print();
 	//void readNote(int r, int c);
 
 private:

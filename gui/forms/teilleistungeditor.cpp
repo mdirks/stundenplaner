@@ -31,6 +31,8 @@
 #include <QDebug>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QPrinter>
+#include <QPrintDialog>
 
 
 
@@ -172,6 +174,28 @@ void TeilleistungEditor::editTeilleistung()
             qDebug() << QString("Dont know how  to edit %1").arg(tl->getName().c_str());
         }
     }
+
+}
+
+void TeilleistungEditor::print()
+{
+    QPrinter printer;
+    QPrintDialog printer_dialog(&printer);
+    if (printer_dialog.exec() == QDialog::Accepted) {
+        QPainter painter;
+        painter.begin(&printer);
+        double xscale = printer.pageRect().width()/double(this->width());
+        double yscale = printer.pageRect().height()/double(this->height());
+        double scale = qMin(xscale, yscale);
+        painter.translate(printer.paperRect().x() + printer.pageRect().width()/2,
+                           printer.paperRect().y() + printer.pageRect().height()/2);
+        painter.scale(scale, scale);
+        painter.translate(-width()/2, -height()/2);
+
+        this->render(&painter);
+    }
+
+
 
 }
 
@@ -391,6 +415,7 @@ TeilleistungEditorDialog::TeilleistungEditorDialog(klasse *kl, QWidget *parent)
     tb->addAction("Reload",editor,SLOT(reloadPunkte()));
     tb->addAction("Edit",editor,SLOT(editTeilleistung()));
     tb->addAction("Config",editor,SLOT(configure()));
+    tb->addAction("Print",editor,SLOT(print()));
 
     l->addWidget(tb);
     l->addWidget(editor);
