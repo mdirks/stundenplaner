@@ -52,6 +52,7 @@ Q_OBJECT
 
 public slots:
     virtual void showForm(QWidget *w)=0;
+    virtual void showDialog(QWidget *form)=0;
     virtual void showFormForObject(PObject *o, bool top=true)=0;
     virtual void showFormForObject(PObject *o, list<RepositoryProperty*> *properties, bool top=true)=0;
     virtual void showFormForObject(PObject *o, QWidget *form, bool top=true)=0;

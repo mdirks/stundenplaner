@@ -49,6 +49,10 @@ public:
     list<teilleistung*> *getTeilleistungen();
     void addToTeilleistungen(teilleistung *tl);
     void deleteFromTeilleistungen(teilleistung *tl);
+    void addToReihen(reihe *r);
+    void deleteFromReihen(reihe *r);
+    list<reihe*>* getReihen();
+
 
     void setSitzplan(sitzplan *sp);
     sitzplan* getSitzplan();
@@ -65,6 +69,7 @@ private:
 	list<schueler*> *list_schueler;
 	list<stundenplantemplateeintrag*> *list_templates;
 	list<teilleistung*> *list_teilleistungen;
+    list<reihe*> *list_reihen;
 
     sitzplan* sp;
 	kursbuch* kb;

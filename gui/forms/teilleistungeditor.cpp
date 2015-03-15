@@ -32,6 +32,8 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
+
+
 TeilleistungEditor::TeilleistungEditor(QWidget *parent, const char *name)
     : QTableWidget(parent)
 {
@@ -47,7 +49,14 @@ TeilleistungEditor::~TeilleistungEditor()
 
 void TeilleistungEditor::editKlasse(klasse *kl)
 {
-	this->kl = kl;
+    disconnect(this,SLOT(setNote(int,int)));
+    this->clear();
+    columnLabels.clear();
+    delete listLeistungen;
+    listLeistungen = new list<teilleistung*>();
+
+
+    this->kl = kl;
 
 	listSchueler = kl->getSchueler();
     setRowCount(listSchueler->size());
@@ -61,15 +70,30 @@ void TeilleistungEditor::editKlasse(klasse *kl)
 
 	//list<teilleistung*> *list_tl = kl->getTeilleistungen();
 	
+    QStringList displayList = GuiConfig::getInstance()->getDisplayProperties(
+                QString("TeilleistungEditor::%1").arg(kl->getName().c_str()));
+    bool configured=false;
+    if(!displayList.isEmpty()) configured=true;
+
 	RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("klasse")->getProperty("Teilleistungen");
 	list<teilleistung*> *list_tl = (list<teilleistung*>*) rp->asCollection(kl);
-	for(list<teilleistung*>::iterator it = list_tl->begin(); it != list_tl->end(); it++){
-		if(teilleistungberechnet *tlb = dynamic_cast<teilleistungberechnet*>(*it)){
-			tlb->berechne();
-		}
-		addTeilleistung(*it);
-	}
-	setColumnSizes();
+    if(!configured){
+        for(list<teilleistung*>::iterator it = list_tl->begin(); it != list_tl->end(); it++){
+            displayList.append((*it)->getName().c_str());
+            addTeilleistung(*it);
+        }
+    } else {
+         for(int i=0;i<displayList.size(); i++){
+             for(list<teilleistung*>::iterator it = list_tl->begin(); it != list_tl->end(); it++){
+                 if(displayList.at(i) == (*it)->getName().c_str()){
+                     addTeilleistung(*it);
+                     break;
+                 }
+             }
+
+         }
+    }
+    setColumnSizes();
     resizeRowsToContents();
     connect(this,SIGNAL(cellChanged(int,int)),this,SLOT(setNote(int,int)));
 
@@ -88,7 +112,9 @@ void TeilleistungEditor::addTeilleistung(teilleistung *tl)
 		//return;
 	}
 
-	
+    if(teilleistungberechnet *tlb = dynamic_cast<teilleistungberechnet*>(tl)){
+        tlb->berechne();
+    }
 	
 	listLeistungen->push_back(tl);
     columnLabels.append(tl->getName().c_str());
@@ -107,6 +133,46 @@ void TeilleistungEditor::setColumnSizes()
     for(int i=2; i<listLeistungen->size()+2; i++){
 		setColumnWidth(i,60);
 	}
+}
+
+void TeilleistungEditor::reloadPunkte()
+{
+    if(kl) editKlasse(kl);
+}
+
+
+void TeilleistungEditor::configure()
+{
+    //list<teilleistung> *displayList = new list<teilleistung>();
+    ConfigEditor *ce = new ConfigEditor(listLeistungen,kl,this);
+    GuiRepository::getInstance()->showDialog(ce);
+
+    QStringList nameList;
+    for(list<teilleistung*>::iterator it=listLeistungen->begin(); it!=listLeistungen->end(); it++){
+        nameList.append((*it)->getName().c_str());
+    }
+
+    GuiConfig::getInstance()->setDisplayProperties(QString("TeilleistungEditor::%1").arg(kl->getName().c_str()),
+                                                   nameList);
+
+}
+
+void TeilleistungEditor::editTeilleistung()
+{
+    int sel=currentColumn()-2;
+    if(listLeistungen && sel >=0 && listLeistungen->size() > sel){
+        list<teilleistung*>::iterator it=listLeistungen->begin();
+        std::advance(it,sel);
+        teilleistung *tl = *it;
+        if(teilleistungberechnet *tlb=dynamic_cast<teilleistungberechnet*>(tl)){
+            if(!tlb->getKlasse() && kl) tlb->setKlasse(kl);
+            TlbEditor *ed = new TlbEditor(tlb,this);
+            GuiRepository::getInstance()->showDialog(ed);
+        } else {
+            qDebug() << QString("Dont know how  to edit %1").arg(tl->getName().c_str());
+        }
+    }
+
 }
 
 void TeilleistungEditor::addNewTeilleistung()
@@ -178,14 +244,14 @@ void TeilleistungEditor::readNoten(teilleistung *tl, int c)
 	for(list<schueler*>::iterator it = listSchueler->begin(); it != listSchueler->end(); it++){
 		note *n = tl->getNote(*it);
 		if(n){
-            setItem(r,c, new TlTableItem(n,this));
+            setItem(r,c, new TlTableItem(n,tl, this));
 		} else { // for data-consistency create note if not available
 			n = (note*) GuiCreateAction::getInstance()->create("note");
 			if(n){
 				n->setSchueler(*it);
 				Transactions::getCurrentTransaction()->add(tl);
 				tl->addToNoten(n);
-                setItem(r,c,  new TlTableItem(n,this,true));
+                setItem(r,c,  new TlTableItem(n, tl, this,true));
 			} else {
                 item(r,c)->setText("--");
 			}
@@ -206,12 +272,16 @@ void TeilleistungEditor::setNote(int r, int c)
 }
 
 
-TlTableItem::TlTableItem(note *n, QTableWidget *table, bool w)
+TlTableItem::TlTableItem(note *n, teilleistung *tl, QTableWidget *table, bool w)
     : QTableWidgetItem()
 {
 	this->n = n;
+    this->tl = tl;
 	this->warn=w;
-	setText(QString("%1").arg(n->getPunkte()));
+    if(dynamic_cast<teilleistungberechnet*>(tl)){
+        setBackground(QBrush(Qt::lightGray));
+    }
+    setText(QString("%1").arg(n->getPunkte()));
 }
 
 void TlTableItem::readNote()
@@ -239,6 +309,69 @@ void TlTableItem::paint( QPainter *p, const QColorGroup &cg, const QRect &cr, bo
 }
 */
 
+ConfigEditor::ConfigEditor(list<teilleistung*> *displayList, klasse *kl, QWidget *parent)
+{
+    RepositoryProperty *rp = Repository::getInstance()->getRepositoryEntry("klasse")->
+            getProperty("Teilleistungen");
+    listAll = new PObjectIconView(rp,kl);
+
+    listDisplay = new PObjectIconView(this);
+    PoLListProvider *prov = new PoLListProvider((list<PObject*>*)displayList,"teilleistung");
+    listDisplay->setObjectListProvider(prov);
+
+    QLabel *labelDisplay = new QLabel("Display");
+    QLabel *labelAll = new QLabel("Alle");
+
+    QWidget *wDisplay = new QWidget(this);
+    QVBoxLayout *lDisplay = new QVBoxLayout(wDisplay);
+    lDisplay->addWidget(labelDisplay);
+    lDisplay->addWidget(listDisplay);
+
+    QWidget *wAll = new QWidget(this);
+    QVBoxLayout *lAll = new QVBoxLayout(wAll);
+    lAll->addWidget(labelAll);
+    lAll->addWidget(listAll);
+
+    QHBoxLayout *l = new QHBoxLayout(this);
+    l->setSpacing(0);
+    l->addWidget(wDisplay);
+    l->addWidget(wAll);
+}
+
+TlbEditor::TlbEditor(teilleistungberechnet *tlb, QWidget *parent)
+{
+
+    RepositoryProperty *rp = Repository::getInstance()->getRepositoryEntry("teilleistungberechnet")->
+            getProperty("Teilleistungen");
+    listIs = new PObjectIconView(rp,tlb);
+
+    listOptions = new PObjectIconView(this);
+    if(tlb){
+        if(klasse *kl = tlb->getKlasse()){
+            list<teilleistung*> *ltl = kl->getTeilleistungen();
+            PoLListProvider *prov = new PoLListProvider((list<PObject*>*)ltl,"teilleistung");
+            listOptions->setObjectListProvider(prov);
+        }
+    }
+
+    QLabel *labelIs = new QLabel(tlb->getName().c_str());
+    QLabel *labelOptions = new QLabel("Alle");
+
+    QWidget *wIs = new QWidget(this);
+    QVBoxLayout *lIs = new QVBoxLayout(wIs);
+    lIs->addWidget(labelIs);
+    lIs->addWidget(listIs);
+
+    QWidget *wOptions = new QWidget(this);
+    QVBoxLayout *lOptions = new QVBoxLayout(wOptions);
+    lOptions->addWidget(labelOptions);
+    lOptions->addWidget(listOptions);
+
+    QHBoxLayout *l = new QHBoxLayout(this);
+    l->setSpacing(0);
+    l->addWidget(wIs);
+    l->addWidget(wOptions);
+}
 
 
 
@@ -249,20 +382,35 @@ TeilleistungEditorDialog::TeilleistungEditorDialog(klasse *kl, QWidget *parent)
     l->setSpacing(0);
 
     editor = new TeilleistungEditor(this);
-	editor->editKlasse(kl);
+    if(kl){
+        editor->editKlasse(kl);
+    }
 
     QToolBar *tb = new QToolBar(this);
     tb->addAction("Neu",editor,SLOT(addNewTeilleistung()));
-
+    tb->addAction("Reload",editor,SLOT(reloadPunkte()));
+    tb->addAction("Edit",editor,SLOT(editTeilleistung()));
+    tb->addAction("Config",editor,SLOT(configure()));
 
     l->addWidget(tb);
     l->addWidget(editor);
 
-    setToolTip(QString("Teilleistungen %1").arg(kl->getName().c_str()));
+    if(kl){
+        setToolTip(QString("Teilleistungen %1").arg(kl->getName().c_str()));
+    } else {
+        setToolTip(QString("Teilleistungen"));
+    }
 
     //connect(this,SIGNAL(apply()),editor,SLOT(addNewTeilleistung()));
 	//connect(this,SIGNAL(okClicked()),editor,SLOT(addTeilleistungBerechnet()));
 }
+
+void TeilleistungEditorDialog::setKlasse(klasse *kl)
+{
+    editor->editKlasse(kl);
+    setToolTip(QString("Teilleistungen %1").arg(kl->getName().c_str()));
+}
+
 
 void TeilleistungEditorDialog::slotOk()
 {

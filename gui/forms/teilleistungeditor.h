@@ -21,8 +21,11 @@
 #define TEILLEISTUNGEDITOR_H
 
 #include "datamodel/teilleistung.h"
+#include "datamodel/teilleistungberechnet.h"
 #include "datamodel/klasse.h"
 #include "datamodel/note.h"
+
+#include "gui/forms/pobjecticonview.h"
 
 #include <QTableWidget>
 #include <QStringList>
@@ -51,18 +54,41 @@ private:
 public slots:
 	void setNote(int r, int c);
 	void addNewTeilleistung();
+    void reloadPunkte();
+    void editTeilleistung();
 	void addTeilleistungBerechnet();
+    void configure();
 	//void readNote(int r, int c);
 
 private:
 	bool hasSchuelerCol;
 	klasse* kl;
 	list<schueler*> *listSchueler;
-	list<teilleistung*> *listLeistungen;
+    list<teilleistung*> *listLeistungen; //, *listDisplay;
 	QStringList columnLabels;
 
 };
 
+
+class ConfigEditor : public QWidget
+{
+Q_OBJECT
+public:
+    ConfigEditor(list<teilleistung*> *displayList, klasse *kl, QWidget *parent=0);
+
+private:
+    PObjectIconView *listDisplay, *listAll;
+};
+
+class TlbEditor : public QWidget
+{
+Q_OBJECT
+public:
+    TlbEditor(teilleistungberechnet *tlb,QWidget *parent=0);
+
+private:
+    PObjectIconView *listIs, *listOptions;
+};
 
 
 class TlTableItem : public QTableWidgetItem {
@@ -70,14 +96,15 @@ class TlTableItem : public QTableWidgetItem {
 
 
 public:
-    TlTableItem(note *n, QTableWidget *table, bool warn=false);
+    TlTableItem(note *n, teilleistung *tl, QTableWidget *table, bool warn=false);
 	virtual ~TlTableItem(){};
 
 	virtual void readNote();
     //virtual void paint( QPainter *p,  const QRect &cr, bool selected );
 private:
 	note *n;
-	bool warn;
+    teilleistung *tl;
+    bool warn,berechnet;
 };
 
 class TeilleistungEditorDialog : public QWidget
@@ -86,6 +113,7 @@ Q_OBJECT
 public:
 	TeilleistungEditorDialog(klasse *kl, QWidget *parent=0);
 	~TeilleistungEditorDialog(){};
+    void setKlasse(klasse *kl);
 
 	static void edit(klasse *kl);
 

@@ -134,6 +134,7 @@ void PObjectIconView::doCommonSetup()
 
     isLoaded=false;
 
+    load();
 
     connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(activateItem(QListWidgetItem *)));
     connect(this,SIGNAL(itemChanged(QListWidgetItem *)), this, SLOT( renameObject(QListWidgetItem *)) );

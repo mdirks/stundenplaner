@@ -55,6 +55,7 @@ public:
     static GuiRepositoryImpl* getInstance();
     
     void showForm(QWidget *w);
+    void showDialog(QWidget *w);
     void showFormForObject(PObject *o, bool top=false);
     void showFormForObject(PObject *o, list<RepositoryProperty*> *properties, bool top=true);
     void showFormForObject(PObject *o, QWidget *form, bool top=true);

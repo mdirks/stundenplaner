@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Sa. Feb 7 17:49:10 2015
+ // Written on Do. Mär 12 19:25:30 2015
 // 
  #ifndef klasseMAPPER_H 
  #define klasseMAPPER_H 
@@ -22,6 +22,7 @@
 #include "schueler.h" 
 #include "teilleistung.h" 
 #include "stundenplantemplateeintrag.h" 
+#include "reihe.h" 
 #include "datamodel/sitzplan.h" 
 #include "datamodel/kursbuch.h" 
 #include "datamodel/schuljahr.h" 
@@ -66,6 +67,7 @@
   list<schueler*> * findSchueler(int pri_id);
   list<teilleistung*> * findTeilleistungen(int pri_id);
   list<stundenplantemplateeintrag*> * findStundenplanTemplates(int pri_id);
+  list<reihe*> * findReihen(int pri_id);
 sitzplan * findSitzplan(int pri_id);
 kursbuch * findKursbuch(int pri_id);
 schuljahr * findSchuljahr(int pri_id);
@@ -83,6 +85,7 @@ protected:
  Association<klasse, schueler> *asc_Schueler;
  Association<klasse, teilleistung> *asc_Teilleistungen;
  Association<klasse, stundenplantemplateeintrag> *asc_StundenplanTemplates;
+ Association<klasse, reihe> *asc_Reihen;
   
  
  };

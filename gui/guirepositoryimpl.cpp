@@ -368,12 +368,23 @@ void GuiRepositoryImpl::showDialogForObject(PObject *o, list<RepositoryProperty*
 	EditorBase *dialog = new EditorBase(stundeplaner);
 	QWidget *form=getFormForObject(o,dialog,properties);
 	
+
 	if(form){
-        dialog->setMainWidget(form);
-		dialog->exec();	
-	} else {
+        showDialog(form);
+    } else {
 		qWarning("GuiRepositoryImpl::showDialogForObject: Could not get form for object");
 	}
+}
+
+void GuiRepositoryImpl::showDialog(QWidget *form)
+{
+    if(form){
+        EditorBase *dialog = new EditorBase(stundeplaner);
+        dialog->setMainWidget(form);
+        dialog->exec();
+    } else {
+        qWarning("GuiRepositoryImpl::showDialog: Zero form");
+    }
 }
 
 void GuiRepositoryImpl::showCentralWidget(QWidget *w)

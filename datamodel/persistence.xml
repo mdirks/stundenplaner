@@ -15,7 +15,7 @@
 
 
 
-<class name="klasse" tname="klasse" base="notizholder" version="0.8">
+<class name="klasse" tname="klasse" base="notizholder" version="0.9">
 	<association name="Stunden" table="klasse_stunde" priCol="klasse_id" ascCol="stunde_id" ascClass="stunde"></association>
 	<association name="Schueler" table="klasse_schueler" priCol="klasse_id" ascCol="schueler_id" ascClass="schueler"></association>
 	<association name="Teilleistungen" table="klasse_leistung" priCol="klasse_id" ascCol="teilleistung_id" ascClass="teilleistung"></association>
@@ -23,6 +23,7 @@
 	<reference name="Sitzplan"  refClass="datamodel/sitzplan"></reference>
 	<reference name="Kursbuch"  refClass="datamodel/kursbuch"></reference>
 	<reference name="Schuljahr"  refClass="datamodel/schuljahr"></reference>
+        <association name="Reihen" table="klasse_reihe" priCol="klasse_id" ascCol="reihe_id" ascClass="reihe"></association>
 </class>
   
    

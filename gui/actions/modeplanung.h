@@ -4,6 +4,8 @@
 #include "gui/guimode.h"
 #include "gui/base/doublepane.h"
 #include "gui/forms/reiheplaner.h"
+#include "gui/forms/teilleistungeditor.h"
+#include "gui/mapviews/sitzplanmapview.h"
 #include "orm/repository/repository.h"
 #include "orm/repository/repositoryentry.h"
 
@@ -25,7 +27,8 @@ public:
 
 public slots:
     void showReihePlaner();
-
+    void showLeistungen();
+    void showSitzplan();
 
 private:
     static ModePlanung *instance;
@@ -34,7 +37,9 @@ private:
     QStackedWidget *stack;
     QToolBar *toolBar;
     ReiheBrowser *browser;
+    TeilleistungEditorDialog *leistungEditor;
     list<RepositoryProperty*> *sePropertyList;
+    SitzplanMapView *spmv;
 };
 
 #endif // MODEPLANUNG_H

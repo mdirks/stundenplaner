@@ -65,8 +65,11 @@ void PObjectComboBox::load()
 
 void PObjectComboBox::reload()
 {
+    disconnect(this);
     clear();
     load();
+    connect(this,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
+    connect(this,SIGNAL(currentIndexChanged(QString)),this,SLOT(indexChanged(QString)));
 }
 
 
@@ -101,6 +104,7 @@ void PObjectComboBox::setObjectList(list<PObject*> *olist)
 void PObjectComboBox::setParentObject(PObject *o)
 {
     if(provider){
+        disconnect(this);
         provider->setParentObject(o);
         reload();
     }

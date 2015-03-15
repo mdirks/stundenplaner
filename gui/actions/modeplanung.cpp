@@ -32,6 +32,7 @@ ModePlanung::ModePlanung() :
     dp=0;
     spl=0;
     toolBar=0;
+    spmv=0;
 }
 
 
@@ -74,11 +75,15 @@ void ModePlanung::setupMode()
         dp = new DoublePane();
         stack->addWidget(dp);
 
-        RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("stundenplantemplateeintrag")
+        RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("klasse")
                                         ->getProperty("Reihen");
         browser = new ReiheBrowser(rp,0,sw);
         stack->addWidget(browser);
         browser->hide();
+
+        leistungEditor = new TeilleistungEditorDialog(0);
+        stack->addWidget(leistungEditor);
+        leistungEditor->hide();
 
         spl->addWidget(stack);
 
@@ -91,6 +96,11 @@ void ModePlanung::setupMode()
         QPixmap pm = GuiConfig::getInstance()->getIcon("ReihePlaner");
         toolBar->addAction(pm," ",this,SLOT(showReihePlaner()));
 
+        pm = GuiConfig::getInstance()->getIcon("TeilleistungEditor");
+        toolBar->addAction(pm," ",this,SLOT(showLeistungen()));
+
+        pm = GuiConfig::getInstance()->getIcon("Sitzplan");
+        toolBar->addAction(pm," ",this,SLOT(showSitzplan()));
         /*
         pm = GuiConfig::getInstance()->getIcon("Lernkarten");
         toolBar->addAction(pm,"",this,SLOT(showLernkarten()));
@@ -107,23 +117,34 @@ void ModePlanung::activateObject(PObject *o)
 {
     if(stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o))
     {
+        /*
         if(stundenplantemplateeintrag *ste=se->getTemplate()){
             browser->setParentObject(ste);
         }
+        */
 
 
         if(klasse *kl = se->getKlasse()){
+            leistungEditor->setKlasse(kl);
+            browser->setParentObject(kl);
+
             //QWidget *editor=GuiRepository::getInstance()->getFormForObject(se,dp);
             QWidget *editor=new PObjectEditor3(se,dp,sePropertyList);
             dp->showFormAtTop(editor);
 
             sitzplan *sp = kl->getSitzplan();
             if(sp){
-                SitzplanMapView *spmv = GuiRepository::getInstance()->getFormForSitzplan(sp);
+                bool isVisible = (stack->currentWidget()==spmv);
+                if(spmv) stack->removeWidget(spmv);
+                spmv = GuiRepository::getInstance()->getFormForSitzplan(sp);
                 spmv->setStundenplaneintrag(se);
-                dp->showFormAtBottom(spmv);
+                stack->addWidget(spmv);
+                if(isVisible) stack->setCurrentWidget(spmv);
+                //dp->showFormAtBottom(spmv);
 
             }
+
+
 
         }
     }
@@ -138,6 +159,25 @@ void ModePlanung::showReihePlaner()
     }
 
 }
+
+void ModePlanung::showLeistungen()
+{
+    if(stack->currentWidget()==leistungEditor){
+        stack->setCurrentWidget(dp);
+    } else {
+        stack->setCurrentWidget(leistungEditor);
+    }
+}
+
+void ModePlanung::showSitzplan()
+{
+    if(stack->currentWidget()==spmv){
+        stack->setCurrentWidget(dp);
+    } else {
+        stack->setCurrentWidget(spmv);
+    }
+}
+
 void ModePlanung::tearDownMode()
 {
     toolBar->hide();

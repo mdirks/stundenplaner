@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Sa. Feb 7 17:49:10 2015
+ // Written on Do. Mär 12 19:25:30 2015
 // 
  #ifndef schuelerMAPPER_H 
  #define schuelerMAPPER_H 

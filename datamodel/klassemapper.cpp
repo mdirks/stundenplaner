@@ -28,7 +28,7 @@
 
  klassemapper::klassemapper()
   {
- 	version = "0.8";
+ 	version = "0.9";
 	columns = new string[0];
  	columnTypes = new string[0];
  asc_Stunden = new Association<klasse, stunde>("klasse_stunde","klasse_id","stunde_id","stunde", &klasse::addToStunden, &klasse::deleteFromStunden);
@@ -43,6 +43,9 @@ registerAssociation( asc_Teilleistungen);
 asc_StundenplanTemplates = new Association<klasse, stundenplantemplateeintrag>("klasse_templates","klasse_id","template_id","stundenplantemplateeintrag", &klasse::addToStundenplanTemplates, &klasse::deleteFromStundenplanTemplates);
 mapAssociations["StundenplanTemplates"] = asc_StundenplanTemplates;
 registerAssociation( asc_StundenplanTemplates);
+asc_Reihen = new Association<klasse, reihe>("klasse_reihe","klasse_id","reihe_id","reihe", &klasse::addToReihen, &klasse::deleteFromReihen);
+mapAssociations["Reihen"] = asc_Reihen;
+registerAssociation( asc_Reihen);
 mapReferences["Sitzplan"] = new Reference("klasse","datamodel/sitzplan");
 mapReferences["Kursbuch"] = new Reference("klasse","datamodel/kursbuch");
 mapReferences["Schuljahr"] = new Reference("klasse","datamodel/schuljahr");
@@ -116,6 +119,8 @@ void klassemapper::save(PObject *realSubject)
 
 	asc_StundenplanTemplates -> save(realSubject, o->getStundenplanTemplates() );
 
+	asc_Reihen -> save(realSubject, o->getReihen() );
+
 	mapReferences[ "Sitzplan" ] -> save(realSubject, (PObject*) o->getSitzplan());
 	mapReferences[ "Kursbuch" ] -> save(realSubject, (PObject*) o->getKursbuch());
 	mapReferences[ "Schuljahr" ] -> save(realSubject, (PObject*) o->getSchuljahr());
@@ -160,6 +165,12 @@ list<stundenplantemplateeintrag*> * klassemapper::findStundenplanTemplates(int p
  	}
 
 
+list<reihe*> * klassemapper::findReihen(int pri_id) 
+ { 
+ 	return asc_Reihen ->  findAssociates( pri_id );
+ 	}
+
+
 RepositoryEntry* klassemapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "klasse" ); 
@@ -168,6 +179,7 @@ RepositoryEntry* klassemapper::getRepositoryEntry()
 	entry->addProperty( new CollectionPropertyImpl<schueler,klasse>( "Schueler" , "schueler", &klasse::getSchueler, &klasse::addToSchueler, &klasse::deleteFromSchueler  ) ); 
 	entry->addProperty( new CollectionPropertyImpl<teilleistung,klasse>( "Teilleistungen" , "teilleistung", &klasse::getTeilleistungen, &klasse::addToTeilleistungen, &klasse::deleteFromTeilleistungen  ) ); 
 	entry->addProperty( new CollectionPropertyImpl<stundenplantemplateeintrag,klasse>( "StundenplanTemplates" , "stundenplantemplateeintrag", &klasse::getStundenplanTemplates, &klasse::addToStundenplanTemplates, &klasse::deleteFromStundenplanTemplates  ) ); 
+	entry->addProperty( new CollectionPropertyImpl<reihe,klasse>( "Reihen" , "reihe", &klasse::getReihen, &klasse::addToReihen, &klasse::deleteFromReihen  ) ); 
 	entry->addProperty( new PObjectProperty<sitzplan,klasse>( "Sitzplan" , "sitzplan", &klasse::getSitzplan,&klasse::setSitzplan ) ); 
 	entry->addProperty( new PObjectProperty<kursbuch,klasse>( "Kursbuch" , "kursbuch", &klasse::getKursbuch,&klasse::setKursbuch ) ); 
 	entry->addProperty( new PObjectProperty<schuljahr,klasse>( "Schuljahr" , "schuljahr", &klasse::getSchuljahr,&klasse::setSchuljahr ) ); 

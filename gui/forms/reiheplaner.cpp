@@ -93,9 +93,15 @@ void ReiheBrowser::nameChanged(QString newName)
 
 void ReiheBrowser::setParentObject(PObject *po)
 {
+    disconnect(box);
+    box->disconnect(this);
+
     planer->clear();
     m_po = po;
     box->setParentObject(po);
+
+    connect(box,SIGNAL(currentIndexChanged(int)),this,SLOT(indexChanged(int)));
+    connect(box,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
 }
 
 

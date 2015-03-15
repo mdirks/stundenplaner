@@ -35,8 +35,8 @@ stunde::stunde(){
 	//setPersistenceObject(stundepersistence::getInstance());
 	
 	list_opos=0;
-        list_materialien=0;
-	th=0;
+    list_materialien=0;
+   th=0;
 	//list_opos = Database::getInstance()->createCollection();
 }
 stunde::~stunde(){

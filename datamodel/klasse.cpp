@@ -22,6 +22,7 @@ klasse::klasse()
 	list_schueler = 0;
 	list_templates = 0;
 	list_teilleistungen = 0;
+    list_reihen =0;
 	sp = 0;
 	kb = 0;
 	sj = 0;
@@ -226,4 +227,23 @@ schuljahr* klasse::getSchuljahr()
 void klasse::setSchuljahr(schuljahr *sj)
 {
     this->sj = sj;
+}
+
+list<reihe*>* klasse::getReihen()
+{
+    if(!list_reihen){
+        list_reihen = klassemapper::getInstance()->findReihen(getID());
+        //list_reihen->sort(DateMemberCompare<stundenplaneintrag>());
+    }
+    return list_reihen;
+}
+
+void klasse::addToReihen(reihe *r)
+{
+    getReihen()->push_back(r);
+}
+
+void klasse::deleteFromReihen(reihe *r)
+{
+    getReihen()->remove(r);
 }

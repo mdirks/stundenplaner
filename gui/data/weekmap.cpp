@@ -19,7 +19,7 @@
 
 #include <qdatetime.h>
 
-#define POD_HEIGHT  170.0
+#define POD_HEIGHT  311.0
 #define POD_WIDTH  170.0
 #define HEADER_HEIGHT  60.0
 
