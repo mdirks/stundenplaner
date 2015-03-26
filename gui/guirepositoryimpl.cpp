@@ -251,7 +251,7 @@ QWidget* GuiRepositoryImpl::getFormForObject(PObject *o, QWidget *parent, list<R
 		form = rp;
 	} else if (className == "sitzplan"){
         sitzplan *sp = dynamic_cast<sitzplan*>(o);
-        form=getFormForSitzplan(sp);
+        form=getMapViewForSitzplan(sp);
 
 	} else  if (className == "SKalender"){
         SKalender *sk = dynamic_cast<SKalender*>(o);
@@ -285,14 +285,14 @@ QWidget* GuiRepositoryImpl::getFormForObject(PObject *o, QWidget *parent, list<R
 	return form;
 }
 
-SitzplanMapView* GuiRepositoryImpl::getFormForSitzplan(sitzplan *sp)
+SitzplanMapView* GuiRepositoryImpl::getMapViewForSitzplan(sitzplan *sp)
 {
     SitzplanMapView *spmv=0;
     if(sp){
         SitzplanMap *spm = getMapForSitzplan(sp);
         if(spm){
-            spmv = new SitzplanMapView();
-            spmv -> setMap(spm);
+            spmv = new SitzplanMapView(spm);
+            //spmv->setMap(spm);
 
             new SitzplanMapViewControler(spmv);
             //spmv->setToolTip(QString("Sitzplan %1").arg(sp->getKlasse()->getName().c_str()));

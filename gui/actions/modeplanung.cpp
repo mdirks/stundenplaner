@@ -32,7 +32,7 @@ ModePlanung::ModePlanung() :
     dp=0;
     spl=0;
     toolBar=0;
-    spmv=0;
+    spmvd=0;
 }
 
 
@@ -134,12 +134,13 @@ void ModePlanung::activateObject(PObject *o)
 
             sitzplan *sp = kl->getSitzplan();
             if(sp){
-                bool isVisible = (stack->currentWidget()==spmv);
-                if(spmv) stack->removeWidget(spmv);
-                spmv = GuiRepository::getInstance()->getFormForSitzplan(sp);
+                bool isVisible = (stack->currentWidget()==spmvd);
+                if(spmvd) stack->removeWidget(spmvd);
+                SitzplanMapView *spmv = GuiRepository::getInstance()->getMapViewForSitzplan(sp);
                 spmv->setStundenplaneintrag(se);
-                stack->addWidget(spmv);
-                if(isVisible) stack->setCurrentWidget(spmv);
+                spmvd = new SitzplanMapViewDialog(spmv);
+                stack->addWidget(spmvd);
+                if(isVisible) stack->setCurrentWidget(spmvd);
                 //dp->showFormAtBottom(spmv);
 
             }
@@ -171,10 +172,10 @@ void ModePlanung::showLeistungen()
 
 void ModePlanung::showSitzplan()
 {
-    if(stack->currentWidget()==spmv){
+    if(stack->currentWidget()==spmvd){
         stack->setCurrentWidget(dp);
     } else {
-        stack->setCurrentWidget(spmv);
+        stack->setCurrentWidget(spmvd);
     }
 }
 

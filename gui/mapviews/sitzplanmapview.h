@@ -30,8 +30,9 @@
 	@author Marcus Dirks <m-dirks@web.de>
 */
 class SitzplanMapView : public GenericMapView {
+Q_OBJECT
 public:
-    SitzplanMapView(QWidget * parent = 0, const char * name = 0);
+    SitzplanMapView(SitzplanMap *spm, QWidget * parent = 0, const char * name = 0);
     ~SitzplanMapView();
 
     void setStundenplaneintrag(stundenplaneintrag *se);
@@ -43,9 +44,25 @@ public:
     sitzplan* getSitzplan();
     SitzplanMap* getSitzplanMap();
 
+public slots:
+    void configure();
+
 private:
 	stundenplaneintrag *se;
 	bool fehlzeitenmode;
+};
+
+
+class SitzplanMapViewDialog : public QWidget {
+Q_OBJECT
+public:
+    SitzplanMapViewDialog(SitzplanMapView *spmv);
+    SitzplanMapView* getMapView();
+    void setStundenplaneintrag(stundenplaneintrag *se);
+
+private:
+    SitzplanMapView *mapView;
+
 };
 
 #endif

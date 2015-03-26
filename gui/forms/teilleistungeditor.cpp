@@ -26,6 +26,7 @@
 #include "orm/repository/repositoryproperty.h"
 #include "orm/repository/repository.h"
 #include "gui/guirepository.h"
+#include "gui/dialogs/collectionselectiondialog.h"
 
 #include <kinputdialog.h>
 #include <QDebug>
@@ -146,9 +147,14 @@ void TeilleistungEditor::reloadPunkte()
 void TeilleistungEditor::configure()
 {
     //list<teilleistung> *displayList = new list<teilleistung>();
-    ConfigEditor *ce = new ConfigEditor(listLeistungen,kl,this);
+    RepositoryProperty *rp = Repository::getInstance()->getRepositoryEntry("klasse")->
+            getProperty("Teilleistungen");
+    CollectionSelectionDialog *ce = new CollectionSelectionDialog(kl,rp,this);
+
+    //ConfigEditor *ce = new ConfigEditor(listLeistungen,kl,this);
     GuiRepository::getInstance()->showDialog(ce);
 
+    listLeistungen=(list<teilleistung*>*)ce->getSelection();
     QStringList nameList;
     for(list<teilleistung*>::iterator it=listLeistungen->begin(); it!=listLeistungen->end(); it++){
         nameList.append((*it)->getName().c_str());

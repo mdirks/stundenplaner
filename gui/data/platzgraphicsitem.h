@@ -22,10 +22,11 @@
 
 #include "datamodel/platz.h"
 #include "pobjectgraphicsitem.h"
-
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
+
+class SitzplanMap;
 
 class PlatzGraphicsItem : public PObjectGraphicsItem
 {
@@ -37,7 +38,12 @@ public:
 	void setObject(PObject *o);
 	void setPlatz(platz *pl);
 	platz* getPlatz();
+    SitzplanMap* getSitzplanMap();
+
     virtual void update();
+
+public:
+    static QFont nameFont,infoFont;
 
 protected:
 	void resetSize();
@@ -47,6 +53,7 @@ protected:
 
 private:
 	platz *pl;
+
 };
 
 #endif

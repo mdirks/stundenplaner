@@ -30,6 +30,9 @@ SitzplanMap::SitzplanMap() : GenericMap()
 	atl=0;
 	list_platzitems = new list<PlatzGraphicsItem*>();
     //list_bi = new list<BewertungGraphicsItem*>();
+    listLeistungen = new list<teilleistung*>();
+
+
 }
 
 
@@ -69,33 +72,64 @@ void SitzplanMap::setSitzplan(sitzplan *sp)
 void  SitzplanMap::loadSitzplan()
 {
     if(sp){
-	list<platz*> *list_plaetze= sp->getPlaetze();
-	
-	list<platz*>::iterator it = list_plaetze->begin();
-	int row=0; 
-	int col=0;
-	while( it != list_plaetze->end()){
-		
-		PlatzGraphicsItem *item = PlatzGraphicsItemmapper::getInstance()->create();
-		item->setPlatz(*it);
-		QPoint pos;
-		if(col < 4){
-			pos =QPoint(105*col+10,105*row+10);
-		} else {
-			pos = QPoint(105*col+60,105*row+10);
-		}
-		addGraphicsItem(item,pos);
-		if(col==8){ row++; col=-1;}
-		col++;
-		it++;
-	}
+        list<platz*> *list_plaetze= sp->getPlaetze();
+
+        list<platz*>::iterator it = list_plaetze->begin();
+        int row=0;
+        int col=0;
+        while( it != list_plaetze->end()){
+
+            PlatzGraphicsItem *item = PlatzGraphicsItemmapper::getInstance()->create();
+            item->setPlatz(*it);
+            QPoint pos;
+            if(col < 4){
+                pos =QPoint(105*col+10,105*row+10);
+            } else {
+                pos = QPoint(105*col+60,105*row+10);
+            }
+            addGraphicsItem(item,pos);
+            if(col==8){ row++; col=-1;}
+            col++;
+            it++;
+        }
     } else {
 	qDebug("SitzplanMap : no sitzplan set -- cannot load");
     }
 }
 
 
+void SitzplanMap::readInfoForPlatz(platz *pl)
+{
+    QStringList info;
+    QString noten;
+    for(list<teilleistung*>::iterator it = listLeistungen->begin(); it != listLeistungen->end(); it++){
+        teilleistung *tl = (*it);
+        schueler *s = pl->getSchueler();
+        noten=noten.append(QString("%1 ").arg(tl->getNote(s)->getPunkte()));
+    }
+    info << noten;
+    mapInfo[pl]=info;
+}
 
+
+
+QStringList SitzplanMap::getInfoForPlatz(platz *pl)
+{
+    QStringList info = mapInfo[pl];
+    if(info.isEmpty()){
+        readInfoForPlatz(pl);
+        info=mapInfo[pl];
+    }
+    return info;
+}
+
+
+
+void SitzplanMap::setDisplay(list<teilleistung*> *listDisplay)
+{
+    listLeistungen = listDisplay;
+    mapInfo.clear();
+}
 
 void SitzplanMap::addPlatzItem(platz* pl, QPoint pos)
 {

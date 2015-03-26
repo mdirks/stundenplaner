@@ -61,7 +61,7 @@ public slots:
 
 public:
     virtual QWidget* getFormForObject(PObject *o,QWidget *parent=0, list<RepositoryProperty*> *properties=0)=0;
-    virtual SitzplanMapView* getFormForSitzplan(sitzplan *sp)=0;
+    virtual SitzplanMapView* getMapViewForSitzplan(sitzplan *sp)=0;
     virtual void setSelectedObject(PObject *o)=0;
     virtual QStackedWidget* getCentralWidget()=0;
     virtual void setCentralWidget(QStackedWidget *sw)=0;

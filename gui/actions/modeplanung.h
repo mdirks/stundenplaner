@@ -39,7 +39,7 @@ private:
     ReiheBrowser *browser;
     TeilleistungEditorDialog *leistungEditor;
     list<RepositoryProperty*> *sePropertyList;
-    SitzplanMapView *spmv;
+    SitzplanMapViewDialog *spmvd;
 };
 
 #endif // MODEPLANUNG_H

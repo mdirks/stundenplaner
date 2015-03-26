@@ -20,16 +20,21 @@
 #include "platzgraphicsitem.h"
 #include "platzgraphicsitemmapper.h"
 #include "gui/base/guiconfig.h"
+#include "sitzplanmap.h"
 
 #include <qpainter.h>
 
 #define WIDTH 80
 #define HEIGHT 80
 
+QFont PlatzGraphicsItem::nameFont=QFont("Times", 12, QFont::Bold);
+QFont PlatzGraphicsItem::infoFont=QFont("Helvetica [Cronyx]", 10);
+
+
 PlatzGraphicsItem::PlatzGraphicsItem() : PObjectGraphicsItem()
 {
 	setMapper(PlatzGraphicsItemmapper::getInstance());
-	pl = 0;
+    pl = 0;
 }
 
 PlatzGraphicsItem::PlatzGraphicsItem(QGraphicsScene *c) : PObjectGraphicsItem(c)
@@ -93,12 +98,26 @@ void PlatzGraphicsItem::paint ( QPainter  *painter,
     painter->drawPixmap(2,2,icon.scaled(20,20));
 	schueler *s=0;
     if(getPlatz() &&  (s= getPlatz()->getSchueler())){
+        painter->setFont(nameFont);
         painter->drawText(22,20,s->getVorname().c_str());
+
+        QStringList info = getSitzplanMap()->getInfoForPlatz(getPlatz());
+        for(int i=0; i<info.size(); i++){
+            painter->setFont(infoFont);
+            painter->drawText(2,40+i*11,info.at(i));
+        }
     }  else {
+        painter->setFont(nameFont);
         painter->drawText(22,20,"Empty");
 	}
 	
 
+}
+
+SitzplanMap* PlatzGraphicsItem::getSitzplanMap()
+{
+    SitzplanMap *map= dynamic_cast<SitzplanMap*>(scene());
+    return map;
 }
 
 /*!

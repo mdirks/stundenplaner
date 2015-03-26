@@ -43,6 +43,7 @@ public:
    
     
     list<AssocieType*> * findAssociates(int pri_id);
+    list<AssocieType*> * findAssociates(int pri_id, string property, string value);
     void save(PObject *realSubject, list<AssocieType*> *list_asc);
     list<PrimaryType*>* findPrimaries(AssocieType* asc);
     void deleteObject(PObject *o);
@@ -85,6 +86,40 @@ list<AssocieType*> * Association<PrimaryType, AssocieType>::findAssociates(int p
 			//result->push_back(  db->load(asc_class, asc_id) );
 		}
 	}
+       return result;
+}
+
+
+template<class PrimaryType, class AssocieType>
+list<AssocieType*> * Association<PrimaryType, AssocieType>::findAssociates(int pri_id, string property, string value)
+{
+
+     list<AssocieType*> *result = new list<AssocieType*>();
+
+       Database *db = Database::getInstance();
+       if(db->isOpen()){
+           QString qs = QString("select %1 from %2 where %3=%4 and %5 equals %6").
+                   arg(asc_col.c_str()).arg(table.c_str()).arg(pri_col.c_str()).arg(pri_id).arg(property.c_str()).arg(value.c_str());
+        QSqlQuery q(qs);
+        string clname = getAscClassName();
+        while(q.next()){
+            int asc_id = q.value(0).toInt();
+            PObject *o = db->loadObjectById(asc_id); //load by id only to allow polymorphic content
+            //PObject *o = db->load(clname, asc_id);
+            if(o){
+                AssocieType *at = dynamic_cast<AssocieType*>(o);
+                if(at){
+                    result->push_back( at  );
+                } else {
+                    qDebug() << QString("Association::findAssociates: object from Database with wrong type");
+                }
+            } else {
+                qDebug() << QString("Association::findAssociates: \
+                                    FAILED to get object (%1) from Database").arg(clname.c_str());
+            }
+            //result->push_back(  db->load(asc_class, asc_id) );
+        }
+    }
        return result;
 }
 

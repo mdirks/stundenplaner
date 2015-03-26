@@ -26,8 +26,10 @@
 //#include "bewertunggraphicsitem.h"
 #include "datamodel/sitzplan.h"
 #include "datamodel/platz.h"
+#include "datamodel/teilleistung.h"
 
 #include <list>
+#include <map>
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>
@@ -45,16 +47,20 @@ public:
     void addBewertungsItem(platz *p, note *n);
     teilleistung* getActiveTeilleistung();
     void setActiveTeilleistung(teilleistung *tl);
+    QStringList getInfoForPlatz(platz *p);
+    void setDisplay(list<teilleistung*> *listDisplay);
 	 
 private:
 	PlatzGraphicsItem *findItem(platz *pl);
-
+    void readInfoForPlatz(platz *pl);
 
 private:
     
     sitzplan *sp;
     teilleistung *atl;
+    map<platz*, QStringList> mapInfo;
     list<PlatzGraphicsItem*> *list_platzitems;
+    list<teilleistung*> *listLeistungen;
 //    list<BewertungGraphicsItem*> *list_bi;
 
 };
