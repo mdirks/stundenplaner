@@ -49,11 +49,13 @@ public slots:
 	void setWeek();
 	void incrementWeek();
 	void decrementWeek();
+    void readStundenplan();
+
 public:
 	WeekMapView *mapView;
 
 private:
-    GenericMap *map;
+    WeekMap *weekMap;
     
     KDateWidget *dateWidget;
     QPushButton *btor, *btol, *bset;

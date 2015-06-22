@@ -15,6 +15,7 @@
 #include <QSqlQuery>
 #include <QDebug>
 
+#include "mappingcontroler.h"
 #include "../persistence/database.h"
 
 
@@ -24,6 +25,8 @@ AbstractAssociation::AbstractAssociation(const AbstractAssociation& asc)
 	this->pri_col = pri_col;
 	this->asc_col = asc_col;
 	this->asc_class  = asc_class;
+    //typeMapper=MappingControler::getInstance()->getMapperByName(asc_class);
+
 }
 AbstractAssociation::AbstractAssociation(string table,  string pri_col, string asc_col, string asc_class)
 {
@@ -31,6 +34,7 @@ AbstractAssociation::AbstractAssociation(string table,  string pri_col, string a
 	this->pri_col = pri_col;
 	this->asc_col = asc_col;
 	this->asc_class = asc_class;
+    //typeMapper=MappingControler::getInstance()->getMapperByName(asc_class);
 }
 
 

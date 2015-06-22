@@ -376,7 +376,8 @@ public:\n \
 
         QString asc_name = ascElement.attribute("name");
 
-		declStream << "  list<" << asc_class << "*> * find" << asc_name << "(int pri_id);\n";
+        declStream << "  list<" << asc_class << "*> * find" << asc_name << "(int pri_id);\n";
+        declStream << "  list<" << asc_class << "*> * find" << asc_name << "(int pri_id,string prop,string value);\n";
 	}
 	
 
@@ -633,7 +634,12 @@ void MappingGenerator::writeDefinition_findAssociations()
 		implStream << "list<" << asc_class << "*> * " << pClassName << "::find" << asc_name << "(int pri_id) \n \
 { \n \
 	return asc_" << asc_name << " ->  findAssociates( pri_id );\n \
-	}\n\n\n"; 
+    }\n\n\n";
+
+        implStream << "list<" << asc_class << "*> * " << pClassName << "::find" << asc_name << "(int pri_id,string prop,string value) \n \
+        { \n \
+            return asc_" << asc_name << " ->  findAssociates( pri_id,prop,value);\n \
+            }\n\n\n";
 	}
 
 }

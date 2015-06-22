@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Do. Mär 12 19:25:30 2015
+ // Written on Mo. Jun 22 20:24:34 2015
 // 
  #ifndef stundenplaneintragMAPPER_H 
  #define stundenplaneintragMAPPER_H 
@@ -62,7 +62,9 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<stundenbewertung*> * findBewertungen(int pri_id);
+  list<stundenbewertung*> * findBewertungen(int pri_id,string prop,string value);
   list<fehlzeit*> * findFehlzeiten(int pri_id);
+  list<fehlzeit*> * findFehlzeiten(int pri_id,string prop,string value);
 klasse * findKlasse(int pri_id);
 stunde * findStunde(int pri_id);
 stundenplantemplateeintrag * findTemplate(int pri_id);

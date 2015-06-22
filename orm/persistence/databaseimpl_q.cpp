@@ -32,6 +32,8 @@
 #include "orm/persistence/database.h"
 #include "pcollectionpersistence.h"
 
+#include <QStringList>
+
 using namespace std;
 
 DatabaseImpl_Q::DatabaseImpl_Q(){
@@ -60,9 +62,23 @@ QSqlDatabase DatabaseImpl_Q::getConnection(){
 
             connection = QSqlDatabase::addDatabase("QMYSQL3");
             qDebug() << QString("Setting database Name to %1").arg(Database::databasename);
-            connection.setDatabaseName(Database::databasename);
-            connection.setUserName(USER);
-            connection.setPassword("");//connection.setPassword(PASSWD);
+            QStringList args = databasename.split(":");
+            connection.setDatabaseName(args.at(0));
+            if(args.size()>1){
+                connection.setHostName(args.at(1));
+                if(args.size()>2){
+                    connection.setUserName(args.at(2));
+                    connection.setPassword(args.at(3));
+                } else {
+
+                }
+            } else {
+                connection.setHostName("");
+                connection.setUserName(USER);
+                connection.setPassword("");
+            }
+
+
 
             if(! connection.isValid()){
                     qWarning() << QString("Failed to connect to database %1").arg(Database::databasename);
@@ -72,6 +88,7 @@ QSqlDatabase DatabaseImpl_Q::getConnection(){
             }
 
         }
+
 
         if(! connection.open()){
             qWarning() << QString("Failed to open database (%1), trying to create").arg(connection.lastError().text());
@@ -343,7 +360,7 @@ PObject* DatabaseImpl_Q::create(PersistenceClass *persObj){
 		
 		int id = getNewId();
 		o->setID(id);
-        string name=persObj->getClassName() + "(" + to_string(id) + ")";
+        string name=persObj->getClassName().substr(0,10) + "(" + to_string(id) + ")";
 		o->setName(name);
 		
 		QString insert_query_string("insert into %1 (id,name) values (%2,\"%3\");");
@@ -352,12 +369,14 @@ PObject* DatabaseImpl_Q::create(PersistenceClass *persObj){
         qDebug() << QString("Added object: ") + q.lastQuery();
 		} else {
             qWarning() << QString("Query failed: ") + q.lastQuery();
+            return 0;
 		}
 	
 		QString idtoname_query_string("insert into idtoname values (%1,\"%2\");");
 		QSqlQuery qq(idtoname_query_string.arg(id).arg(className));
 		if(!qq.isActive()){
             qWarning() << QString("Failed to insert into idtoname >").append(idtoname_query_string);
+            return 0;
 		}    
         qDebug() << QString("Inserted %1,%2  into idtoname").arg(id).arg(className);
 		

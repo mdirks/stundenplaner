@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Wed Oct 1 12:59:19 2014
+ // Written on Mo. Jun 22 20:23:46 2015
 // 
  #ifndef SKalenderMAPPER_H 
  #define SKalenderMAPPER_H 
@@ -57,7 +57,9 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<WeekMap*> * findWeeks(int pri_id);
+  list<WeekMap*> * findWeeks(int pri_id,string prop,string value);
   list<DayMap*> * findDays(int pri_id);
+  list<DayMap*> * findDays(int pri_id,string prop,string value);
 
 protected:
      SKalendermapper();

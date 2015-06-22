@@ -117,7 +117,13 @@ void notizsatzmapper::init(PObject* inito, Variant *res)
 list<notiz*> * notizsatzmapper::findNotizen(int pri_id) 
  { 
  	return asc_Notizen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<notiz*> * notizsatzmapper::findNotizen(int pri_id,string prop,string value) 
+         { 
+             return asc_Notizen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* notizsatzmapper::getRepositoryEntry()

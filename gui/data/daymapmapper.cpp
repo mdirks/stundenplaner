@@ -122,7 +122,13 @@ void DayMapmapper::init(PObject* inito, Variant *res)
 list<PObjectGraphicsItem*> * DayMapmapper::findGraphicsItems(int pri_id) 
  { 
  	return asc_GraphicsItems ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<PObjectGraphicsItem*> * DayMapmapper::findGraphicsItems(int pri_id,string prop,string value) 
+         { 
+             return asc_GraphicsItems ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* DayMapmapper::getRepositoryEntry()

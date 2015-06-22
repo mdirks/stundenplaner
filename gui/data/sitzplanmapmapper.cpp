@@ -122,7 +122,13 @@ void SitzplanMapmapper::init(PObject* inito, Variant *res)
 list<PObjectGraphicsItem*> * SitzplanMapmapper::findGraphicsItems(int pri_id) 
  { 
  	return asc_GraphicsItems ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<PObjectGraphicsItem*> * SitzplanMapmapper::findGraphicsItems(int pri_id,string prop,string value) 
+         { 
+             return asc_GraphicsItems ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* SitzplanMapmapper::getRepositoryEntry()

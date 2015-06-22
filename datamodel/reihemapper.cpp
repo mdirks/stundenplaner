@@ -128,7 +128,13 @@ void reihemapper::init(PObject* inito, Variant *res)
 list<stunde*> * reihemapper::findStunden(int pri_id) 
  { 
  	return asc_Stunden ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<stunde*> * reihemapper::findStunden(int pri_id,string prop,string value) 
+         { 
+             return asc_Stunden ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* reihemapper::getRepositoryEntry()

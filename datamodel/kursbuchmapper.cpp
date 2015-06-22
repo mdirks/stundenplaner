@@ -135,7 +135,13 @@ void kursbuchmapper::init(PObject* inito, Variant *res)
 list<krusbucheintrag*> * kursbuchmapper::findEintraege(int pri_id) 
  { 
  	return asc_Eintraege ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<krusbucheintrag*> * kursbuchmapper::findEintraege(int pri_id,string prop,string value) 
+         { 
+             return asc_Eintraege ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* kursbuchmapper::getRepositoryEntry()

@@ -134,13 +134,25 @@ void schuljahrmapper::init(PObject* inito, Variant *res)
 list<klasse*> * schuljahrmapper::findKlassen(int pri_id) 
  { 
  	return asc_Klassen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<klasse*> * schuljahrmapper::findKlassen(int pri_id,string prop,string value) 
+         { 
+             return asc_Klassen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<ferien*> * schuljahrmapper::findFerien(int pri_id) 
  { 
  	return asc_Ferien ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<ferien*> * schuljahrmapper::findFerien(int pri_id,string prop,string value) 
+         { 
+             return asc_Ferien ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* schuljahrmapper::getRepositoryEntry()

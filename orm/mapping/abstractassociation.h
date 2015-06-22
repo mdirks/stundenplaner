@@ -18,6 +18,8 @@
 
 using namespace std;
 
+//class AbstractMapper;
+
 /**
 @author Marcus Dirks
 */
@@ -33,6 +35,7 @@ public:
 protected:  
      int pri_id;
      string table,  pri_col,  asc_col, asc_class;
+     //AbstractMapper *typeMapper;
 };
 
 #endif

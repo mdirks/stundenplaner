@@ -134,6 +134,11 @@ void StundePlanerApp::initActions()
   changeDatabaseAction->setIcon(GuiConfig::getInstance()->getIcon("action_database"));
   changeDatabaseAction->setText("Datenbank wechseln");
 
+  addStundenplaneintragAction = actionCollection()->addAction("add_stundenplaneintrag", this,
+                                                                 SLOT(slotAddStundenplaneintrag()));
+  addStundenplaneintragAction->setIcon(GuiConfig::getInstance()->getIcon("add_stundenplaneintrag"));
+  addStundenplaneintragAction->setText("Neuer Stundenplaneintrag");
+
   action=actionCollection()->addAction("fehlzeitmeldung", this, SLOT(slotAddFehlzeitmeldung()));
   action->setIcon(GuiConfig::getInstance()->getIcon("fehlzeitmeldung"));
   action->setText("Fehlzeitmeldung");
@@ -335,6 +340,11 @@ bool StundePlanerApp::queryExit()
 /////////////////////////////////////////////////////////////////////
 // SLOT IMPLEMENTATION
 /////////////////////////////////////////////////////////////////////
+void StundePlanerApp::slotAddStundenplaneintrag()
+{
+    GuiCreateAction::getInstance()->addStundenplaneintrag();
+}
+
 void StundePlanerApp::slotAddFehlzeitmeldung()
 {
 	/*

@@ -5,6 +5,8 @@
 #include "services/skalender.h"
 #include "datamodel/stundenplaneintrag.h"
 #include "gui/forms/pobjecteditor3.h"
+#include "gui/forms/kalenderview.h"
+#include "kalenderviewcontroler.h"
 #include "orm/repository/repository.h"
 
 #include <QIcon>
@@ -33,6 +35,7 @@ ModePlanung::ModePlanung() :
     spl=0;
     toolBar=0;
     spmvd=0;
+    kw=0;
 }
 
 
@@ -67,8 +70,15 @@ void ModePlanung::setupMode()
         dp->setStretchFactor(1,10);
         spl->addWidget(dp);
         */
-        QWidget *w = rep->getFormForObject(SKalender::getInstance(),dp);
-        spl->addWidget(w);
+
+        if(kw==0){
+            kw = new KalenderView(sw);
+            new KalenderViewControler(kw);
+            kw->setMap(SKalender::getInstance()->getCurrentWeek());
+            kw->setToolTip(QString("Wochenuebersicht"));
+        }
+        //QWidget *w = rep->getFormForObject(SKalender::getInstance(),dp);
+        spl->addWidget(kw);
 
         stack = new QStackedWidget(sw);
 
@@ -91,6 +101,8 @@ void ModePlanung::setupMode()
         sw->addWidget(spl);
     }
     sw->setCurrentWidget(spl);
+
+
     if(!toolBar){
         toolBar = new QToolBar(rep->getMainFrame());
         QPixmap pm = GuiConfig::getInstance()->getIcon("ReihePlaner");
@@ -111,6 +123,10 @@ void ModePlanung::setupMode()
         toolBar->show();
     }
 
+    kw->readStundenplan();
+
+    //SpReader *r = new SpReader(kw);
+    //r->start();
 }
 
 void ModePlanung::activateObject(PObject *o)

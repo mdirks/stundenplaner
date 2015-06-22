@@ -15,6 +15,7 @@
           <Action name="fehlzeitmeldung" />
 	  <Action name="read_db" />
           <Action name="add_objectview" />
+          <Action name="add_stundenplaneintrag" />
   </Menu>
 </MenuBar>
 <ToolBar name="mainToolBar" fullWidth="false" newline="false">

@@ -30,7 +30,7 @@
 KalenderView::KalenderView(QWidget *parent, const char *name)
  : QWidget(parent)
 {
-	
+    weekMap=0;
 	skal=SKalender::getInstance();
 	QVBoxLayout *la = new QVBoxLayout(this);
 
@@ -69,14 +69,22 @@ KalenderView::~KalenderView()
 
 void KalenderView::setMap(WeekMap *map)
 {
-	mapView->setMap(map);
+    weekMap=map;
+    mapView->setMap(map);
 	Transactions::getCurrentTransaction()->add(map);
 	QDate d = map->getStartDate();
     dateWidget->setDate(d);
 	wnr = d.weekNumber();
-	map->readStundenplan();
+    //map->readStundenplan();
     mapView->fitInView(map->sceneRect(), Qt::KeepAspectRatio);
 	
+}
+
+void KalenderView::readStundenplan()
+{
+    if(weekMap){
+        weekMap->readStundenplan();
+    }
 }
 
 void KalenderView::setWeek()

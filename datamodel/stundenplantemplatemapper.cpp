@@ -117,7 +117,13 @@ void stundenplantemplatemapper::init(PObject* inito, Variant *res)
 list<stundenplantemplateeintrag*> * stundenplantemplatemapper::findEintraege(int pri_id) 
  { 
  	return asc_Eintraege ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<stundenplantemplateeintrag*> * stundenplantemplatemapper::findEintraege(int pri_id,string prop,string value) 
+         { 
+             return asc_Eintraege ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* stundenplantemplatemapper::getRepositoryEntry()

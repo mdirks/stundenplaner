@@ -28,7 +28,7 @@ public:
     void set(string prop,int id);
 
 private:
-	string name;
+    string name;
 };
 
 #endif

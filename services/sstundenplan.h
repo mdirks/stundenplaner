@@ -39,6 +39,7 @@ public:
 	static SStundenplan* getInstance();
 	static void close();
 	static void setActiveStundenplan(stundenplan* sp);
+    static stundenplan* getActiveStundenplan();
 
 public:
 	void getStunden(QDate date, list<stundenplaneintrag*> *result);
@@ -66,6 +67,8 @@ private:
 
 private:
 	map<int, set<stundenplantemplateeintrag*> *>  map_templates;
+    map<QDate, list<stundenplaneintrag*>*> map_eintraege;
+
 	//map<QDate, list<stundenplaneintrag*> *> mapEintraege;
 	//map<klasse*, map<QDate, list<stundenplaneintrag*> *> > mapEintraegeKlassen;
 	map<klasse*, set<stundenplantemplateeintrag*> *> mapTemplatesKlassen;

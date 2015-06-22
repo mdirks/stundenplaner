@@ -156,13 +156,25 @@ void stundenplaneintragmapper::init(PObject* inito, Variant *res)
 list<stundenbewertung*> * stundenplaneintragmapper::findBewertungen(int pri_id) 
  { 
  	return asc_Bewertungen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<stundenbewertung*> * stundenplaneintragmapper::findBewertungen(int pri_id,string prop,string value) 
+         { 
+             return asc_Bewertungen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<fehlzeit*> * stundenplaneintragmapper::findFehlzeiten(int pri_id) 
  { 
  	return asc_Fehlzeiten ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<fehlzeit*> * stundenplaneintragmapper::findFehlzeiten(int pri_id,string prop,string value) 
+         { 
+             return asc_Fehlzeiten ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* stundenplaneintragmapper::getRepositoryEntry()

@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Do. Mär 12 19:25:30 2015
+ // Written on Mo. Jun 22 20:24:34 2015
 // 
  #ifndef klasseMAPPER_H 
  #define klasseMAPPER_H 
@@ -64,10 +64,15 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<stunde*> * findStunden(int pri_id);
+  list<stunde*> * findStunden(int pri_id,string prop,string value);
   list<schueler*> * findSchueler(int pri_id);
+  list<schueler*> * findSchueler(int pri_id,string prop,string value);
   list<teilleistung*> * findTeilleistungen(int pri_id);
+  list<teilleistung*> * findTeilleistungen(int pri_id,string prop,string value);
   list<stundenplantemplateeintrag*> * findStundenplanTemplates(int pri_id);
+  list<stundenplantemplateeintrag*> * findStundenplanTemplates(int pri_id,string prop,string value);
   list<reihe*> * findReihen(int pri_id);
+  list<reihe*> * findReihen(int pri_id,string prop,string value);
 sitzplan * findSitzplan(int pri_id);
 kursbuch * findKursbuch(int pri_id);
 schuljahr * findSchuljahr(int pri_id);

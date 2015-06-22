@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Do. Mär 12 19:25:30 2015
+ // Written on Mo. Jun 22 20:24:34 2015
 // 
  #ifndef lektuereMAPPER_H 
  #define lektuereMAPPER_H 
@@ -58,6 +58,7 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<lektuerenotiz*> * findNotizen(int pri_id);
+  list<lektuerenotiz*> * findNotizen(int pri_id,string prop,string value);
 lernkartensatz * findLernkartensatz(int pri_id);
 
 protected:

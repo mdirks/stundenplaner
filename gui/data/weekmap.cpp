@@ -18,6 +18,7 @@
 #include "services/sstundenplan.h"
 
 #include <qdatetime.h>
+#include <QApplication>
 
 #define POD_HEIGHT  311.0
 #define POD_WIDTH  170.0
@@ -306,7 +307,8 @@ void WeekMap::addItem(schultag *st)
 
 void WeekMap::readStundenplan()
 {
-	clearStundenplan();
+
+    clearStundenplan();
 	QDate date = getStartDate();
 
 	SStundenplan* ss = SStundenplan::getInstance();
@@ -315,11 +317,14 @@ void WeekMap::readStundenplan()
 		for(list<stundenplaneintrag*>::iterator it = list_eintraege->begin(); it != list_eintraege->end(); it++){
 			stundenplaneintrag *e =(*it);
 			PObjectGraphicsItemNP *sp_ei = GenericMap::addItemNP( e, getPositionForDate(QDateTime(e->getDatum(),getTimeForStunde(e->getNrStunde()))) );
-			list_speintr->push_back(sp_ei);
+            list_speintr->push_back(sp_ei);
+            QApplication::processEvents();
+            update();
     		}
 				
 	}
-	update();
+    //update();
+
 }
 
 void WeekMap::clearStundenplan()

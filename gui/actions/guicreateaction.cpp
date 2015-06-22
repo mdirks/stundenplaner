@@ -109,27 +109,62 @@ AbstractMapper* GuiCreateAction::chooseMapper(QStringList classList)
 }
 
 
+void GuiCreateAction::addStundenplaneintrag()
+{
+
+    int tag = KInputDialog::getInteger("Tag","Tag der Stunde",1,1,7,1,10);
+    if(tag>0){
+        int stunde = KInputDialog::getInteger("StundenNr.", "Nr. der Stunde",1,1,10,1,10);
+        if(stunde>0){
+            schuljahr *sj = GuiConfig::getInstance()->getActiveSchuljahr();
+            if(!sj){qDebug("Strange: no active Schuljahr"); return;}
+            klasse *kl=(klasse*) PObjectDialog::choosePObject((list<PObject*>*)sj->getKlassen());
+            if(kl){
+                stundenplantemplateeintrag *te=SStundenplan::getInstance()->
+                        createTemplateEintrag(tag,stunde,kl);
+            }
+        }
+    }
+}
+
+
 /*!
     \fn CreateAction::create(string className)
  */
 PObject* GuiCreateAction::create(string className)
 {
-	PObject *o;
+    PObject *o=0;
 
 	if(className == "stundenplantemplateeintrag"){
-		SStundenplan *ss = SStundenplan::getInstance();
-		
+
+        qDebug() << "Stundenplaneintraege should be added via addStundenplaneintrag";
+        /*
+        schuljahr *sj = GuiConfig::getInstance()->getActiveSchuljahr();
+
 		int tag = KInputDialog::getInteger("Tag","Tag der Stunde",1,1,7,1,10);
 		int stunde = KInputDialog::getInteger("StundenNr.", "Nr. der Stunde",1,1,10,1,10);
 		
-		PObject *oo;
-		schuljahr *sj = GuiConfig::getInstance()->getActiveSchuljahr();
-		if(sj){
-			oo=PObjectDialog::choosePObject((list<PObject*>*)sj->getKlassen());
+        klasse *kl;
+        if(sj){
+            kl=(klasse*) PObjectDialog::choosePObject((list<PObject*>*)sj->getKlassen());
 		} else {
-			oo= PObjectDialog::choosePObject(MappingControler::getInstance()->getMapperByName( "klasse" ) );
+            kl=(klasse*) PObjectDialog::choosePObject(MappingControler::getInstance()->getMapperByName( "klasse" ) );
 		}
-		o = ss->createTemplateEintrag(tag,stunde,dynamic_cast<klasse*>(oo));
+        //klasse *kl = dynamic_cast<klasse*>(oo);
+
+
+        AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName("stundenplantemplateeintrag");
+
+        stundenplantemplateeintrag *te = (stundenplantemplateeintrag*) mapper->create();
+        te->setTag(tag);
+        te->setNrStunde(stunde);
+        te->setKlasse(kl);
+        te->setName(QString("%1 / %2").arg(tag).arg(stunde).toStdString());
+
+
+
+        o=te;
+        */
 	} else if (className == "WeekMap"){
 		QDate date = DateDialog::getDate();
 		WeekMap *wm = SKalender::getInstance()->getWeek(date);

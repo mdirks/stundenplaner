@@ -72,7 +72,9 @@ GenericMapView::~GenericMapView()
 
 void GenericMapView::resizeEvent ( QResizeEvent * event )
 {
-    fitInView(scene()->sceneRect(),Qt::KeepAspectRatio);
+    if(scene()){
+        fitInView(scene()->sceneRect(),Qt::KeepAspectRatio);
+    }
     QGraphicsView::resizeEvent(event);
 
 }

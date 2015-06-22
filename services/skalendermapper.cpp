@@ -122,13 +122,25 @@ void SKalendermapper::init(PObject* inito, Variant *res)
 list<WeekMap*> * SKalendermapper::findWeeks(int pri_id) 
  { 
  	return asc_Weeks ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<WeekMap*> * SKalendermapper::findWeeks(int pri_id,string prop,string value) 
+         { 
+             return asc_Weeks ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<DayMap*> * SKalendermapper::findDays(int pri_id) 
  { 
  	return asc_Days ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<DayMap*> * SKalendermapper::findDays(int pri_id,string prop,string value) 
+         { 
+             return asc_Days ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* SKalendermapper::getRepositoryEntry()

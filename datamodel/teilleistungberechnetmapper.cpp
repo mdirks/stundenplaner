@@ -120,7 +120,13 @@ void teilleistungberechnetmapper::init(PObject* inito, Variant *res)
 list<teilleistung*> * teilleistungberechnetmapper::findTeilleistungen(int pri_id) 
  { 
  	return asc_Teilleistungen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<teilleistung*> * teilleistungberechnetmapper::findTeilleistungen(int pri_id,string prop,string value) 
+         { 
+             return asc_Teilleistungen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* teilleistungberechnetmapper::getRepositoryEntry()

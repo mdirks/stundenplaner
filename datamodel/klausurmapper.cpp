@@ -118,7 +118,13 @@ void klausurmapper::init(PObject* inito, Variant *res)
 list<material*> * klausurmapper::findMaterialien(int pri_id) 
  { 
  	return asc_Materialien ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<material*> * klausurmapper::findMaterialien(int pri_id,string prop,string value) 
+         { 
+             return asc_Materialien ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* klausurmapper::getRepositoryEntry()

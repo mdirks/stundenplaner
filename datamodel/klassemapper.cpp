@@ -144,31 +144,61 @@ void klassemapper::init(PObject* inito, Variant *res)
 list<stunde*> * klassemapper::findStunden(int pri_id) 
  { 
  	return asc_Stunden ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<stunde*> * klassemapper::findStunden(int pri_id,string prop,string value) 
+         { 
+             return asc_Stunden ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<schueler*> * klassemapper::findSchueler(int pri_id) 
  { 
  	return asc_Schueler ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<schueler*> * klassemapper::findSchueler(int pri_id,string prop,string value) 
+         { 
+             return asc_Schueler ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<teilleistung*> * klassemapper::findTeilleistungen(int pri_id) 
  { 
  	return asc_Teilleistungen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<teilleistung*> * klassemapper::findTeilleistungen(int pri_id,string prop,string value) 
+         { 
+             return asc_Teilleistungen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<stundenplantemplateeintrag*> * klassemapper::findStundenplanTemplates(int pri_id) 
  { 
  	return asc_StundenplanTemplates ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<stundenplantemplateeintrag*> * klassemapper::findStundenplanTemplates(int pri_id,string prop,string value) 
+         { 
+             return asc_StundenplanTemplates ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<reihe*> * klassemapper::findReihen(int pri_id) 
  { 
  	return asc_Reihen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<reihe*> * klassemapper::findReihen(int pri_id,string prop,string value) 
+         { 
+             return asc_Reihen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* klassemapper::getRepositoryEntry()

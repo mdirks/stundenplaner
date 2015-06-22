@@ -122,7 +122,13 @@ void opomapper::init(PObject* inito, Variant *res)
 list<material*> * opomapper::findMaterialien(int pri_id) 
  { 
  	return asc_Materialien ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<material*> * opomapper::findMaterialien(int pri_id,string prop,string value) 
+         { 
+             return asc_Materialien ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* opomapper::getRepositoryEntry()

@@ -41,6 +41,11 @@ SStundenplan::~SStundenplan()
  	getInstance()->init();
  }
 
+stundenplan* SStundenplan::getActiveStundenplan()
+{
+    return active_sp;
+}
+
 SStundenplan* SStundenplan::getInstance()
 {
 	if(! instance){
@@ -96,12 +101,14 @@ void SStundenplan::initForTemplate(stundenplantemplateeintrag *teintrag)
 			//fill eintrag map by klasse
 
 			//fill eintrag map by date
+            /*
 			list<stundenplaneintrag*>* list_eintraege = teintrag->getEintraege();
 			for(list<stundenplaneintrag*>::iterator it = list_eintraege->begin(); it != list_eintraege->end(); it++){
 				stundenplaneintrag* eintrag = *it; 
 				initForEintrag(eintrag);
 				
 			}
+            */
 }
 
 void SStundenplan::initForEintrag(stundenplaneintrag *eintrag)
@@ -137,13 +144,16 @@ void SStundenplan::close()
 
 void SStundenplan::getStunden(QDate date, list<stundenplaneintrag*> *result)
 {
-	set<stundenplantemplateeintrag*> *templates = map_templates[date.dayOfWeek()];
+    result = getEintraege(date);
+    /*
+    set<stundenplantemplateeintrag*> *templates = map_templates[date.dayOfWeek()];
 	if(templates){
 		for(set<stundenplantemplateeintrag*>::iterator it = templates->begin(); it != templates->end(); it++){
 			stundenplantemplateeintrag* te = *it;
 			result->push_back( createEintrag(te, date));
 		}
     } else { qDebug() << QString("SStundenplan: could not get entry for dow %1").arg(date.dayOfWeek());}
+    */
 }
 
 
@@ -207,29 +217,34 @@ stundenplaneintrag* SStundenplan::createEintrag(stundenplantemplateeintrag *te, 
 
 list<stundenplaneintrag*>* SStundenplan::getEintraege(QDate date)
 {
-	list<stundenplaneintrag*> *result = new list<stundenplaneintrag*>();
-	
-	set<stundenplantemplateeintrag*> *templates = map_templates[date.dayOfWeek()];
-	if(templates){
-		int count=0;
-		for(set<stundenplantemplateeintrag*>::iterator it = templates->begin(); it != templates->end(); it++){
-			++count;
-			stundenplantemplateeintrag* te = *it;
-            qDebug() << QString("Asking to create Eintrag nr. %1 to schultag").arg(count);
-			stundenplaneintrag *eintr = createEintrag(te, date);
-			if(eintr){
-				if(SKalender::getInstance()->isSchultag(date)){
-					result->push_back( eintr );
-				} else {
-					qDebug("SStundenplan::getEintraege : SKIPPING Eintrag (Ferien)");
-				}
-			} else {
-				qDebug("Failed to create eintrag");
-			}
-			
-		}
-    } else { qDebug() << QString("SStundenplan: could not get entry for dow %1").arg(date.dayOfWeek());
-	}
+    list<stundenplaneintrag*> *result = map_eintraege[date];
+    if(!result){
+        result =new list<stundenplaneintrag*>();
+        map_eintraege[date]=result;
+
+        set<stundenplantemplateeintrag*> *templates = map_templates[date.dayOfWeek()];
+        if(templates){
+            int count=0;
+            for(set<stundenplantemplateeintrag*>::iterator it = templates->begin(); it != templates->end(); it++){
+                ++count;
+                stundenplantemplateeintrag* te = *it;
+                qDebug() << QString("Asking to create Eintrag nr. %1 to schultag").arg(count);
+                stundenplaneintrag *eintr = createEintrag(te, date);
+                if(eintr){
+                    if(SKalender::getInstance()->isSchultag(date)){
+                        result->push_back( eintr );
+                    } else {
+                        qDebug("SStundenplan::getEintraege : SKIPPING Eintrag (Ferien)");
+                    }
+                } else {
+                    qDebug("Failed to create eintrag");
+                }
+
+            }
+        } else {
+            qDebug() << QString("SStundenplan: could not get entry for dow %1").arg(date.dayOfWeek());
+        }
+    }
 	
 	return result;
 }
@@ -348,7 +363,7 @@ list<stundenplaneintrag*>* SStundenplan::getEintraegeForWeek(klasse *kl, QDate d
  */
 stundenplantemplateeintrag* SStundenplan::createTemplateEintrag(int tag, int stunde, klasse *kl)
 {
-     	stundenplantemplateeintrag *te = 0;
+    stundenplantemplateeintrag *te = 0;
 	
 	set<stundenplantemplateeintrag*> *templates = map_templates[tag];
 	if(templates){
@@ -370,6 +385,11 @@ stundenplantemplateeintrag* SStundenplan::createTemplateEintrag(int tag, int stu
             te->setName(QString("%1 / %2").arg(tag).arg(stunde).toStdString());
 			templates->insert(te);
 		}
+
+        if(active_sp){
+            Transactions::getCurrentTransaction()->add(active_sp);
+            active_sp->addToTemplateEintraege(te);
+        }
 	
 	} else {
 		qDebug("SStundenplaner: template map not properly initialized");

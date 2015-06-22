@@ -129,7 +129,13 @@ void platzmapper::init(PObject* inito, Variant *res)
 list<note*> * platzmapper::findNoten(int pri_id) 
  { 
  	return asc_Noten ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<note*> * platzmapper::findNoten(int pri_id,string prop,string value) 
+         { 
+             return asc_Noten ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* platzmapper::getRepositoryEntry()

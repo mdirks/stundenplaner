@@ -6,12 +6,14 @@
 #include "gui/forms/reiheplaner.h"
 #include "gui/forms/teilleistungeditor.h"
 #include "gui/mapviews/sitzplanmapview.h"
+#include "gui/forms/kalenderview.h"
 #include "orm/repository/repository.h"
 #include "orm/repository/repositoryentry.h"
 
 #include <QSplitter>
 #include <QToolBar>
 #include <QStackedWidget>
+#include <QThread>
 
 class ModePlanung : public GuiMode
 {
@@ -40,6 +42,23 @@ private:
     TeilleistungEditorDialog *leistungEditor;
     list<RepositoryProperty*> *sePropertyList;
     SitzplanMapViewDialog *spmvd;
+    KalenderView *kw;
+};
+
+class SpReader :public QThread
+{
+Q_OBJECT
+public:
+    SpReader(KalenderView *kw){this->kw=kw;}
+    void run(){
+        if(kw) kw->readStundenplan();
+    }
+
+signals:
+    void ready();
+
+private:
+    KalenderView *kw;
 };
 
 #endif // MODEPLANUNG_H

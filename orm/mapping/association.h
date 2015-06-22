@@ -65,7 +65,8 @@ list<AssocieType*> * Association<PrimaryType, AssocieType>::findAssociates(int p
        
        Database *db = Database::getInstance();
        if(db->isOpen()){
-           QString qs = QString("select %1 from %2 where %3=%4").arg(asc_col.c_str()).arg(table.c_str()).arg(pri_col.c_str()).arg(pri_id);
+           QString qs = QString("select %1 from %2 where %3=%4").arg(asc_col.c_str()).
+                   arg(table.c_str()).arg(pri_col.c_str()).arg(pri_id);
 		QSqlQuery q(qs);
 		string clname = getAscClassName();
 		while(q.next()){
@@ -91,16 +92,29 @@ list<AssocieType*> * Association<PrimaryType, AssocieType>::findAssociates(int p
 
 
 template<class PrimaryType, class AssocieType>
-list<AssocieType*> * Association<PrimaryType, AssocieType>::findAssociates(int pri_id, string property, string value)
+list<AssocieType*> * Association<PrimaryType, AssocieType>::findAssociates(
+            int pri_id, string property, string value)
 {
 
      list<AssocieType*> *result = new list<AssocieType*>();
 
        Database *db = Database::getInstance();
        if(db->isOpen()){
-           QString qs = QString("select %1 from %2 where %3=%4 and %5 equals %6").
-                   arg(asc_col.c_str()).arg(table.c_str()).arg(pri_col.c_str()).arg(pri_id).arg(property.c_str()).arg(value.c_str());
+           QString typeTable = getAscClassName().c_str();
+           QString valueS = QString("\"%1\"").arg(value.c_str());
+           /*model sql-join
+            *  select ... from kalender_weeks, weekmap where weekmap.id=asc_col ... and condition
+            */
+           QString qs = QString("select %1 from %2,%5 where %3=%4 and %5.id=%1 and %5.%6=%7;").
+                   arg(asc_col.c_str()).arg(table.c_str()).
+                   arg(pri_col.c_str()).arg(pri_id).
+                   arg(typeTable.toLower()).arg(property.c_str()).arg(valueS);
         QSqlQuery q(qs);
+        if(!q.isActive()){
+            qDebug() << QString("Failed sql: %1").arg(qs);
+        } else {
+            qDebug() << QString("Succes sql: %1").arg(qs);
+        }
         string clname = getAscClassName();
         while(q.next()){
             int asc_id = q.value(0).toInt();

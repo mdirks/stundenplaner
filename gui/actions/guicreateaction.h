@@ -14,6 +14,7 @@
 
 #include  "orm/mapping/abstractmapper.h"
 #include "orm/persistence/pobject.h"
+//#include "datamodel/stundenplantemplateeintrag.h"
 
 #include <qobject.h>
 
@@ -38,6 +39,7 @@ public:
     static AbstractMapper* chooseMapper(QStringList classList);
 
     PObject* create(string className);
+    void addStundenplaneintrag();
 
 public slots:
 	PObject*  createObject();

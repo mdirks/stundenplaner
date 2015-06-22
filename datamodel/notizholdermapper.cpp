@@ -122,13 +122,25 @@ void notizholdermapper::init(PObject* inito, Variant *res)
 list<notiz*> * notizholdermapper::findNotizen(int pri_id) 
  { 
  	return asc_Notizen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<notiz*> * notizholdermapper::findNotizen(int pri_id,string prop,string value) 
+         { 
+             return asc_Notizen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<material*> * notizholdermapper::findMaterialien(int pri_id) 
  { 
  	return asc_Materialien ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<material*> * notizholdermapper::findMaterialien(int pri_id,string prop,string value) 
+         { 
+             return asc_Materialien ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* notizholdermapper::getRepositoryEntry()

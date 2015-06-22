@@ -117,7 +117,13 @@ void ThemaMapmapper::init(PObject* inito, Variant *res)
 list<PObjectGraphicsItem*> * ThemaMapmapper::findGraphicsItems(int pri_id) 
  { 
  	return asc_GraphicsItems ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<PObjectGraphicsItem*> * ThemaMapmapper::findGraphicsItems(int pri_id,string prop,string value) 
+         { 
+             return asc_GraphicsItems ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* ThemaMapmapper::getRepositoryEntry()

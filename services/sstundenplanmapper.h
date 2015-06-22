@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Wed Oct 1 12:59:19 2014
+ // Written on Mo. Jun 22 20:23:46 2015
 // 
  #ifndef SStundenplanMAPPER_H 
  #define SStundenplanMAPPER_H 
@@ -56,6 +56,7 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<stundenplantemplateeintrag*> * findTemplateEintraege(int pri_id);
+  list<stundenplantemplateeintrag*> * findTemplateEintraege(int pri_id,string prop,string value);
 
 protected:
      SStundenplanmapper();

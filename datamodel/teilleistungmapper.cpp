@@ -119,7 +119,13 @@ void teilleistungmapper::init(PObject* inito, Variant *res)
 list<note*> * teilleistungmapper::findNoten(int pri_id) 
  { 
  	return asc_Noten ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<note*> * teilleistungmapper::findNoten(int pri_id,string prop,string value) 
+         { 
+             return asc_Noten ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* teilleistungmapper::getRepositoryEntry()

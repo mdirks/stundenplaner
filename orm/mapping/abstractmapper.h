@@ -37,9 +37,9 @@ public:
 
     ~AbstractMapper();
     //string getVersion();
-    
     void createTable();
     void checkTable();
+
     
     static MappedObject*  create(AbstractMapper *mapper);
     MappedObject* create();

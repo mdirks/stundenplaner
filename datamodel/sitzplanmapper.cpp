@@ -129,7 +129,13 @@ void sitzplanmapper::init(PObject* inito, Variant *res)
 list<platz*> * sitzplanmapper::findPlaetze(int pri_id) 
  { 
  	return asc_Plaetze ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<platz*> * sitzplanmapper::findPlaetze(int pri_id,string prop,string value) 
+         { 
+             return asc_Plaetze ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* sitzplanmapper::getRepositoryEntry()

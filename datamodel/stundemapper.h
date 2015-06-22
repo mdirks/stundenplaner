@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Do. Mär 12 19:25:30 2015
+ // Written on Mo. Jun 22 20:24:34 2015
 // 
  #ifndef stundeMAPPER_H 
  #define stundeMAPPER_H 
@@ -59,7 +59,9 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<opo*> * findOpos(int pri_id);
+  list<opo*> * findOpos(int pri_id,string prop,string value);
   list<material*> * findMaterialien(int pri_id);
+  list<material*> * findMaterialien(int pri_id,string prop,string value);
 thema * findThema(int pri_id);
 
 protected:

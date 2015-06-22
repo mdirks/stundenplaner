@@ -124,7 +124,13 @@ void WeekMapmapper::init(PObject* inito, Variant *res)
 list<PObjectGraphicsItem*> * WeekMapmapper::findGraphicsItems(int pri_id) 
  { 
  	return asc_GraphicsItems ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<PObjectGraphicsItem*> * WeekMapmapper::findGraphicsItems(int pri_id,string prop,string value) 
+         { 
+             return asc_GraphicsItems ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* WeekMapmapper::getRepositoryEntry()

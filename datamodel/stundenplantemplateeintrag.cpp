@@ -180,8 +180,15 @@ void stundenplantemplateeintrag::deleteFromEintraege(stundenplaneintrag *se)
 list<stundenplaneintrag*>* stundenplantemplateeintrag::getEintraege()
 {
     if(!list_eintraege){
-	list_eintraege = stundenplantemplateeintragmapper::getInstance()->findEintraege(getID());
-	list_eintraege->sort(DateMemberCompare<stundenplaneintrag>());
+        list_eintraege = stundenplantemplateeintragmapper::getInstance()->
+                findEintraege(getID());
+        list_eintraege->sort(DateMemberCompare<stundenplaneintrag>());
+
+        for(list<stundenplaneintrag*>::iterator it=list_eintraege->begin();
+                it!=list_eintraege->end(); it++){
+                stundenplaneintrag *se=*it;
+                map_eintraege[se->getDatum()]=se;
+        }
     }
     return list_eintraege;
 }
@@ -192,12 +199,15 @@ list<stundenplaneintrag*>* stundenplantemplateeintrag::getEintraege()
  */
 stundenplaneintrag* stundenplantemplateeintrag::getEintrag(QDate date)
 {
-
+    getEintraege();
+    return map_eintraege[date];
+    /*
     list<stundenplaneintrag*> *list_eintraege = getEintraege();
     for(list<stundenplaneintrag*>::iterator it = list_eintraege->begin(); it != list_eintraege->end(); it++){
 	if(((*it)-> getDatum()) == date) return *it;
     }	
     return 0;
+    */
 
 }
 

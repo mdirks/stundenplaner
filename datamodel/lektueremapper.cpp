@@ -130,7 +130,13 @@ void lektueremapper::init(PObject* inito, Variant *res)
 list<lektuerenotiz*> * lektueremapper::findNotizen(int pri_id) 
  { 
  	return asc_Notizen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<lektuerenotiz*> * lektueremapper::findNotizen(int pri_id,string prop,string value) 
+         { 
+             return asc_Notizen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* lektueremapper::getRepositoryEntry()

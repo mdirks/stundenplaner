@@ -135,13 +135,25 @@ void stundemapper::init(PObject* inito, Variant *res)
 list<opo*> * stundemapper::findOpos(int pri_id) 
  { 
  	return asc_Opos ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<opo*> * stundemapper::findOpos(int pri_id,string prop,string value) 
+         { 
+             return asc_Opos ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<material*> * stundemapper::findMaterialien(int pri_id) 
  { 
  	return asc_Materialien ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<material*> * stundemapper::findMaterialien(int pri_id,string prop,string value) 
+         { 
+             return asc_Materialien ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* stundemapper::getRepositoryEntry()

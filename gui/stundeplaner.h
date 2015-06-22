@@ -97,6 +97,7 @@ private:
     void slotShowKalender();
     void slotDatabaseReadFinished();
     void slotAddFehlzeitmeldung();
+    void slotAddStundenplaneintrag();
 
     void slotFileNewWindow();
     void slotFileNew();
@@ -127,6 +128,8 @@ private:
     KAction* changeSchuljahrAction;
     KAction* changeDatabaseAction;
     KAction* newObjectIconViewAction;
+    KAction* addStundenplaneintragAction;
+
 
     KAction* fileNewWindow;
     KAction* fileNew;

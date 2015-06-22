@@ -119,7 +119,13 @@ void tutoriummapper::init(PObject* inito, Variant *res)
 list<fehlzeitmeldung*> * tutoriummapper::findFehlzeitmeldungen(int pri_id) 
  { 
  	return asc_Fehlzeitmeldungen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<fehlzeitmeldung*> * tutoriummapper::findFehlzeitmeldungen(int pri_id,string prop,string value) 
+         { 
+             return asc_Fehlzeitmeldungen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* tutoriummapper::getRepositoryEntry()

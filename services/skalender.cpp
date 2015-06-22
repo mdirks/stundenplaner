@@ -101,8 +101,35 @@ SKalender::~SKalender()
  */
 WeekMap* SKalender::getWeek(QDate date)
 {
-    WeekMap *wm;
+    date = date.addDays(-date.dayOfWeek());
+    WeekMap *wm = mapWeeks[date];
+    if(!wm){
+        list<WeekMap*> *lwm = SKalendermapper::getInstance()->findWeeks(getID(),
+                                                                        "datum",date.toString().toStdString());
+        if(lwm->size()>0){
+            if(lwm->size()==1){
+                wm=(*lwm->begin());
+                mapWeeks[date]=wm;
+            } else {
+                qDebug() << "Strange: which weekmap to take ????";
+            }
+        } else {
+            qDebug() << QString("Could not find WeekMap for %1 in SKalender, createing new one").arg(date.toString());
+            wm = WeekMapmapper::getInstance()->create();
+            if(wm){
+                wm->setStartDate(date);
+                addToWeeks(wm);
+                Transactions::getCurrentTransaction()->add(this);
+                mapWeeks[date]=wm;
+            }else {
+            qDebug() << "SKalender::getWeek: STRANGE: could not create week instance";
+            }
+        }
 
+    }
+    return wm;
+    /*
+    WeekMap *wm;
     getWeeks();
     date = date.addDays(-date.dayOfWeek());
 
@@ -123,6 +150,7 @@ WeekMap* SKalender::getWeek(QDate date)
     }
 
     return wm;
+    */
 }
 
 /*!
@@ -182,12 +210,12 @@ SKalender* SKalender::getInstance()
 list<WeekMap*>* SKalender::getWeeks()
 {
     if(!listWeeks){
-	listWeeks = SKalendermapper::getInstance()->findWeeks(getID());
-	for(list<WeekMap*>::iterator it = listWeeks->begin(); it!=listWeeks->end(); it++){
-		QDate sdate =(*it)->getStartDate();
-		mapWeeks[sdate] = (*it);
-        qDebug() << QString("SKalender: Found weekmap for %1").arg(sdate.toString());
-	}
+        listWeeks = SKalendermapper::getInstance()->findWeeks(getID());
+        for(list<WeekMap*>::iterator it = listWeeks->begin(); it!=listWeeks->end(); it++){
+            QDate sdate =(*it)->getStartDate();
+            mapWeeks[sdate] = (*it);
+            qDebug() << QString("SKalender: Found weekmap for %1").arg(sdate.toString());
+        }
     }
     return listWeeks;
 }

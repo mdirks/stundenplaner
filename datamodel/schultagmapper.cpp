@@ -123,7 +123,13 @@ void schultagmapper::init(PObject* inito, Variant *res)
 list<stundenplaneintrag*> * schultagmapper::findEintraege(int pri_id) 
  { 
  	return asc_Eintraege ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<stundenplaneintrag*> * schultagmapper::findEintraege(int pri_id,string prop,string value) 
+         { 
+             return asc_Eintraege ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* schultagmapper::getRepositoryEntry()

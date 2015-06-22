@@ -117,7 +117,13 @@ void lernkartensatzmapper::init(PObject* inito, Variant *res)
 list<lernkarte*> * lernkartensatzmapper::findLernkarten(int pri_id) 
  { 
  	return asc_Lernkarten ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<lernkarte*> * lernkartensatzmapper::findLernkarten(int pri_id,string prop,string value) 
+         { 
+             return asc_Lernkarten ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* lernkartensatzmapper::getRepositoryEntry()

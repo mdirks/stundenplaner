@@ -18,7 +18,7 @@
 #include "database.h"
 #include "databaseimpl_q.h"
 
-
+#include <QStringList>
 
  
 Database* Database::instance=0;
@@ -33,7 +33,7 @@ Database* Database::getInstance(){
 }
 
 void Database::setDatabaseName(QString name){
-	databasename=name;
+    databasename=name;
 }
 
 QString Database::getDatabaseName(){

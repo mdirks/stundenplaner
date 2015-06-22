@@ -145,19 +145,37 @@ void schuelermapper::init(PObject* inito, Variant *res)
 list<note*> * schuelermapper::findNoten(int pri_id) 
  { 
  	return asc_Noten ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<note*> * schuelermapper::findNoten(int pri_id,string prop,string value) 
+         { 
+             return asc_Noten ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<fehlzeit*> * schuelermapper::findFehlzeiten(int pri_id) 
  { 
  	return asc_Fehlzeiten ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<fehlzeit*> * schuelermapper::findFehlzeiten(int pri_id,string prop,string value) 
+         { 
+             return asc_Fehlzeiten ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<stundenbewertung*> * schuelermapper::findStundenbewertungen(int pri_id) 
  { 
  	return asc_Stundenbewertungen ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<stundenbewertung*> * schuelermapper::findStundenbewertungen(int pri_id,string prop,string value) 
+         { 
+             return asc_Stundenbewertungen ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* schuelermapper::getRepositoryEntry()

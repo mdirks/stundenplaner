@@ -140,19 +140,37 @@ void themamapper::init(PObject* inito, Variant *res)
 list<thema*> * themamapper::findRelated(int pri_id) 
  { 
  	return asc_Related ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<thema*> * themamapper::findRelated(int pri_id,string prop,string value) 
+         { 
+             return asc_Related ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<thema*> * themamapper::findSub(int pri_id) 
  { 
  	return asc_Sub ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<thema*> * themamapper::findSub(int pri_id,string prop,string value) 
+         { 
+             return asc_Sub ->  findAssociates( pri_id,prop,value);
+             }
 
 
 list<lernkarte*> * themamapper::findLernkarten(int pri_id) 
  { 
  	return asc_Lernkarten ->  findAssociates( pri_id );
- 	}
+     }
+
+
+list<lernkarte*> * themamapper::findLernkarten(int pri_id,string prop,string value) 
+         { 
+             return asc_Lernkarten ->  findAssociates( pri_id,prop,value);
+             }
 
 
 RepositoryEntry* themamapper::getRepositoryEntry()

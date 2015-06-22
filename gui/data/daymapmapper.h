@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Fri Dec 5 20:09:53 2014
+ // Written on Mo. Jun 22 20:25:28 2015
 // 
  #ifndef DayMapMAPPER_H 
  #define DayMapMAPPER_H 
@@ -56,6 +56,7 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<PObjectGraphicsItem*> * findGraphicsItems(int pri_id);
+  list<PObjectGraphicsItem*> * findGraphicsItems(int pri_id,string prop,string value);
 
 protected:
      DayMapmapper();

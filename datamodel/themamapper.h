@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Do. Mär 12 19:25:30 2015
+ // Written on Mo. Jun 22 20:24:34 2015
 // 
  #ifndef themaMAPPER_H 
  #define themaMAPPER_H 
@@ -60,8 +60,11 @@
     RepositoryEntry *getRepositoryEntry();
 
   list<thema*> * findRelated(int pri_id);
+  list<thema*> * findRelated(int pri_id,string prop,string value);
   list<thema*> * findSub(int pri_id);
+  list<thema*> * findSub(int pri_id,string prop,string value);
   list<lernkarte*> * findLernkarten(int pri_id);
+  list<lernkarte*> * findLernkarten(int pri_id,string prop,string value);
 lernkartensatz * findLernkartensatz(int pri_id);
 
 protected:
