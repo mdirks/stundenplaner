@@ -106,6 +106,7 @@ public:
     void close();
     QString getDisplayString(PObject *);
     //QWidget* getFormForType(string className, QWidget *parent);
+    SitzplanMap*  getMapForSitzplan(sitzplan *sp);
 
 private:
      GuiRepositoryImpl();
@@ -117,7 +118,7 @@ private:
     list<AbstractMapper*>* getMapViews();
     QMenu* getPopup(QString identifier);
     list<AbstractMapper*>* getPersistentClasses();
-    SitzplanMap*  getMapForSitzplan(sitzplan *sp);
+
     
 	list<PropertyEditor*> *activeEditors;
     list<GuiMode*> *modelist;

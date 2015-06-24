@@ -8,15 +8,18 @@
 #include "gui/forms/kalenderview.h"
 #include "kalenderviewcontroler.h"
 #include "orm/repository/repository.h"
+#include "sitzplanmapviewcontroler.h"
 
 #include <QIcon>
 #include <QLabel>
+#include <QApplication>
 
 ModePlanung* ModePlanung::instance=0;
 
 
 ModePlanung::ModePlanung() :
-    GuiMode("Planung")
+    GuiMode("Planung"),
+    ui(new Ui::ModePlanung)
 {
     QPixmap pm = GuiConfig::getInstance()->getIcon("ModePlanung");
     if(pm.isNull()){
@@ -32,7 +35,8 @@ ModePlanung::ModePlanung() :
     sePropertyList->push_back(re->getProperty("Materialien"));
 
     dp=0;
-    spl=0;
+    //spl=0;
+    displayWidget=0;
     toolBar=0;
     spmvd=0;
     kw=0;
@@ -61,29 +65,25 @@ void ModePlanung::setupMode()
     QStackedWidget *sw=rep->getCentralWidget();
 
     //rep->setActiveMode(this);
-    if(spl==0){
-        spl = new QSplitter(Qt::Horizontal,sw);
+    if(displayWidget==0){
+        displayWidget=new QWidget(sw);
+        ui->setupUi(displayWidget);
+        //spl = new QSplitter(Qt::Horizontal,sw);
 
         /*
-        dp = new DoublePane();
-        dp->showFormAtTop(rep->getFormForObject(SKalender::getInstance(),dp));
-        dp->setStretchFactor(1,10);
-        spl->addWidget(dp);
         */
+        kw=ui->kw;
 
-        if(kw==0){
-            kw = new KalenderView(sw);
-            new KalenderViewControler(kw);
-            kw->setMap(SKalender::getInstance()->getCurrentWeek());
-            kw->setToolTip(QString("Wochenuebersicht"));
-        }
-        //QWidget *w = rep->getFormForObject(SKalender::getInstance(),dp);
-        spl->addWidget(kw);
+        new KalenderViewControler(kw);
+        kw->setMap(SKalender::getInstance()->getCurrentWeek());
+        kw->setToolTip(QString("Wochenuebersicht"));
 
-        stack = new QStackedWidget(sw);
+        stack=ui->stack;
 
         dp = new DoublePane();
+        dp->setStretchFactor(0,10);
         stack->addWidget(dp);
+
 
         RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("klasse")
                                         ->getProperty("Reihen");
@@ -95,12 +95,19 @@ void ModePlanung::setupMode()
         stack->addWidget(leistungEditor);
         leistungEditor->hide();
 
-        spl->addWidget(stack);
+        spmvd = new SitzplanMapViewDialog(0);
+        new SitzplanMapViewControler(spmvd->getMapView());
+
+        stack->addWidget(spmvd);
+        spmvd->hide();
+
+        //spl->addWidget(stack);
 
 
-        sw->addWidget(spl);
+        sw->addWidget(displayWidget);
+        stack->setCurrentWidget(dp);
     }
-    sw->setCurrentWidget(spl);
+    sw->setCurrentWidget(displayWidget);
 
 
     if(!toolBar){
@@ -133,36 +140,19 @@ void ModePlanung::activateObject(PObject *o)
 {
     if(stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o))
     {
-        /*
-        if(stundenplantemplateeintrag *ste=se->getTemplate()){
-            browser->setParentObject(ste);
-        }
-        */
-
-
         if(klasse *kl = se->getKlasse()){
-            leistungEditor->setKlasse(kl);
-            browser->setParentObject(kl);
-
-            //QWidget *editor=GuiRepository::getInstance()->getFormForObject(se,dp);
             QWidget *editor=new PObjectEditor3(se,dp,sePropertyList);
             dp->showFormAtTop(editor);
-
-            sitzplan *sp = kl->getSitzplan();
-            if(sp){
-                bool isVisible = (stack->currentWidget()==spmvd);
-                if(spmvd) stack->removeWidget(spmvd);
-                SitzplanMapView *spmv = GuiRepository::getInstance()->getMapViewForSitzplan(sp);
-                spmv->setStundenplaneintrag(se);
-                spmvd = new SitzplanMapViewDialog(spmv);
-                stack->addWidget(spmvd);
-                if(isVisible) stack->setCurrentWidget(spmvd);
-                //dp->showFormAtBottom(spmv);
-
-            }
+            QApplication::processEvents();
 
 
+            spmvd->setParentObject(se);
+            QApplication::processEvents();
 
+            leistungEditor->setParentObject(kl);
+            QApplication::processEvents();
+
+            browser->setParentObject(kl);
         }
     }
 }

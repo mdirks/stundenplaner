@@ -26,6 +26,7 @@
 #include "datamodel/note.h"
 
 #include "gui/forms/pobjecticonview.h"
+#include "pobjectform.h"
 
 #include <QTableWidget>
 #include <QStringList>
@@ -108,13 +109,14 @@ private:
     bool warn,berechnet;
 };
 
-class TeilleistungEditorDialog : public QWidget
+class TeilleistungEditorDialog : public QWidget, public PObjectForm
 {
 Q_OBJECT
 public:
 	TeilleistungEditorDialog(klasse *kl, QWidget *parent=0);
 	~TeilleistungEditorDialog(){};
     void setKlasse(klasse *kl);
+    void setParentObject(PObject *o);
 
 	static void edit(klasse *kl);
 

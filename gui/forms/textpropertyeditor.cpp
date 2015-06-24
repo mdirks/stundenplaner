@@ -95,8 +95,17 @@ void TextPropertyEditor::focusOutEvent(QFocusEvent *e)
        //stopEdit();
 }
 
+void TextPropertyEditor::setProperty(RepositoryProperty *rp)
+{
+    this->property = rp;
+}
+
 void TextPropertyEditor::setParentObject(PObject *po)
 {
     this->parent=po;
-    setText(property->asString( parent ).c_str());
+    if(po){
+        setText(property->asString( parent ).c_str());
+    } else {
+        clear();
+    }
 }

@@ -23,8 +23,12 @@
 #include "genericmapview.h"
 #include "datamodel/stundenplaneintrag.h"
 #include "datamodel/sitzplan.h"
+#include "gui/forms/pobjectform.h"
 
 #include "qwidget.h"
+
+#include <QToolBar>
+
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>
@@ -32,14 +36,14 @@
 class SitzplanMapView : public GenericMapView {
 Q_OBJECT
 public:
-    SitzplanMapView(SitzplanMap *spm, QWidget * parent = 0, const char * name = 0);
+    SitzplanMapView(SitzplanMap *spm=0, QWidget * parent = 0, const char * name = 0);
     ~SitzplanMapView();
 
     void setStundenplaneintrag(stundenplaneintrag *se);
     stundenplaneintrag* getStundenplaneintrag();
     void setFehlzeitenMode(bool fm){fehlzeitenmode=fm;};
     bool getFehlzeitenMode(){return fehlzeitenmode;}
-
+    void setSitzplanMap(SitzplanMap *spm);
 
     sitzplan* getSitzplan();
     SitzplanMap* getSitzplanMap();
@@ -53,15 +57,20 @@ private:
 };
 
 
-class SitzplanMapViewDialog : public QWidget {
+class SitzplanMapViewDialog : public QWidget, public PObjectForm {
 Q_OBJECT
 public:
     SitzplanMapViewDialog(SitzplanMapView *spmv);
     SitzplanMapView* getMapView();
     void setStundenplaneintrag(stundenplaneintrag *se);
+    void setParentObject(PObject *o);
 
 private:
+    //QToolBar *tb;
     SitzplanMapView *mapView;
+    klasse *kl;
+    sitzplan *sp;
+
 
 };
 

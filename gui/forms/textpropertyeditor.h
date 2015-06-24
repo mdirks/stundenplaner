@@ -32,6 +32,7 @@ public:
     
     void startEdit(RepositoryProperty *prop, PObject *o);
     void setParentObject(PObject *po);
+    void setProperty(RepositoryProperty *rp);
 
 public slots:
     void startEdit();

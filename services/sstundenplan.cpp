@@ -228,8 +228,11 @@ list<stundenplaneintrag*>* SStundenplan::getEintraege(QDate date)
             for(set<stundenplantemplateeintrag*>::iterator it = templates->begin(); it != templates->end(); it++){
                 ++count;
                 stundenplantemplateeintrag* te = *it;
-                qDebug() << QString("Asking to create Eintrag nr. %1 to schultag").arg(count);
-                stundenplaneintrag *eintr = createEintrag(te, date);
+                stundenplaneintrag *eintr = te->getEintrag(date);
+                if(!eintr){
+                    qDebug() << QString("Asking to create Eintrag nr. %1 to schultag").arg(count);
+                    createEintrag(te, date);
+                }
                 if(eintr){
                     if(SKalender::getInstance()->isSchultag(date)){
                         result->push_back( eintr );

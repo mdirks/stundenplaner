@@ -106,7 +106,7 @@ public:
     KParts::Part* getPart(QWidget *parent, QString qs1, QString qs2);
     virtual void close() = 0;
     virtual QString getDisplayString(PObject *po)=0;
-    
+    virtual SitzplanMap*  getMapForSitzplan(sitzplan *sp)=0;
 
 private:
     /** */

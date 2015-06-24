@@ -34,6 +34,17 @@ QString TextPropertyViewer::StandardHeader = QString("\\documentclass[12pt]{arti
 
 QString TextPropertyViewer::StandardFooter = QString("\n\\end{document}");
 
+TextPropertyViewer::TextPropertyViewer(QWidget *pw) :
+    QWidget(pw), header(StandardHeader), footer(StandardFooter),
+    tmpDir(QDir::current().path() + QDir::separator() + "tmp"), bgColor(Qt::lightGray)
+{
+    this->parent=0;
+    this->prop=0;
+    this->displayString="";
+
+    doCommonSetup();
+}
+
 TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw) :
     QWidget(pw), header(StandardHeader), footer(StandardFooter),
     tmpDir(QDir::current().path() + QDir::separator() + "tmp"), bgColor(Qt::lightGray)
@@ -63,7 +74,11 @@ void TextPropertyViewer::doCommonSetup()
 {
     label = new TextPropertyLabel(this);
     label->setFrameStyle(QFrame::NoFrame);
-    editor = new TextPropertyEditor(parent,prop,this);
+    if(parent && prop){
+        editor = new TextPropertyEditor(parent,prop,this);
+    } else {
+        editor = new TextPropertyEditor(this);
+    }
     editor->setFrameStyle(QFrame::NoFrame);
     label->setMinimumHeight(10);
     hidden=false;
@@ -110,6 +125,7 @@ void TextPropertyViewer::setParentObject(PObject *o)
 void TextPropertyViewer::setProperty(RepositoryProperty *p)
 {
     this->prop = p;
+    editor->setProperty(p);
 }
 
 void TextPropertyViewer::setHeader(QString h)

@@ -87,6 +87,20 @@ PObject* PObjectViewItem::getPObject()
 	return this->obj;
 }
 */
+PObjectDialog::PObjectDialog(PObjectListProvider *prov, QWidget *parent) : KDialog(parent)
+{
+
+    objectView = new PObjectIconView(prov,this);
+    objectView->load();
+    setMainWidget(objectView);
+
+    resize(500,600);
+    //this->mapper = mapper;
+
+}
+
+
+
 PObjectDialog::PObjectDialog(AbstractMapper *mapper, QWidget *parent) : KDialog(parent)
 {
 	
@@ -111,6 +125,20 @@ PObjectDialog::PObjectDialog(list<PObject*> *list_objects, QWidget *parent) : KD
 PObject* PObjectDialog::getSelectedPObject()
 {
     return objectView->getSelected();
+}
+
+void PObjectDialog::setDisplayProperty(RepositoryProperty *rp)
+{
+    objectView->setDisplayProperty(rp);
+}
+
+void PObjectDialog::showPObjects(PObjectListProvider *prov, RepositoryProperty *displayProp)
+{
+    PObjectDialog *instance = new PObjectDialog(prov);
+    if(displayProp){
+        instance->setDisplayProperty(displayProp);
+    }
+    instance->exec();
 }
 
 PObject* PObjectDialog::choosePObject(AbstractMapper *mapper)

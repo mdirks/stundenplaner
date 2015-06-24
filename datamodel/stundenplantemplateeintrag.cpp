@@ -15,6 +15,7 @@
 
 #include "qstring.h"
 #include "services/utils/datecompare.h"
+#include "orm/transactions/transactions.h"
 
 stundenplantemplateeintrag::stundenplantemplateeintrag()
 {
@@ -184,11 +185,13 @@ list<stundenplaneintrag*>* stundenplantemplateeintrag::getEintraege()
                 findEintraege(getID());
         list_eintraege->sort(DateMemberCompare<stundenplaneintrag>());
 
+        /*
         for(list<stundenplaneintrag*>::iterator it=list_eintraege->begin();
                 it!=list_eintraege->end(); it++){
                 stundenplaneintrag *se=*it;
                 map_eintraege[se->getDatum()]=se;
         }
+        */
     }
     return list_eintraege;
 }
@@ -199,8 +202,26 @@ list<stundenplaneintrag*>* stundenplantemplateeintrag::getEintraege()
  */
 stundenplaneintrag* stundenplantemplateeintrag::getEintrag(QDate date)
 {
+    list<stundenplaneintrag*> *le=stundenplantemplateeintragmapper::getInstance()->
+                    findEintraege(getID(),"datum",date.toString().toStdString());
+    if(le->size()==1){
+        return (*le->begin());
+    } else if(le->size()==0){
+        return 0;
+    } else {
+        qDebug() << "WARNING: stundenplantemplateeintrag::getEintrag: more than one eintrag for date -- CLEANING";
+        stundenplaneintrag *res = *le->begin();
+        le->pop_front();
+        for(list<stundenplaneintrag*>::iterator it=le->begin(); it!=le->end(); it++){
+            deleteFromEintraege(*it);
+        }
+        Transactions::getCurrentTransaction()->add(this);
+        return res;
+    }
+    /*
     getEintraege();
     return map_eintraege[date];
+    */
     /*
     list<stundenplaneintrag*> *list_eintraege = getEintraege();
     for(list<stundenplaneintrag*>::iterator it = list_eintraege->begin(); it != list_eintraege->end(); it++){

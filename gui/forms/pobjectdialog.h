@@ -56,13 +56,15 @@ private:
 class PObjectDialog : public KDialog
 {
 public:
+    PObjectDialog(PObjectListProvider *prov, QWidget *parent=0L);
 	PObjectDialog(AbstractMapper *mapper, QWidget *parent=0L);
 	PObjectDialog(list<PObject*> *list_objects, QWidget *parent=0L);
 	PObject* getSelectedPObject();
+    void setDisplayProperty(RepositoryProperty *rp);
 
 	static PObject* choosePObject(AbstractMapper *mapper);
 	static PObject* choosePObject(list<PObject*> *list_objects);
-	
+    static void showPObjects(PObjectListProvider *prov, RepositoryProperty *displayProperty=0);
 
 private:
     PObjectIconView *objectView;

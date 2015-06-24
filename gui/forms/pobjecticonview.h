@@ -59,7 +59,8 @@ class PObjectIconView : public QListWidget, public KXMLGUIClient, public Propert
 Q_OBJECT
 
 public:
-	PObjectIconView(QWidget *parent=0);
+    PObjectIconView(QWidget *parent=0);
+    PObjectIconView(PObjectListProvider *prov, QWidget *parent=0);
 	PObjectIconView(list<PObject*> *olist, QWidget *parent=0);
     PObjectIconView(AbstractMapper *mapper, QWidget *parent=0);
     PObjectIconView(QString className, QWidget *parent=0);

@@ -27,9 +27,13 @@
 #include "orm/repository/repositoryproperty.h"
 
 #include <qwmatrix.h>
-#include <QVBoxLayout>
+
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QToolBar>
+
+
+
 
 SitzplanMapView::SitzplanMapView(SitzplanMap *spm, QWidget * parent, const char * name)
 	: GenericMapView(parent,name)
@@ -37,6 +41,34 @@ SitzplanMapView::SitzplanMapView(SitzplanMap *spm, QWidget * parent, const char 
     //QWMatrix wm = worldMatrix(); // set to convenient initial size
     //wm.scale(.7,.7);
     //setWorldMatrix(wm);
+
+    if(spm){
+        setSitzplanMap(spm);
+    }
+    /*
+    setMap(spm);
+    if(sitzplan *sp=spm->getSitzplan()){
+        if(klasse *kl=sp->getKlasse()){
+            QStringList displayList = GuiConfig::getInstance()->getDisplayProperties(
+                    QString("SitzplanMapView::%1").arg(kl->getName().c_str()));
+            list<teilleistung*> *listAlle = kl->getTeilleistungen();
+            list<teilleistung*> *listDisplay = new list<teilleistung*>();
+            for(int i=0;i<displayList.size(); i++){
+                for(list<teilleistung*>::iterator it = listAlle->begin(); it != listAlle->end(); it++){
+                    if(displayList.at(i) == (*it)->getName().c_str()){
+                        listDisplay->push_back((*it));
+                        break;
+                    }
+                }
+
+            }
+            spm->setDisplay(listDisplay);
+        }
+    }
+    */
+}
+
+void SitzplanMapView::setSitzplanMap(SitzplanMap *spm){
     setMap(spm);
     if(sitzplan *sp=spm->getSitzplan()){
         if(klasse *kl=sp->getKlasse()){
@@ -90,6 +122,28 @@ void SitzplanMapView::configure()
 void SitzplanMapView::setStundenplaneintrag(stundenplaneintrag *se)
 {
     this->se = se;
+    std::map<schueler*,fehlzeit*> mf;
+    list<fehlzeit*> *lf = se->getFehlzeiten();
+    for(list<fehlzeit*>::iterator it=lf->begin(); it!=lf->end(); it++){
+        fehlzeit *f =*it;
+        schueler* s = f->getSchueler();
+        mf[s]=f;
+    }
+    QGraphicsScene *c = scene();
+    if(SitzplanMap *sm = dynamic_cast<SitzplanMap*>(c)){
+        list<PObjectGraphicsItem*> *lgi = sm->getGraphicsItems();
+        for(list<PObjectGraphicsItem*>::iterator it=lgi->begin(); it!=lgi->end(); it++){
+            if(PlatzGraphicsItem *pgi = dynamic_cast<PlatzGraphicsItem*>(*it)){
+                if(mf[pgi->getPlatz()->getSchueler()]){
+                    pgi->setFehlend(true);
+               } else {
+                    pgi->setFehlend(false);
+                }
+                pgi->update();
+            }
+        }
+    }
+    update();
 }
 
 
@@ -125,17 +179,23 @@ SitzplanMap* SitzplanMapView::getSitzplanMap()
 
 SitzplanMapViewDialog::SitzplanMapViewDialog(SitzplanMapView *spmv)
 {
-    QVBoxLayout *l =new QVBoxLayout(this);
-    l->setSpacing(0);
+    kl=0;
 
-    mapView = spmv;
+
+    if(spmv){
+        mapView = spmv;
+    } else {
+        mapView = new SitzplanMapView(0,this);
+    }
 
     QToolBar *tb = new QToolBar(this);
     tb->addAction("Config",mapView,SLOT(configure()));
 
-
+    QVBoxLayout *l=new QVBoxLayout(this);
+    l->setSpacing(0);
     l->addWidget(tb);
     l->addWidget(mapView);
+
 }
 
 SitzplanMapView* SitzplanMapViewDialog::getMapView()
@@ -145,5 +205,24 @@ SitzplanMapView* SitzplanMapViewDialog::getMapView()
 
 void SitzplanMapViewDialog::setStundenplaneintrag(stundenplaneintrag *se)
 {
+    if(kl != se->getKlasse()){ // if klasse changed fetch sitzplan
+        kl=se->getKlasse();
+        sitzplan *sp = kl->getSitzplan();
+        if(sp){
+            SitzplanMap *spm = GuiRepository::getInstance()->getMapForSitzplan(sp);
+            if(spm){
+                mapView->setSitzplanMap(spm);
+            }
+        }
+    }
     mapView->setStundenplaneintrag(se);
+}
+
+void SitzplanMapViewDialog::setParentObject(PObject *o)
+{
+    if(stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o)){
+        setStundenplaneintrag(se);
+    } else {
+        qDebug() << "WARNING: SitzplanMapViewDialog::setParentObject: can handle stundenplaneintrag only";
+    }
 }

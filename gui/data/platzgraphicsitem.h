@@ -41,6 +41,8 @@ public:
     SitzplanMap* getSitzplanMap();
 
     virtual void update();
+    bool isFehlend();
+    void setFehlend(bool f);
 
 public:
     static QFont nameFont,infoFont;
@@ -53,6 +55,7 @@ protected:
 
 private:
 	platz *pl;
+    bool fehlend;
 
 };
 

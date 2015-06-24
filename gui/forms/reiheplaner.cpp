@@ -41,49 +41,56 @@
 using namespace std;
 
 ReiheBrowser::ReiheBrowser(RepositoryProperty *rp, PObject *po, QWidget *p)
-    : QWidget(p)
+    : QWidget(p),
+      ui(new Ui::ReiheBrowser)
 {
-    m_rp = rp;
+    //m_rp = rp;
     m_po = po;
-    box= new PObjectComboBox(rp,po);
-    //planer = new ReihePlaner();
-    planer = new PObjectIconView();
+
+    ui->setupUi(this);
 
     RepositoryProperty *rp_verlauf = Repository::getInstance()->getRepositoryEntry("stunde")->getProperty("Verlauf");
-    planer->setDisplayProperty(rp_verlauf);
-    /*
-    reiheMap = new ReiheMap();
-    GenericMapView *view = new GenericMapView(this);
-    view->setScene(reiheMap);
-    */
-    QVBoxLayout *l = new QVBoxLayout(this);
-    l->addWidget(box);
-    l->addWidget(planer);
-    //l->addWidget(view);
+    ui->textViewer->setProperty(rp_verlauf);
 
-    connect(box,SIGNAL(currentIndexChanged(int)),this,SLOT(indexChanged(int)));
-    connect(box,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
+    rp_stunden = Repository::getInstance()->getRepositoryEntry("reihe")->getProperty("Stunden");
+    rp_notes = Repository::getInstance()->getRepositoryEntry("reihe")->getProperty("Notizen");
+    rp_materialien = Repository::getInstance()->getRepositoryEntry("reihe")->getProperty("Materialien");
+
+
+    connect(ui->selector,SIGNAL(currentRowChanged(int)),this,SLOT(selectorIndexChanged(int)));
+    connect(ui->planer,SIGNAL(currentRowChanged(int)),this,SLOT(planerIndexChanged(int)));
+
+
+
 }
 
-void ReiheBrowser::indexChanged(int i)
+void ReiheBrowser::selectorIndexChanged(int i)
 {
-        PObject *o = box->getObject(i);
+        PObject *o = ui->selector->getCurrent();
         if(reihe *r = dynamic_cast<reihe*>(o)){
-            //planer->setReihe(r);
-            RepositoryProperty *rp_stunden = Repository::getInstance()->getRepositoryEntry("reihe")->getProperty("Stunden");
-            planer->setObjectListProvider(new RpListProvider(rp_stunden,r));
-            //planer->reload();
-            //reiheMap->setReihe(r);
+            ui->planer->setObjectListProvider(new RpListProvider(rp_stunden,r));
         } else {
-            planer->clear();
+            ui->planer->clear();
         }
 
 }
 
+void ReiheBrowser::planerIndexChanged(int i)
+{
+        PObject *o = ui->planer->getCurrent();
+        if(stunde *s = dynamic_cast<stunde*>(o)){
+            ui->textViewer->setParentObject(s);
+            ui->listNotes->setObjectListProvider(new RpListProvider(rp_notes,s));
+            ui->listMaterial->setObjectListProvider(new RpListProvider(rp_materialien,s));
+        } else {
+            ui->textViewer->setParentObject(0);
+        }
+
+}
 
 void ReiheBrowser::nameChanged(QString newName)
 {
-    PObject *o=box->getObject(box->currentIndex());
+    PObject *o=ui->selector->getCurrent();
     if(reihe* r=dynamic_cast<reihe*>(o))
     {
         Transactions::getCurrentTransaction()->add(r);
@@ -91,17 +98,21 @@ void ReiheBrowser::nameChanged(QString newName)
     }
 }
 
+/* set klasse to be edited */
 void ReiheBrowser::setParentObject(PObject *po)
 {
-    disconnect(box);
-    box->disconnect(this);
+    disconnect(ui->selector);
+    ui->selector->disconnect(this);
+    ui->planer->disconnect(this);
 
-    planer->clear();
+    ui->planer->clear();
     m_po = po;
-    box->setParentObject(po);
+    RepositoryProperty *rp_reihen= Repository::getInstance()->getRepositoryEntry("klasse")->getProperty("Reihen");
+    ui->selector->setObjectListProvider(new RpListProvider(rp_reihen,m_po));
+    ui->titleLabel->setText(QString("Reiheplaner: %1").arg(m_po->getName().c_str()));
 
-    connect(box,SIGNAL(currentIndexChanged(int)),this,SLOT(indexChanged(int)));
-    connect(box,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
+    connect(ui->selector,SIGNAL(currentRowChanged(int)),this,SLOT(selectorIndexChanged(int)));
+    connect(ui->planer,SIGNAL(currentRowChanged(int)),this,SLOT(planerIndexChanged(int)));
 }
 
 

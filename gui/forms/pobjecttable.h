@@ -95,6 +95,9 @@ protected:
 	void readPropertiesForType(string className);
 
 private:
+    void doConnects();
+
+private:
 	QString clName, typedMimeType;
 	RepositoryProperty *prop;
 	PObject *parentObject;

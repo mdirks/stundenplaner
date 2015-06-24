@@ -61,7 +61,7 @@ private:
 	klasse *kl;
 	bool is_doppel;
 	list<stundenplaneintrag*> *list_eintraege;
-    map<QDate,stundenplaneintrag*> map_eintraege;
+    //map<QDate,stundenplaneintrag*> map_eintraege;
     list<reihe*> *list_reihen;
 	QDate dateEnde, dateBegin;
 

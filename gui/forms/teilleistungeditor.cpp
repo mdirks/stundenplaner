@@ -442,6 +442,14 @@ void TeilleistungEditorDialog::setKlasse(klasse *kl)
     setToolTip(QString("Teilleistungen %1").arg(kl->getName().c_str()));
 }
 
+void TeilleistungEditorDialog::setParentObject(PObject *o)
+{
+    if(klasse* kl=dynamic_cast<klasse*>(o)){
+        editor->editKlasse(kl);
+    } else {
+        qDebug() << "WARNING: TeilleistungEditorDialog::setParentObject: can handle klasse only";
+    }
+}
 
 void TeilleistungEditorDialog::slotOk()
 {

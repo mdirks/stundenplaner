@@ -9,7 +9,8 @@ SOURCES += \
     *.cpp \
     actions/modenotes.cpp \
     forms/testform.cpp \
-    dialogs/collectionselectiondialog.cpp
+    dialogs/collectionselectiondialog.cpp \
+    forms/pobjectform.cpp
 
 SOURCES += $$system(ls mapviews/*.cpp) $$system(ls data/*.cpp) $$system(ls draganddrop/*.cpp)
 SOURCES += $$system(ls actions/*.cpp) $$system(ls base/*.cpp) $$system(ls dialogs/*.cpp)
@@ -30,7 +31,8 @@ HEADERS += \
     actions/servicexml.h \
     actions/modenotes.h \
     forms/testform.h \
-    dialogs/collectionselectiondialog.h
+    dialogs/collectionselectiondialog.h \
+    forms/pobjectform.h
 
 HEADERS += $$system(ls mapviews/*.h) $$system(ls data/*.h) $$system(ls draganddrop/*.h)
 HEADERS += $$system(ls actions/*.h) $$system(ls base/*.h) $$system(ls dialogs/*.h)
@@ -63,4 +65,6 @@ OTHER_FILES += \
 
 FORMS += \
     forms/testform.ui \
-    actions/modematerial.ui
+    actions/modematerial.ui \
+    forms/reihebrowser.ui \
+    actions/modeplanung.ui

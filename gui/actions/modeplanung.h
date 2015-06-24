@@ -9,6 +9,7 @@
 #include "gui/forms/kalenderview.h"
 #include "orm/repository/repository.h"
 #include "orm/repository/repositoryentry.h"
+#include "ui_modeplanung.h"
 
 #include <QSplitter>
 #include <QToolBar>
@@ -35,7 +36,8 @@ public slots:
 private:
     static ModePlanung *instance;
     DoublePane *dp;
-    QSplitter *spl;//, *spl_right;
+    QWidget *displayWidget;
+    //QSplitter *spl;//, *spl_right;
     QStackedWidget *stack;
     QToolBar *toolBar;
     ReiheBrowser *browser;
@@ -43,6 +45,10 @@ private:
     list<RepositoryProperty*> *sePropertyList;
     SitzplanMapViewDialog *spmvd;
     KalenderView *kw;
+
+private:
+    Ui::ModePlanung *ui;
+
 };
 
 class SpReader :public QThread

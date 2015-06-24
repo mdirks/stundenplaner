@@ -52,7 +52,7 @@ class PObjectIconViewItem : public PObjectIconViewItemBase
 {
 
 public:
-    PObjectIconViewItem(PObject *o, QListWidget *iv, QPixmap &icon);
+    PObjectIconViewItem(PObject *o, QListWidget *iv, QPixmap &icon, RepositoryProperty *displayProp=0);
     ~PObjectIconViewItem();
 };
 

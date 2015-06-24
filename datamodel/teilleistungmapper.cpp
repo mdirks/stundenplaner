@@ -128,6 +128,8 @@ list<note*> * teilleistungmapper::findNoten(int pri_id,string prop,string value)
              }
 
 
+
+
 RepositoryEntry* teilleistungmapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "teilleistung" ); 

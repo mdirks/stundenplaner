@@ -48,8 +48,14 @@ PObjectIconView::PObjectIconView(QWidget *parent)
 {
 
     provider=0;
+    doCommonSetup();
+}
 
+PObjectIconView::PObjectIconView(PObjectListProvider *prov, QWidget *parent)
+ : QListWidget(parent), KXMLGUIClient()
+{
 
+    provider=prov;
     doCommonSetup();
 }
 
@@ -58,11 +64,6 @@ PObjectIconView::PObjectIconView(list<PObject*> *olist, QWidget *parent)
  : QListWidget(parent), KXMLGUIClient()
 {
     provider = new PoLListProvider(olist);
-    /*
-    this->olist = olist;
-    this->mapper =0;
-	this->prop = 0;
-    */
 
     doCommonSetup();
 }
@@ -110,14 +111,9 @@ PObjectIconView::PObjectIconView(RepositoryProperty *prop, PObject *parentObject
     : QListWidget(parent), KXMLGUIClient()
 {
     provider = new RpListProvider(prop,parentObject);
-    /*
-    this->olist = 0;
-    this->mapper = 0;
-	this->prop = prop;
-    */
+
 
     this->clName = prop->getType().c_str();
-    //this->parentObject = parentObject;
 	this->icon = GuiConfig::getInstance()->getIcon( prop );
 
     doCommonSetup();
@@ -223,7 +219,12 @@ PObjectIconViewItemBase* PObjectIconView::createItem(PObject *o)
 	if(o){
         icon = GuiConfig::getInstance()->getIcon(o);
         if(displayPropList){
-            item = new PObjectIconViewItemE(o,displayPropList,this,icon);
+            if(displayPropList->size()==1){
+                item=new PObjectIconViewItem(
+                            o,this,icon,displayPropList->front());
+            } else {
+                item = new PObjectIconViewItemE(o,displayPropList,this,icon);
+            }
         } else {
             item = new PObjectIconViewItem(o,this,icon);
         }

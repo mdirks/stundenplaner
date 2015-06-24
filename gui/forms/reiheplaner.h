@@ -26,6 +26,8 @@
 #include "gui/data/reihemap.h"
 #include "pobjecticonview.h"
 #include "pobjectlistprovider.h"
+#include "pobjectform.h"
+#include "ui_reihebrowser.h"
 
 #include <QWidget>
 #include <QTableWidget>
@@ -61,6 +63,7 @@ private:
 	QPixmap pm;
 
 
+
 };
 
 
@@ -72,7 +75,7 @@ public:
 };
 
 
-class ReiheBrowser : public QWidget {
+class ReiheBrowser : public QWidget, public PObjectForm {
 
 Q_OBJECT
 
@@ -82,17 +85,24 @@ public:
     void setParentObject(PObject *po);
 
 public slots:
-    void indexChanged(int i);
+    void selectorIndexChanged(int i);
+    void planerIndexChanged(int i);
+
     void nameChanged(QString s);
 
 private:
-    RepositoryProperty *m_rp;
+    RepositoryProperty *rp_stunden,*rp_notes,*rp_materialien;
     PObject *m_po;
-    PObjectComboBox *box;
+    //PObjectComboBox *box;
     //ReihePlaner *planer;
-    PObjectIconView *planer;
+    //PObjectIconView *planer;
     //ReiheMap *reiheMap;
+
     RpListProvider *provider;
+
+private:
+    Ui::ReiheBrowser *ui;
+
 
 };
 

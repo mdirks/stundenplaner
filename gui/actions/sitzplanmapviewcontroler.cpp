@@ -32,6 +32,10 @@
 #include <kfiledialog.h>
 #include <kinputdialog.h>
 
+
+
+
+
 SitzplanMapViewControler::SitzplanMapViewControler(SitzplanMapView *smapView)
 	: GenericMapViewControler(smapView)
 {
@@ -68,7 +72,9 @@ void SitzplanMapViewControler::showFehlzeitenForSchueler()
 	list<PObject*> *lf = (list<PObject*>*) getFehlzeitenForSchueler();
 	if(lf){
         qDebug() << QString("Found %1 Fehlzeiten").arg(lf->size());
-		PObjectTableDialog::edit(lf,"fehlzeit");
+        //PObjectTableDialog::edit(lf,"fehlzeit");
+        RepositoryProperty *rp_datum=Repository::getInstance()->getRepositoryEntry("fehlzeit")->getProperty("Datum");
+        PObjectDialog::showPObjects(new PoLListProvider(lf,"fehlzeit"),rp_datum);
     } else {qDebug() << "No schueler selected";}
 }
 
@@ -147,7 +153,10 @@ void SitzplanMapViewControler::addFehlzeit()
             } else {
                 qDebug() << "SitzplanMapViewControler::addFehlzeit : could not get se";
             }
-	
+            if(PlatzGraphicsItem *pgi = dynamic_cast<PlatzGraphicsItem*>(smapView->getSelected())){
+                pgi->setFehlend(true);
+                pgi->update();
+            }
 			/* If edit after create required uncoment here*/
 			//GuiRepository::getInstance()->showDialogForObject(fz);
         } else {qDebug() << "SitzplanMapViewControler::addFehlzeit : could not get Schueler";}

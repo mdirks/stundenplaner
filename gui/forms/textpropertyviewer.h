@@ -59,6 +59,7 @@ class TextPropertyViewer : public QWidget
 Q_OBJECT
 
 public:
+    TextPropertyViewer(QWidget *pw=0L);
     TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw=0L, double w=18.0, double h=28.0);
     TextPropertyViewer(PObject *parent, QString displayString, QWidget *pw=0L);
 	~TextPropertyViewer();

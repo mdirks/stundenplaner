@@ -52,7 +52,12 @@ private:
  template<class PropertyType, class ObjectType>
 string PObjectProperty<PropertyType,ObjectType>::asString(PObject *o)
 {
-    return o->getName();
+    PObject *po = asPObject(o);
+    if(po){
+        return po->getName();
+    } else {
+        return "Invalid";
+    }
 }
 
 

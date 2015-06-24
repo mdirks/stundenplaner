@@ -35,12 +35,14 @@ PlatzGraphicsItem::PlatzGraphicsItem() : PObjectGraphicsItem()
 {
 	setMapper(PlatzGraphicsItemmapper::getInstance());
     pl = 0;
+    fehlend=false;
 }
 
 PlatzGraphicsItem::PlatzGraphicsItem(QGraphicsScene *c) : PObjectGraphicsItem(c)
 {
 	setMapper(PlatzGraphicsItemmapper::getInstance());
 	pl = 0;
+    fehlend=false;
 }
 
 PlatzGraphicsItem::PlatzGraphicsItem(platz *pl, QGraphicsScene *sc) : PObjectGraphicsItem(pl,sc)
@@ -87,8 +89,8 @@ void PlatzGraphicsItem::paint ( QPainter  *painter,
 
     if(isSelected()){
 		setBrush(getFirstColor());
-	} else {
-		setBrush(getSecondColor());
+    } else {
+        setBrush(getSecondColor());
 	}
     //drawShape(painter);
     //QGraphicsRectangle::draw(painter);
@@ -98,20 +100,34 @@ void PlatzGraphicsItem::paint ( QPainter  *painter,
     painter->drawPixmap(2,2,icon.scaled(20,20));
 	schueler *s=0;
     if(getPlatz() &&  (s= getPlatz()->getSchueler())){
-        painter->setFont(nameFont);
-        painter->drawText(22,20,s->getVorname().c_str());
 
         QStringList info = getSitzplanMap()->getInfoForPlatz(getPlatz());
         for(int i=0; i<info.size(); i++){
             painter->setFont(infoFont);
             painter->drawText(2,40+i*11,info.at(i));
         }
+        if(isFehlend()){
+            painter->setPen(Qt::red);
+        }
+        painter->setFont(nameFont);
+        painter->drawText(22,20,s->getVorname().c_str());
+
     }  else {
         painter->setFont(nameFont);
         painter->drawText(22,20,"Empty");
 	}
 	
 
+}
+
+void PlatzGraphicsItem::setFehlend(bool f)
+{
+    fehlend=f;
+}
+
+bool PlatzGraphicsItem::isFehlend()
+{
+    return fehlend;
 }
 
 SitzplanMap* PlatzGraphicsItem::getSitzplanMap()

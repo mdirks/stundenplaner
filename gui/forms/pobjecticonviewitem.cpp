@@ -34,10 +34,14 @@ PObjectIconViewItemBase::~PObjectIconViewItemBase()
 {
 }
 
-PObjectIconViewItem::PObjectIconViewItem(PObject *o, QListWidget *iv, QPixmap &icon)
+PObjectIconViewItem::PObjectIconViewItem(PObject *o, QListWidget *iv, QPixmap &icon, RepositoryProperty *displayProp)
  : PObjectIconViewItemBase(o,iv)
 {
-    this->setText(o->getName().c_str());
+    if(displayProp){
+        this->setText(displayProp->asString(o).c_str());
+    } else {
+        this->setText(o->getName().c_str());
+    }
     this->setIcon(icon);
 }
 

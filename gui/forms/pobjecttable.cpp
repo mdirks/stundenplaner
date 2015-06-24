@@ -55,8 +55,9 @@ PObjectTable::PObjectTable(string className, QWidget *parent, bool addable)
 
     //setSorting(true);
 
-	connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
-	connect(this, SIGNAL(valueChanged(int,int)), this, SLOT(valueChanged(int,int)));
+    doConnects();
+    //connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
+    //connect(this, SIGNAL(valueChanged(int,int)), this, SLOT(valueChanged(int,int)));
     //connect((QTable*) this, SIGNAL(contextMenuRequested( int, int, const QPoint &)),(QTable*)this,SLOT(showContextMenu( int, int, const QPoint &)));
 }
 
@@ -75,8 +76,9 @@ PObjectTable::PObjectTable(list<PObject*> *olist, QString type, QWidget *parent,
     loadType(type.toStdString());
     //setSorting(true);
 
-	connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
-    connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(valueChanged(int,int)));
+    doConnects();
+    //connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
+    //connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(valueChanged(int,int)));
     //connect((QTable*) this, SIGNAL(contextMenuRequested( int, int, const QPoint &)),(QTable*)this,SLOT(showContextMenu( int, int, const QPoint &)));
 }
 PObjectTable::~PObjectTable()
@@ -111,8 +113,9 @@ PObjectTable::PObjectTable(AbstractMapper *mapper, QWidget *parent, bool addable
 	}
 	*/
 
-	connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
-	connect(this, SIGNAL(valueChanged(int,int)), this, SLOT(valueChanged(int,int)));
+    doConnects();
+    //connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
+    //connect(this, SIGNAL(valueChanged(int,int)), this, SLOT(valueChanged(int,int)));
     //connect((QTable*)this,SIGNAL(QTable::contextMenuRequested( int, int, const QPoint &)),this,SLOT(showContextMenu( int, int, const QPoint &)));
 	/*
 	setXMLFile("/home/mopp/dev/c++/1304/stundenplaner/stundeplanerui.rc");
@@ -139,10 +142,7 @@ PObjectTable::PObjectTable(RepositoryProperty *prop, PObject *parentObject, QWid
 	this->parentObject = parentObject;
 	
 	loadType(prop->getType());
-    connect(this, SIGNAL(cellClicked(int,int)), this, SLOT(currentChanged(int,int)));
-    connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(valueChanged(int,int)));
-    connect((QWidget*) this, SIGNAL(customContextMenuRequested(const QPoint &)),this,SLOT(showContextMenu( const QPoint &)));
-    setContextMenuPolicy(Qt::CustomContextMenu);
+    doConnects();
     //this->icon = GuiConfig::getInstance()->getIcon( prop );
     //setIcon(icon);
 
@@ -151,6 +151,14 @@ PObjectTable::PObjectTable(RepositoryProperty *prop, PObject *parentObject, QWid
     //setSorting(true);
 }
 
+
+void PObjectTable::doConnects()
+{
+    connect(this, SIGNAL(cellClicked(int,int)), this, SLOT(currentChanged(int,int)));
+    connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(valueChanged(int,int)));
+    connect((QWidget*) this, SIGNAL(customContextMenuRequested(const QPoint &)),this,SLOT(showContextMenu( const QPoint &)));
+    setContextMenuPolicy(Qt::CustomContextMenu);
+}
 
 
 void PObjectTable::readPropertiesForType(string className)
@@ -391,6 +399,7 @@ void PObjectTable::addElement(int row)
 }
 
 
+
 void PObjectTable::createRow(int row, PObject *o)
 {
 	if(o){
@@ -405,7 +414,7 @@ void PObjectTable::createRow(int row, PObject *o)
             if(prop -> isPObject()){
                 QPixmap i=GuiConfig::getInstance()->getIcon(prop->getType().c_str());
                 QString t=QString::fromStdString(prop->asString(o));
-                setItem(row,col,new QTableWidgetItem(icon,t));
+                setItem(row,col,new QTableWidgetItem(i,t));
                 /*
 				PObjectLabel *label = new PObjectLabel(prop,o ,this,false,false);
                 setCellWidget(row,col,label);
