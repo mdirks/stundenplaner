@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "schuljahr.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  schuljahrmapper* schuljahrmapper::instance=0;

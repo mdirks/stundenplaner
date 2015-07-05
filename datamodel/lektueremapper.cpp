@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "lektuere.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  lektueremapper* lektueremapper::instance=0;
@@ -28,7 +29,7 @@
 
  lektueremapper::lektueremapper()
   {
- 	version = "0.3";
+ 	version = "0.3-0.6";
 	columns = new string[2];
  	columnTypes = new string[2];
  	columns[0] = "title";

@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "ferientag.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  ferientagmapper* ferientagmapper::instance=0;

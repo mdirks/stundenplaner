@@ -22,7 +22,7 @@
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
-class DateEditor : public KDateWidget /*QDateEdit*/, public PropertyEditor
+class DateEditor : public /*KDateWidget*/ QDateEdit, public PropertyEditor
 {
 Q_OBJECT
 

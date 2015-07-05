@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "fehlzeit.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  fehlzeitmapper* fehlzeitmapper::instance=0;
@@ -26,10 +27,9 @@
  }
 
 
-
  fehlzeitmapper::fehlzeitmapper()
   {
- 	version = "0.3";
+ 	version = "0.3-0.4";
 	columns = new string[4];
  	columnTypes = new string[4];
  	columns[0] = "von";

@@ -5,6 +5,7 @@
 #include <QComboBox>
 #include <QSplitter>
 #include <QStackedWidget>
+#include <QTabWidget>
 
 class MyPane;
 
@@ -42,6 +43,7 @@ public slots:
 private:
     bool top;
     QStackedWidget *stackedWidget;
+    //QTabWidget *stackedWidget;
     QComboBox *box;
 };
 

@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Mo. Jun 22 20:24:34 2015
+ // Written on So. Jul 5 14:38:39 2015
 // 
  #ifndef opoMAPPER_H 
  #define opoMAPPER_H 
@@ -16,6 +16,7 @@
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
+#include "orm/mapping/murl.h" 
 #include "orm/persistence/persistenceclass.h" 
  #include "opo.h" 
 #include "material.h" 

@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "thema.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  themamapper* themamapper::instance=0;
@@ -28,7 +29,7 @@
 
  themamapper::themamapper()
   {
- 	version = "0.7";
+ 	version = "0.7-0.4";
 	columns = new string[2];
  	columnTypes = new string[2];
  	columns[0] = "title";

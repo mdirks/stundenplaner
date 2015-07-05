@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "klasse.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  klassemapper* klassemapper::instance=0;
@@ -28,10 +29,19 @@
 
  klassemapper::klassemapper()
   {
- 	version = "0.9";
-	columns = new string[0];
- 	columnTypes = new string[0];
- asc_Stunden = new Association<klasse, stunde>("klasse_stunde","klasse_id","stunde_id","stunde", &klasse::addToStunden, &klasse::deleteFromStunden);
+ 	version = "0.11-0.4";
+	columns = new string[3];
+ 	columnTypes = new string[3];
+ 	columns[0] = "jhrg";
+ 	columnTypes[0] = "int";
+	mapProperties["jhrg"] = new Property("jhrg");
+	columns[1] = "kursnr";
+ 	columnTypes[1] = "varchar(15)";
+	mapProperties["kursnr"] = new Property("kursnr");
+	columns[2] = "fach";
+ 	columnTypes[2] = "varchar(15)";
+	mapProperties["fach"] = new Property("fach");
+asc_Stunden = new Association<klasse, stunde>("klasse_stunde","klasse_id","stunde_id","stunde", &klasse::addToStunden, &klasse::deleteFromStunden);
 mapAssociations["Stunden"] = asc_Stunden;
 registerAssociation( asc_Stunden);
 asc_Schueler = new Association<klasse, schueler>("klasse_schueler","klasse_id","schueler_id","schueler", &klasse::addToSchueler, &klasse::deleteFromSchueler);
@@ -89,14 +99,17 @@ klassemapper::~klassemapper(){}
  
  int klassemapper::getColumnCount()
  {
-     return 0;
+     return 3;
  }
 
 
  string* klassemapper::getValues(PObject *realSubject)
  {
- 	string *values = new string[0];  
+ 	string *values = new string[3];  
  	klasse *o = (klasse*) realSubject;
+	values[0] = to_string(o->getJahrgangsstufe());
+	values[1] = to_string(o->getKursnummer());
+	values[2] = to_string(o->getFach());
 return values;
  }
 
@@ -131,7 +144,10 @@ void klassemapper::save(PObject *realSubject)
 void klassemapper::init(PObject* inito, Variant *res)
  {
  	klasse *o = (klasse*) inito;
-	inito->init();
+	o->setJahrgangsstufe( res[0].asint());
+ 	o->setKursnummer( res[1].asstring());
+ 	o->setFach( res[2].asstring());
+ 	inito->init();
 }
 
 
@@ -205,6 +221,9 @@ RepositoryEntry* klassemapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "klasse" ); 
 	entry->addProperty( new StringProperty<klasse>("Name", "string", &klasse::getName, &klasse::setName, false) );
+	entry->addProperty( new NumericProperty< int,klasse> ( "Jahrgangsstufe", "int" , &klasse::getJahrgangsstufe,&klasse::setJahrgangsstufe ) ); 
+	entry->addProperty( new StringProperty< klasse >( "Kursnummer" , "string", &klasse::getKursnummer, &klasse::setKursnummer, false ) );
+	entry->addProperty( new StringProperty< klasse >( "Fach" , "string", &klasse::getFach, &klasse::setFach, false ) );
 	entry->addProperty( new CollectionPropertyImpl<stunde,klasse>( "Stunden" , "stunde", &klasse::getStunden, &klasse::addToStunden, &klasse::deleteFromStunden  ) ); 
 	entry->addProperty( new CollectionPropertyImpl<schueler,klasse>( "Schueler" , "schueler", &klasse::getSchueler, &klasse::addToSchueler, &klasse::deleteFromSchueler  ) ); 
 	entry->addProperty( new CollectionPropertyImpl<teilleistung,klasse>( "Teilleistungen" , "teilleistung", &klasse::getTeilleistungen, &klasse::addToTeilleistungen, &klasse::deleteFromTeilleistungen  ) ); 

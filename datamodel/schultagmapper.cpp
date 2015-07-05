@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "schultag.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  schultagmapper* schultagmapper::instance=0;
@@ -28,7 +29,7 @@
 
  schultagmapper::schultagmapper()
   {
- 	version = "0.2";
+ 	version = "0.2-0.4";
 	columns = new string[1];
  	columnTypes = new string[1];
  	columns[0] = "datum";

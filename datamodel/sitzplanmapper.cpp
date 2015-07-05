@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "sitzplan.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  sitzplanmapper* sitzplanmapper::instance=0;

@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "stundenbewertung.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  stundenbewertungmapper* stundenbewertungmapper::instance=0;

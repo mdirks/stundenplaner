@@ -15,7 +15,8 @@ HEADERS += \
     repository/datetimeproperty.h \
     repository/dateproperty.h \
     repository/collectionproperty.h \
-    repository/booleanproperty.h
+    repository/booleanproperty.h \
+    repository/urlproperty.h
 
 SOURCES += \
     repository/integerproperty.cpp \
@@ -34,4 +35,5 @@ SOURCES += \
     repository/numericproperty.cpp \
     repository/collectionproperty.cpp \
     repository/dateproperty.cpp \
-    repository/booleanproperty.cpp
+    repository/booleanproperty.cpp \
+    repository/urlproperty.cpp

@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "notizholder.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  notizholdermapper* notizholdermapper::instance=0;

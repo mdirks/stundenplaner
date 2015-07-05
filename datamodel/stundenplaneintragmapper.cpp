@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "stundenplaneintrag.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  stundenplaneintragmapper* stundenplaneintragmapper::instance=0;
@@ -28,7 +29,7 @@
 
  stundenplaneintragmapper::stundenplaneintragmapper()
   {
- 	version = "0.11";
+ 	version = "0.11-0.4";
 	columns = new string[5];
  	columnTypes = new string[5];
  	columns[0] = "datum";

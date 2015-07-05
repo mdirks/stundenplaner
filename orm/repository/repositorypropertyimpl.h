@@ -15,6 +15,7 @@
 #include <string>
 #include "repositoryproperty.h"
 
+#include <QDebug>
 using namespace std;
 
 /**
@@ -30,13 +31,13 @@ public:
     virtual string getName(){return name;};
     
     virtual string asString(PObject *o){return string("null");}
-    virtual void fromString(string text, PObject *parent){qDebug("Warning: Failed to set property: fromString not implemented");}
-    virtual void set(PObject *o, PObject *parent){ qDebug("Warning: Failde to set property: set(PObject) not implemented");}
+    virtual void fromString(string text, PObject *parent){qDebug() << "Warning: Failed to set property: fromString not implemented";}
+    virtual void set(PObject *o, PObject *parent){ qDebug() << "Warning: Failde to set property: set(PObject) not implemented";}
 
     virtual QDate asDate(PObject *parent){return QDate::currentDate();}
     virtual QDateTime asDateTime(PObject *o){return QDateTime::currentDateTime();}
 
-    virtual PObject* asPObject(PObject *o){qDebug("Warning: failed to getproperty, asPObject() not implemented"); return 0;};
+    virtual PObject* asPObject(PObject *o){qDebug() << "Warning: failed to getproperty, asPObject() not implemented"; return 0;};
 
     virtual bool isText();
     virtual bool isString();
@@ -45,8 +46,10 @@ public:
     virtual bool isPObject(){return false;};
     virtual bool isNumeric(){return false;};
     virtual bool isBoolean(){return false;};
-    virtual bool asBoolean(PObject *o){qDebug("Warning: failed to getproperty, asBoolean() not implemented"); return false;}
-    
+    virtual bool asBoolean(PObject *o){qDebug() << "Warning: failed to getproperty, asBoolean() not implemented"; return false;}
+    virtual bool isUrl(){return false;};
+    virtual MUrl asUrl(PObject *o){qDebug() << "Warning: failed to getproperty, asUrl() not implemented"; return MUrl("");}
+
     virtual list<PObject*>* asCollection(PObject *po){return 0;};
     string getType();
     PropertyAction *  getAction(string name);

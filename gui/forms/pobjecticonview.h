@@ -118,12 +118,15 @@ public slots:
 
     void show();
     void chooseFilter();
+    void paste();
+    //void copy();
 
 signals:
     void currentChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *e);
+    void keyPressEvent(QKeyEvent *e);
 
     virtual void dragLeaveEvent(QDragLeaveEvent *e);
     virtual void dragEnterEvent(QDragEnterEvent *e);

@@ -52,6 +52,13 @@ public:
     void addToReihen(reihe *r);
     void deleteFromReihen(reihe *r);
     list<reihe*>* getReihen();
+    int getJahrgangsstufe();
+    void setJahrgangsstufe(int i);
+    string getKursnummer();
+    void setKursnummer(string nr);
+    string getFach();
+    void setFach(string f);
+
 
 
     void setSitzplan(sitzplan *sp);
@@ -74,6 +81,9 @@ private:
     sitzplan* sp;
 	kursbuch* kb;
 	schuljahr* sj;
+
+    int jhrg;
+    string kursnr, fach;
 
 };
 

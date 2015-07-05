@@ -37,6 +37,8 @@
 #include <QDragEnterEvent>
 #include <QDebug>
 #include <QLabel>
+#include <QClipboard>
+#include <QApplication>
 
 #define GRIDX 100
 #define GRIDY 40
@@ -376,6 +378,30 @@ void PObjectIconView::mousePressEvent(QMouseEvent *e)
     //QListWidget::mousePressEvent(e);
 }
 
+void PObjectIconView::keyPressEvent(QKeyEvent *e)
+{
+    if( e == QKeySequence::Copy) {
+        PObject *o=getSelected();
+
+        if(o){
+            QMimeData *md = createMimeData(o);
+            if(md){
+                QClipboard *clipboard = QApplication::clipboard();
+                clipboard->setMimeData(md);
+            }
+        } else {
+            qDebug() << "PObjectIconView::keyPressEvent: cannot paste: no selection";
+        }
+
+    } else if (e==QKeySequence::Paste){
+        paste();
+    } else {
+        QListWidget::keyPressEvent(e);
+    }
+}
+
+
+
 
 void PObjectIconView::dropEvent(QDropEvent *e)
 {
@@ -391,6 +417,23 @@ void PObjectIconView::dropEvent(QDropEvent *e)
 
 }
 
+
+
+void PObjectIconView::paste()
+{
+    const QClipboard *clipboard = QApplication::clipboard();
+    const QMimeData *md = clipboard->mimeData();
+
+    PObject *o=recoverPObject(md);
+    if(o){
+        if(provider){
+            provider->addObject(o);
+        }
+        addObject(o);
+    } else {
+        qDebug() << "Paste: Cannot handle object";
+    }
+}
 
 
 /*!

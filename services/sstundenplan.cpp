@@ -170,11 +170,11 @@ stundenplaneintrag* SStundenplan::createEintrag(stundenplantemplateeintrag *te, 
 		if(!eintrag){
 			qDebug("Could not find Eintrag !?");
 			if(SKalender::getInstance()->isSchultag(date)){
-				//qDebug(QString("SStundenplan: Did not find stundenplaneintrag %1, %2: creating new one").arg(date.toString()).arg(te->getKlasse()->getName()));
+                qDebug() << QString("SStundenplan: Did not find stundenplaneintrag %1, %2: creating new one").arg(date.toString()).arg(te->getKlasse()->getName().c_str());
 				AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName("stundenplaneintrag");
 				eintrag = (stundenplaneintrag*) mapper->create();
 				
-				te->addToEintraege(eintrag);
+                te->addToEintraege(eintrag);
 				eintrag->setDatum(date);
 				/* done by the above
 				eintrag->setTemplate(te);
@@ -231,7 +231,7 @@ list<stundenplaneintrag*>* SStundenplan::getEintraege(QDate date)
                 stundenplaneintrag *eintr = te->getEintrag(date);
                 if(!eintr){
                     qDebug() << QString("Asking to create Eintrag nr. %1 to schultag").arg(count);
-                    createEintrag(te, date);
+                    eintr=createEintrag(te, date);
                 }
                 if(eintr){
                     if(SKalender::getInstance()->isSchultag(date)){

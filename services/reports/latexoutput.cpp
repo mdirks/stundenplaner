@@ -437,6 +437,46 @@ QString LatexOutput::punkteToNote(int n)
     else return QString("?");
 }
 
+void LatexOutput::write_report(teilleistung *tl)
+{
+    qDebug("LatexOutput::write -- teilleistung");
+    if(stream){
+        QString fach("Unbekannt");
+        QString kurs("Unbekannt");
+        QString lehrer("Dirks");
+        int klassenstufe=0;
+        if(klasse *kl=tl->getKlasse()){
+            fach=kl->getFach().c_str();
+            klassenstufe = kl->getJahrgangsstufe();
+            kurs=kl->getKursnummer().c_str();
+        }
+        QString dS=QString("\\definecolor{draft}{rgb}{.1,.2,.8}\n");
+        dS=dS.append("\\textcolor{draft}{\\Large\\bf\\sf\n");
+        dS=dS.append("\\begin{pspicture}(18,27)\n");
+        dS=dS.append("\\rput(8.5,13){\\includegraphics{/home/mopp/schule/formular-klausur.ps} }");
+        dS=dS.append(QString("\\rput(3,23.4){%1}\n\\rput(3,22.5){%2}\n").arg(fach).arg(lehrer));
+        dS=dS.append(QString("\\rput(11.8,23.4){%1}\n\\rput(14.8,23.4){%2}").arg(klassenstufe).arg(kurs));
+        dS=dS.append(QString("\\rput(4.4,21.5){%1}\n").arg(tl->getDatum().toString(Qt::SystemLocaleShortDate)));
+        int all=tl->getNoten()->size();
+        dS=dS.append(QString("\\rput(13,22.4){%1}\n").arg(all));
+        int mis=tl->getAnzahl(-1);
+        dS=dS.append(QString("\\rput(13,21.5){%1}\n").arg(mis));
+
+        int sum=0;
+        int ges=0;
+        for(int i=1; i<=6; i++){
+            int n=tl->getAnzahlNote(i);
+            ges+=n;
+
+            sum+=n*i;
+            dS=dS.append(QString("\\rput(%1,18.6){%2}\n").arg(i-1+.4).arg(n));
+        }
+        dS=dS.append(QString("\\rput(13,20.3){%L1}\n").arg(sum*1.0/ges,0,'f',2));
+        dS=dS.append("\\end{pspicture}\n");
+        dS=dS.append("}\n");
+        *stream << dS;
+    } else {qDebug("LatexOutput::write_report(teilleistung) - kein stream !?");}
+}
 
 /*!
     \fn LatexOutput::write(teilleistung *tl)

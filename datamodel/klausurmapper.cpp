@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "klausur.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  klausurmapper* klausurmapper::instance=0;
@@ -28,10 +29,16 @@
 
  klausurmapper::klausurmapper()
   {
- 	version = "0.3";
-	columns = new string[0];
- 	columnTypes = new string[0];
- asc_Materialien = new Association<klausur, material>("klausur_material","klausur_id","material_id","material", &klausur::addToMaterialien, &klausur::deleteFromMaterialien);
+ 	version = "0.3-0.3";
+	columns = new string[2];
+ 	columnTypes = new string[2];
+ 	columns[0] = "datum";
+ 	columnTypes[0] = "varchar(30)";
+	mapProperties["datum"] = new Property("datum");
+	columns[1] = "aufgabe";
+ 	columnTypes[1] = "varchar(80)";
+	mapProperties["aufgabe"] = new Property("aufgabe");
+asc_Materialien = new Association<klausur, material>("klausur_material","klausur_id","material_id","material", &klausur::addToMaterialien, &klausur::deleteFromMaterialien);
 mapAssociations["Materialien"] = asc_Materialien;
 registerAssociation( asc_Materialien);
 }
@@ -74,14 +81,16 @@ klausurmapper::~klausurmapper(){}
  
  int klausurmapper::getColumnCount()
  {
-     return 0;
+     return 2;
  }
 
 
  string* klausurmapper::getValues(PObject *realSubject)
  {
- 	string *values = new string[0];  
+ 	string *values = new string[2];  
  	klausur *o = (klausur*) realSubject;
+	values[0] = to_string(o->getDatum());
+	values[1] = to_string(o->getAufgabe());
 return values;
  }
 
@@ -105,7 +114,9 @@ void klausurmapper::save(PObject *realSubject)
 void klausurmapper::init(PObject* inito, Variant *res)
  {
  	klausur *o = (klausur*) inito;
-	inito->init();
+	o->setDatum( res[0].asQDate());
+ 	o->setAufgabe( res[1].asMUrl());
+ 	inito->init();
 }
 
 
@@ -131,6 +142,8 @@ RepositoryEntry* klausurmapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "klausur" ); 
 	entry->addProperty( new StringProperty<klausur>("Name", "string", &klausur::getName, &klausur::setName, false) );
+	entry->addProperty( new DateProperty< klausur> ( "Datum", "QDate" , &klausur::getDatum, &klausur::setDatum ) ); 
+	entry->addProperty( new UrlProperty< klausur> ( "Aufgabe", "MUrl" , &klausur::getAufgabe, &klausur::setAufgabe ) ); 
 	entry->addProperty( new CollectionPropertyImpl<material,klausur>( "Materialien" , "material", &klausur::getMaterialien, &klausur::addToMaterialien, &klausur::deleteFromMaterialien  ) ); 
 	entry->registerBase( "teilleistung" );
 	return entry;

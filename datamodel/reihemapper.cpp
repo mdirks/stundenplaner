@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "reihe.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  reihemapper* reihemapper::instance=0;
@@ -28,7 +29,7 @@
 
  reihemapper::reihemapper()
   {
- 	version = "0.4";
+ 	version = "0.4-0.4";
 	columns = new string[2];
  	columnTypes = new string[2];
  	columns[0] = "thema";

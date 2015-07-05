@@ -98,7 +98,7 @@ klasse* sitzplan::getKlasse()
  */
 void sitzplan::setKlasse(klasse *k)
 {
-    this->kl = k;
+       this->kl = k;
 }
 
 int sitzplan::getReihen()

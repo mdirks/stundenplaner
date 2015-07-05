@@ -15,18 +15,21 @@
 #include "gui/base/guicontroler.h"
 
 DateEditor::DateEditor(QWidget *parent)
- : KDateWidget(parent) /*QDateEdit(parent)*/
+ : /*KDateWidget(parent)*/ QDateEdit(parent)
 {
 }
 
-DateEditor::DateEditor(PObject *o, RepositoryProperty *prop, QWidget *parent) : KDateWidget(parent) /*QDateEdit(parent)*/
+DateEditor::DateEditor(PObject *o, RepositoryProperty *prop,
+                       QWidget *parent)
+    : /*KDateWidget(parent)*/ QDateEdit(parent)
 {
 	this->prop = prop;
 	this->parent = o;
 
 	setDate(prop->asDate(o));
 
-	connect(this,SIGNAL(changed( QDate)),this,SLOT(startEdit()));
+    //connect(this,SIGNAL(changed( QDate)),this,SLOT(startEdit()));
+    connect(this,SIGNAL(dateChanged( QDate)),this,SLOT(startEdit()));
 }
 
 

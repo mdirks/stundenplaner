@@ -10,7 +10,9 @@ HEADERS += \
     mapping/objectfactoryimpl.h \
     mapping/objectfactory.h \
     mapping/mappingeventlistener.h \
-    mapping/condition.h
+    mapping/condition.h \
+    mapping/murl.h
+
 
 SOURCES += \
     mapping/mappingconverter.cpp \
@@ -24,7 +26,8 @@ SOURCES += \
     mapping/objectfactoryimpl.cpp \
     mapping/objectfactory.cpp \
     mapping/mappingeventlistener.cpp \
-    mapping/condition.cpp
+    mapping/condition.cpp \
+    mapping/murl.cpp
 
 CONFIG += qt
 QT+=sql

@@ -26,6 +26,7 @@ klasse::klasse()
 	sp = 0;
 	kb = 0;
 	sj = 0;
+    jhrg=0;
 	setMapper(klassemapper::getInstance());
 }
 
@@ -246,4 +247,35 @@ void klasse::addToReihen(reihe *r)
 void klasse::deleteFromReihen(reihe *r)
 {
     getReihen()->remove(r);
+}
+
+
+int klasse::getJahrgangsstufe()
+{
+    return jhrg;
+}
+
+void klasse::setJahrgangsstufe(int i)
+{
+    jhrg=i;
+}
+
+string klasse::getKursnummer()
+{
+    return kursnr;
+}
+
+void klasse::setKursnummer(string nr)
+{
+    kursnr=nr;
+}
+
+string klasse::getFach()
+{
+    return fach;
+}
+
+void klasse::setFach(string f)
+{
+    fach=f;
 }

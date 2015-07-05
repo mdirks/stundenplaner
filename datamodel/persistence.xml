@@ -15,7 +15,10 @@
 
 
 
-<class name="klasse" tname="klasse" base="notizholder" version="0.9">
+<class name="klasse" tname="klasse" base="notizholder" version="0.11">
+        <property name="Jahrgangsstufe" type="int" cname="jhrg" ctype="int"></property>
+        <property name="Kursnummer" type="string" cname="kursnr" ctype="varchar(15)"></property>
+        <property name="Fach" type="string" cname="fach" ctype="varchar(15)"></property>
 	<association name="Stunden" table="klasse_stunde" priCol="klasse_id" ascCol="stunde_id" ascClass="stunde"></association>
 	<association name="Schueler" table="klasse_schueler" priCol="klasse_id" ascCol="schueler_id" ascClass="schueler"></association>
 	<association name="Teilleistungen" table="klasse_leistung" priCol="klasse_id" ascCol="teilleistung_id" ascClass="teilleistung"></association>
@@ -211,10 +214,7 @@
 	<association name="Materialien" table="klausur_material" priCol="klausur_id" ascCol="material_id" ascClass="material"></association>
 </class>
 
-<class name="teilleistung" tname="teilleistung" version="0.1">
-	<association name="Noten" table="teilleistung_note" priCol="teilleistung_id" ascCol="note_id" ascClass="note"></association>
-	<reference name="Klasse" refClass="datamodel/klasse"></reference>
-</class>
+
 
 <class name="teilleistungberechnet" tname="teilleistungberechnet" base="teilleistung" version="0.1">
 	<association name="Teilleistungen" table="teilleistungberechnet_teilleistungen" priCol="teilleistungb_id" ascCol="teilleistung_id" ascClass="teilleistung"></association>
@@ -239,7 +239,9 @@
 	<property name="Bis" type="QDate" cname="bis" ctype="varchar(30)"></property>
 	<property name="Title" type="string" cname="title" ctype="varchar(30)"></property>	
 </class>
-<class name="teilleistung" tname="teilleistung" version="0.1">
+<class name="teilleistung" tname="teilleistung" version="0.3">
+        <property name="Datum" type="QDate" cname="datum" ctype="varchar(30)"></property>
+        <property name="Aufgabe" type="MUrl" cname="aufgabe" ctype="varchar(80)" getter="getAufgabe" setter="setAufgabe"></property>
 	<reference name="Klasse" refClass="datamodel/klasse"></reference>
 	<association name="Noten" table="teilleistung_note" priCol="leistung_id" ascCol="note_id" ascClass="note"></association>
 </class>

@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "teilleistungberechnet.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  teilleistungberechnetmapper* teilleistungberechnetmapper::instance=0;
@@ -28,10 +29,16 @@
 
  teilleistungberechnetmapper::teilleistungberechnetmapper()
   {
- 	version = "0.1";
-	columns = new string[0];
- 	columnTypes = new string[0];
- asc_Teilleistungen = new Association<teilleistungberechnet, teilleistung>("teilleistungberechnet_teilleistungen","teilleistungb_id","teilleistung_id","teilleistung", &teilleistungberechnet::addToTeilleistungen, &teilleistungberechnet::deleteFromTeilleistungen);
+ 	version = "0.1-0.3";
+	columns = new string[2];
+ 	columnTypes = new string[2];
+ 	columns[0] = "datum";
+ 	columnTypes[0] = "varchar(30)";
+	mapProperties["datum"] = new Property("datum");
+	columns[1] = "aufgabe";
+ 	columnTypes[1] = "varchar(80)";
+	mapProperties["aufgabe"] = new Property("aufgabe");
+asc_Teilleistungen = new Association<teilleistungberechnet, teilleistung>("teilleistungberechnet_teilleistungen","teilleistungb_id","teilleistung_id","teilleistung", &teilleistungberechnet::addToTeilleistungen, &teilleistungberechnet::deleteFromTeilleistungen);
 mapAssociations["Teilleistungen"] = asc_Teilleistungen;
 registerAssociation( asc_Teilleistungen);
 mapReferences["Klasse"] = new Reference("teilleistungberechnet","datamodel/klasse");
@@ -75,14 +82,16 @@ teilleistungberechnetmapper::~teilleistungberechnetmapper(){}
  
  int teilleistungberechnetmapper::getColumnCount()
  {
-     return 0;
+     return 2;
  }
 
 
  string* teilleistungberechnetmapper::getValues(PObject *realSubject)
  {
- 	string *values = new string[0];  
+ 	string *values = new string[2];  
  	teilleistungberechnet *o = (teilleistungberechnet*) realSubject;
+	values[0] = to_string(o->getDatum());
+	values[1] = to_string(o->getAufgabe());
 return values;
  }
 
@@ -107,7 +116,9 @@ void teilleistungberechnetmapper::save(PObject *realSubject)
 void teilleistungberechnetmapper::init(PObject* inito, Variant *res)
  {
  	teilleistungberechnet *o = (teilleistungberechnet*) inito;
-	inito->init();
+	o->setDatum( res[0].asQDate());
+ 	o->setAufgabe( res[1].asMUrl());
+ 	inito->init();
 }
 
 
@@ -133,6 +144,8 @@ RepositoryEntry* teilleistungberechnetmapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "teilleistungberechnet" ); 
 	entry->addProperty( new StringProperty<teilleistungberechnet>("Name", "string", &teilleistungberechnet::getName, &teilleistungberechnet::setName, false) );
+	entry->addProperty( new DateProperty< teilleistungberechnet> ( "Datum", "QDate" , &teilleistungberechnet::getDatum, &teilleistungberechnet::setDatum ) ); 
+	entry->addProperty( new UrlProperty< teilleistungberechnet> ( "Aufgabe", "MUrl" , &teilleistungberechnet::getAufgabe, &teilleistungberechnet::setAufgabe ) ); 
 	entry->addProperty( new CollectionPropertyImpl<teilleistung,teilleistungberechnet>( "Teilleistungen" , "teilleistung", &teilleistungberechnet::getTeilleistungen, &teilleistungberechnet::addToTeilleistungen, &teilleistungberechnet::deleteFromTeilleistungen  ) ); 
 	entry->addProperty( new PObjectProperty<klasse,teilleistungberechnet>( "Klasse" , "klasse", &teilleistungberechnet::getKlasse,&teilleistungberechnet::setKlasse ) ); 
 	entry->registerBase( "teilleistung" );

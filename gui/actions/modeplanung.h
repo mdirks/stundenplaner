@@ -10,6 +10,7 @@
 #include "orm/repository/repository.h"
 #include "orm/repository/repositoryentry.h"
 #include "ui_modeplanung.h"
+#include "gui/forms/formarea.h"
 
 #include <QSplitter>
 #include <QToolBar>
@@ -32,6 +33,7 @@ public slots:
     void showReihePlaner();
     void showLeistungen();
     void showSitzplan();
+    void showFormArea();
 
 private:
     static ModePlanung *instance;
@@ -41,6 +43,7 @@ private:
     QStackedWidget *stack;
     QToolBar *toolBar;
     ReiheBrowser *browser;
+    FormArea *formArea;
     TeilleistungEditorDialog *leistungEditor;
     list<RepositoryProperty*> *sePropertyList;
     SitzplanMapViewDialog *spmvd;

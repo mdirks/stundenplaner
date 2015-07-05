@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "teilleistung.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  teilleistungmapper* teilleistungmapper::instance=0;
@@ -28,10 +29,16 @@
 
  teilleistungmapper::teilleistungmapper()
   {
- 	version = "0.1";
-	columns = new string[0];
- 	columnTypes = new string[0];
- asc_Noten = new Association<teilleistung, note>("teilleistung_note","leistung_id","note_id","note", &teilleistung::addToNoten, &teilleistung::deleteFromNoten);
+ 	version = "0.3";
+	columns = new string[2];
+ 	columnTypes = new string[2];
+ 	columns[0] = "datum";
+ 	columnTypes[0] = "varchar(30)";
+	mapProperties["datum"] = new Property("datum");
+	columns[1] = "aufgabe";
+ 	columnTypes[1] = "varchar(80)";
+	mapProperties["aufgabe"] = new Property("aufgabe");
+asc_Noten = new Association<teilleistung, note>("teilleistung_note","leistung_id","note_id","note", &teilleistung::addToNoten, &teilleistung::deleteFromNoten);
 mapAssociations["Noten"] = asc_Noten;
 registerAssociation( asc_Noten);
 mapReferences["Klasse"] = new Reference("teilleistung","datamodel/klasse");
@@ -75,14 +82,16 @@ teilleistungmapper::~teilleistungmapper(){}
  
  int teilleistungmapper::getColumnCount()
  {
-     return 0;
+     return 2;
  }
 
 
  string* teilleistungmapper::getValues(PObject *realSubject)
  {
- 	string *values = new string[0];  
+ 	string *values = new string[2];  
  	teilleistung *o = (teilleistung*) realSubject;
+	values[0] = to_string(o->getDatum());
+	values[1] = to_string(o->getAufgabe());
 return values;
  }
 
@@ -106,7 +115,9 @@ void teilleistungmapper::save(PObject *realSubject)
 void teilleistungmapper::init(PObject* inito, Variant *res)
  {
  	teilleistung *o = (teilleistung*) inito;
-	inito->init();
+	o->setDatum( res[0].asQDate());
+ 	o->setAufgabe( res[1].asMUrl());
+ 	inito->init();
 }
 
 
@@ -128,12 +139,12 @@ list<note*> * teilleistungmapper::findNoten(int pri_id,string prop,string value)
              }
 
 
-
-
 RepositoryEntry* teilleistungmapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "teilleistung" ); 
 	entry->addProperty( new StringProperty<teilleistung>("Name", "string", &teilleistung::getName, &teilleistung::setName, false) );
+	entry->addProperty( new DateProperty< teilleistung> ( "Datum", "QDate" , &teilleistung::getDatum, &teilleistung::setDatum ) ); 
+	entry->addProperty( new UrlProperty< teilleistung> ( "Aufgabe", "MUrl" , &teilleistung::getAufgabe, &teilleistung::setAufgabe ) ); 
 	entry->addProperty( new CollectionPropertyImpl<note,teilleistung>( "Noten" , "note", &teilleistung::getNoten, &teilleistung::addToNoten, &teilleistung::deleteFromNoten  ) ); 
 	entry->addProperty( new PObjectProperty<klasse,teilleistung>( "Klasse" , "klasse", &teilleistung::getKlasse,&teilleistung::setKlasse ) ); 
 	return entry;

@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "lektuerenotiz.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  lektuerenotizmapper* lektuerenotizmapper::instance=0;
@@ -28,7 +29,7 @@
 
  lektuerenotizmapper::lektuerenotizmapper()
   {
- 	version = "0.3";
+ 	version = "0.3-0.4";
 	columns = new string[3];
  	columnTypes = new string[3];
  	columns[0] = "notiz";

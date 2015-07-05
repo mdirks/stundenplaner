@@ -21,6 +21,7 @@
 #include "teilleistungmapper.h"
 
 teilleistung::teilleistung()
+    : url("")
 {
 	list_noten=0;
 	kl =0;
@@ -138,3 +139,23 @@ int teilleistung::getAnzahlNote(int note)
 }
 
 
+void teilleistung::setAufgabe(MUrl u)
+{
+    url=u;
+}
+
+MUrl teilleistung::getAufgabe()
+{
+    return url;
+}
+
+
+void teilleistung::setDatum(QDate d)
+{
+    date=d;
+}
+
+QDate teilleistung::getDatum()
+{
+    return date;
+}

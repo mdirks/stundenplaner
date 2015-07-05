@@ -21,6 +21,7 @@
 #define TEILLEISTUNG_H
 
 #include "orm/transactions/transactionobject.h"
+#include "orm/mapping/murl.h"
 
 #include <list>
 #include <map>
@@ -48,11 +49,17 @@ public:
     double getDurchschnitt();
     int getAnzahl(int punkte);
     int getAnzahlNote(int note);
+    MUrl getAufgabe();
+    void setAufgabe(MUrl path);
+    QDate getDatum();
+    void setDatum(QDate date);
 
 private:
 	list<note*> *list_noten;
 	klasse *kl;
 	map<schueler*,note*> *map_noten;
+    MUrl url;
+    QDate date;
 
 };
 

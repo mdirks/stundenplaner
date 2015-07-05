@@ -54,8 +54,8 @@ ModePlanung* ModePlanung::getInstance()
 
 void ModePlanung::showForm(QWidget *w)
 {
-    if(dp){
-        dp->showFormAtBottom(w);
+    if(formArea){
+        formArea->showForm(w);
     }
 }
 
@@ -101,6 +101,10 @@ void ModePlanung::setupMode()
         stack->addWidget(spmvd);
         spmvd->hide();
 
+        formArea = new FormArea();
+        stack->addWidget(formArea);
+        formArea->hide();
+
         //spl->addWidget(stack);
 
 
@@ -120,6 +124,9 @@ void ModePlanung::setupMode()
 
         pm = GuiConfig::getInstance()->getIcon("Sitzplan");
         toolBar->addAction(pm," ",this,SLOT(showSitzplan()));
+
+        pm = GuiConfig::getInstance()->getIcon("Forms");
+        toolBar->addAction(pm," ",this,SLOT(showFormArea()));
         /*
         pm = GuiConfig::getInstance()->getIcon("Lernkarten");
         toolBar->addAction(pm,"",this,SLOT(showLernkarten()));
@@ -182,6 +189,15 @@ void ModePlanung::showSitzplan()
         stack->setCurrentWidget(dp);
     } else {
         stack->setCurrentWidget(spmvd);
+    }
+}
+
+void ModePlanung::showFormArea()
+{
+    if(stack->currentWidget()==formArea){
+        stack->setCurrentWidget(dp);
+    } else {
+        stack->setCurrentWidget(formArea);
     }
 }
 

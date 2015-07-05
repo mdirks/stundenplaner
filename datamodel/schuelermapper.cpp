@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "schueler.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  schuelermapper* schuelermapper::instance=0;
@@ -26,11 +27,9 @@
  }
 
 
-
-
  schuelermapper::schuelermapper()
   {
- 	version = "0.6";
+ 	version = "0.6-0.4";
 	columns = new string[3];
  	columnTypes = new string[3];
  	columns[0] = "vorname";

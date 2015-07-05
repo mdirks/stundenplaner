@@ -240,6 +240,8 @@ void MappingGenerator::handleClassElement(QDomElement classElement)
             QDomNode node=classList.at(i);
             if(node.toElement().attribute("name")==baseClassName){
                 baseClassElement=node.toElement();
+                QString baseClassVersion=baseClassElement.attribute("version");
+                classVersion.append("-").append(baseClassVersion);
                 //ascNodeList = append(ascNodeList,baseClassElement.elementsByTagName("association"));
                 //refNodeList = append(refNodeList,baseClassElement.elementsByTagName("reference"));
                 propertyNodeList = append(propertyNodeList,baseClassElement.elementsByTagName("property"));
@@ -302,6 +304,7 @@ void MappingGenerator::writeDeclaration(QTextStream& declStream){
 #include \"" << "orm/persistence/pobject.h\" \n \
 #include \"" << "orm/mapping/mappedobject.h\" \n\
 #include \"" << "orm/mapping/association.h\" \n\
+#include \"" << "orm/mapping/murl.h\" \n\
 #include \"" << "orm/persistence/persistenceclass.h\" \n \
 #include \"" <<  className.toLower() << ".h\" \n";
 for(int i=0; i<ascNodeList.count();i++)
@@ -505,6 +508,7 @@ void MappingGenerator::writeDefinition_Intro()
 #include \"" << "services/utils/utils.h\"\n \
 #include \"" << className.toLower() << ".h\"\n\
 #include \"" << "orm/persistence/database.h\"\n \
+#include \"" << "orm/repository/urlproperty.h\"\n \
 //#include \"" << "orm/mappingproperty.h\"\n\
 \n \
 "<< pClassName <<"* "<< pClassName << "::instance=0;\n \
@@ -779,7 +783,10 @@ getterName << ", " << setterName << " ) ); \n";
 			} else if (type == "QDateTime"){
 				implStream << "	entry->addProperty( new DateTimeProperty< " << className << "> ( \"" << name << "\", \"" << type << "\" , &" << className << "::"  <<
 getterName << ", " << setterName << " ) ); \n";
-			}  else if (type == "QFile"){
+            } else if (type == "MUrl") {
+                implStream << "	entry->addProperty( new UrlProperty< " << className << "> ( \"" << name << "\", \"" << type << "\" , &" << className << "::"  <<
+getterName << ", " << setterName << " ) ); \n";
+            } else if (type == "QFile"){
 				/** \todo Handle QFile (writing FileProperty etc)*/
 				/*
 				implStream << "	entry->addProperty( new DateProperty< " << className << "> ( \"" << name << "\", \"" << type << "\" , &" << className << "::"  <<

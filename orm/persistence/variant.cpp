@@ -75,6 +75,10 @@ Variant::operator KUrl()
 {
     return KUrl(qv.toString());
 }
+
+Variant::operator MUrl(){
+    return MUrl(qv.toString().toStdString());
+}
 /*!
     \fn Variant::isValid()
  */
@@ -147,6 +151,12 @@ KUrl Variant::asKUrl()
 {
     KUrl url(qv.toString());
 	return url;
+}
+
+MUrl Variant::asMUrl()
+{
+    MUrl url(qv.toString().toStdString());
+    return url;
 }
 
 bool Variant::asbool()

@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "opo.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  opomapper* opomapper::instance=0;

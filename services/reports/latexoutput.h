@@ -40,12 +40,15 @@ public:
     void write( schultag *scht);
     void write( kursbuch *kb);
     void write( PObject *o);
+    void write( teilleistung *tl );
+
+
+    void write_report( teilleistung *tl);
 
 	void close();
 	void edit();
     void write(list<fehlzeit*> *lf);
     QString punkteToNote(int n);
-    void write(teilleistung *tl);
 
 protected:
 	void writeHeader();

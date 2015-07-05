@@ -11,6 +11,8 @@ public:
     PObjectDropTarget();
 
     PObject* handlePObjectDrop(QDropEvent *e);
+    PObject* recoverPObject(const QMimeData *md);
+    QMimeData* createMimeData(PObject *o);
 };
 
 #endif // POBJECTDROPTARGET_H

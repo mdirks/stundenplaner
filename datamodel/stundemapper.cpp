@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "stunde.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  stundemapper* stundemapper::instance=0;
@@ -28,7 +29,7 @@
 
  stundemapper::stundemapper()
   {
- 	version = "1.1";
+ 	version = "1.1-0.4";
 	columns = new string[2];
  	columnTypes = new string[2];
  	columns[0] = "verlauf";

@@ -80,6 +80,7 @@
 #include "gui/actions/modelernen.h"
 #include "gui/actions/servicexml.h"
 #include "gui/actions/modenotes.h"
+#include "gui/actions/servicepdf.h"
 
 #include <QPixmap>
 //#include <qscrollview.h>
@@ -529,6 +530,7 @@ void GuiRepositoryImpl::initGui()
     addMode(new ModeNotes());
     addService(ServiceLatex::getInstance());
     addService(new ServiceXml());
+    addService(ServicePdf::getInstance());
 }
 
 void GuiRepositoryImpl::setSelectedObject(PObject *o)

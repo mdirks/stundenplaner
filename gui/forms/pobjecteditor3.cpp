@@ -24,6 +24,7 @@
 #include "orm/repository/propertyaction.h"
 #include "booleaneditor.h"
 #include "pobjectmultiview.h"
+#include "urleditor.h"
 
 #include <qlayout.h>
 #include <qlabel.h>
@@ -112,6 +113,9 @@ void PObjectEditor3::doCommonSetup()
             } else if(prop->isBoolean()){
                     flayout -> addRow(prop->getName().c_str(),
                                         new BooleanEditor(mo,prop,mainTab));
+            } else if(prop->isUrl()){
+                    flayout -> addRow(prop->getName().c_str(),
+                                      new UrlEditor(mo,prop,mainTab));
             }
 
         }

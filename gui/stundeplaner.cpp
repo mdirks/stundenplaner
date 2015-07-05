@@ -399,8 +399,15 @@ void StundePlanerApp::slotDumpDatabase()
 
 void StundePlanerApp::dumpDatabase(QString fileName)
 {
-    QString dbName = GuiConfig::getInstance()->getDatabaseName();
-    QString com = QString("mysqldump --user=root %1 > %2").arg(dbName).arg(fileName);
+    QString databasename = GuiConfig::getInstance()->getDatabaseName();
+    QStringList args = databasename.split(":");
+    QString dbName=args.at(0);
+    QString com;
+    if(args.size()>1){
+        com = QString("mysqldump -h%1 -u%2 -p%3 %4 > %5").arg(args.at(1),args.at(2),args.at(3),dbName,fileName);
+    } else {
+        com = QString("mysqldump -user=root %1 > %2").arg(dbName).arg(fileName);
+    }
     qDebug() << com;
     KRun::runCommand(com,this);
 }

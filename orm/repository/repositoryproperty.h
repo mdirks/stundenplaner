@@ -25,6 +25,7 @@
 #include <kaction.h>
 
 #include "../persistence/pobject.h"
+#include "orm/mapping/murl.h"
 //#include "propertyaction.h"
 
 using namespace std;
@@ -63,6 +64,8 @@ public:
     virtual void add(PObject *o, PObject *oo) = 0;
     virtual bool isBoolean() = 0;
     virtual bool asBoolean(PObject *o) = 0;
+    virtual bool isUrl() =0;
+    virtual MUrl asUrl(PObject *o) = 0;
     
 };
 

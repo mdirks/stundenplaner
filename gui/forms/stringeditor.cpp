@@ -27,7 +27,7 @@ StringEditor::StringEditor(PObject *o, RepositoryProperty *prop, QWidget *p) :
     setText(AbstractPropertyEditor::property->asString( parentObject ).c_str());
 
     connect(this,SIGNAL(textChanged(const QString &)),this,SLOT(startEdit(const QString &text)));
-    //connect(this,SIGNAL(returnPressed()),this,SLOT(stopEdit()));
+    connect(this,SIGNAL(editingFinished()),this,SLOT(stopEdit()));
 }
 
 
