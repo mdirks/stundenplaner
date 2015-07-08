@@ -16,7 +16,7 @@
 #include <QTextStream>
 
 TextPropertyEditor::TextPropertyEditor(QWidget *parent)
- : QTextEdit(parent)
+ : QTextEdit(parent) , property(0)
 {
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
     setLineWrapMode(QTextEdit::NoWrap);
@@ -103,7 +103,7 @@ void TextPropertyEditor::setProperty(RepositoryProperty *rp)
 void TextPropertyEditor::setParentObject(PObject *po)
 {
     this->parent=po;
-    if(po){
+    if(property && po){
         setText(property->asString( parent ).c_str());
     } else {
         clear();

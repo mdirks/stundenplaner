@@ -53,13 +53,13 @@ template<class ObjectType>
 string BooleanProperty<ObjectType>::asString(PObject *o)
 {
 	ObjectType *ot = 0;
-    	ot = dynamic_cast<ObjectType*>(o);
-    	if(ot){
-		QString st("%1");
-                return st.arg((ot->*getter)()).toStdString();
-   	 } else {
-    		return string("Conversion failed due to wrong object type");
-    	}
+    ot = dynamic_cast<ObjectType*>(o);
+    if(ot){
+        QString st("%1");
+        return st.arg((ot->*getter)()).toStdString();
+    } else {
+        return string("Conversion failed due to wrong object type");
+    }
 }
 
 template<class ObjectType>
