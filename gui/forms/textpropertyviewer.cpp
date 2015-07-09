@@ -74,7 +74,7 @@ void TextPropertyViewer::doCommonSetup()
 {
     label = new TextPropertyLabel(this);
     label->setFrameStyle(QFrame::NoFrame);
-    if(parent && prop){
+    if(prop){
         editor = new TextPropertyEditor(parent,prop,this);
     } else {
         editor = new TextPropertyEditor(this);
@@ -199,6 +199,17 @@ TextPropertyEditorDialog::~TextPropertyEditorDialog()
 {
 }
 
+QString TextPropertyViewer::getTexFileName()
+{
+    if(prop && parent){
+        return tmpDir.filePath(QString("%1%2.tex").arg(parent->getID()).arg(prop->getName().c_str()));
+    } else if(parent) {
+        return tmpDir.filePath(QString("%1.tex").arg(parent->getID()));
+    } else {
+        return "nani.pdf";
+    }
+}
+
 QString TextPropertyViewer::getFileName()
 {
     if(prop && parent){
@@ -316,7 +327,7 @@ void TextPropertyViewer::compileError( QProcess::ProcessError error)
 
  QString TextPropertyViewer::getCompileStringVorn()
 {
-     QString fileName = getFileName();
+     QString fileName = getTexFileName();
 
    QFile texFile(fileName);
     if(!texFile.open(QIODevice::WriteOnly|QIODevice::Text)){
@@ -405,10 +416,10 @@ void TextPropertyEditorDialog::edit(RepositoryProperty *prop, PObject *parent)
 
 void TextPropertyViewer::keyPressEvent ( QKeyEvent * e )
 {
-    qDebug() << "TextPropertyEditorDialog::keyPressEvent ";
+    qDebug() << "TextPropertyViewer::keyPressEvent ";
 	if(editing){
         if (e->key() == Qt::Key_F2){
-            qDebug() << "TextPropertyEditorDialog::keyPressEvent : F2 -> applyRequested";
+            qDebug() << "TextPropertyViewer::keyPressEvent : F2 -> applyRequested";
 				stopEdit();
 				emit applyRequested();
 		} else {
