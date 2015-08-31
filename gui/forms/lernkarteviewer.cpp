@@ -40,8 +40,11 @@
 #include <algorithm>
 #include <functional>
 
-QString LernkarteViewer::header = "\\documentclass[11pt]{extarticle}\\usepackage[paperheight=100mm,paperwidth=50mm,landscape]{geometry}\\pagestyle{empty}\\oddsidemargin=-22mm\\textwidth=98mm\\begin{document}\\sffamily\\vspace*{\\fill}";
-QString LernkarteViewer::footer = "\\vspace*{2cm}\\mbox{}\\vspace*{\\fill}\\end{document}";
+QString LernkarteViewer::header = "\\documentclass[11pt]{extarticle}\n \
+\\usepackage[paperheight=100mm,paperwidth=50mm,landscape]{geometry}\n\\pagestyle{empty}\n \
+\\topmargin -36mm\n\\textheight 76mm\n \\oddsidemargin -22mm\n\\textwidth=98mm\n\
+\\parindent=0pt \n\\parskip=0.15 true in\n\\begin{document}\n\\sffamily\n";
+QString LernkarteViewer::footer = "\\end{document}";
 
 
 LernkartensatzViewer::LernkartensatzViewer(lernkartensatz *ls, QWidget *parent, LernkarteViewer::Orientation ori)
@@ -72,15 +75,15 @@ LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation o
     RepositoryProperty *rp= 0;
     rp=Repository::getInstance()->getRepositoryEntry("lernkarte")->getProperty("SourceVorn");
     viewerVorn = new TextPropertyViewer(0,rp,this);
-    //viewerVorn->setFitToView(true);
+    viewerVorn->setFitToView(true);
     viewerVorn->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    viewerVorn->setMinimumSize(300,200);
+    //viewerVorn->setMinimumSize(300,200);
     viewerVorn->setHeader(header);
     viewerVorn->setFooter(footer);
     viewerVorn->setBackgroundColor(QColor(255, 255, 255, 127));
     rp= Repository::getInstance()->getRepositoryEntry("lernkarte")->getProperty("SourceHinten");
     viewerHinten= new TextPropertyViewer(0,rp,this);
-    //viewerHinten->setFitToView(true);
+    viewerHinten->setFitToView(true);
     viewerHinten->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     viewerHinten->setHeader(header);
     viewerHinten->setFooter(footer);
@@ -99,11 +102,13 @@ LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation o
     //QToolBar *toolBar = new QToolBar(this);
     //toolBar->addWidget(combo);
     //topLayout->addWidget(toolBar);
-
+    stack=new QStackedWidget(this);
+    blankWidget=new QWidget(this);
 
     if(ori==Horizontal){
         QWidget *displayWidget = new QWidget(this);
         QGridLayout *gl = new QGridLayout(displayWidget);
+
 
         gl->addWidget(viewerVorn,0,0);
         gl->addWidget(viewerHinten,0,1);
@@ -115,15 +120,20 @@ LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation o
         QWidget *displayWidget = new QWidget(this);
         QVBoxLayout *gl = new QVBoxLayout(displayWidget);
 
+
+        stack->addWidget(viewerHinten);
+        stack->addWidget(blankWidget);
         //gl->addWidget(new QLabel("1"),0,0);
         //gl->addWidget(toolBar,1,1);
         gl->addWidget(viewerVorn);
-        gl->addWidget(viewerHinten);
+        gl->addWidget(stack);
+
 
 
         topLayout->addWidget(displayWidget);
         topLayout->setSpacing(0);
         displayWidget->show();
+
     } else if(ori==Stacked){
         stack=new QStackedWidget(this);
         //stack->setContentsMargins(0,0,0,0);
@@ -169,11 +179,18 @@ QSize LernkarteViewer::sizeHint()
 void LernkarteViewer::mousePressEvent(QMouseEvent *e)
 {
     if(e->button() == Qt::RightButton){
+        switchHinten();
+
+        /*
         if(showsVorn){
             showHinten();
         } else {
             showVorn();
         }
+        */
+    } else if(e->button() == Qt::LeftButton){
+        nextRequested();
+        e->accept();
     }
 
 }
@@ -238,13 +255,35 @@ void LernkarteViewer::showVorn()
         stack->setCurrentWidget(viewerVorn);
     }
     viewerHinten->stopEdit();
-    viewerHinten->setHidden(true);
+    //viewerHinten->setHidden(true);
+    stack->setCurrentWidget(blankWidget);
+    showsHinten=false;
+    //viewerHinten->setVisible(false);
     viewerHinten->readVorn();
-    viewerVorn->setHidden(false);
+    //viewerVorn->show();
     viewerVorn->readVorn();
     viewerVorn->setFocus();
 
 	showsVorn=true;
+}
+
+void LernkarteViewer::switchHinten()
+{
+    if(orientation==Stacked){
+        stack->setCurrentWidget(viewerHinten);
+    }
+    //viewerVorn->stopEdit();
+    //viewerVorn->setHidden(true);
+    //viewerVorn->readVorn();
+    if(stack->currentWidget()!=viewerHinten){
+        stack->setCurrentWidget(viewerHinten);
+        viewerHinten->readVorn();
+        viewerHinten->setFocus();
+    } else {
+        stack->setCurrentWidget(blankWidget);
+        showsHinten=false;
+    }
+    //showsVorn=false;
 }
 
 void LernkarteViewer::showHinten()
@@ -253,9 +292,9 @@ void LernkarteViewer::showHinten()
         stack->setCurrentWidget(viewerHinten);
     }
     viewerVorn->stopEdit();
-    viewerVorn->setHidden(true);
+    viewerVorn->hide();
     viewerVorn->readVorn();
-    viewerHinten->setHidden(false);
+    viewerHinten->show();
     viewerHinten->readVorn();
     viewerHinten->setFocus();
 	showsVorn=false;

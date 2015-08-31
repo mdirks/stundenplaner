@@ -397,34 +397,37 @@ void GuiRepositoryImpl::showCentralWidget(QWidget *w)
 
 void GuiRepositoryImpl::showEditorForProperty(PObject *o,RepositoryProperty *rp)
 {
-	
-    KDialog *dialog = new KDialog(stundeplaner);
-	QWidget *form=0;
 
     //Transactions::getCurrentTransaction()->add(o); // hack because some editors do not commit properly
 
     if(rp){
-	if(rp->isString()){
-        StringEditor *se= new StringEditor(o,rp,dialog);
-        connect(dialog,SIGNAL(okClicked()),se,SLOT(stopEdit()));
-        form=se;
-	} else if(rp->isText()){
-        TextPropertyEditor *pe = new TextPropertyEditor(o,rp,dialog);
-        connect(dialog,SIGNAL(okClicked()),pe,SLOT(stopEdit()));
-        form=pe;
-	} else if(rp->isNumeric()){
-		form = new StringEditor(o,rp,dialog);
-	} else if(rp->isPObject()){
-		form = getFormForObject(rp->asPObject(o), dialog);
-	} else if(rp){
-        form = new QLabel(QString("%1 : unknown editor type").arg(rp->getName().c_str()),dialog);
-	} else {
-		form = new QLabel(QString("empty property"),dialog);
-	}
+        if(rp->isPObject()){
+            showFormForObject(rp->asPObject(o));
+        } else {
+            KDialog *dialog = new KDialog(stundeplaner);
+            QWidget *form=0;
+
+            if(rp->isString()){
+                StringEditor *se= new StringEditor(o,rp,dialog);
+                connect(dialog,SIGNAL(okClicked()),se,SLOT(stopEdit()));
+                form=se;
+            } else if(rp->isText()){
+                TextPropertyEditor *pe = new TextPropertyEditor(o,rp,dialog);
+                connect(dialog,SIGNAL(okClicked()),pe,SLOT(stopEdit()));
+                form=pe;
+            } else if(rp->isNumeric()){
+                form = new StringEditor(o,rp,dialog);
+            } else if(rp){
+                form = new QLabel(QString("%1 : unknown editor type").arg(rp->getName().c_str()),dialog);
+            } else {
+                form = new QLabel(QString("empty property"),dialog);
+            }
+
+            dialog->setMainWidget(form);
+            dialog->exec();
+        }
     }
 
-	dialog->setMainWidget(form);
-	dialog->exec();	
 }
 /*!
     \fn GuiRepositoryImpl::setFormWorkspace(QWorkspace *w)

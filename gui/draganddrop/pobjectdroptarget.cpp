@@ -4,6 +4,7 @@
 #include <QDebug>
 PObjectDropTarget::PObjectDropTarget()
 {
+
 }
 
 
@@ -55,3 +56,4 @@ QMimeData* PObjectDropTarget::createMimeData(PObject *o)
     mimeData->setData("application/pobject",data);
     return mimeData;
 }
+

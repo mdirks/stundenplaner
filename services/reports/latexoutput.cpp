@@ -351,7 +351,13 @@ void LatexOutput::write( kursbuch *kb)
 			int item_count =0;
 			while((it != (list_kbe->end())) && (item_count < 16)){
 				krusbucheintrag *kbe = (*it);
-                *stream << kbe->getDatum().toString("ddd dd.MM") << " & " <<  kbe->getStunde().c_str() << " & " <<  kbe->getEintrag().c_str() << " & " << kbe -> getBemerkung().c_str() << " \\\\ \n \\hline \n";
+                *stream << kbe->getDatum().toString("ddd dd.MM") << " & ";
+                if(kbe->getStundenplanEintrag()){
+                    *stream <<  kbe->getStundenplanEintrag()->getNrStunde();
+                } else {
+                    *stream << "??";
+                }
+                *stream << " & " <<  kbe->getEintrag().c_str() << " & " << kbe -> getBemerkung().c_str() << " \\\\ \n \\hline \n";
 				item_count++;
 				it++;
 			}

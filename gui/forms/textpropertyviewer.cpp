@@ -232,7 +232,7 @@ void TextPropertyViewer::setFitToView(bool f)
     QSizePolicy policy=QSizePolicy();
     policy.setHeightForWidth(true);
     policy.setVerticalPolicy(QSizePolicy::Fixed);
-    policy.setHorizontalPolicy(QSizePolicy::Ignored);
+    policy.setHorizontalPolicy(QSizePolicy::Expanding);
     setSizePolicy(policy);
 }
 
@@ -247,12 +247,24 @@ void TextPropertyViewer::readVorn()
         if(doc && doc->page(0)){
             doc->setRenderHint(Poppler::Document::TextAntialiasing);
             doc->setRenderHint(Poppler::Document::Antialiasing);
-            QImage image = doc->page(0)->renderToImage();
-            if(!image.isNull()){
-                displayPm=QPixmap::fromImage(image);
-                setDisplayPixmapToLabel(displayPm);
+            Poppler::Page *pa = doc->page(0);
+            if(pa){
+                double sf=1.0;
+                if(fit){
+                    int w=pa->pageSize().width();
+                    sf = label->width()*1.1/w;
+                }
+                QImage image = pa->renderToImage(sf*physicalDpiX(),
+                                                 sf*physicalDpiY());
+
+                if(!image.isNull()){
+                    displayPm=QPixmap::fromImage(image);
+                    setDisplayPixmapToLabel(displayPm);
+                } else {
+                    label->setText("Failed to read image");
+                }
             } else {
-                label->setText("Failed to read image");
+                label->setText(QString("Failed to load  %1 !").arg(fileName));
             }
         } else {
             label->setText(QString("Failed to load  %1 !").arg(fileName));
@@ -266,16 +278,22 @@ void TextPropertyViewer::setDisplayPixmapToLabel(QPixmap dpm)
 {
     if(label->size().width() > dpm.size().width())
     {
-        QPixmap *pm = new QPixmap(label->size());
-        pm->fill(bgColor);
+        if(fit){
+            QPixmap pm=dpm.scaledToWidth(label->size().width());
+            label->setPixmap(pm);
+        } else {
+            QPixmap pm(label->size());
+            pm.fill(bgColor);
 
-        QPainter *painter= new QPainter(pm);
-        int x = pm->size().width()/2 - dpm.size().width()/2;
-        int y = pm->size().height()/2- dpm.size().height()/2;
+            QPainter *painter= new QPainter(&pm);
+            int x = pm.size().width()/2 - dpm.size().width()/2;
+            int y = pm.size().height()/2- dpm.size().height()/2;
 
-        painter->drawPixmap(x,y,dpm);
-        painter->end();
-        label->setPixmap(*pm);
+            painter->drawPixmap(x,y,dpm);
+            painter->end();
+            label->setPixmap(pm);
+
+        }
     } else {
         label->setPixmap(dpm);
     }
@@ -431,7 +449,8 @@ void TextPropertyViewer::keyPressEvent ( QKeyEvent * e )
         //QWidget::keyPressEvent(e);
     } else {
         //label->emitEditRequested();
-        QWidget::keyPressEvent(e);
+        //QWidget::keyPressEvent(e);
+        e->ignore();
     }
 }
 // void TextPropertyEditorDialog::stopEdit()

@@ -15,7 +15,7 @@
 #include "abstractpropertyeditor.h"
 #include "orm/persistence/pobject.h"
 #include "gui/base/editrequestor.h"
-
+#include "gui/draganddrop/pobjectdroptarget.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QDrag>
@@ -26,7 +26,8 @@
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
-class PObjectLabel : public QWidget,  public AbstractPropertyEditor
+class PObjectLabel : public QWidget,  public AbstractPropertyEditor,
+        public PObjectDropTarget
 {
 Q_OBJECT
 
@@ -39,12 +40,16 @@ public:
      void startEdit(RepositoryProperty *prop, PObject *o);
     void stopEdit();
     void setObject(PObject *o);
+    PObject* getObject();
+    void startDrag (/* Qt::DropActions supportedActions */);
+
     //QDrag* dragObject();
 
 protected:
 	void dragEnterEvent(QDragEnterEvent *e);
 	void dragLeaveEvent ( QDragLeaveEvent * );
 	void dropEvent(QDropEvent *e);
+    void dragMoveEvent(QDragMoveEvent *e);
 	void mouseMoveEvent ( QMouseEvent * e );
 	void mouseReleaseEvent ( QMouseEvent * e );
 	void mouseDoubleClickEvent ( QMouseEvent * e );
@@ -58,8 +63,7 @@ public slots:
 	//void handleDrop(QDropEvent *e);
 
 private:
-	PObject* getObject();
-	void setLabelText();
+    void setLabelText();
 
 
 
@@ -69,7 +73,7 @@ private:
 	//PObject *edit_o;
 	bool with_icon, with_buttons, with_text, dragging;
 	PObject *my_object;
-
+    QPixmap pmap;
 };
 
 #endif

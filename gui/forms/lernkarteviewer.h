@@ -118,6 +118,7 @@ public slots:
     void switchDisplay();
     void showHinten();
     void showVorn();
+    void switchHinten();
     //void showEditor(bool vorn);
     void showLabels();
 
@@ -132,10 +133,11 @@ private:
     //lernkartensatz *ls;
     list<lernkarte*> *list_karten;
     list<lernkarte*>::iterator it_ak;
-    bool showsVorn;
+    bool showsVorn, showsHinten;
     QDir tmpDir;
      QProcess *pvorn, *phinten;
      QStackedWidget *stack;
+     QWidget *blankWidget;
     // int currentIndex;
     LernkarteViewer::Orientation orientation;
 

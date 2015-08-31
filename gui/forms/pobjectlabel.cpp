@@ -29,7 +29,6 @@ PObjectLabel::PObjectLabel(RepositoryProperty *prop, PObject *o, QWidget *p, boo
 	
 	if(with_icon){
 		label_pix = new QLabel(this);
-        QPixmap pmap;
         if(prop){
             pmap = GuiConfig::getInstance()->getIcon( prop->getType().c_str() );
 		} else if(o){
@@ -78,7 +77,8 @@ PObjectLabel::PObjectLabel(RepositoryProperty *prop, PObject *o, QWidget *p, boo
 	//connect(this,SIGNAL(dropped( QDropEvent *, const QValueList<QIconDragItem> & )), this, SLOT( handleDrop(QDropEvent *)));
 	//if(o){ startEdit(prop,o);}
 	//this->edit_o=o;
-	setAcceptDrops(TRUE);
+    setAcceptDrops(TRUE);
+
 }
 
 void PObjectLabel::chooseObject(){
@@ -101,7 +101,8 @@ void PObjectLabel::editObject(){
 	AbstractPropertyEditor::startEdit();
 	PObject *o = getObject();
 	if(o){
-		editRequestor->requestDialog(o);
+        editRequestor->requestEdit(o);
+        //editRequestor->requestDialog(o);
 	} else {
         qDebug() << "PObjectLabel::editObject(): No object to edit";
 	}
@@ -160,8 +161,11 @@ void PObjectLabel::stopEdit()
 void PObjectLabel::dropEvent(QDropEvent *e)
 {
     qDebug() << "PObjectLabel::handleDrop";
-    PObject *o = PObjectData::decode(e->mimeData()->data("application/pobject"));
-    e->accept();
+    PObject *o=handlePObjectDrop(e);
+
+
+    //PObject *o = PObjectData::decode(e->mimeData()->data("application/pobject"));
+    //e->accept();
     if(o){
 		AbstractPropertyEditor::startEdit();	
 		setObject(o);
@@ -208,34 +212,78 @@ void PObjectLabel::setObject(PObject *o)
 	emit objectChanged();
 }
 
+
+
+void PObjectLabel::dragMoveEvent(QDragMoveEvent *e)
+{
+
+    if(e->mimeData()->hasFormat("application/pobject"))
+    {
+        e->accept();
+    } else {
+        e->ignore();
+    }
+
+}
+
+
+
 void PObjectLabel::dragEnterEvent(QDragEnterEvent *e)
 {
     if(e->mimeData()->hasFormat("application/pobject"))
     {
-        e->acceptProposedAction();
+        e->accept();
+    } else {
+        e->ignore();
     }
+
 	
 }
 
 void PObjectLabel::dragLeaveEvent ( QDragLeaveEvent * )
 {
-	dragging = false;
+
+    /*
+    dragging = false;
 	
 	AbstractPropertyEditor::startEdit();
 	setObject((PObject*)0);
-	qDebug("PObjectLabel::dragLeaveEvent: setObject to 0");
+    */
+    qDebug("PObjectLabel::dragLeaveEvent: do nothing implementation");
 }
+
+void PObjectLabel::startDrag ( /*Qt::DropActions supportedActions */){
+    PObject *o=getObject();
+    if(o){
+        QDrag *drag = new QDrag(this);
+        QMimeData *mimeData = new QMimeData();
+        QByteArray data;
+        QDataStream stream(&data,QIODevice::WriteOnly);
+        stream <<  QString(o->getPersistenceObject()->getClassName().c_str()) << o->getID();
+        mimeData->setData("application/pobject",data);
+        drag->setMimeData(mimeData);
+        drag->setPixmap(pmap);
+        drag->start();
+    } else {
+        qDebug() << "WARNING: PObjectLabel::startDrag : empty object";
+    }
+}
+
 
 void PObjectLabel::mouseMoveEvent ( QMouseEvent * e )
 {
 	if(!dragging){
 		dragging = true;
+        startDrag();
+        /*
         QDrag *d = new QDrag(this);
         QMimeData *md = new PObjectData(getObject(),this);
         d->setMimeData(md);
 
         d->exec();
+        */
         e->accept();
+
 	}
 }
 
