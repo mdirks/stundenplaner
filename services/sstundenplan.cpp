@@ -220,7 +220,7 @@ list<stundenplaneintrag*>* SStundenplan::getEintraege(QDate date)
     list<stundenplaneintrag*> *result = map_eintraege[date];
     if(!result){
         result =new list<stundenplaneintrag*>();
-        map_eintraege[date]=result;
+
 
         set<stundenplantemplateeintrag*> *templates = map_templates[date.dayOfWeek()];
         if(templates){
@@ -247,6 +247,8 @@ list<stundenplaneintrag*>* SStundenplan::getEintraege(QDate date)
         } else {
             qDebug() << QString("SStundenplan: could not get entry for dow %1").arg(date.dayOfWeek());
         }
+
+        map_eintraege[date]=result;
     }
 	
 	return result;
@@ -258,9 +260,11 @@ list<stundenplaneintrag*>* SStundenplan::getEintraegeForWeek(QDate date)
 	while(day.dayOfWeek() > 1) day=day.addDays(-1);
 	list<stundenplaneintrag*> *result = new list<stundenplaneintrag*>();
 	while(day.dayOfWeek()<6){
-		list<stundenplaneintrag*> *append= getEintraege(day);
-        qDebug() << QString("SStundenplan::getEintraegeForWeek : found %1 eintraege").arg(append->size());
-		result->splice(result->end(), *append);
+        list<stundenplaneintrag*> *append = getEintraege(day);
+        //qDebug() << QString("SStundenplan::getEintraegeForWeek : found %1 eintraege").arg(append->size());
+        for(list<stundenplaneintrag*>::iterator it=append->begin(); it!=append->end(); it++){
+            result->push_back(*it);
+        }
 		day=day.addDays(1);
 	}
 	return result;

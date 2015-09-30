@@ -24,6 +24,10 @@
 #include <QChar>
 #include <QSizePolicy>
 #include <QPainter>
+#include <QPainter>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QMenu>
 
 QString TextPropertyViewer::StandardHeader = QString("\\documentclass[12pt]{article} \\pagestyle{empty}"
                                                         "\\usepackage{ngerman} "
@@ -271,6 +275,32 @@ void TextPropertyViewer::readVorn()
 
         }
     }
+
+}
+
+void TextPropertyViewer::print()
+{
+       QPrinter printer;
+       //QPrinter printer(QPrinter::HighResolution);
+
+       QPrintDialog printDialog(&printer);
+       if (printDialog.exec() == QDialog::Accepted) {
+            QPainter painter;
+            painter.begin(&printer);
+            painter.drawPixmap(0,0,displayPm);
+            painter.end();
+       }
+
+}
+
+void TextPropertyViewer::contextMenuEvent(QContextMenuEvent *e)
+{
+    const QPoint p=mapToGlobal(e->pos());
+    QMenu *pmenu = new QMenu();
+    pmenu->addAction("Drucken",this,SLOT(print()));
+
+    pmenu->popup(p);
+    e->accept();
 
 }
 

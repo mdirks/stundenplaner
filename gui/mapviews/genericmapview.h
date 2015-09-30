@@ -69,6 +69,7 @@ protected:
     QMenu *pmenu;
     virtual void resizeEvent ( QResizeEvent * event );
 
+
 private:
      GenericMap *map;
      //ThemaMapPopup *popupMenu;

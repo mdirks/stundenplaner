@@ -391,29 +391,63 @@ void LatexOutput::write(list<fehlzeit*> *lf)
 		}
 	}
 	
+    QString dS=QString("\\definecolor{draft}{rgb}{.1,.2,.8}\n");
+    dS=dS.append("\\textcolor{draft}{\\Large\\bf\\sf\n");
+
     for(std::map<string,list<fehlzeit*>*>::iterator it = map_tutor.begin(); it != map_tutor.end(); it++){
 		string tutor = it->first;
 		list<fehlzeit*>  *l = it->second;
-		if(! l->empty()){
-			*stream << "\\renewcommand{\\arraystretch}{2.2} \n\n\n";
-            *stream << "{\\bf " << tutor.c_str() << "}  \\hspace*{3cm} Fehlzeiten Dirk \\\\[.3cm]\n";
-			*stream << "\\begin{tabular}{|c|c|p{6cm}|p{4cm}|}\n \\hline \n ";
-			*stream << "{\\bf Datum} & {\\bf Stunde} & {\\bf Name}  & {\\bf Bemerkung}\\\\ \n \\hline  \n"; 
-			for(list<fehlzeit* >::iterator itt = l->begin(); itt != l->end(); itt++){
-				fehlzeit *fz = (*itt);
-				if(schueler *s = fz->getSchueler()){
-					*stream << (fz->getVon()).date().toString() << " & "; 
-					if(stundenplaneintrag *se = fz->getStundenplaneintrag()){
-						*stream << se->getNrStunde();
-					}
-                    *stream << " & " << s->getVorname().c_str() <<  " " << s->getNachname().c_str() << " & " << fz->getBemerkung().c_str() << " \\\\ \n";
-				}
-			}
-			*stream << "\\hline \n \\end{tabular}\n \\vspace*{2cm}\n\n";
+        std::map<stundenplaneintrag*,list<fehlzeit*>* > map_se;
+        for(list<fehlzeit*>::iterator itt=l->begin(); itt!=l->end(); itt++){
+            stundenplaneintrag *se=(*itt)->getStundenplaneintrag();
+            list<fehlzeit*> *lse=map_se[se];
+            if(!lse){
+                lse=new list<fehlzeit*>();
+                map_se[se]=lse;
+            }
+            lse->push_back((*itt));
+        }
+
+
+
+        for(std::map<stundenplaneintrag*,list<fehlzeit*>* >::iterator itt=map_se.begin(); itt!=map_se.end(); itt++){
+            stundenplaneintrag *se = itt->first;
+            list<fehlzeit*> *l=itt->second;
+            if(! l->empty()){
+                QString d=se->getDatum().toString();
+                int n=se->getNrStunde()-1;
+                int dow=se->getDatum().dayOfWeek()-1;
+
+                dS=dS.append("\\begin{pspicture}(9,13)\n");
+                dS=dS.append("\\rput(4.5,6.5){\\includegraphics{/home/mopp/schule/Stundenplaner/form-fz.ps} }");
+                dS=dS.append("\\rput[l](2.0,12.0){Dirks}\n");
+                dS=dS.append("\\rput[l](6.5,10.7){").append(tutor.c_str()).append("}\n");
+                dS=dS.append("\\rput[l](2.0,10.6){").append(d).append("}\n");
+                dS=dS.append("\\rput[l](%1,9.6){X}\n").arg(1.6+1.2*dow);
+                dS=dS.append("\\rput[l](%2,8.6){X}\n").arg(1.0+0.8*n);
+
+
+                float ys=6.9;
+
+                for(list<fehlzeit* >::iterator itfz = l->begin(); itfz != l->end(); itfz++){
+                    fehlzeit *fz = (*itfz);
+                    schueler *s = fz->getSchueler();
+                    if(s){
+                        ys=ys-0.9;
+                        dS=dS.append("\\rput[l](2.0,%1){").arg(ys);
+                        dS=dS.append(s->getVorname().c_str()).append(" ").append(s->getNachname().c_str()).append("}\n");
+                    }
+                }
+                dS=dS.append("\\end{pspicture}\\qquad\n");
+
+
+            }
 		}
+
 	}
 	
-	
+    dS=dS.append("}\n");
+    *stream << dS;
 
     }
 }

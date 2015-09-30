@@ -86,12 +86,15 @@ public slots:
     void compileFinished(int code, QProcess::ExitStatus exitStatus);
     void compileError( QProcess::ProcessError error);
 
+    void print();
+
 signals:
 	void applyRequested();
 
 protected:
 	void keyPressEvent ( QKeyEvent * e );
     void resizeEvent ( QResizeEvent *e);
+    void contextMenuEvent(QContextMenuEvent *e);
 
 private:
     QString getFileName();

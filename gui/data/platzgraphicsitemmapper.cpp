@@ -26,6 +26,7 @@
  }
 
 
+
  PlatzGraphicsItemmapper::PlatzGraphicsItemmapper()
   {
  	version = "0.4";
