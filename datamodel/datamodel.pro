@@ -17,4 +17,4 @@ OTHER_FILES += \
 INCLUDEPATH += ../ /usr/include/KDE
 
 CONFIG += qt
-QT+=sql
+QT+=sql widgets
