@@ -198,8 +198,8 @@
 
 
 <class name="lernkarte" tname="lernkarte" version="0.5">
-        <property name="Vorn" type="KUrl" cname="vorn" ctype="varchar(30)"></property>
-        <property name="Hinten" type="KUrl" cname="hinten" ctype="varchar(30)"></property>
+        <property name="Vorn" type="QUrl" cname="vorn" ctype="varchar(30)"></property>
+        <property name="Hinten" type="QUrl" cname="hinten" ctype="varchar(30)"></property>
 	<property name="SourceVorn" type="string" cname="sourcevorn" ctype="text"></property>
 	<property name="SourceHinten" type="string" cname="sourcehinten" ctype="text"></property>
 	<property name="Compiled" type="bool" cname="compiled" ctype="bool"></property>

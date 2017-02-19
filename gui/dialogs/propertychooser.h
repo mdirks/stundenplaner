@@ -27,7 +27,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QTreeWidget>
-#include <KDialog>
+#include <QDialog>
 
 
 /**
@@ -83,7 +83,7 @@ private:
 
 };
 
-class PropertyChooserDialog : public KDialog{
+class PropertyChooserDialog : public QDialog{
 public:
 	PropertyChooserDialog(AbstractMapper *mapper, QWidget *parent=0L);
 	
@@ -94,7 +94,7 @@ private:
 	PropertyChooser *chooser;
 };
 
-class PropertylistChooserDialog : public KDialog{
+class PropertylistChooserDialog : public QDialog{
 public:
 	PropertylistChooserDialog(AbstractMapper *mapper, QWidget *parent=0L);
 	

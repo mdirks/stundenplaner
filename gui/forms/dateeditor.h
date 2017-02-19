@@ -17,7 +17,7 @@
 #include "orm/persistence/pobject.h"
 
 #include <QDateTimeEdit>
-#include <KDateWidget>
+//#include <KDateWidget>
 
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>

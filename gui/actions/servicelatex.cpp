@@ -2,7 +2,7 @@
 #include "services/reports/latexoutput.h"
 #include "gui/base/guiconfig.h"
 #include <QDebug>
-#include <KFileDialog>
+#include <QFileDialog>
 
 ServiceLatex *ServiceLatex::instance =0;
 
@@ -36,7 +36,7 @@ void ServiceLatex::handleObject(PObject *o)
     if(o){
         QString name = o->getName().c_str();
         //QString filename = QString("/home/mopp/tex/%1.tex").arg(name);
-        QString filename = KFileDialog::getSaveFileName();
+        QString filename = QFileDialog::getSaveFileName();
         LatexOutput *lout = new LatexOutput(name,filename);
         lout->write(o);
         lout->close();

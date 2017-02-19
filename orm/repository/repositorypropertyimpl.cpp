@@ -84,7 +84,7 @@ list<PropertyAction*> * RepositoryPropertyImpl::getAllActions()
 
 
 /*!
-    \fn RepositoryProperty::registerAction(string name, KAction *a)
+    \fn RepositoryProperty::registerAction(string name, QAction *a)
  */
 void RepositoryPropertyImpl::registerAction(string name, PropertyAction *a)
 {

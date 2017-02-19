@@ -27,9 +27,9 @@
 #include <qfile.h>
 #include <QDebug>
 
-#include <KDialog>
-#include <kinputdialog.h>
-#include <kfiledialog.h>
+#include <QDialog>
+#include <qinputdialog.h>
+#include <qfiledialog.h>
 
 CreateAction* CreateAction::instance=0;
 
@@ -95,8 +95,8 @@ PObject* CreateAction::create(string className)
 	if(className == "stundenplantemplateeintrag"){
 		SStundenplan *ss = SStundenplan::getInstance();
 		
-		int tag = KInputDialog::getInteger("Tag","Tag der Stunde",1,1,7,1,10);
-		int stunde = KInputDialog::getInteger("StundenNr.", "Nr. der Stunde",1,1,10,1,10);
+        int tag = QInputDialog::getInt(0,"Tag","Tag der Stunde",1,1,7,1);
+        int stunde = QInputDialog::getInt(0,"StundenNr.", "Nr. der Stunde",1,1,10,1);
 		
 		PObject *oo = PObjectDialog::choosePObject(MappingControler::getInstance()->getMapperByName( "klasse" ) );
 		o = ss->createTemplateEintrag(tag,stunde,dynamic_cast<klasse*>(oo));
@@ -126,7 +126,7 @@ PObject* CreateAction::create(string className)
 		}
 
 		if(className=="material"){
-			QString filename = KFileDialog::getOpenFileName();
+            QString filename = QFileDialog::getOpenFileName();
 			QFile file(filename);
 			if(! file.exists()){
                 file.open(QIODevice::ReadWrite);

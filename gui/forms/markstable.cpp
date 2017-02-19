@@ -60,10 +60,11 @@ void MarksTable::loadKlasse(klasse *kl)
     qDebug() << "Warning: MarksTable::loadKlasse() not implemented";
 }
 
-MarksDialog::MarksDialog(QWidget *parent) : KDialog(parent)
+MarksDialog::MarksDialog(QWidget *parent) : QDialog(parent)
 {
 	marksTable = new MarksTable(this);
-	setMainWidget(marksTable);
+    //ToDo: does chooser show up, add to layout ?
+    //setMainWidget(marksTable);
 
 	resize(500,600);
 	//this->mapper = mapper;

@@ -46,7 +46,7 @@ void ModeLernen::setupMode()
         objectDisplay = new PObjectDisplay(mainWidget);
         objectDisplay->setPrototype(new LernkarteDisplayItem());
         editor = new PObjectIconView(mainWidget);
-        editor->setMinimumWidth(400);
+        editor->setMinimumWidth(500);
         editor->hide();
 
         QVBoxLayout *l = new QVBoxLayout();

@@ -20,14 +20,14 @@
 #ifndef PROPERTYACTION_H
 #define PROPERTYACTION_H
 
-#include <kaction.h>
+#include <QAction>
 #include "repositoryproperty.h"
 #include "../persistence/pobject.h"
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
-class PropertyAction : public KAction {
+class PropertyAction : public QAction {
 
 Q_OBJECT 
 

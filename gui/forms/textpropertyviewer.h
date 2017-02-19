@@ -16,23 +16,24 @@
 #include "qimage.h"
 #include "qprocess.h"
 #include "qlabel.h"
-#include "kdialog.h"
+#include <QDialog>
 #include "textpropertyeditor.h"
+#include "pdfviewer.h"
 
 #include <QScrollArea>
 #include <QResizeEvent>
 #include <QStackedWidget>
 #include <QColor>
 
-class TextPropertyLabel : public QScrollArea
+class TextPropertyLabel : /*public QScrollArea*/ public PdfViewer
 {
 Q_OBJECT
 
 public:
 	TextPropertyLabel(QWidget *parent=0, const char *name=0);
 	
-    void setText(QString s);
-    void setPixmap(QPixmap pm);
+    //void setText(QString s);
+    //void setPixmap(QPixmap pm);
     void emitEditRequested();
 
 
@@ -49,7 +50,7 @@ signals:
 	//void nextRequested();
 	
 private:
-	QLabel *label;
+    //QLabel *label;
 
 };
 
@@ -76,6 +77,8 @@ public:
     void setFooter(QString f);
     void setHeader(QString f);
     void setBackgroundColor(QColor c);
+    void setZoomFactor(double f);
+    void setResizePolicy(bool res);
 
     QSize sizeHint();
 
@@ -99,7 +102,7 @@ protected:
 private:
     QString getFileName();
     QString getTexFileName();
-    void setDisplayPixmapToLabel(QPixmap dpm);
+    //void setDisplayPixmapToLabel(QPixmap dpm);
     void doCommonSetup();
 
 
@@ -113,7 +116,8 @@ private:
 	RepositoryProperty *prop;
 	QDir tmpDir;
 	TextPropertyEditor *editor;
-	TextPropertyLabel *label;
+    TextPropertyLabel *label;
+    //PdfViewer *label;
 	QString displayString;
 	bool editing;
     bool hidden;
@@ -129,7 +133,7 @@ private:
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
-class TextPropertyEditorDialog : public KDialog
+class TextPropertyEditorDialog : public QDialog
 {
 Q_OBJECT
 

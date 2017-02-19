@@ -30,7 +30,7 @@ ShowHistoryAction::ShowHistoryAction(stundenplaneintrag *se, QObject *parent)
     : QAction("Historie", parent)
 {
 	this->se = se;
-	connect(this, SIGNAL( activated() ) , this, SLOT( showHistoryForStundenplaneintrag() ) );
+        connect(this, SIGNAL(triggered(bool)) , this, SLOT( showHistoryForStundenplaneintrag() ) );
 }
 
 

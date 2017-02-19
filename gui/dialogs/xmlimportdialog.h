@@ -20,7 +20,7 @@
 #ifndef XMLIMPORTDIALOG_H
 #define XMLIMPORTDIALOG_H
 
-#include <KDialog>
+#include <QDialog>
 #include "gui/forms/pobjecticonview.h"
 
 
@@ -28,7 +28,7 @@
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
-class XmlImportDialog : public KDialog {
+class XmlImportDialog : public QDialog {
 public:
     XmlImportDialog(QWidget *parent);
     ~XmlImportDialog();

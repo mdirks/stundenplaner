@@ -89,13 +89,14 @@ LernkarteDisplayItem::LernkarteDisplayItem(lernkarte *lk)
     viewer->setStyleSheet("background-color:blue;");
     viewer->setContentsMargins(0,0,0,0);
     viewer->setLernkarte(lk);
+
     QHBoxLayout *l = new QHBoxLayout(this);
     l->addWidget(viewer);
     l->setSpacing(0);
     l->setContentsMargins(0,0,0,0);
 
     this->setLayout(l);
-
+    this->setFixedSize(400,250);
 
 }
 

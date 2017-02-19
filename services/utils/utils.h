@@ -37,7 +37,7 @@ template< >
 }
 
 template< >
-    inline std::string to_string( const KUrl & Value)
+    inline std::string to_string( const QUrl & Value)
 {
     std::stringstream streamOut;
     streamOut << Value.url().toStdString();

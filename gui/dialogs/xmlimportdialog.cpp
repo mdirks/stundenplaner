@@ -23,7 +23,7 @@
 #include "qlabel.h"
 #include "qstring.h"
 #include <list>
-#include <kfiledialog.h>
+#include <qfiledialog.h>
 
 #include "orm/persistence/pobject.h"
 #include "gui/forms/pobjecticonview.h"
@@ -32,7 +32,7 @@
 using namespace std;
 
 XmlImportDialog::XmlImportDialog(QWidget *parent)
-    : KDialog(parent)
+    : QDialog(parent)
 {
 // 	QWidget *page = new QWidget( this );
 //    	setMainWidget(page);
@@ -45,7 +45,8 @@ XmlImportDialog::XmlImportDialog(QWidget *parent)
 // 	topLayout-> addWidget( iconView,90);
 
 	iconView = new PObjectIconView(this);
-	setMainWidget(iconView);
+    //ToDo: does chooser show up, add to layout ?
+    //setMainWidget(iconView);
 
 	 
 }
@@ -58,9 +59,9 @@ XmlImportDialog::~XmlImportDialog()
 void XmlImportDialog::slotUser1()
 {
 	qDebug("User 1 pressed");
-	QString filename = KFileDialog::getOpenFileName();
+    QString filename = QFileDialog::getOpenFileName();
 	list<PObject*> *results = new list<PObject*>();
 	XmlFactory::getInstance()->processFile(filename, results);
 	iconView->load(results);
-    //KDialog::slotUser1();
+    //QDialog::slotUser1();
 }

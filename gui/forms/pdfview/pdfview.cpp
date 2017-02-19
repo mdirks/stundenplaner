@@ -25,11 +25,11 @@
 #ifdef USE_SYNCTEX
 #include "synctexhandler.h"
 #endif // USE_SYNCTEX
-#include "utils/bookmarkshandler.h"
-#include "utils/filesettings.h"
+#include "bookmarkshandler.h"
+#include "filesettings.h"
 //#include "utils/icon.h"
-#include "utils/selectpageaction.h"
-#include "utils/zoomaction.h"
+#include "selectpageaction.h"
+#include "zoomaction.h"
 
 #include <poppler-qt5.h>
 #include <poppler-form.h>
@@ -850,7 +850,10 @@ void PdfView::setPage(double pageNumber, PositionHandling keepPosition)
 	d->loadVisiblePages(pageNumberStart, pageNumberEnd); // this is slow
 	d->clearNonVisiblePages(pageNumberStart, pageNumberEnd); // this is fast
 
-	const int pageNumberOld = d->m_pageNumber;
+    int pageNumberOld = d->m_pageNumber;
+    if(pageNumberOld<0) pageNumberOld=0;
+
+
 	d->m_pageNumber = pageNumberStart;
 
 	// update scrollbar

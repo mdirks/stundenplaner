@@ -26,7 +26,7 @@
 
 #include <qfile.h>
 #include <qtextstream.h>
-#include <kfiledialog.h>
+#include <qfiledialog.h>
 #include <QDebug>
 
 #define NAME "ReadCsv"
@@ -58,7 +58,7 @@ void ReadCsvlistAction::perform()
 
 void ReadCsvlistAction::perform(PObject *o)
 {
-	QString filename = KFileDialog::getOpenFileName();
+    QString filename = QFileDialog::getOpenFileName();
 	perform(o,filename);
 
 }

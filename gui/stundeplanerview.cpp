@@ -58,7 +58,7 @@ StundePlanerView::StundePlanerView(QWidget *parent, const char *name) : QWidget(
   displayTab = new QTabWidget(this);
   l->addWidget(displayTab);
  
-  workspace = new QWorkspace(this);
+  workspace = new QMdiArea(this);
   displayTab->addTab(workspace,"Formulare");
   //setBackgroundMode(PaletteBase);
   GuiRepositoryImpl::getInstance()->setFormWorkspace(workspace);

@@ -13,12 +13,12 @@
 
 #include <qpoint.h>
 #include <QGraphicsScene>
-#include <qwmatrix.h>
+//#include <qwmatrix.h>
 #include <qmessagebox.h>
 #include <QMouseEvent>
 
-#include <kfiledialog.h>
-#include <kaction.h>
+#include <QFileDialog>
+//#include <kaction.h>
 #include <krun.h>
 
 //#include "gui/draganddrop/pobjectdrag.h"
@@ -45,7 +45,7 @@
 
 #include "services/reports/latexoutput.h"
 
-#include <kinputdialog.h>
+#include <qinputdialog.h>
 
 
 GenericMapView::GenericMapView(QWidget * parent, const char * name) : QGraphicsView(parent)
@@ -56,8 +56,8 @@ GenericMapView::GenericMapView(QWidget * parent, const char * name) : QGraphicsV
 	selectedItem = 0;
 	
     setFocusPolicy(Qt::StrongFocus);
-	setAcceptDrops(TRUE);
-    viewport()->setAcceptDrops(TRUE);
+    setAcceptDrops(true);
+    viewport()->setAcceptDrops(true);
 
 	
 
@@ -265,7 +265,7 @@ void GenericMapView::dragMoveEvent(QDragMoveEvent* e)
                 QString file = lurls.at(0).toLocalFile();
                 material *m  = materialmapper::getInstance()->create();
                 m->setFileName(file.toStdString());
-                QString name = KInputDialog::getText("Name fuer Material", "Materialname","Unbekannt");
+                QString name = QInputDialog::getText(this,"Name fuer Material", "Materialname",QLineEdit::Normal,"Unbekannt");
                 m->setName(name.toStdString());
                 if(m){
                     qDebug("GenericMapView::contentsDropEvent : Adding to map from QUriDrag");
@@ -529,9 +529,9 @@ void GenericMapView::createNewItem()
 */
 
 /*
-list<KAction*>* GenericMapView::initActionsForSelection(KActionCollection *actionCollection)
+list<QAction*>* GenericMapView::initActionsForSelection(QActionCollection *actionCollection)
 {
-	list<KAction*> *actionList = new list<KAction*>();
+	list<QAction*> *actionList = new list<QAction*>();
 	if(selectedItem){
 		if(PObjectGraphicsItemNP* pitem = dynamic_cast<PObjectGraphicsItemNP*>(selectedItem)){
 			if(PObject *o = pitem->getObject()){
@@ -549,36 +549,36 @@ list<KAction*>* GenericMapView::initActionsForSelection(KActionCollection *actio
     \fn GenericMapView::initActions()
  */
 /*
-list<KAction*>* GenericMapView::initActions(KActionCollection *actionCollection)
+list<QAction*>* GenericMapView::initActions(QActionCollection *actionCollection)
 {
-	list<KAction*> *actionList = new list<KAction*>();
+	list<QAction*> *actionList = new list<QAction*>();
 
 	if(selectedItem){
-		list<KAction*> *actionsForSelected = initActionsForSelection(actionCollection);
-		for(list<KAction*>::iterator it = actionsForSelected->begin(); it != actionsForSelected->end(); it++){
+		list<QAction*> *actionsForSelected = initActionsForSelection(actionCollection);
+		for(list<QAction*>::iterator it = actionsForSelected->begin(); it != actionsForSelected->end(); it++){
 			actionList->push_back((*it));
 		}
-		actionList-> push_back( new KAction("Rauf", KStdAccel::shortcut(KStdAccel::New), this,SLOT(itemUp()), actionCollection, "activate") );
+		actionList-> push_back( new QAction("Rauf", KStdAccel::shortcut(KStdAccel::New), this,SLOT(itemUp()), actionCollection, "activate") );
 		
-		actionList-> push_back( new KAction("Runter", KStdAccel::shortcut(KStdAccel::New), this,SLOT(itemDown()), actionCollection, "activate") );
+		actionList-> push_back( new QAction("Runter", KStdAccel::shortcut(KStdAccel::New), this,SLOT(itemDown()), actionCollection, "activate") );
 
-		actionList-> push_back( new KAction("Anzeigen", KStdAccel::shortcut(KStdAccel::New), this,SLOT(activateSelected()), actionCollection, "activate") );
+		actionList-> push_back( new QAction("Anzeigen", KStdAccel::shortcut(KStdAccel::New), this,SLOT(activateSelected()), actionCollection, "activate") );
 
 		
-		actionList-> push_back( new KAction("Formular", KStdAccel::shortcut(KStdAccel::New), this,SLOT(showFormForSelected()), actionCollection, "activate") );
+		actionList-> push_back( new QAction("Formular", KStdAccel::shortcut(KStdAccel::New), this,SLOT(showFormForSelected()), actionCollection, "activate") );
 
-		actionList -> push_back( new KAction("Löschen", KStdAccel::shortcut(KStdAccel::New), this,SLOT(deleteSelected()), actionCollection, "activate") );
+		actionList -> push_back( new QAction("Löschen", KStdAccel::shortcut(KStdAccel::New), this,SLOT(deleteSelected()), actionCollection, "activate") );
 	
-		actionList -> push_back( new KAction("Latex", KStdAccel::shortcut(KStdAccel::New), this,SLOT(writeLatex()), actionCollection, "activate") );
+		actionList -> push_back( new QAction("Latex", KStdAccel::shortcut(KStdAccel::New), this,SLOT(writeLatex()), actionCollection, "activate") );
 
 	} else {
-		actionList->push_back( new KAction("Vergrößern", KStdAccel::shortcut(KStdAccel::New), this,SLOT(zoomIn()), actionCollection, "zoomin") );
+		actionList->push_back( new QAction("Vergrößern", KStdAccel::shortcut(KStdAccel::New), this,SLOT(zoomIn()), actionCollection, "zoomin") );
 	
 		
-		actionList->push_back( new KAction("Verkleinern", KStdAccel::shortcut(KStdAccel::New), this,SLOT(zoomOut()), actionCollection, "zoomout") );
+		actionList->push_back( new QAction("Verkleinern", KStdAccel::shortcut(KStdAccel::New), this,SLOT(zoomOut()), actionCollection, "zoomout") );
 
 	
-		actionList -> push_back( new KAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), this,SLOT(createNewItem()), actionCollection, "create_new") );
+		actionList -> push_back( new QAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), this,SLOT(createNewItem()), actionCollection, "create_new") );
 		
 	}
 
@@ -604,8 +604,8 @@ QMenu* GenericMapView::getPopupMenu()
 	  //if(! pmenu){
 		pmenu = new QPopupMenu(this);
 		
-		list<KAction*> *actionList = initActions();
-		for(list<KAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
+		list<QAction*> *actionList = initActions();
+		for(list<QAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
 			if(*it){
 			(*it)->plug(pmenu);
 			}
@@ -629,10 +629,10 @@ QMenu* GenericMapView::getPopupMenu()
 
 
 ShowSitzplanAction::ShowSitzplanAction(stundenplaneintrag *se, QObject *parent)
-    : KAction("Sitzplan", parent)
+    : QAction("Sitzplan", parent)
 {
 	this->se = se;
-	connect(this, SIGNAL( activated() ) , this, SLOT( showSitzplan() ) );
+    connect(this, SIGNAL(triggered(bool)) , this, SLOT( showSitzplan() ) );
 }
 
 ShowSitzplanAction::~ShowSitzplanAction(){}

@@ -558,13 +558,15 @@ void PObjectTableItem::setContentFromEditor(QWidget *w)
 
 
 PObjectTableDialog::PObjectTableDialog(list<PObject*> *data, string className, QWidget *parent, bool addable)
-    : KDialog(parent)
+    : QDialog(parent)
 {
-    setButtons(Apply|Close);
+
+    //ToDo: does chooser show up, add to layout ?
+    //setButtons(Apply|Close);
 	table = new PObjectTable(className, this); 
 	table -> loadType(className);
 	table -> load(data);
-	setMainWidget(table);
+    //setMainWidget(table);
 }
 
 void PObjectTableDialog::edit(list<PObject*> *data, string className, bool addable)

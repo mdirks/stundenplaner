@@ -24,10 +24,12 @@
 
 // include files for Qt
 #include <qwidget.h>
-#include <qworkspace.h>
+//#include <qworkspace.h>
 #include <qlayout.h>
 #include <qtabwidget.h>
 #include <QGraphicsScene>
+#include <QMdiArea>
+#include <QPrinter>
 
 //#include "form_stunde_rt_impl.h"
 //#include "doctree_stunden.h"
@@ -55,7 +57,7 @@ class StundePlanerView : public QWidget
 
 	
   private:
-  QWorkspace *workspace;
+  QMdiArea *workspace;
   //form_stunde_rt_impl *form;
   //doctree_stunden *tree;
   //PObjectListBox *listBoxOpos;

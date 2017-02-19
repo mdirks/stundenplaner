@@ -71,9 +71,9 @@ Variant::operator QDateTime()
 	return QDateTime::fromString(qv.toString());
 }
 
-Variant::operator KUrl()
+Variant::operator QUrl()
 {
-    return KUrl(qv.toString());
+    return QUrl(qv.toString());
 }
 
 Variant::operator MUrl(){
@@ -147,9 +147,9 @@ QDate Variant::asQDate()
 	//QDate::fromString(qv.toString());
 }
 
-KUrl Variant::asKUrl()
+QUrl Variant::asQUrl()
 {
-    KUrl url(qv.toString());
+    QUrl url(qv.toString());
 	return url;
 }
 

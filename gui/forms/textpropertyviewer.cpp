@@ -13,11 +13,11 @@
 #include "qlayout.h"
 #include "qmessagebox.h"
 #include "orm/transactions/transactions.h"
-#include <ktrader.h>
-#include <klibloader.h>
+//#include <ktrader.h>
+//#include <klibloader.h>
 #include <kprocess.h>
 #include <krun.h>
-#include <poppler-qt4.h>
+#include <poppler-qt5.h>
 #include <QDebug>
 #include <QKeyEvent>
 #include <QScrollArea>
@@ -78,6 +78,7 @@ void TextPropertyViewer::doCommonSetup()
 {
     label = new TextPropertyLabel(this);
     label->setFrameStyle(QFrame::NoFrame);
+
     if(prop){
         editor = new TextPropertyEditor(parent,prop,this);
     } else {
@@ -148,31 +149,32 @@ void TextPropertyViewer::setBackgroundColor(QColor c)
 }
 
 TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, QString displayString, QWidget *pw) :
-    KDialog(pw)
+    QDialog(pw)
 {
-    setButtons(Apply|Close);
-	setInitialSize(QSize(700,500));
+    //ToDo: does chooser show up, add to layout ?
+    //setButtons(Apply|Close);
+    //setInitialSize(QSize(700,500));
 	QWidget *displayWidget = new QWidget(this);
     QGridLayout *displayLayout = new QGridLayout(displayWidget);
 
 	viewer = new TextPropertyViewer(parent,displayString,displayWidget);
 	title = new QLabel(displayWidget);
-	//title->setText(prop->getName());
 	
 	displayLayout->addWidget(title,0,0);
 	displayLayout->addWidget(viewer,1,0);
 
 
-	setMainWidget(displayWidget);
+    //setMainWidget(displayWidget);
 	displayWidget->show();
 }
 
 
 TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, RepositoryProperty *prop, QWidget *pw) :
-    KDialog(pw)
+    QDialog(pw)
 {
-    setButtons(Apply|Close);
-    setInitialSize(QSize(700,500));
+    //ToDo: does chooser show up, add to layout ?
+    //setButtons(Apply|Close);
+    //setInitialSize(QSize(700,500));
 	
 	
 	QWidget *displayWidget = new QWidget(this);
@@ -186,7 +188,7 @@ TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, RepositoryPr
 	displayLayout->addWidget(viewer,1,0);
 
 
-    setMainWidget(displayWidget);
+    //setMainWidget(displayWidget);
 	displayWidget->show();
 
 	
@@ -230,6 +232,16 @@ void TextPropertyViewer::setHidden(bool h)
     hidden=h;
 }
 
+void TextPropertyViewer::setZoomFactor(double f)
+{
+    label->setZoomFactor(f);
+}
+
+void TextPropertyViewer::setResizePolicy(bool res)
+{
+    label->setResizePolicy(res);
+}
+
 void TextPropertyViewer::setFitToView(bool f)
 {
     fit=f;
@@ -243,10 +255,12 @@ void TextPropertyViewer::setFitToView(bool f)
 void TextPropertyViewer::readVorn()
 {	
     if(hidden || !parent){
-        displayPm = QPixmap();
-        label->setPixmap(QPixmap());
+        //displayPm = QPixmap();
+        //label->setPixmap(QPixmap());
     } else {
         QString fileName = getFileName();
+        label->loadNewFile(fileName);
+        /*
 		Poppler::Document *doc = Poppler::Document::load(fileName);
         if(doc && doc->page(0)){
             doc->setRenderHint(Poppler::Document::TextAntialiasing);
@@ -274,6 +288,7 @@ void TextPropertyViewer::readVorn()
             label->setText(QString("Failed to load  %1 !").arg(fileName));
 
         }
+        */
     }
 
 }
@@ -304,6 +319,7 @@ void TextPropertyViewer::contextMenuEvent(QContextMenuEvent *e)
 
 }
 
+/*
 void TextPropertyViewer::setDisplayPixmapToLabel(QPixmap dpm)
 {
     if(label->size().width() > dpm.size().width())
@@ -328,6 +344,7 @@ void TextPropertyViewer::setDisplayPixmapToLabel(QPixmap dpm)
         label->setPixmap(dpm);
     }
 }
+*/
 
 
 void TextPropertyViewer::setScrollBarPolicy(Qt::ScrollBarPolicy policy){
@@ -523,12 +540,10 @@ QSize TextPropertyViewer::sizeHint()
 
 
 TextPropertyLabel::TextPropertyLabel(QWidget *parent, const char *name)
-    : QScrollArea(parent)
+    : /*QScrollArea(parent)*/ PdfViewer(parent)
 {
-    label = new QLabel(this);
-
-
-    setWidget(label);
+    //label = new QLabel(this);
+    //setWidget(label);
 
 }
 
@@ -541,19 +556,20 @@ void TextPropertyLabel::mouseDoubleClickEvent ( QMouseEvent * e )
 }
 
 
-
+/*
 void TextPropertyLabel::setText(QString s)
 {
-	label->setText(s);
+    label->setText(s);
 }
+*/
 
-
-
+/*
 void TextPropertyLabel::setPixmap(QPixmap pm)
 {
     label->resize(pm.size());
     label->setPixmap(pm);
 }
+*/
 
 
 // void TextPropertyLabel::mousePressEvent ( QMouseEvent * e )

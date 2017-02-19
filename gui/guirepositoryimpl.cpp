@@ -87,23 +87,23 @@
 #include <QMessageBox>
 #include <QWidget>
 
-#include <KParts/ComponentFactory>
+//#include <KParts/ComponentFactory>
 #include <KXMLGUIFactory>
-#include <kglobal.h>
-#include <kconfig.h>
-#include <kiconloader.h>
-#include <kicondialog.h>
-#include <ktrader.h>
-#include <klibloader.h>
+//#include <kglobal.h>
+#include <KConfig>
+#include <KIconLoader>
+#include <KIconDialog>
+//#include <ktrader.h>
+//#include <klibloader.h>
 #include <kmessagebox.h>
 //#include <kservice.h>
 //#include <kservicetypetrader.h>
-
+#include <KParts/Part>
 
 
 
 GuiRepositoryImpl* GuiRepositoryImpl::impl_instance=0;
-//static GuiRepositoryImpl::QWorkspace* formWorkspace=0;
+//static GuiRepositoryImpl::QMdiarea* formWorkspace=0;
 
 
 GuiRepositoryImpl* GuiRepositoryImpl::getInstance()
@@ -404,7 +404,7 @@ void GuiRepositoryImpl::showEditorForProperty(PObject *o,RepositoryProperty *rp)
         if(rp->isPObject()){
             showFormForObject(rp->asPObject(o));
         } else {
-            KDialog *dialog = new KDialog(stundeplaner);
+            EditorBase *dialog = new EditorBase(stundeplaner);
             QWidget *form=0;
 
             if(rp->isString()){
@@ -430,9 +430,9 @@ void GuiRepositoryImpl::showEditorForProperty(PObject *o,RepositoryProperty *rp)
 
 }
 /*!
-    \fn GuiRepositoryImpl::setFormWorkspace(QWorkspace *w)
+    \fn GuiRepositoryImpl::setFormWorkspace(QMdiarea *w)
  */
-void GuiRepositoryImpl::setFormWorkspace(QWorkspace *w)
+void GuiRepositoryImpl::setFormWorkspace(QMdiArea *w)
 {
     formWorkspace=w;
 }
@@ -568,74 +568,37 @@ void GuiRepositoryImpl::addService(GuiService *serv)
 
 }
 
-
+/*
 KParts::Part* GuiRepositoryImpl::getPdfPart(QWidget* parent)
 {	
 	return getPart(parent, "application/pdf", "'KParts/ReadOnlyPart' in ServiceTypes");
 }
+*/
 
+/*
 KParts::Part* GuiRepositoryImpl::getPart(QWidget* parent, QString mimetype, QString qs2)
 {
     KParts::Part* part=0;
 
     part = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>(
                 mimetype, QString(), parent);
-    /*
-    if ( part ) {
-        part->openUrl( url );
-        part->widget()->show(); // also insert the widget into a layout, or simply use a KVBox as parentWidget
-    }
-    */
+
     QString message("Found %1");
     if(part){
         message=message.arg("part");
     } else {
         message=message.arg("nothing");
     }
-    /*
-    KTrader::OfferList offers = KTrader::self()->query(qs1,qs2);
-	KLibLoader* loader = KLibLoader::self();
 
-	QString message("Found ");	
-
-	for (uint i = 0; i < offers.count(); ++i)
-	{
-		KLibFactory* factory = loader->factory(offers[i]->library());
-		if (factory != 0 )//&& factory->inherits("KParts::Factory"))
-		{
-			 p = static_cast<KParts::ReadOnlyPart* >( factory->create(getMainFrame(), offers[i]->name(), "KParts::ReadOnlyPart"));
- 	            
-            if (p != 0 ) //&& p->inherits("MyPart"))
-			{
-				message = message.append(offers[i]->name()).append(", ");
-				break;
-            }
-			
-		}else {
-	 	        KMessageBox::error(getMainFrame(),"Could not find a suitable HTML component");
-	        }
-	}
-    */
 
 	KMessageBox::error(getMainFrame(),message);
 	
 
 
-	/*
-	KService::List services ;
-	KServiceTypeTrader* trader = KServiceTypeTrader::self();
-	
-	QString constraint = "'text/plain' in MimeTypes and "
-			"('KOfficePart' in ServiceTypes or "
-			" 'oasis' ~ [X-KDE-ExtraNativeMimeTypes])";
-	services = trader->query("KParts/ReadWritePart", constraint);
-	
-	foreach (KService::Ptr service, services) {
-	kDebug() << "read write part" << service->name();
-	}
-	*/
+
     return part;
 }
+*/
 
 void GuiRepositoryImpl::addIconView(PObjectIconView *iv, QString label, QString short_label)
 {
@@ -1076,4 +1039,40 @@ QString GuiRepositoryImpl::getDisplayString(PObject *po)
 	dS=dS.append("\\end{description} \n \\end{center}\n");
     }
     return dS;
+}
+
+
+EditorBase::EditorBase(QWidget *parent) : QDialog(parent)
+{
+    mainWidget=new QLabel("Empty Label",this);
+
+    QPushButton *closeButton = new QPushButton(tr("Close"));
+    connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
+
+    contentsLayout = new QVBoxLayout;
+    contentsLayout->addWidget(mainWidget);
+
+    QHBoxLayout *buttonsLayout = new QHBoxLayout;
+    buttonsLayout->addStretch(1);
+    buttonsLayout->addWidget(closeButton);
+
+    QVBoxLayout *mainLayout= new QVBoxLayout;
+    mainLayout->addLayout(contentsLayout);
+    mainLayout->addStretch(1);
+    mainLayout->addSpacing(12);
+    mainLayout->addLayout(buttonsLayout);
+    setLayout(mainLayout);
+
+}
+
+
+void EditorBase::slotOk()
+{
+    GuiControler::getInstance()->stopEdit(); /*QDialog::slotOk();*/
+}
+
+void EditorBase::setMainWidget(QWidget *mw)
+{
+    contentsLayout->replaceWidget(mainWidget,mw);
+    mainWidget=mw;
 }

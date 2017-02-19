@@ -209,7 +209,11 @@ void PrintHandler::print(Poppler::Document *popplerDocument, QList<Poppler::Page
 		args << QString(QLatin1String("%1")).arg(fileName);
 
 //		QProcess::execute(PDFVIEWLIB_PRINT_PROGRAM, args);
-		QProcess::startDetached(QString::fromLocal8Bit(PDFVIEWLIB_PRINT_PROGRAM), args);
+
+        //QProcess::startDetached(QString::fromLocal8Bit(PDFVIEWLIB_PRINT_PROGRAM), args);
+        QMessageBox msgBox(QMessageBox::Critical, tr("Print Error"),
+            tr("Printing not implemented"),
+            QMessageBox::Ok, parentWidget);
 	}
 	else if (!printer.outputFileName().isEmpty())
 	{

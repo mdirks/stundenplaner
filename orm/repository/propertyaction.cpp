@@ -20,7 +20,7 @@
 #include "propertyaction.h"
 
 PropertyAction::PropertyAction(QString text)
-    : KAction(0)
+    : QAction(0)
 {
 	connect(this,SIGNAL(activated()),this,SLOT(perform()));
 }

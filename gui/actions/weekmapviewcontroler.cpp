@@ -23,7 +23,7 @@
 #include "gui/forms/pobjecttable.h"
 #include "services/reports/latexoutput.h"
 
-#include <kfiledialog.h>
+#include <qfiledialog.h>
 #include <QDebug>
 
 WeekMapViewControler::WeekMapViewControler(WeekMapView *mapView)
@@ -92,7 +92,7 @@ void WeekMapViewControler::showFehlzeiten()
 void WeekMapViewControler::writeFehlzeiten()
 {
 	list<fehlzeit*> *l_f = collectFehlzeiten();
-	QString fileName = KFileDialog::getSaveFileName();
+    QString fileName = QFileDialog::getSaveFileName();
 
 	LatexOutput *lout = new LatexOutput(QString("Testoutput"),fileName);
 	if(lout){

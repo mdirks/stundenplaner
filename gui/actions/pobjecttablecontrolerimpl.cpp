@@ -27,13 +27,13 @@
 #include "gui/dialogs/propertychooser.h"
 
 #include <qmessagebox.h>
-#include <kstdaccel.h>
+//#include <kstdaccel.h>
 #include <QDebug>
 
 PObjectTableControlerImpl::PObjectTableControlerImpl(PObjectTable *table)
 {
 	this->table = table;
-    //configurePropertiesAction = new KAction("Properties festlegen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(configureProperties()), table,"reload");
+    //configurePropertiesAction = new QAction("Properties festlegen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(configureProperties()), table,"reload");
 }
 
 
@@ -80,7 +80,7 @@ QMenu* PObjectTableControlerImpl::getContextMenu(const QPoint &pos)
 
     popup->addAction("Properties festlegen",this,SLOT(configureProperties()));
 	//}
-    //( new KAction("Löschen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(deleteSelected()), table, "activate") )->plug(popup);
+    //( new QAction("Löschen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(deleteSelected()), table, "activate") )->plug(popup);
         popup->addAction("Löschen",this,SLOT(deleteSelected()));
     return popup;
 	

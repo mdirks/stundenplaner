@@ -15,7 +15,7 @@
 
 #include <QGraphicsView>
 #include <QMenu>
-#include <KAction>
+#include <QAction>
 //#include <kaccel.h>
 //#include <qaction.h>
 
@@ -42,8 +42,8 @@ public:
     void setMap(GenericMap *map);
     GenericMap* getMap();
     
-    //virtual list<KAction*>* initActions(KActionCollection *parent=0);
-    //virtual list<KAction*>* initActionsForSelection(KActionCollection *parent=0);
+    //virtual list<QAction*>* initActions(QActionCollection *parent=0);
+    //virtual list<QAction*>* initActionsForSelection(QActionCollection *parent=0);
     virtual QMenu* getPopupMenu();
     PObjectGraphicsItemNP* getSelected();
     void clearSelection();
@@ -98,7 +98,7 @@ protected:
 
 
 
-class ShowSitzplanAction : public KAction 
+class ShowSitzplanAction : public QAction 
 {
 Q_OBJECT
 

@@ -15,7 +15,7 @@
 #include <QListWidget>
 #include <QDrag>
 
-#include <KDialog>
+#include <QDialog>
 
 #include "orm/persistence/pobject.h"
 #include "orm/mapping/abstractmapper.h"
@@ -53,7 +53,7 @@ private:
 */
 
 
-class PObjectDialog : public KDialog
+class PObjectDialog : public QDialog
 {
 public:
     PObjectDialog(PObjectListProvider *prov, QWidget *parent=0L);

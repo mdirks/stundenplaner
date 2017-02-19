@@ -22,7 +22,7 @@
 #include "lernkartemapper.h"
 
 #include <qstring.h>
-#include <KUrl>
+#include <QUrl>
 
 
 
@@ -40,22 +40,22 @@ lernkarte::~lernkarte()
 {
 }
 
-KUrl lernkarte::getVorn()
+QUrl lernkarte::getVorn()
 {
 	return vorn;
 }
 
-void lernkarte::setVorn(KUrl vorn)
+void lernkarte::setVorn(QUrl vorn)
 {
 	this->vorn = vorn;
 }
 
-KUrl lernkarte::getHinten()
+QUrl lernkarte::getHinten()
 {
 	return hinten;
 }
 
-void lernkarte::setHinten(KUrl hinten)
+void lernkarte::setHinten(QUrl hinten)
 {
 	this->hinten = hinten;
 }

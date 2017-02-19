@@ -21,11 +21,11 @@
 
 #include "services/xml-export/xmlfactory.h"
 
-#include "kfiledialog.h"
+#include "qfiledialog.h"
 #include "qlayout.h"
 
 XmlExportDialog::XmlExportDialog(QWidget *parent)
-    : KDialog(parent )
+    : QDialog(parent )
 {
 	fileName = QString();
 
@@ -41,8 +41,9 @@ XmlExportDialog::XmlExportDialog(QWidget *parent)
 	labelFile->setText("Exportieren nach: ");
 	la->addWidget(labelFile);
 
-	setMainWidget(mainWidget);
-	setButtonText(User1,"File");
+    //ToDo: does it work without these?
+    //setMainWidget(mainWidget);
+    //setButtonText(User1,"File");
     //showButtonOK(false);
 }
 
@@ -53,14 +54,14 @@ XmlExportDialog::~XmlExportDialog()
 
 void XmlExportDialog::slotUser1()
 {
-	fileName = KFileDialog::getOpenFileName();
+    fileName = QFileDialog::getOpenFileName();
 	if(fileName != QString()){
 		labelFile->setText(QString("Exportieren nach: %1").arg(fileName));
         //showButtonOK(true);
 	} else {
 
 	}
-    //KDialog::slotUser1();
+    //QDialog::slotUser1();
 
 }
 void XmlExportDialog::slotOk()
@@ -68,7 +69,7 @@ void XmlExportDialog::slotOk()
 	if(fileName != QString()){
 		list<PObject*> *objectList = iconView->getObjectList();
 		XmlFactory::getInstance()->exportObjectList(fileName, objectList);
-       // KDialog::slotOk();
+       // QDialog::slotOk();
 	} else {
 		// do nothing because no file set
 	}

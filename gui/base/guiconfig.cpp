@@ -16,8 +16,9 @@
 #include "services/skalender.h"
 #include "datamodel/tutoriummapper.h"
 
-#include <kglobal.h>
-#include <kconfig.h>
+//#include <kglobal.h>
+#include <KConfig>
+#include <KConfigGroup>
 #include <kiconloader.h>
 #include <kicondialog.h>
 

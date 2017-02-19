@@ -21,13 +21,13 @@
 #define XMLEXPORTDIALOG_H
 
 #include "gui/forms/pobjecticonview.h"
-#include <KDialog>
+#include <QDialog>
 #include "qlabel.h"
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
-class XmlExportDialog : public KDialog {
+class XmlExportDialog : public QDialog {
 public:
     XmlExportDialog(QWidget *parent);
     ~XmlExportDialog();

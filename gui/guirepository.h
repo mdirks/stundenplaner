@@ -14,8 +14,8 @@
 
 #include <qstring.h>
 #include <qwidget.h>
-#include <kiconloader.h>
-#include <kmainwindow.h>
+//#include <kiconloader.h>
+//#include <kmainwindow.h>
 
 #include "orm/persistence/pobject.h"
 #include "orm/mapping/abstractmapper.h"
@@ -29,13 +29,14 @@
 #include "guimode.h"
 #include "guiservice.h"
 
-#include <kglobal.h>
-#include <kconfig.h>
-#include <kiconloader.h>
-#include <kicondialog.h>
-#include <ktrader.h>
-#include <klibloader.h>
-#include <kparts/part.h>
+//#include <kglobal.h>
+//#include <KConfig>
+#include <KConfig>
+#include <KIconLoader>
+#include <KIconDialog>
+//#include <ktrader.h>
+//#include <klibloader.h>
+#include <KParts/Part>
 #include <kmessagebox.h>
 #include <KXmlGuiWindow>
 

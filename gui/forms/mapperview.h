@@ -15,7 +15,7 @@
 #include "orm/mapping/abstractmapper.h"
 
 #include <QListWidget>
-#include <KDialog>
+#include <QDialog>
 
 #include "orm/mapping/abstractmapper.h"
 
@@ -46,7 +46,7 @@ private:
 #endif
 
 
-class MapperDialog : public KDialog
+class MapperDialog : public QDialog
 {
 public:
 	MapperDialog(QWidget *parent=0L, QStringList classList=QStringList());

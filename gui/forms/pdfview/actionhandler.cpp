@@ -17,8 +17,8 @@
 
 #include "actionhandler.h"
 
-#include "utils/selectpageaction.h"
-#include "utils/zoomaction.h"
+#include "selectpageaction.h"
+#include "zoomaction.h"
 
 #include <QAction>
 

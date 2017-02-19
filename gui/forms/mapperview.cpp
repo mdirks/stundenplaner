@@ -73,10 +73,11 @@ AbstractMapper* MapperViewItem::getMapper()
 	return this->mapper;
 }
 
-MapperDialog::MapperDialog(QWidget *parent, QStringList classList) : KDialog(parent)
+MapperDialog::MapperDialog(QWidget *parent, QStringList classList) : QDialog(parent)
 {
 	mapperView = new MapperView(this, classList);
-	setMainWidget(mapperView);
+    //ToDo: does chooser show up, add to layout ?
+    //setMainWidget(mapperView);
 	resize(400,400);
 	
 }

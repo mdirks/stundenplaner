@@ -109,6 +109,10 @@ void PdfViewer::loadNewFile(QString fileName)
          psize = page->pageSize();
      }
 }
+void PdfViewer::setResizePolicy(bool res)
+{
+    resize=res;
+}
 
 void PdfViewer::resizeEvent(QResizeEvent *event)
 {
@@ -116,5 +120,8 @@ void PdfViewer::resizeEvent(QResizeEvent *event)
      int widht= s.width();
      int pwidht = psize.width();
 
-     setZoomFactor(.81*widht/pwidht);
+     //setZoomFactor(.81*widht/pwidht);
+     if(resize){
+         setZoomFactor(.75*widht/pwidht);
+     }
 }

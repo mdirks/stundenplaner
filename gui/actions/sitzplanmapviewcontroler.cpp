@@ -29,8 +29,8 @@
 #include "gui/forms/pobjecttable.h"
 #include "services/reports/latexoutput.h"
 
-#include <kfiledialog.h>
-#include <kinputdialog.h>
+#include <qfiledialog.h>
+#include <qinputdialog.h>
 
 
 
@@ -81,7 +81,7 @@ void SitzplanMapViewControler::showFehlzeitenForSchueler()
 void SitzplanMapViewControler::writeFehlzeitenForSchueler()
 {
 	list<fehlzeit*> *l_f = getFehlzeitenForSchueler();
-	QString fileName = KFileDialog::getSaveFileName();
+    QString fileName = QFileDialog::getSaveFileName();
 
 	LatexOutput *lout = new LatexOutput(QString("Testoutput"),fileName);
 	if(lout){
@@ -177,7 +177,7 @@ void SitzplanMapViewControler::addSchueler()
 
 void SitzplanMapViewControler::addPlaetze()
 {
-	int n = KInputDialog::getInteger("Wieviele ?","Anzahl",1,1,30,1,10);
+    int n = QInputDialog::getInt(0,"Wieviele ?","Anzahl",1,1,30,1);
     qDebug() << QString("Adding %1 plaetze").arg(n);
     QPointF where = smapView->mapToScene(GenericMapViewControler::pos);
     for(int i=0; i<n; i++){
@@ -221,7 +221,7 @@ void SitzplanMapViewControler::addTeilleistung()
 	 if(sitzplan *sp = smapView->getSitzplan()){
 		if( klasse *kl = sp->getKlasse()){
 			teilleistung *tl = (teilleistung*) teilleistungmapper::getInstance()->create();
-			QString name = KInputDialog::getText("Name der Teilleistung","Name");
+            QString name = QInputDialog::getText(0,"Name der Teilleistung","Name");
             tl->setName(name.toStdString());
 			kl->addToTeilleistungen(tl);
 

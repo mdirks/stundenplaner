@@ -29,7 +29,7 @@
 
 #include "qpushbutton.h"
 
-#include <kdatewidget.h>
+#include <KDatePicker>
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
@@ -57,7 +57,7 @@ public:
 private:
     WeekMap *weekMap;
     
-    KDateWidget *dateWidget;
+    KDatePicker *dateWidget;
     QPushButton *btor, *btol, *bset;
     int wnr;
     SKalender *skal;
@@ -86,7 +86,7 @@ public:
 private:
     GenericMap *map;
     
-    KDateWidget *dateWidget;
+    KDatePicker *dateWidget;
     QPushButton *btor, *btol, *bset;
     int wnr;
     SKalender *skal;

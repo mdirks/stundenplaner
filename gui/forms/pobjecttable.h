@@ -26,7 +26,7 @@
 #include <list>
 #include <set>
 #include <string>
-#include <KDialog>
+#include <QDialog>
 
 using namespace std;
 
@@ -141,7 +141,7 @@ private:
 };
 
 
-class PObjectTableDialog : public KDialog
+class PObjectTableDialog : public QDialog
 {
 Q_OBJECT
 

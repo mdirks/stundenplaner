@@ -179,10 +179,11 @@ RepositoryProperty* PropertyChooserItem::getProperty()
 }
 
 PropertyChooserDialog::PropertyChooserDialog(AbstractMapper *mapper, QWidget *parent)
-    : KDialog(parent)
+    : QDialog(parent)
 {
 	chooser = new PropertyChooser(mapper,this);
-	setMainWidget(chooser);
+    //ToDo: does chooser show up, add to layout ?
+    //setMainWidget(chooser);
 }
 
 RepositoryProperty* PropertyChooserDialog::selectedProperty()
@@ -198,10 +199,11 @@ RepositoryProperty* PropertyChooserDialog::chooseProperty(AbstractMapper *mapper
 }
 
 PropertylistChooserDialog::PropertylistChooserDialog(AbstractMapper *mapper, QWidget *parent)
-    : KDialog(parent)
+    : QDialog(parent)
 {
 	chooser = new PropertyListChooser(mapper,this);
-	setMainWidget(chooser);
+    //ToDo: does chooser show up, add to layout ?
+    //setMainWidget(chooser);
 }
 
 list<RepositoryProperty*>* PropertylistChooserDialog::selectedProperties()
