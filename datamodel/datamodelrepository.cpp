@@ -12,6 +12,7 @@
 #include "datamodelrepository.h"
 //#include "stundepersistence.h"
 //#include "opopersistence.h"
+#include <QDebug>
 #include "orm/mapping/mappingcontroler.h"
 #include "orm/mapping/abstractmapper.h"
 #include "stundemapper.h"
@@ -115,6 +116,10 @@ DataModelRepository::DataModelRepository()
 		if(re){
 			Repository::getInstance()->addRepositoryEntry(re->getRepositoryEntry());
 		}
+        RepositoryEntry *ent = Repository::getInstance()->getRepositoryEntry((*it)->getClassName());
+        if(!ent){
+              qDebug() << "TROUBLE Repository not working correctly";
+        }
 	}
 }
 

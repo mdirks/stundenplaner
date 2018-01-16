@@ -25,7 +25,8 @@ using namespace __gnu_cxx;
 */
 class RepositoryEntryImpl : public RepositoryEntry {
 
-typedef  unordered_map<const char*, RepositoryProperty*> propertymap;
+typedef std::unordered_map<std::string, RepositoryProperty*> propertymap;
+//typedef  unordered_map<const char*, RepositoryProperty*> propertymap;
 //typedef  hash_map<const char*, RepositoryProperty*, std::hash<const char*>,equal_char> propertymap;
 
 public:

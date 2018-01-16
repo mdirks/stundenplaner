@@ -42,20 +42,35 @@ Repository* Repository::getInstance(){
 
 RepositoryEntry* Repository::getRepositoryEntry(string className){
 
-   unordered_map<const char*,RepositoryEntry*, hash<const char*>,equal_char>::iterator it  = classNameToRe.find(className.c_str());
+   /*
+    RepositoryEntry *re=classNameToRe[className.c_str()];
+   if(re){
+       return re;
+   }else{
+       qDebug() << "ClassName " << className.c_str() << "Not found in map";
+           return 0;
+   }
+   */
+    unordered_map<std::string,RepositoryEntry*>::iterator it  = classNameToRe.find(className);
+   //unordered_map<const char*,RepositoryEntry*>::iterator it  = classNameToRe.find(className);
+   //unordered_map<const char*,RepositoryEntry*, hash<const char*>,equal_char>::iterator it  = classNameToRe.find(className.c_str());
    //hash_map<const char*,RepositoryEntry*, hash<const char*>,equal_char>::iterator it  = classNameToRe.find(className.c_str());
    if(it != classNameToRe.end()){
        return it->second;
 	}else {
-        qDebug() << "Not found in map";
+        qDebug() << "ClassName " << className.c_str() << "Not found in map";
       		return 0;
 	}
+
 }
 
 void Repository::addRepositoryEntry(RepositoryEntry* entry){
+   if(!entry){
+       qDebug() << "TROUBLE given entry is 0";
+   }
    string className = entry->getClassName();
    qDebug() << QString("Added: ").append(className.c_str());
-	classNameToRe[className.c_str()] = entry;
+    classNameToRe[className] = entry;
 }
 
 

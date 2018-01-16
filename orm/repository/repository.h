@@ -31,8 +31,10 @@
   *@author Marcus Dirks
   */
 
+#include <string>
 using namespace std;
 using namespace __gnu_cxx;
+
 
 struct equal_char {
 
@@ -42,7 +44,8 @@ struct equal_char {
 
 };
 
-typedef  unordered_map<const char*, RepositoryEntry*> entrymap;
+typedef  std::unordered_map<std::string, RepositoryEntry*> entrymap;
+//typedef  unordered_map<const char*, RepositoryEntry*> entrymap;
 //typedef  unordered_map<const char*, RepositoryEntry*, hash<const char*>,equal_char> entrymap;
 //typedef  hash_map<const char*, RepositoryEntry*, hash<const char*>,equal_char> entrymap;
 //typedef  hash_map<const char*, RepositoryEntry> entrymap;
