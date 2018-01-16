@@ -97,28 +97,13 @@ void GenericMapView::mousePressEvent( QMouseEvent* e )
     }
 
 
-    /*
-    QList<QGraphicsItem*> itemList= items(pos);
-    PObjectGraphicsItemNP *preselectItem =0;
-    if(! itemList.empty()){
-     	preselectItem = dynamic_cast<PObjectGraphicsItemNP*>( *(itemList.begin()) );
-        if(preselectItem){
-            preselectItem->setSelected(true);
-        }
-    } else {
-    	movingItem =0;
-    }
-    */
      	
      
     if(e->button()==Qt::RightButton){
-    	//QPoint pos = e->globalPos();
-	selectedItem = preselectItem;
-	//popupMenu->popup(e->globalPos(), GraphicsPos, preselectItem);
-	currentPos =e->globalPos();
-	//getPopupMenu()->popup(currentPos); //, GraphicsPos, preselectItem)
-	emit(popupRequested(currentPos));
-	movingItem=0;
+            selectedItem = preselectItem;
+            currentPos =e->globalPos();
+            emit(popupRequested(currentPos));
+            movingItem=0;
     } else if (e->button() == Qt::LeftButton){
         movingItem = preselectItem;
         selectedItem=preselectItem;
@@ -382,209 +367,8 @@ void GenericMapView::itemUp()
 void GenericMapView::activateSelected()
 {
     	qDebug("GenericMapView::activateSelected : do nothing implementation called");
-	/*
-	if(selectedItem){
-	if(PObjectGraphicsItemNP* pitem = dynamic_cast<PObjectGraphicsItemNP*>(selectedItem)){
-		if(PObject *o = pitem->getObject()){
-			if(material *m = dynamic_cast<material*>(o)){
-				QString fileName = m->getFile()->name();
-				if(fileName.contains(".tex")){ // hack to handel tex-files
-					KRun::runCommand(QString("kile %1").arg(fileName),fileName,"");
-				} else {	
-					new KRun(fileName);
-				}
-			} else  if (stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o)){
-				krusbucheintrag *ke = se->getKursbuchEintrag();
-				RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry(ke);
-				if(re){
-					RepositoryProperty *rp = re->getProperty("Eintrag");
-					TextPropertyEditorDialog::edit(rp,ke);
-				} else {
-					qDebug("GenericMapViewControler::activateSelected : strange : could not get kursbucheintrag");
-				}
-			} else { 
-				RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry(o);
-				RepositoryProperty *rp = 0;
-				if(re && (rp=re->getMainProperty())){
-					TextPropertyEditorDialog::edit(rp,o);
-				} else {
-					GuiRepository::getInstance()->showFormForObject(o);
-				}
-			}
-		}
-	}
-    }
-	*/
 }
 
-/*
-void GenericMapView::showFormForSelected()
-{
- if(selectedItem){
-	if(PObjectGraphicsItemNP* pitem = dynamic_cast<PObjectGraphicsItemNP*>(selectedItem)){
-		if(PObject *o = pitem->getObject()){
-				GuiRepository::getInstance()->showFormForObject(o);
-		}
-	}
-    }
-}
-*/
-
-/*
-QPopupMenu*  GenericMapView::getDatenPopupForSelected()
-{
-	if(selectedItem){
-		if(PObjectGraphicsItemNP* pitem = dynamic_cast<PObjectGraphicsItemNP*>(selectedItem)){
-			if(PObject *o = pitem->getObject()){
-				QPopupMenu *pup = new DatenPopup(o,this);
-				///*
-				QPopupMenu *pup = new QPopupMenu(this);
-				RepositoryEntry *re = Repository::getInstance() ->getRepositoryEntry( o );
-				list<RepositoryProperty*> *list_rp = re->getAllProperties( true );
-				for(list<RepositoryProperty*>::iterator it = list_rp->begin(); it != list_rp->end(); it++){
-					RepositoryProperty *rp = *it;
-					if(rp->isCollection()){
-						QAction *ac = new ShowCollectionAction(o,rp,pup);
-						ac->addTo(pup);
-					} else if(rp->isPObject()){
-						QAction *ac = new ShowObjectAction(o,rp,pup);
-						ac->addTo(pup);
-					} else {
-						QAction *ac = new ShowPropertyAction(o,rp,pup);
-						ac->addTo(pup);
-					}
-				}
-				//*//*
-			return pup;
-			}
-		}
-	}
-	return 0;
-}
-*/
-
-
-
-/*
-void GenericMapView::writeLatex()
-{
-	QString fileName = KFileDialog::getSaveFileName();
-
-	LatexOutput *lout = new LatexOutput(QString("Testoutput"),fileName);
-	if(lout){
-		if(selectedItem){
-			if(PObjectGraphicsItemNP* pitem = dynamic_cast<PObjectGraphicsItemNP*>(selectedItem)){
-				if(PObject *o = pitem->getObject()){
-					lout->write(o);
-				} else {
-				qDebug("GenericMapView::writeLatex : could not get object from item");
-				} 
-			} else {
-				qDebug("GenericMapView::writeLatex : could not recover selected item");
-				lout -> write(getMap());	
-			}
-    		} else {	
-			lout -> write(getMap());
-		}
-		lout -> close();
-		lout -> edit();
-	}	
-
-	delete lout;
-}
-*/
-
-
-/*!
-    \fn GenericMapView::zoomIn()
- */
-/*
-void GenericMapView::zoomOut()
-{
-    	QWMatrix wm = worldMatrix();
-	wm.scale(.9,.9);
-	setWorldMatrix(wm);
-}
-*/
-
-/*!
-    \fn GenericMapView::zoomOut()
- */
-/*
-void GenericMapView::zoomIn()
-{
-    QWMatrix wm = worldMatrix();
-	wm.scale(1.1,1.1);
-	setWorldMatrix(wm);
-}
-*/
-
-/*
-void GenericMapView::createNewItem()
-{
-	 PObject* o = CreateAction::getInstance()->createObject();
-	getMap()->addItem(o,currentPos);
-
-}
-*/
-
-/*
-list<QAction*>* GenericMapView::initActionsForSelection(QActionCollection *actionCollection)
-{
-	list<QAction*> *actionList = new list<QAction*>();
-	if(selectedItem){
-		if(PObjectGraphicsItemNP* pitem = dynamic_cast<PObjectGraphicsItemNP*>(selectedItem)){
-			if(PObject *o = pitem->getObject()){
-				if(stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o)){
-					actionList->push_back(new ShowSitzplanAction(se,this));
-				}
-			}
-		}
-	}
-	return actionList;
-}
-*/
-
-/*!
-    \fn GenericMapView::initActions()
- */
-/*
-list<QAction*>* GenericMapView::initActions(QActionCollection *actionCollection)
-{
-	list<QAction*> *actionList = new list<QAction*>();
-
-	if(selectedItem){
-		list<QAction*> *actionsForSelected = initActionsForSelection(actionCollection);
-		for(list<QAction*>::iterator it = actionsForSelected->begin(); it != actionsForSelected->end(); it++){
-			actionList->push_back((*it));
-		}
-		actionList-> push_back( new QAction("Rauf", KStdAccel::shortcut(KStdAccel::New), this,SLOT(itemUp()), actionCollection, "activate") );
-		
-		actionList-> push_back( new QAction("Runter", KStdAccel::shortcut(KStdAccel::New), this,SLOT(itemDown()), actionCollection, "activate") );
-
-		actionList-> push_back( new QAction("Anzeigen", KStdAccel::shortcut(KStdAccel::New), this,SLOT(activateSelected()), actionCollection, "activate") );
-
-		
-		actionList-> push_back( new QAction("Formular", KStdAccel::shortcut(KStdAccel::New), this,SLOT(showFormForSelected()), actionCollection, "activate") );
-
-		actionList -> push_back( new QAction("Löschen", KStdAccel::shortcut(KStdAccel::New), this,SLOT(deleteSelected()), actionCollection, "activate") );
-	
-		actionList -> push_back( new QAction("Latex", KStdAccel::shortcut(KStdAccel::New), this,SLOT(writeLatex()), actionCollection, "activate") );
-
-	} else {
-		actionList->push_back( new QAction("Vergrößern", KStdAccel::shortcut(KStdAccel::New), this,SLOT(zoomIn()), actionCollection, "zoomin") );
-	
-		
-		actionList->push_back( new QAction("Verkleinern", KStdAccel::shortcut(KStdAccel::New), this,SLOT(zoomOut()), actionCollection, "zoomout") );
-
-	
-		actionList -> push_back( new QAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), this,SLOT(createNewItem()), actionCollection, "create_new") );
-		
-	}
-
-	return actionList;
-}
-*/
 
 
 
@@ -600,27 +384,6 @@ QMenu* GenericMapView::getPopupMenu()
         return new QMenu();
 	}
 
-	/*
-	  //if(! pmenu){
-		pmenu = new QPopupMenu(this);
-		
-		list<QAction*> *actionList = initActions();
-		for(list<QAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
-			if(*it){
-			(*it)->plug(pmenu);
-			}
-		}
-		
-		if(QPopupMenu *sub = getDatenPopupForSelected()){
-			pmenu->insertItem("Daten",sub);
-		}
-		
-		
-		
-
-	//}
-	return pmenu;
-	*/
 }
 
 
@@ -644,24 +407,7 @@ void ShowSitzplanAction::showSitzplan()
             sitzplan *sp = kl->getSitzplan();
 			if(sp){
                 GuiRepository::getInstance()->showFormForObject(sp,false);
-                /*
-                if(sp->getKlasse() != kl){
-					Transactions::getCurrentTransaction()->add(sp);
-					sp->setKlasse(kl);
-				}
-                qDebug("SitzplanMapView : looking for SitzplanMap");
-				SitzplanMap *spm = getMapForSitzplan(sp);
-				qDebug("SitzplanMapView : DONE looking for SitzplanMap");
-				SitzplanMapView *spmv = new SitzplanMapView();
-                spmv->fitInView(spm->sceneRect());
-				spmv->setStundenplaneintrag(se);
-				qDebug("SitzplanMapView : setting SitzplanMap");
-				spmv -> setMap(spm);
-				qDebug("SitzplanMapView : DONE setting SitzplanMap");
-				//form =sm;
-				new SitzplanMapViewControler(spmv);
-                GuiRepository::getInstance()->showFormForObject(sp,spmv,false);
-                */
+
 			} else {
 				qDebug("ShowSitzplanAction::showSitzplan : no sitzplan in klasse");
 			}

@@ -217,13 +217,18 @@ stundenplaneintrag* SStundenplan::createEintrag(stundenplantemplateeintrag *te, 
 
 list<stundenplaneintrag*>* SStundenplan::getEintraege(QDate date)
 {
-    list<stundenplaneintrag*> *result = map_eintraege[date];
-    if(!result){
+    //list<stundenplaneintrag*> *result = map_eintraege.find(date);
+    list<stundenplaneintrag*> *result=0;
+    map<QDate, list<stundenplaneintrag*>*>::iterator eintr_it = map_eintraege.find(date);
+    if(eintr_it!=map_eintraege.end()){
+        result=eintr_it->second;
+    } else {
         result =new list<stundenplaneintrag*>();
 
 
-        set<stundenplantemplateeintrag*> *templates = map_templates[date.dayOfWeek()];
-        if(templates){
+        map<int, set<stundenplantemplateeintrag*> *>::iterator template_it=map_templates.find(date.dayOfWeek());
+        if(template_it!=map_templates.end()){
+            set<stundenplantemplateeintrag*> *templates= (*template_it).second;
             int count=0;
             for(set<stundenplantemplateeintrag*>::iterator it = templates->begin(); it != templates->end(); it++){
                 ++count;
@@ -247,8 +252,8 @@ list<stundenplaneintrag*>* SStundenplan::getEintraege(QDate date)
         } else {
             qDebug() << QString("SStundenplan: could not get entry for dow %1").arg(date.dayOfWeek());
         }
-
         map_eintraege[date]=result;
+
     }
 	
 	return result;

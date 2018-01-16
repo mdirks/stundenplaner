@@ -30,50 +30,6 @@ WeekMapView::~WeekMapView()
 
 
 
-
-/*!
-    \fn WeekMapView::initActions(QActionCollection *actionCollection)
- */
-/*
-list<QAction*>*  WeekMapView::initActions(QActionCollection *actionCollection)
-{
-    list<QAction*> *result  = GenericMapView::initActions(actionCollection);
-    result->push_back(new QAction("Stundenplan", KStdAccel::shortcut(KStdAccel::New), this,SLOT(readStundenplan()), actionCollection, "zoomout"));
-    return result;
-}
-*/
-
-/*
-void WeekMapView::readStundenplan()
-{
-	WeekMap *wm = dynamic_cast<WeekMap*>(getMap());
-	if(wm){
-		wm->readStundenplan();
-		update();
-	}
-}
-*/
-
-/*
-QPopupMenu* WeekMapView::getPopupMenu()
-{
-    //if(! pmenu){
-		pmenu = new QPopupMenu(this);
-		list<QAction*> *actionList = initActions();
-		for(list<QAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
-			if(*it){
-			(*it)->plug(pmenu);
-			}
-		}
-		if(QPopupMenu *sub = getPopupForSelected()){
-			pmenu->insertItem("Daten",sub);
-		}
-
-	//}
-	return pmenu;
-}
-*/
-
 /*!
     \fn WeekMapView::getPopupMenu()
  */

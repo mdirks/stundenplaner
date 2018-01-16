@@ -314,13 +314,15 @@ void WeekMap::readStundenplan()
 	SStundenplan* ss = SStundenplan::getInstance();
 	for(int i=0; i<6;i++){
 		list<stundenplaneintrag*> *list_eintraege =  ss->getEintraege(  date.addDays(i) );
-		for(list<stundenplaneintrag*>::iterator it = list_eintraege->begin(); it != list_eintraege->end(); it++){
-			stundenplaneintrag *e =(*it);
-			PObjectGraphicsItemNP *sp_ei = GenericMap::addItemNP( e, getPositionForDate(QDateTime(e->getDatum(),getTimeForStunde(e->getNrStunde()))) );
-            list_speintr->push_back(sp_ei);
-            QApplication::processEvents();
-            update();
+        if(list_eintraege){
+            for(list<stundenplaneintrag*>::iterator it = list_eintraege->begin(); it != list_eintraege->end(); it++){
+                stundenplaneintrag *e =(*it);
+                PObjectGraphicsItemNP *sp_ei = GenericMap::addItemNP( e, getPositionForDate(QDateTime(e->getDatum(),getTimeForStunde(e->getNrStunde()))) );
+                list_speintr->push_back(sp_ei);
+                QApplication::processEvents();
+                update();
     		}
+        }
 				
 	}
     //update();
