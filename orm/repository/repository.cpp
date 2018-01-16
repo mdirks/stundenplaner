@@ -17,6 +17,7 @@
 
 #include "repository.h"
 
+
 #include "services/utils/utils.h"
 #include <QDebug>
 
@@ -41,7 +42,8 @@ Repository* Repository::getInstance(){
 
 RepositoryEntry* Repository::getRepositoryEntry(string className){
 
-   hash_map<const char*,RepositoryEntry*, hash<const char*>,equal_char>::iterator it  = classNameToRe.find(className.c_str());
+   unordered_map<const char*,RepositoryEntry*, hash<const char*>,equal_char>::iterator it  = classNameToRe.find(className.c_str());
+   //hash_map<const char*,RepositoryEntry*, hash<const char*>,equal_char>::iterator it  = classNameToRe.find(className.c_str());
    if(it != classNameToRe.end()){
        return it->second;
 	}else {

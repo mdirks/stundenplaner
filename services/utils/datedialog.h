@@ -14,7 +14,7 @@
 
 #include <qdialog.h>
 #include <qpushbutton.h>
-#include <kdatepicker.h>
+//#include <kdatepicker.h>
 
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>
@@ -35,7 +35,8 @@ public slots:
 	void dateSelected();
 
 private:
-	KDatePicker *datePicker;
+    //todo : replace with QT
+    //KDatePicker *datePicker;
 	QPushButton *okButton;
 };
 

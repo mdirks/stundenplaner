@@ -14,7 +14,8 @@
 
 #include "repository.h"
 #include "repositoryentry.h"
-#include <ext/hash_map>
+//#include <ext/hash_map>
+#include <unordered_map>
 #include <string>
 
 using namespace std;
@@ -24,7 +25,8 @@ using namespace __gnu_cxx;
 */
 class RepositoryEntryImpl : public RepositoryEntry {
 
-typedef  hash_map<const char*, RepositoryProperty*, hash<const char*>,equal_char> propertymap;
+typedef  unordered_map<const char*, RepositoryProperty*> propertymap;
+//typedef  hash_map<const char*, RepositoryProperty*, std::hash<const char*>,equal_char> propertymap;
 
 public:
     RepositoryEntryImpl(const string &className);

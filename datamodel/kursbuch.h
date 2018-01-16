@@ -15,7 +15,7 @@
 #include "krusbucheintrag.h"
 #include "klasse.h"
 #include "stundenplaneintrag.h"
-#include "teilleistung.h";
+#include "teilleistung.h"
 #include "orm/transactions/transactionobject.h"
 
 #include <list>

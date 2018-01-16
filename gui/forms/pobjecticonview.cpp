@@ -31,7 +31,7 @@
 #include <qstring.h>
 
 #include <list>
-#include <krun.h>
+//#include <krun.h>
 //#include <kurl.h>
 
 #include <QDragEnterEvent>
@@ -39,6 +39,7 @@
 #include <QLabel>
 #include <QClipboard>
 #include <QApplication>
+#include <QDesktopServices>
 
 #define GRIDX 100
 #define GRIDY 40
@@ -46,7 +47,7 @@
 using namespace std;
 
 PObjectIconView::PObjectIconView(QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)//, KXMLGUIClient()
 {
 
     provider=0;
@@ -54,7 +55,7 @@ PObjectIconView::PObjectIconView(QWidget *parent)
 }
 
 PObjectIconView::PObjectIconView(PObjectListProvider *prov, QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)//, KXMLGUIClient()
 {
 
     provider=prov;
@@ -63,7 +64,7 @@ PObjectIconView::PObjectIconView(PObjectListProvider *prov, QWidget *parent)
 
 
 PObjectIconView::PObjectIconView(list<PObject*> *olist, QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)//, KXMLGUIClient()
 {
     provider = new PoLListProvider(olist);
 
@@ -72,7 +73,7 @@ PObjectIconView::PObjectIconView(list<PObject*> *olist, QWidget *parent)
 
 
 PObjectIconView::PObjectIconView(QString className, QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)//, KXMLGUIClient()
 {
     provider = new MapperListProvider(className);
 
@@ -91,7 +92,7 @@ PObjectIconView::PObjectIconView(QString className, QWidget *parent)
 
 
 PObjectIconView::PObjectIconView(AbstractMapper *mapper, QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)//, KXMLGUIClient()
 {
     provider = new MapperListProvider(mapper);
 
@@ -110,7 +111,7 @@ PObjectIconView::PObjectIconView(AbstractMapper *mapper, QWidget *parent)
 
 
 PObjectIconView::PObjectIconView(RepositoryProperty *prop, PObject *parentObject, QWidget *parent)
-    : QListWidget(parent), KXMLGUIClient()
+    : QListWidget(parent)//, KXMLGUIClient()
 {
     provider = new RpListProvider(prop,parentObject);
 
@@ -274,11 +275,14 @@ void PObjectIconView::activateItem(QListWidgetItem *item)
 		material *m=0;
 		if(o->getClassName() == "material" && (m = dynamic_cast<material*>(o))){
             QString fileName = m->getFile()->fileName();
+            QDesktopServices::openUrl(fileName);
+            /*
 			if(fileName.contains(".tex")){ // hack to handel tex-files
                 KRun::runCommand(QString("kile %1").arg(fileName),this);
 			} else {	
                 new KRun(fileName,this);
 			}
+            */
 		} else {
 			GuiRepository::getInstance()->showFormForObject(o);
 		}

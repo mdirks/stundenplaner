@@ -13,6 +13,7 @@
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <QDialog>
+#include <QDate>
 
 DateDialog::DateDialog()
     : QDialog()
@@ -20,8 +21,8 @@ DateDialog::DateDialog()
 	setMinimumSize(400,500);
 	QVBoxLayout *l = new QVBoxLayout(this);
 	
-	datePicker = new KDatePicker(this);
-	l->addWidget(datePicker,90);
+    //datePicker = new KDatePicker(this);
+    //l->addWidget(datePicker,90);
 	okButton = new QPushButton("OK",this);
 	l->addWidget(okButton);
 	
@@ -35,7 +36,7 @@ DateDialog::~DateDialog()
 
 QDate DateDialog::date()
 {
-	return datePicker->date();
+    //return datePicker->date();
 }
 
 QDate DateDialog::getDate()

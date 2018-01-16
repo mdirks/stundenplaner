@@ -19,7 +19,9 @@
 #define REPOSITORY_H
 
 #include <map>
-#include <ext/hash_map>
+#include <unordered_map>
+//#include <hash_map>
+//#include <ext/hash_map>
 #include <string>
 
 #include "repositoryentry.h"
@@ -40,7 +42,9 @@ struct equal_char {
 
 };
 
-typedef  hash_map<const char*, RepositoryEntry*, hash<const char*>,equal_char> entrymap;
+typedef  unordered_map<const char*, RepositoryEntry*> entrymap;
+//typedef  unordered_map<const char*, RepositoryEntry*, hash<const char*>,equal_char> entrymap;
+//typedef  hash_map<const char*, RepositoryEntry*, hash<const char*>,equal_char> entrymap;
 //typedef  hash_map<const char*, RepositoryEntry> entrymap;
 
 class Repository {
