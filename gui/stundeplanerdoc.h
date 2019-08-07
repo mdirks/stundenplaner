@@ -28,7 +28,7 @@
 #include <qlist.h>
 
 // include files for KDE
-#include <kurl.h>
+//#include <kurl.h>
 
 #include "../datamodel/stunde.h"
 
@@ -51,9 +51,9 @@ class StundePlanerDoc : public QObject
     void deleteContents();
     bool newDocument();
     void closeDocument();
-    bool openDocument(const KUrl& url, const char *format=0);
-    bool saveDocument(const KUrl& url, const char *format=0);
-    void setURL(const KUrl& url);
+    bool openDocument(const QUrl& url, const char *format=0);
+    bool saveDocument(const QUrl& url, const char *format=0);
+    void setURL(const QUrl& url);
 	
   public slots:
     /** calls repaint() on all views connected to the document object and is called by the view by which the document has been changed.
@@ -69,7 +69,7 @@ class StundePlanerDoc : public QObject
   private:
     /** the modified flag of the current document */
     bool modified;
-    KUrl doc_url;
+    QUrl doc_url;
 
 };
 

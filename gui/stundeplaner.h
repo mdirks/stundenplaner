@@ -26,13 +26,14 @@
 // include files for Qt
 #include "qprocess.h"
 // include files for KDE 
-#include <KApplication>
-#include <kmainwindow.h>
+#include <QApplication>
+//#include <kmainwindow.h>
 //#include <kaccel.h>
-#include <KAction>
-#include <KUrl>
+#include <QAction>
+#include <QUrl>
 //#include <kmdimainfrm.h>
-#include <KXmlGuiWindow>
+#include <KXmlGui/KXmlGuiWindow>
+#include <KRun>
 #include <QMdiArea>
 #include <QToolBar>
 #include <QStackedWidget>
@@ -63,7 +64,7 @@ class StundePlanerApp : /*public QMainWindow*/ public KXmlGuiWindow /* public KM
   public:
     StundePlanerApp(QWidget* parent=0, const char* name=0);
     ~StundePlanerApp();
-    void openDocumentFile(const KUrl& url);
+    void openDocumentFile(const QUrl& url);
     StundePlanerDoc *getDocument() const; 	
     //void addSubWindow(QWidget *w, bool top=true);
     void addDockWindow(QWidget *w, QString name,Qt::DockWidgetArea area = Qt::RightDockWidgetArea);
@@ -102,7 +103,7 @@ private:
     void slotFileNewWindow();
     void slotFileNew();
     void slotFileOpen();
-    void slotFileOpenRecent(const KUrl& url);
+    void slotFileOpenRecent(const QUrl& url);
     void slotFileSave();
     void slotFileSaveAs();
     void slotFileClose();
@@ -124,27 +125,27 @@ private:
     StundePlanerView *view;
     StundePlanerDoc *doc;
 
-    // KAction pointers to enable/disable actions
-    KAction* changeSchuljahrAction;
-    KAction* changeDatabaseAction;
-    KAction* newObjectIconViewAction;
-    KAction* addStundenplaneintragAction;
+    // QAction pointers to enable/disable actions
+    QAction* changeSchuljahrAction;
+    QAction* changeDatabaseAction;
+    QAction* newObjectIconViewAction;
+    QAction* addStundenplaneintragAction;
 
 
-    KAction* fileNewWindow;
-    KAction* fileNew;
-    KAction* fileOpen;
+    QAction* fileNewWindow;
+    QAction* fileNew;
+    QAction* fileOpen;
     //KRecentFilesAction* fileOpenRecent;
-    KAction* fileSave;
-    KAction* fileSaveAs;
-    KAction* fileClose;
-    KAction* filePrint;
-    KAction* fileQuit;
-    KAction* editCut;
-    KAction* editCopy;
-    KAction* editPaste;
-    KAction* viewToolBar;
-    KAction* viewStatusBar;
+    QAction* fileSave;
+    QAction* fileSaveAs;
+    QAction* fileClose;
+    QAction* filePrint;
+    QAction* fileQuit;
+    QAction* editCut;
+    QAction* editCopy;
+    QAction* editPaste;
+    QAction* viewToolBar;
+    QAction* viewStatusBar;
     
     //doctree_stunden *tree;
     //PObjectListBox *listBoxOpos;

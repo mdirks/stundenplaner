@@ -25,7 +25,7 @@
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
-class XmlExportDialog : public KDialogBase {
+class XmlExportDialog : public QDialogBase {
 public:
     XmlExportDialog(QWidget *parten);
     ~XmlExportDialog();

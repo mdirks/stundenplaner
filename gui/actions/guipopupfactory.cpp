@@ -32,7 +32,7 @@
 
 #include <QAction>
 #include <QDebug>
-#include <KAction>
+#include <QAction>
 
 GuiPopupFactory* GuiPopupFactory::instance = 0;
 
@@ -51,7 +51,7 @@ QMenu* GuiPopupFactory::getPopupForWeekMapView(WeekMapView *mapView, QPoint pos)
     QMenu *pmenu = getPopupForGenericMapView(mapView,pos);
 
     pmenu->addAction("Stundenplan",  controler, SLOT(readStundenplan()));
-    //(new KAction("Stundenplan", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(readStundenplan()), mapView, "zoomout"))->plug(pmenu);
+    //(new QAction("Stundenplan", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(readStundenplan()), mapView, "zoomout"))->plug(pmenu);
 	
 	return pmenu;
 }
@@ -85,30 +85,30 @@ QMenu* GuiPopupFactory::getPopupForGenericMapView(GenericMapView *mapView, QPoin
 		}
 		
 		
-		(new KAction("Rauf", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(itemUp()), mapView, "activate"))->plug(pmenu);
+		(new QAction("Rauf", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(itemUp()), mapView, "activate"))->plug(pmenu);
 		
-		( new KAction("Runter", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(itemDown()), mapView, "activate") )->plug(pmenu);
+		( new QAction("Runter", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(itemDown()), mapView, "activate") )->plug(pmenu);
 
-		( new KAction("Anzeigen", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(activateSelected()), mapView, "activate") )->plug(pmenu);
+		( new QAction("Anzeigen", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(activateSelected()), mapView, "activate") )->plug(pmenu);
 
-		( new KAction("Formular", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(showFormForSelected()), mapView, "activate") )->plug(pmenu);
+		( new QAction("Formular", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(showFormForSelected()), mapView, "activate") )->plug(pmenu);
 
-		( new KAction("Löschen", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(deleteSelected()), mapView, "activate") )->plug(pmenu);
+		( new QAction("Löschen", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(deleteSelected()), mapView, "activate") )->plug(pmenu);
 	
-		( new KAction("Latex", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(writeLatex()), mapView, "activate") )->plug(pmenu);
+		( new QAction("Latex", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(writeLatex()), mapView, "activate") )->plug(pmenu);
 
 		if(PObject *o = selectedItem->getObject()){
 			pmenu->insertItem("Daten",new DatenPopup(o,mapView));
 		}
 
 	} else {
-		( new KAction("Vergrößern", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(zoomIn()), mapView, "zoomin") )->plug(pmenu);
+		( new QAction("Vergrößern", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(zoomIn()), mapView, "zoomin") )->plug(pmenu);
 	
 		
-		( new KAction("Verkleinern", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(zoomOut()), mapView, "zoomout") )->plug(pmenu);
+		( new QAction("Verkleinern", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(zoomOut()), mapView, "zoomout") )->plug(pmenu);
 
 	
-		( new KAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(createNewItem()), mapView, "create_new") )->plug(pmenu);
+		( new QAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(createNewItem()), mapView, "create_new") )->plug(pmenu);
 		
 	}
 
@@ -159,10 +159,10 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
         pmenu->addAction("Löschen",  confAction,SLOT(deleteSelected()));
 	
         /*
-		action = new KAction("Choose Property", KStdAccel::shortcut(KStdAccel::New), confAction,SLOT(chooseProperty()), iconView, "del");
+		action = new QAction("Choose Property", KStdAccel::shortcut(KStdAccel::New), confAction,SLOT(chooseProperty()), iconView, "del");
 		action->plug(pmenu);
 	
-		action = new KAction("CreateFilter", KStdAccel::shortcut(KStdAccel::New), confAction,SLOT(createFilter()), iconView, "del");
+		action = new QAction("CreateFilter", KStdAccel::shortcut(KStdAccel::New), confAction,SLOT(createFilter()), iconView, "del");
 		action->plug(pmenu);
         */
 

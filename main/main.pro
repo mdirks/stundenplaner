@@ -10,19 +10,26 @@ OTHER_FILES += \
     stundenplanerui.rc
 
 CONFIG += qt
-QT+=sql xml
-
+unix {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += poppler-qt5
+}
+QT+=sql xml widgets printsupport
+QT+=KIconThemes
+QT+=KXmlGui
+QT+=KIOFileWidgets KIOWidgets KNTLM
+#QT+=KParts
 
 INCLUDEPATH += .. \
 INCLUDEPATH += /usr/include/KDE
 INCLUDEPATH += gui
 
-LIBS     += -lkdeui
-LIBS     += -lkdecore
-LIBS     += -lkio
-LIBS     += -lkparts
-LIBS     += -lpoppler-qt4
-LIBS     += -lpdfview
+#LIBS     += -lkdeui
+#LIBS     += -lkdecore
+#LIBS     += -lkio
+#LIBS     += -lkparts
+LIBS     += -lpoppler-qt5
+#LIBS     += -lpdfview
 
 LIBS     +=  -lgui -lorm -ldatamodel -lservices
 

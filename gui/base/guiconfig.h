@@ -20,7 +20,8 @@
 #include <QString>
 #include <QPixmap>
 #include <QWidget>
-#include <kiconloader.h>
+//#include <kiconloader.h>
+#include <KIconLoader>
 //#include <string>
 #include <map>
 

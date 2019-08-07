@@ -22,7 +22,7 @@
 
 #include "gui/forms/pobjecttable.h"
 
-#include <kaction.h>
+//#include <kaction.h>
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
@@ -43,7 +43,7 @@ public slots:
 
 private:
 	PObjectTable *table;
-    //KAction *configurePropertiesAction;
+    //QAction *configurePropertiesAction;
 };
 
 

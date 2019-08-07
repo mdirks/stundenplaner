@@ -58,7 +58,7 @@ ShowCollectionAction::ShowCollectionAction(PObject *o, RepositoryProperty *rp, Q
 {
 	this->o=o;
 	this->rp = rp;
-	connect(this, SIGNAL( activated() ) , this, SLOT( showCollection() ) );
+        connect(this, SIGNAL(triggered(bool)) , this, SLOT( showCollection() ) );
 }
 
 ShowCollectionAction::~ShowCollectionAction(){}
@@ -78,7 +78,7 @@ ShowObjectAction::ShowObjectAction(PObject *o, RepositoryProperty *rp, QObject *
 {
 	this->o=o;
 	this->rp = rp;
-	connect(this, SIGNAL( activated() ) , this, SLOT( showObject() ) );
+        connect(this, SIGNAL(triggered(bool)) , this, SLOT( showObject() ) );
 }
 
 ShowObjectAction::~ShowObjectAction(){}
@@ -107,7 +107,7 @@ ShowPropertyAction::ShowPropertyAction(PObject *o, RepositoryProperty *rp, QObje
 {
 	this->o=o;
 	this->rp = rp;
-	connect(this, SIGNAL( activated() ) , this, SLOT( showProperty() ) );
+        connect(this, SIGNAL(triggered(bool)), this, SLOT( showProperty() ) );
 }
 
 ShowPropertyAction::~ShowPropertyAction(){}
@@ -124,7 +124,7 @@ ShowTeilleistungenAction::ShowTeilleistungenAction(klasse *kl)
     : QAction("Teilleistungen", 0)
 {
 	this->kl = kl;
-	connect(this,SIGNAL(activated()),this,SLOT(showTeilleistungen()));
+        connect(this,SIGNAL(triggered(bool)),this,SLOT(showTeilleistungen()));
 }
 
 
@@ -137,7 +137,7 @@ EditBewertungenAction::EditBewertungenAction(stundenplaneintrag *se)
     : QAction("Bewertungen", 0)
 {
 	this->se=se;
-	connect(this,SIGNAL(activated()),this,SLOT(editBewertungen()));
+        connect(this,SIGNAL(triggered(bool)),this,SLOT(editBewertungen()));
 }
 
 void EditBewertungenAction::editBewertungen()

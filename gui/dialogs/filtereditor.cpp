@@ -103,10 +103,11 @@ FilterEditor::~FilterEditor()
 }
 
 FilterEditorDialog::FilterEditorDialog(RepositoryEntry *re, QWidget *parent)
-    : KDialog(parent)
+    : QDialog(parent)
 {
 	filterEditor = new FilterEditor(re,this);
-	setMainWidget(filterEditor);
+    // ToDO: Does the editor show up, add it to layout ?
+    //setMainWidget(filterEditor);
 }
 
 AbstractFilter* FilterEditorDialog::getFilter()

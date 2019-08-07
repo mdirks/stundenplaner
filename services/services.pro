@@ -25,4 +25,11 @@ INCLUDEPATH += /usr/include/poppler/qt4
 INCLUDEPATH += /usr/include/KDE
 
 CONFIG += qt
-QT+=sql xml
+unix {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += poppler-qt5
+}
+QT+=sql xml widgets
+QT+=KIOCore KIOFileWidgets KIOWidgets KNTLM
+QT+=KIconThemes
+QT+=KParts

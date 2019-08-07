@@ -13,7 +13,7 @@
 #include "services/sstundenplan.h"
 #include "gui/data/weekmap.h"
 #include "mapviewspopupfactory.h"
-#include <qwmatrix.h>
+//#include <qwmatrix.h>
 WeekMapView::WeekMapView(QWidget * parent, const char * name)
  : GenericMapView(parent,name)
 {
@@ -32,13 +32,13 @@ WeekMapView::~WeekMapView()
 
 
 /*!
-    \fn WeekMapView::initActions(KActionCollection *actionCollection)
+    \fn WeekMapView::initActions(QActionCollection *actionCollection)
  */
 /*
-list<KAction*>*  WeekMapView::initActions(KActionCollection *actionCollection)
+list<QAction*>*  WeekMapView::initActions(QActionCollection *actionCollection)
 {
-    list<KAction*> *result  = GenericMapView::initActions(actionCollection);
-    result->push_back(new KAction("Stundenplan", KStdAccel::shortcut(KStdAccel::New), this,SLOT(readStundenplan()), actionCollection, "zoomout"));
+    list<QAction*> *result  = GenericMapView::initActions(actionCollection);
+    result->push_back(new QAction("Stundenplan", KStdAccel::shortcut(KStdAccel::New), this,SLOT(readStundenplan()), actionCollection, "zoomout"));
     return result;
 }
 */
@@ -59,8 +59,8 @@ QPopupMenu* WeekMapView::getPopupMenu()
 {
     //if(! pmenu){
 		pmenu = new QPopupMenu(this);
-		list<KAction*> *actionList = initActions();
-		for(list<KAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
+		list<QAction*> *actionList = initActions();
+		for(list<QAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
 			if(*it){
 			(*it)->plug(pmenu);
 			}

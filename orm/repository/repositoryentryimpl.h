@@ -18,13 +18,13 @@
 #include <string>
 
 using namespace std;
-using namespace __gnu_cxx;
+//using namespace __gnu_cxx;
 /**
 @author Marcus Dirks
 */
 class RepositoryEntryImpl : public RepositoryEntry {
 
-typedef  hash_map<const char*, RepositoryProperty*, hash<const char*>,equal_char> propertymap;
+typedef  /*hash_map*/map<const char*, RepositoryProperty*, /*hash<const char*>,*/equal_char> propertymap;
 
 public:
     RepositoryEntryImpl(const string &className);

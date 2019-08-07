@@ -10,7 +10,7 @@
 //
 //
 #include "daymapview.h"
-#include <qwmatrix.h>
+//#include <qwmatrix.h>
 
 DayMapView::DayMapView(QWidget * parent, const char * name)
 	: GenericMapView(parent,name)

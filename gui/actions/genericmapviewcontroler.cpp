@@ -34,7 +34,7 @@
 #include "showhistoryaction.h"
 
 #include <krun.h>
-#include <kfiledialog.h>
+#include <qfiledialog.h>
 
 #include <QDebug>
 
@@ -74,7 +74,7 @@ void GenericMapViewControler::deleteSelected()
 {
     if(PObjectGraphicsItemNP *pitemnp = dynamic_cast<PObjectGraphicsItemNP*>(mapView->getSelected()))
     {
-	pitemnp->setVisible(FALSE);
+    pitemnp->setVisible(false);
 	mapView->clearSelection();
 	if(PObjectGraphicsItem *pitem = dynamic_cast<PObjectGraphicsItem*>(pitemnp)){
 		Transactions::getCurrentTransaction()->add(mapView->getMap());
@@ -182,7 +182,7 @@ void GenericMapViewControler::showFormForSelected()
 
 void GenericMapViewControler::writeLatex()
 {
-	QString fileName = KFileDialog::getSaveFileName();
+    QString fileName = QFileDialog::getSaveFileName();
 
 	LatexOutput *lout = new LatexOutput(QString("Testoutput"),fileName);
 	if(lout){

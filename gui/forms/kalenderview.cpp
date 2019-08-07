@@ -26,6 +26,7 @@
 #include "gui/mapviews/genericmapview.h"
 #include "orm/transactions/transactions.h"
 #include "gui/actions/weekmapviewcontroler.h"
+#include <KDatePicker>
 
 KalenderView::KalenderView(QWidget *parent, const char *name)
  : QWidget(parent)
@@ -47,7 +48,7 @@ KalenderView::KalenderView(QWidget *parent, const char *name)
     buttonWidget->addAction("<",this, SLOT(decrementWeek()));
     buttonWidget->addAction(">",this, SLOT(incrementWeek()));
     buttonWidget->addWidget(empty);
-    dateWidget = new KDateWidget();
+    dateWidget = new KDatePicker();
 
 
 	mapView = new WeekMapView(this);
@@ -120,7 +121,7 @@ DayMapDisplay::DayMapDisplay(QWidget *parent, const char *name)
 	btor = new QPushButton(">", buttonWidget);
 	btol = new QPushButton("<", buttonWidget);
 	bset = new QPushButton("Ok", buttonWidget);
-	dateWidget = new KDateWidget(buttonWidget);
+    dateWidget = new KDatePicker(buttonWidget);
 
 	connect(btor, SIGNAL(clicked()), this, SLOT(incrementDay()));
 	connect(btol, SIGNAL(clicked()), this, SLOT(decrementDay()));

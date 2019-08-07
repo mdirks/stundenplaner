@@ -23,7 +23,7 @@
 #include "datamodel/klasse.h"
 
 #include <QTableWidget>
-#include <KDialog>
+#include <QDialog>
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
@@ -34,7 +34,7 @@ public:
     void loadKlasse(klasse *kl);
 };
 
-class MarksDialog : public KDialog
+class MarksDialog : public QDialog
 {
 public:
 	MarksDialog(QWidget *parent=0L);

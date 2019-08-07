@@ -26,13 +26,13 @@
 #include "gui/actions/datenpopup.h"
 #include <QMenu>
 //#include <kmultipledrag.h>
-#include <kaction.h>
-#include <kfiledialog.h>
+//#include <kaction.h>
+#include <qfiledialog.h>
 #include <qstring.h>
 
 #include <list>
 #include <krun.h>
-#include <kurl.h>
+//#include <kurl.h>
 
 #include <QDragEnterEvent>
 #include <QDebug>
@@ -46,7 +46,7 @@
 using namespace std;
 
 PObjectIconView::PObjectIconView(QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)/*, KXMLGUIClient()*/
 {
 
     provider=0;
@@ -54,7 +54,7 @@ PObjectIconView::PObjectIconView(QWidget *parent)
 }
 
 PObjectIconView::PObjectIconView(PObjectListProvider *prov, QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)/*, KXMLGUIClient()*/
 {
 
     provider=prov;
@@ -63,7 +63,7 @@ PObjectIconView::PObjectIconView(PObjectListProvider *prov, QWidget *parent)
 
 
 PObjectIconView::PObjectIconView(list<PObject*> *olist, QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)/*, KXMLGUIClient()*/
 {
     provider = new PoLListProvider(olist);
 
@@ -72,7 +72,7 @@ PObjectIconView::PObjectIconView(list<PObject*> *olist, QWidget *parent)
 
 
 PObjectIconView::PObjectIconView(QString className, QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)/*, KXMLGUIClient()*/
 {
     provider = new MapperListProvider(className);
 
@@ -91,7 +91,7 @@ PObjectIconView::PObjectIconView(QString className, QWidget *parent)
 
 
 PObjectIconView::PObjectIconView(AbstractMapper *mapper, QWidget *parent)
- : QListWidget(parent), KXMLGUIClient()
+ : QListWidget(parent)/*, KXMLGUIClient()*/
 {
     provider = new MapperListProvider(mapper);
 
@@ -110,7 +110,7 @@ PObjectIconView::PObjectIconView(AbstractMapper *mapper, QWidget *parent)
 
 
 PObjectIconView::PObjectIconView(RepositoryProperty *prop, PObject *parentObject, QWidget *parent)
-    : QListWidget(parent), KXMLGUIClient()
+    : QListWidget(parent)/*, KXMLGUIClient()*/
 {
     provider = new RpListProvider(prop,parentObject);
 
@@ -553,29 +553,29 @@ void PObjectIconView::insertNew()
     \fn PObjectIconView::initActions()
  */
 /*
-list<KAction*>* PObjectIconView::initActions(KActionCollection *actionCollection)
+list<QAction*>* PObjectIconView::initActions(QActionCollection *actionCollection)
 {
-	list<KAction*> *actionList = new list<KAction*>();
+	list<QAction*> *actionList = new list<QAction*>();
 	
-	actionList->push_back( new KAction("Neu laden", KStdAccel::shortcut(KStdAccel::New), this, SLOT(reload()), actionCollection,"reload"));
+	actionList->push_back( new QAction("Neu laden", KStdAccel::shortcut(KStdAccel::New), this, SLOT(reload()), actionCollection,"reload"));
 	
-	actionList->push_back( new KAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), this, SLOT(insertNew()), actionCollection,"new"));
+	actionList->push_back( new QAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), this, SLOT(insertNew()), actionCollection,"new"));
 
-	actionList->push_back( new KAction("Filter setzen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(chooseFilter()), actionCollection,"new browser"));
+	actionList->push_back( new QAction("Filter setzen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(chooseFilter()), actionCollection,"new browser"));
 
-	actionList->push_back( new KAction("Neuer Objectbrowser", KStdAccel::shortcut(KStdAccel::New), this, SLOT(newIconView()), actionCollection,"new browser"));
+	actionList->push_back( new QAction("Neuer Objectbrowser", KStdAccel::shortcut(KStdAccel::New), this, SLOT(newIconView()), actionCollection,"new browser"));
 	
-	actionList->push_back( new KAction("Konfigurieren", KStdAccel::shortcut(KStdAccel::New), this, SLOT(configureView()), actionCollection,"configure"));
+	actionList->push_back( new QAction("Konfigurieren", KStdAccel::shortcut(KStdAccel::New), this, SLOT(configureView()), actionCollection,"configure"));
 	
-	actionList->push_back( new KAction("Icon wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectIcon()), actionCollection,"icon"));
+	actionList->push_back( new QAction("Icon wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectIcon()), actionCollection,"icon"));
 
-	KAction *a = new KAction("Delete Item", KStdAccel::shortcut(KStdAccel::New), this,SLOT(deleteSelected()), actionCollection, "del");
+	QAction *a = new QAction("Delete Item", KStdAccel::shortcut(KStdAccel::New), this,SLOT(deleteSelected()), actionCollection, "del");
 	actionList->push_back(a);
 
 	if(mapper && mapper->getClassName() == "material"){
-		actionList->push_back( new KAction("File wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectFile()), actionCollection,"icon"));
+		actionList->push_back( new QAction("File wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectFile()), actionCollection,"icon"));
 	} else if (prop &&  prop->getType() == "material"){
-		actionList->push_back( new KAction("File wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectFile()), actionCollection,"icon"));
+		actionList->push_back( new QAction("File wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectFile()), actionCollection,"icon"));
 	}
 	
 	return actionList;
@@ -597,8 +597,8 @@ QMenu* PObjectIconView::getPopupMenu()
 
 	/*
 		pmenu = new QPopupMenu(this);
-		list<KAction*> *actionList = initActions();
-		for(list<KAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
+		list<QAction*> *actionList = initActions();
+		for(list<QAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
 			(*it)->plug(pmenu);
 		}
 
@@ -692,7 +692,7 @@ void PObjectIconView::selectFile()
 	if(item){
 		PObject *o = item->getObject();
 		if(material *m = dynamic_cast<material*>(o)){
-			QString filename=KFileDialog::getSaveFileName();
+            QString filename=QFileDialog::getSaveFileName();
 			Transactions::getCurrentTransaction()->add(m);
             m->setFileName(  filename.toStdString() );
 		}

@@ -25,7 +25,7 @@
 #include <QDebug>
 
 #include <kmainwindow.h>
-#include <klocale.h>
+//#include <klocale.h>
 
 stundenplaner::stundenplaner()
     : KMainWindow(   )

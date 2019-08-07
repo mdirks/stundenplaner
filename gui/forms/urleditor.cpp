@@ -4,7 +4,7 @@
 #include "orm/transactions/transactions.h"
 
 #include <QFile>
-#include <KFileDialog>
+#include <QFileDialog>
 
 UrlEditor::UrlEditor(PObject *o, RepositoryProperty *prop, QWidget *p)
     : QWidget(p),
@@ -31,7 +31,7 @@ UrlEditor::~UrlEditor()
 
 void UrlEditor::chooseUrl()
 {
-    QString filename = KFileDialog::getSaveFileName();
+    QString filename = QFileDialog::getSaveFileName();
     QFile file(filename);
     if(! file.exists()){
         file.open(QIODevice::ReadWrite);

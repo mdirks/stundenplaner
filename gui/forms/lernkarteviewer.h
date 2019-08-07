@@ -27,13 +27,14 @@
 #include "textpropertyviewer.h"
 #include "pobjectcombobox.h"
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qstring.h>
-#include <qdir.h>
-#include <ktrader.h>
-#include <klibloader.h>
-#include <kparts/part.h>
+#include <QWidget>
+#include <QLabel>
+#include <QString>
+#include <QDir>
+//#include <ktrader.h>
+//#include <klibloader.h>
+#include <KParts/Part>
+#include <KParts/ReadOnlyPart>
 
 #include <list>
 #include <QProcess>

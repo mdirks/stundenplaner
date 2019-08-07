@@ -71,9 +71,9 @@ Variant::operator QDateTime()
 	return QDateTime::fromString(qv.toString());
 }
 
-Variant::operator KUrl()
+Variant::operator QUrl()
 {
-    return KUrl(qv.toString());
+    return QUrl(qv.toString());
 }
 
 Variant::operator MUrl(){
@@ -133,23 +133,27 @@ QDate Variant::asQDate()
 {
 	//return qv.toDate();
 	QString st = qv.toString();
-    for(map<wstring,string>::iterator it = map_replace.begin(); it!=map_replace.end(); it++){
-        //qDebug() << QString("Replacing %1 with %2").arg(it->first.c_str()).arg(it->second.c_str());
-        QString ist=QString::fromStdWString(it->first);
-        QString soll = it->second.c_str();
-        st.replace(ist, soll);
-        //qDebug() << QString("Gave: %1").arg(st);
-    }
     QDate date = QDate::fromString(st);
+    if(!date.isValid()){
+        for(map<wstring,string>::iterator it = map_replace.begin(); it!=map_replace.end(); it++){
+            //qDebug() << QString("Replacing %1 with %2").arg(it->first.c_str()).arg(it->second.c_str());
+            QString ist=QString::fromStdWString(it->first);
+            QString soll = it->second.c_str();
+            st.replace(ist, soll);
+            //qDebug() << QString("Gave: %1").arg(st);
+        }
+        date=QDate::fromString(st);
+    }
+
     //QDate date=qv.toDate();
     //qDebug() << QString("Variant: returning %1 vor %2").arg(date.toString()).arg(st);
 	return date;
 	//QDate::fromString(qv.toString());
 }
 
-KUrl Variant::asKUrl()
+QUrl Variant::asQUrl()
 {
-    KUrl url(qv.toString());
+    QUrl url(qv.toString());
 	return url;
 }
 

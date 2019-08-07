@@ -20,7 +20,7 @@
 
 #include "pdfview.h"
 #include "pageitem.h"
-#include "utils/bookmarkshandler.h"
+#include "bookmarkshandler.h"
 #include <poppler-qt5.h>
 
 //class PdfView;

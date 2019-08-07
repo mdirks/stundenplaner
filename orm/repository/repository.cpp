@@ -41,7 +41,7 @@ Repository* Repository::getInstance(){
 
 RepositoryEntry* Repository::getRepositoryEntry(string className){
 
-   hash_map<const char*,RepositoryEntry*, hash<const char*>,equal_char>::iterator it  = classNameToRe.find(className.c_str());
+   /*hash_map*/map<string,RepositoryEntry*, /*hash<const char*>,*/strless>::iterator it  = classNameToRe.find(className/*.c_str()*/);
    if(it != classNameToRe.end()){
        return it->second;
 	}else {
@@ -53,7 +53,7 @@ RepositoryEntry* Repository::getRepositoryEntry(string className){
 void Repository::addRepositoryEntry(RepositoryEntry* entry){
    string className = entry->getClassName();
    qDebug() << QString("Added: ").append(className.c_str());
-	classNameToRe[className.c_str()] = entry;
+    classNameToRe[className/*.c_str()*/] = entry;
 }
 
 

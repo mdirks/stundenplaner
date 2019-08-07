@@ -11,7 +11,7 @@
 //
 #include "latexoutput.h"
 
-#include <krun.h>
+#include <KRun>
 #include <list>
 #include <map>
 #include <string>

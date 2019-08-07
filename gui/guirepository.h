@@ -14,8 +14,8 @@
 
 #include <qstring.h>
 #include <qwidget.h>
-#include <kiconloader.h>
-#include <kmainwindow.h>
+//#include <kiconloader.h>
+//#include <kmainwindow.h>
 
 #include "orm/persistence/pobject.h"
 #include "orm/mapping/abstractmapper.h"
@@ -29,15 +29,16 @@
 #include "guimode.h"
 #include "guiservice.h"
 
-#include <kglobal.h>
-#include <kconfig.h>
-#include <kiconloader.h>
-#include <kicondialog.h>
-#include <ktrader.h>
-#include <klibloader.h>
-#include <kparts/part.h>
-#include <kmessagebox.h>
-#include <KXmlGuiWindow>
+//#include <kglobal.h>
+//#include <KConfig>
+//#include <KConfig>
+//#include <KIconLoader>
+//#include <KIconDialog>
+//#include <ktrader.h>
+//#include <klibloader.h>
+//#include <KParts/Part>
+//#include <kmessagebox.h>
+//#include <KXmlGuiWindow>
 
 #include <QStackedWidget>
 #include <QMainWindow>
@@ -102,8 +103,8 @@ public:
     virtual void showInfo(QString cap, QString mes) = 0;
     virtual void closeGui() = 0;
  
-    KParts::Part* getPdfPart(QWidget *parent);
-    KParts::Part* getPart(QWidget *parent, QString qs1, QString qs2);
+    //KParts::Part* getPdfPart(QWidget *parent);
+    //KParts::Part* getPart(QWidget *parent, QString qs1, QString qs2);
     virtual void close() = 0;
     virtual QString getDisplayString(PObject *po)=0;
     virtual SitzplanMap*  getMapForSitzplan(sitzplan *sp)=0;

@@ -30,7 +30,7 @@
   */
 
 using namespace std;
-using namespace __gnu_cxx;
+//using namespace __gnu_cxx;
 
 struct equal_char {
 
@@ -40,7 +40,16 @@ struct equal_char {
 
 };
 
-typedef  hash_map<const char*, RepositoryEntry*, hash<const char*>,equal_char> entrymap;
+class strless {
+   public:
+      bool operator() (const string & first, const string & second ) const  {
+         return first < second;
+      }
+};
+
+
+//typedef  /*hash_map*/map<const char*, RepositoryEntry*, /*hash<const char*>,*/equal_char> entrymap;
+typedef  /*hash_map*/map<string, RepositoryEntry*, /*hash<const char*>,*/strless> entrymap;
 //typedef  hash_map<const char*, RepositoryEntry> entrymap;
 
 class Repository {

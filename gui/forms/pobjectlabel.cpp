@@ -77,7 +77,7 @@ PObjectLabel::PObjectLabel(RepositoryProperty *prop, PObject *o, QWidget *p, boo
 	//connect(this,SIGNAL(dropped( QDropEvent *, const QValueList<QIconDragItem> & )), this, SLOT( handleDrop(QDropEvent *)));
 	//if(o){ startEdit(prop,o);}
 	//this->edit_o=o;
-    setAcceptDrops(TRUE);
+    setAcceptDrops(true);
 
 }
 

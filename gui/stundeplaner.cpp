@@ -21,32 +21,37 @@
 #include <QList>
 #include <QKeyEvent>
 #include <qdir.h>
-#include <qprinter.h>
+#include <QPrinter>
 #include <qpainter.h>
 #include <qprogressdialog.h>
 #include <qprocess.h>
 //#include <QStackedWidget>
+#include <QStatusBar>
 
 
 // include files for KDE
-#include <KActionCollection>
-#include <kcmdlineargs.h>
-#include <kaboutdata.h>
-#include <klocale.h>
+//#include <QActionCollection>
+//#include <kcmdlineargs.h>
+//#include <kaboutdata.h>
+//#include <klocale.h>
 //#include <kapp.h>
-#include <kiconloader.h>
-#include <kmessagebox.h>
-#include <kfiledialog.h>
-#include <kmenubar.h>
-#include <kstatusbar.h>
-#include <klocale.h>
-#include <kconfig.h>
-#include <kstdaction.h>
-#include <krun.h>
+//#include <kiconloader.h>
+//#include <kmessagebox.h>
+//#include <kfiledialog.h>
+//#include <kmenubar.h>
+//#include <kstatusbar.h>
+//#include <klocale.h>
+//#include <kconfig.h>
+//#include <kstdaction.h>
+//#include <krun.h>
 #include <qlayout.h>
 //#include <kdockwidget.h>
-#include <kglobal.h>
-#include <kinputdialog.h>
+//#include <kglobal.h>
+//#include <kinputdialog.h>
+#include <KXmlGui/KActionCollection>
+#include <QInputDialog>
+#include <QFileDialog>
+
 
 // application specific includes
 #include "stundeplaner.h"
@@ -123,7 +128,7 @@ StundePlanerApp::~StundePlanerApp()
 
 void StundePlanerApp::initActions()
 {
-  KAction *action;
+  QAction *action;
 
 
   changeSchuljahrAction = actionCollection()->addAction("schuljahr_waehlen", this, SLOT(slotChangeSchuljahr()));
@@ -215,7 +220,7 @@ void StundePlanerApp::addDockWindow(QWidget *w, QString name, Qt::DockWidgetArea
 
 }
 
-void StundePlanerApp::openDocumentFile(const KUrl& url)
+void StundePlanerApp::openDocumentFile(const QUrl& url)
 {
     qDebug()<<"Warning StundePlanerApp::openDocumentFile not implemented";
 }
@@ -375,7 +380,7 @@ void StundePlanerApp::slotShowStundenplan()
 }
 void StundePlanerApp::slotChangeDatabase()
 {
-	QString db_name = KInputDialog::getText("Datenbank wechseln","Neue Datenbank",Database::getDatabaseName());
+    QString db_name = QInputDialog::getText(this,"Datenbank wechseln","Neue Datenbank",QLineEdit::Normal,Database::getDatabaseName());
 
 	GuiRepository::getInstance()->closeGui();
     if(MappingControler::getInstance()->initNewDatabase(db_name.toStdString())){
@@ -393,7 +398,7 @@ void StundePlanerApp::slotChangeDatabase()
 
 void StundePlanerApp::slotDumpDatabase()
 {
-    QString fileName = KFileDialog::getSaveFileName();
+    QString fileName = QFileDialog::getSaveFileName();
 	dumpDatabase(fileName);
 }
 
@@ -414,8 +419,8 @@ void StundePlanerApp::dumpDatabase(QString fileName)
 
 void StundePlanerApp::slotReadDatabase()
 {
-	QString fileName = KFileDialog::getOpenFileName();
-	QString dbName = KInputDialog::getText("Datenbank einlesen","Datenbankname",Database::getDatabaseName());
+    QString fileName = QFileDialog::getOpenFileName();
+    QString dbName = QInputDialog::getText(this,"Datenbank einlesen","Datenbankname",QLineEdit::Normal,Database::getDatabaseName());
 
 	QString pstring = QString("mysql");
     QString astring = QString("--user=root  %1 < %2").arg(dbName).arg(fileName);
@@ -472,17 +477,15 @@ int StundePlanerApp::getNewIconViewNumber()
 
 void StundePlanerApp::slotFileNewWindow()
 {
-  slotStatusMsg(i18n("Opening a new application window..."));
-	
+
   StundePlanerApp *new_window= new StundePlanerApp();
   new_window->show();
 
-  slotStatusMsg(i18n("Ready."));
+
 }
 
 void StundePlanerApp::slotFileNew()
 {
-  slotStatusMsg(i18n("Creating new document..."));
 
   if(!doc->saveModified())
   {
@@ -495,21 +498,17 @@ void StundePlanerApp::slotFileNew()
     //setCaption(doc->URL().fileName(), false);
   }
 
-  slotStatusMsg(i18n("Ready."));
 }
 
 void StundePlanerApp::slotFileOpen()
 {
-  slotStatusMsg(i18n("Opening file..."));
 	
   XmlImportDialog *dialog = new XmlImportDialog(this);
   dialog->exec();
-  slotStatusMsg(i18n("Ready."));
 }
 
-void StundePlanerApp::slotFileOpenRecent(const KUrl& url)
+void StundePlanerApp::slotFileOpenRecent(const QUrl& url)
 {
-  slotStatusMsg(i18n("Opening file..."));
 	
   if(!doc->saveModified())
   {
@@ -521,36 +520,28 @@ void StundePlanerApp::slotFileOpenRecent(const KUrl& url)
     //setCaption(url.fileName(), false);
   }
 
-  slotStatusMsg(i18n("Ready."));
 }
 
 void StundePlanerApp::slotFileSave()
 {
-  slotStatusMsg(i18n("Saving file..."));
 	
   GuiControler::getInstance()->stopEdit();
   Transactions::getCurrentTransaction()->commit();
 
-  slotStatusMsg(i18n("Ready."));
 }
 
 void StundePlanerApp::slotFileSaveAs()
 {
-  slotStatusMsg(i18n("Saving file with a new filename..."));
-
   XmlExportDialog *dialog = new XmlExportDialog(this);
   dialog->show();
 
-  slotStatusMsg(i18n("Ready."));
 }
 
 void StundePlanerApp::slotFileClose()
 {
-  slotStatusMsg(i18n("Closing file..."));
 	
   close();
 
-  slotStatusMsg(i18n("Ready."));
 }
 
 void StundePlanerApp::slotFilePrint()
@@ -561,7 +552,6 @@ void StundePlanerApp::slotFilePrint()
 
 void StundePlanerApp::slotFileQuit()
 {
-  slotStatusMsg(i18n("Exiting..."));
   dumpDatabase(QString("/home/mopp/schule/stundenplaner/stundenplaner-%1.sql").arg(QDate::currentDate().toString("yy-MM-dd")));
 
   saveOptions();
@@ -570,23 +560,15 @@ void StundePlanerApp::slotFileQuit()
 
 void StundePlanerApp::slotEditCut()
 {
-  slotStatusMsg(i18n("Cutting selection..."));
-
-  slotStatusMsg(i18n("Ready."));
 }
 
 void StundePlanerApp::slotEditCopy()
 {
-  slotStatusMsg(i18n("Copying selection to clipboard..."));
 
-  slotStatusMsg(i18n("Ready."));
 }
 
 void StundePlanerApp::slotEditPaste()
 {
-  slotStatusMsg(i18n("Inserting clipboard contents..."));
-
-  slotStatusMsg(i18n("Ready."));
 }
 
 void StundePlanerApp::slotViewToolBar()
@@ -597,8 +579,6 @@ void StundePlanerApp::slotViewToolBar()
 
 void StundePlanerApp::slotViewStatusBar()
 {
-  slotStatusMsg(i18n("Toggle the statusbar..."));
-  ///////////////////////////////////////////////////////////////////
   //turn Statusbar on or off
   if(!viewStatusBar->isChecked())
   {
@@ -609,7 +589,6 @@ void StundePlanerApp::slotViewStatusBar()
     statusBar()->show();
   }
 
-  slotStatusMsg(i18n("Ready."));
 }
 
 

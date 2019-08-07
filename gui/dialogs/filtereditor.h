@@ -25,7 +25,7 @@
 #include "orm/repository/repositoryproperty.h"
 
 #include <QListWidgetItem>
-#include <KDialog>
+#include <QDialog>
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>
@@ -56,7 +56,7 @@ private:
     QListWidgetItem *root;
 };
 
-class FilterEditorDialog : public KDialog {
+class FilterEditorDialog : public QDialog {
 public:
 	FilterEditorDialog(RepositoryEntry *re, QWidget *parent=0);
 	AbstractFilter *getFilter();

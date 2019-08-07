@@ -55,7 +55,7 @@ QMenu* KalenderViewControler::getPopupMenu()
 {
     QMenu *pmenu = WeekMapViewControler::getPopupMenu();
 
-    //	( new KAction("Toggle Planung", KStdAccel::shortcut(KStdAccel::New), this,SLOT(togglePlanning()), mapView, "activate") )->plug(pmenu);
+    //	( new QAction("Toggle Planung", KStdAccel::shortcut(KStdAccel::New), this,SLOT(togglePlanning()), mapView, "activate") )->plug(pmenu);
 
 	return pmenu;
 }

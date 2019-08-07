@@ -120,8 +120,8 @@ void lernkartemapper::save(PObject *realSubject)
 void lernkartemapper::init(PObject* inito, Variant *res)
  {
  	lernkarte *o = (lernkarte*) inito;
-	o->setVorn( res[0].asKUrl());
- 	o->setHinten( res[1].asKUrl());
+	o->setVorn( res[0].asQUrl());
+ 	o->setHinten( res[1].asQUrl());
  	o->setSourceVorn( res[2].asstring());
  	o->setSourceHinten( res[3].asstring());
  	o->setCompiled( res[4].asbool());

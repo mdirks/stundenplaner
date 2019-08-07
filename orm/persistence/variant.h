@@ -17,7 +17,7 @@
 
 #include <QDateTime>
 #include <QVariant>
-#include <KUrl>
+#include <QUrl>
 #include "orm/mapping/murl.h"
 
 using namespace std;
@@ -39,12 +39,12 @@ public:
      operator double();
      operator QDate();
      operator QDateTime();
-     operator KUrl();
+     operator QUrl();
      operator MUrl();
 
      QDateTime asQDateTime();
      QDate asQDate();
-     KUrl asKUrl();
+     QUrl asQUrl();
      MUrl asMUrl();
      string asstring();
      double asdouble();

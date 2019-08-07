@@ -5,7 +5,7 @@
 
 #include <QString>
 #include <QPixmap>
-#include <KFileDialog>
+#include <QFileDialog>
 
 
 ServicePdf* ServicePdf::instance=0;
@@ -38,7 +38,7 @@ void ServicePdf::handleObject(PObject *o)
     if(teilleistung *tl=dynamic_cast<teilleistung*>(o)){
         QString name = tl->getName().c_str();
         //QString filename = QString("/home/mopp/tex/%1.tex").arg(name);
-        QString filename = KFileDialog::getSaveFileName();
+        QString filename = QFileDialog::getSaveFileName();
         LatexOutput *lout = new LatexOutput(name,filename);
         lout->write_report(tl);
         lout->close();

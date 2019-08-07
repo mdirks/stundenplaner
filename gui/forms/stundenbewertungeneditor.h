@@ -23,7 +23,7 @@
 #include "datamodel/stundenplaneintrag.h"
 
 #include <QTableWidget>
-#include <KDialog>
+#include <QDialog>
 #include <list>
 
 using namespace std;
@@ -108,7 +108,7 @@ public:
 };
 
 
-class StundenbewertungenEditorDialog : public KDialog
+class StundenbewertungenEditorDialog : public QDialog
 {
 public:
 	StundenbewertungenEditorDialog(stundenplaneintrag *se, QWidget *parent=0);

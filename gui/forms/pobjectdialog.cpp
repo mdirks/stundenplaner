@@ -87,12 +87,13 @@ PObject* PObjectViewItem::getPObject()
 	return this->obj;
 }
 */
-PObjectDialog::PObjectDialog(PObjectListProvider *prov, QWidget *parent) : KDialog(parent)
+PObjectDialog::PObjectDialog(PObjectListProvider *prov, QWidget *parent) : QDialog(parent)
 {
 
     objectView = new PObjectIconView(prov,this);
     objectView->load();
-    setMainWidget(objectView);
+    //ToDo: does chooser show up, add to layout ?
+    //setMainWidget(objectView);
 
     resize(500,600);
     //this->mapper = mapper;
@@ -101,23 +102,25 @@ PObjectDialog::PObjectDialog(PObjectListProvider *prov, QWidget *parent) : KDial
 
 
 
-PObjectDialog::PObjectDialog(AbstractMapper *mapper, QWidget *parent) : KDialog(parent)
+PObjectDialog::PObjectDialog(AbstractMapper *mapper, QWidget *parent) : QDialog(parent)
 {
 	
     objectView = new PObjectIconView(mapper->find_gen(),this);
     objectView->load();
-	setMainWidget(objectView);
+    //ToDo: does chooser show up, add to layout ?
+    //setMainWidget(objectView);
 
 	resize(500,600);
 	//this->mapper = mapper;
 	
 }
 
-PObjectDialog::PObjectDialog(list<PObject*> *list_objects, QWidget *parent) : KDialog(parent)
+PObjectDialog::PObjectDialog(list<PObject*> *list_objects, QWidget *parent) : QDialog(parent)
 {
     objectView = new PObjectIconView(list_objects,this);
     objectView->load();
-	setMainWidget(objectView);
+    //ToDo: does chooser show up, add to layout ?
+    //setMainWidget(objectView);
 	
 	resize(500,600);
 }

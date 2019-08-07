@@ -27,7 +27,7 @@
 //#include "qlabel.h"
 #include "qlayout.h"
 #include "qpainter.h"
-#include <KDialog>
+#include <QDialog>
 #include <QLabel>
 
 StundenbewertungenEditor::StundenbewertungenEditor(stundenplaneintrag *se, QWidget *parent, const char *name)
@@ -202,9 +202,10 @@ void SbTableItemBemerkung::readBewertung()
 
 
 StundenbewertungenEditorDialog::StundenbewertungenEditorDialog(stundenplaneintrag *se, QWidget *parent)
-    : KDialog(parent)
+    : QDialog(parent)
 {
-    setButtons(Apply|Close);
+    //ToDo: does chooser show up, add to layout ?
+    //setButtons(Apply|Close);
 	QWidget *mainWidget = new QWidget(this);
 	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
 
@@ -212,7 +213,7 @@ StundenbewertungenEditorDialog::StundenbewertungenEditorDialog(stundenplaneintra
 	layout->addWidget(new QLabel(label,mainWidget));
 	layout->addWidget(new StundenbewertungenEditor(se,mainWidget));
 
-	setMainWidget(mainWidget);
+    //setMainWidget(mainWidget);
 
 	//connect(this,SIGNAL(apply()),editor,SLOT(addNewTeilleistung()));
 }

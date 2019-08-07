@@ -25,7 +25,7 @@
 #include <qstring.h>
 
 #include <string>
-#include <kurl.h>
+#include <QUrl>
 
 using namespace std;
 
@@ -38,10 +38,10 @@ public:
 	lernkarte();
 	~lernkarte();
 
-    KUrl getVorn();
-    void setVorn(KUrl vorn);
-    KUrl getHinten();
-    void setHinten(KUrl hinten);
+    QUrl getVorn();
+    void setVorn(QUrl vorn);
+    QUrl getHinten();
+    void setHinten(QUrl hinten);
     string getSourceHinten();
     string getSourceVorn();
     void setSourceHinten(string sh);
@@ -52,7 +52,7 @@ public:
 
 
 private:
-    KUrl hinten,vorn;
+    QUrl hinten,vorn;
 	string sourceh, sourcev;
 	
 	bool comp;

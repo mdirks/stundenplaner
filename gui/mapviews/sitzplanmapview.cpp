@@ -26,7 +26,7 @@
 #include "orm/repository/repository.h"
 #include "orm/repository/repositoryproperty.h"
 
-#include <qwmatrix.h>
+//#include <qwmatrix.h>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>

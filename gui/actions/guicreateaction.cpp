@@ -29,9 +29,9 @@
 #include <QFile>
 #include <QDebug>
 
-#include <KDialog>
-#include <kinputdialog.h>
-#include <kfiledialog.h>
+#include <QDialog>
+#include <qinputdialog.h>
+#include <qfiledialog.h>
 
 GuiCreateAction* GuiCreateAction::instance=0;
 
@@ -112,9 +112,9 @@ AbstractMapper* GuiCreateAction::chooseMapper(QStringList classList)
 void GuiCreateAction::addStundenplaneintrag()
 {
 
-    int tag = KInputDialog::getInteger("Tag","Tag der Stunde",1,1,7,1,10);
+    int tag = QInputDialog::getInt(0,"Tag","Tag der Stunde",1,1,7,1);
     if(tag>0){
-        int stunde = KInputDialog::getInteger("StundenNr.", "Nr. der Stunde",1,1,10,1,10);
+        int stunde = QInputDialog::getInt(0,"StundenNr.", "Nr. der Stunde",1,1,10,1);
         if(stunde>0){
             schuljahr *sj = GuiConfig::getInstance()->getActiveSchuljahr();
             if(!sj){qDebug("Strange: no active Schuljahr"); return;}
@@ -190,7 +190,7 @@ PObject* GuiCreateAction::create(string className)
 		}
 
 		if(className=="material"){
-            QString filename = KFileDialog::getSaveFileName();
+            QString filename = QFileDialog::getSaveFileName();
 			QFile file(filename);
 			if(! file.exists()){
                 file.open(QIODevice::ReadWrite);
@@ -201,7 +201,7 @@ PObject* GuiCreateAction::create(string className)
                 m->setFileName(file.fileName().toStdString());
 			}
         } else if (className=="lektuere"){
-            QString filename = KFileDialog::getOpenFileName();
+            QString filename = QFileDialog::getOpenFileName();
             QFile file(filename);
             lektuere *l = dynamic_cast<lektuere*>(o);
             if(l){

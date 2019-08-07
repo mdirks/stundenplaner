@@ -28,7 +28,7 @@
 
 
 //#include <kiconview.h>
-#include <kxmlguiclient.h>
+//#include <kxmlguiclient.h>
 //#include <kaction.h>
 //#include <kaccel.h>
 
@@ -54,7 +54,7 @@ using namespace std;
 
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
-class PObjectIconView : public QListWidget, public KXMLGUIClient, public PropertyEditor, public PObjectDropTarget
+class PObjectIconView : public QListWidget, /*public KXMLGUIClient,*/ public PropertyEditor, public PObjectDropTarget
 {
 Q_OBJECT
 

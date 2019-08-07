@@ -22,8 +22,7 @@
 #include <list>
 
 #include <qdatetime.h>
-#include <kaction.h>
-
+#include <QAction>
 #include "../persistence/pobject.h"
 #include "orm/mapping/murl.h"
 //#include "propertyaction.h"

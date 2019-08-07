@@ -14,17 +14,18 @@
 
 #include <list>
 
-#include <QWorkspace>
+#include <QMdiArea>
 #include <QGraphicsScene>
 #include <QWidget>
 #include <QString>
 #include <QStackedWidget>
 #include <QToolBar>
+#include <QVBoxLayout>
 
-#include <kapplication.h>
+#include <QApplication>
 //#include <kmdichildview.h>
 //#include <kmdimainfrm.h>
-#include <kmainwindow.h>
+//#include <kmainwindow.h>
 
 #include "guirepository.h"
 #include "splashscreen.h"
@@ -38,7 +39,7 @@
 #include "datamodel/sitzplan.h"
 #include "gui/data/sitzplanmap.h"
 #include "guimode.h"
-#include <KDialog>
+#include <QDialog>
 
 #include <list>
 #include <map>
@@ -65,14 +66,14 @@ public:
     QWidget* getFormForObject(PObject *o,QWidget *parent=0, list<RepositoryProperty*> *properties=0);
     SitzplanMapView* getMapViewForSitzplan(sitzplan *sp);
     void setSelectedObject(PObject *o);
-    void setFormWorkspace(QWorkspace *w);
+    void setFormWorkspace(QMdiArea *w);
     
     void setGraphicsView(QGraphicsView *GraphicsView);
     void initGui();
     void addTool(QWidget *tool, QString label, QString short_label,Qt::DockWidgetArea area=Qt::RightDockWidgetArea);
     void addIconView(PObjectIconView *iv, QString label, QString short_label);
-    KParts::Part *getPdfPart(QWidget *parent);
-    KParts::Part *getPart(QWidget *parent, QString qs1, QString qs2);
+    //KParts::Part *getPdfPart(QWidget *parent);
+    //KParts::Part *getPart(QWidget *parent, QString qs1, QString qs2);
 
     void addMode(GuiMode *mode);
     void addService(GuiService *serv);
@@ -126,7 +127,7 @@ private:
     
 private:
      static GuiRepositoryImpl* impl_instance;
-     QWorkspace* formWorkspace;
+     QMdiArea* formWorkspace;
      QStackedWidget *centralWidget;
 
      const QPixmap std_icon_pixmap;
@@ -148,12 +149,18 @@ private:
 
 };
 
-class EditorBase : public KDialog
+class EditorBase : public QDialog
 {
 public:
-    EditorBase(QWidget *parent) : KDialog(parent){};
+    EditorBase(QWidget *parent);
+    void setMainWidget(QWidget *mw);
+
 protected slots:
-    void slotOk(){GuiControler::getInstance()->stopEdit(); /*KDialog::slotOk();*/};
+    void slotOk();
+
+private:
+    QWidget *mainWidget;
+    QVBoxLayout *contentsLayout;
 
 };
 #endif

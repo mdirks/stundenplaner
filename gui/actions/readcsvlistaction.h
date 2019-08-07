@@ -22,7 +22,7 @@
 
 #include "orm/repository/propertyaction.h"
 #include <QString>
-#include <kaction.h>
+//#include <kaction.h>
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>

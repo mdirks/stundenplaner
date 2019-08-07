@@ -28,7 +28,7 @@
 #include "gui/guirepository.h"
 #include "gui/dialogs/collectionselectiondialog.h"
 
-#include <kinputdialog.h>
+#include <qinputdialog.h>
 #include <QDebug>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -213,7 +213,7 @@ void TeilleistungEditor::addNewTeilleistung()
 	Transactions::getCurrentTransaction()->add(kl);
 	kl->addToTeilleistungen(tl);
 
-	QString name = KInputDialog::getText("Teilleistung","Bezeichnung");
+    QString name = QInputDialog::getText(0,"Teilleistung","Bezeichnung");
     tl->setName(name.toStdString());
 	
 

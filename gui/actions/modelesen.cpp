@@ -74,7 +74,7 @@ void ModeLesen::setupMode()
         browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
         PObjectListProvider *prov = new MapperListProvider("lektuere");
         viewer = new TextViewer(prov,sw);
-        lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Vertical);
+        lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Stacked);
 
         QWidget *notew = new QWidget(splitter);
         QVBoxLayout *l= new QVBoxLayout(notew);

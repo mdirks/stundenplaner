@@ -16,10 +16,10 @@
  ***************************************************************************/
 
 
-#include <kaboutdata.h>
-#include <klocale.h>
-#include <kapplication.h>
-#include <kcmdlineargs.h>
+//#include <kaboutdata.h>
+//#include <klocale.h>
+//#include <kapplication.h>
+//#include <kcmdlineargs.h>
 
 //#include "stundeplaner.h"
 #include "orm/mapping/mappingcontroler.h"
@@ -28,11 +28,12 @@
 #include "datamodel/datamodelrepository.h"
 
 #include <iostream>
+#include <QApplication>
 
 using namespace std;
 
 static const char *description =
-	I18N_NOOP("StundePlaner");
+    "StundePlaner";
 // INSERT A DESCRIPTION FOR YOUR APPLICATION HERE
 	
 /*
@@ -136,14 +137,18 @@ int main(int argc, char *argv[])
 		"(c) 2004, Marcus Dirks", 0, 0, "marcus.dirks@web.de");
 	aboutData.addAuthor("Marcus Dirks",0, "marcus.dirks@web.de");
     */
+
+    /*
     KCmdLineArgs::init( argc, argv,QByteArray("stundenplaner"),QByteArray(),ki18n("Stundenplaner"), QByteArray("2.0"));
     KCmdLineOptions options;
     options.add("+Database",  ki18n("database to open"));
 
 	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
- 
-    KApplication app;
+    */
 
+    QApplication app(argc,argv);
+    QCoreApplication::setApplicationName("Stundenplaner");
+    QCoreApplication::setOrganizationName("MD");
    /*
      app.setStyleSheet("* {border: 0px solid lightgray; padding: 0px; margin: 0px; spacing: 0px} \
                       QScrollBar {border: 2px solid transparent}\
@@ -154,11 +159,12 @@ int main(int argc, char *argv[])
 
     QLocale::setDefault(QLocale::German);
     //setenv("LC_ALL","de_DE.UTF-8");
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-    MappingControler::setDatabaseName(args->arg(0));
+
+    QString dbName=app.arguments().at(1);
+    MappingControler::setDatabaseName(dbName);
     MappingControler::getInstance();
 
-    GuiConfig::getInstance()->setDatabaseName(args->arg(0));
+    GuiConfig::getInstance()->setDatabaseName(dbName);
 
    
     DataModelRepository::getInstance();

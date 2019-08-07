@@ -3,7 +3,7 @@
 #include "services/xml-export/xmlfactory.h"
 
 #include <QDebug>
-#include <KFileDialog>
+#include <QFileDialog>
 #include <KRun>
 
 ServiceXml::ServiceXml()
@@ -21,7 +21,7 @@ void ServiceXml::handleObject(PObject *o)
         list<PObject*> *olist = new list<PObject*>();
         olist->push_back(o);
 
-        QString filename = KFileDialog::getSaveFileName();
+        QString filename = QFileDialog::getSaveFileName();
 
         XmlFactory *fact = XmlFactory::getInstance();
         fact->exportObjectList(filename,olist);
@@ -37,7 +37,7 @@ void ServiceXml::setupMode()
 {
     qDebug() << "ServiceXml::setupMode() ...";
 
-    QString filename = KFileDialog::getOpenFileName();
+    QString filename = QFileDialog::getOpenFileName();
     list<PObject*> *olist=new list<PObject*>();
 
     XmlFactory *fact = XmlFactory::getInstance();

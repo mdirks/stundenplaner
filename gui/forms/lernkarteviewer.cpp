@@ -27,11 +27,11 @@
 #include "orm/repository/repository.h"
 #include "orm/repository/repositoryentry.h"
 #include "orm/repository/repositoryproperty.h"
-#include <ktrader.h>
-#include <klibloader.h>
+//#include <ktrader.h>
+//#include <klibloader.h>
 #include <kprocess.h>
 #include <krun.h>
-#include <poppler-qt4.h>
+#include <poppler-qt5.h>
 #include <QDebug>
 #include <QMouseEvent>
 #include <QSplitter>
@@ -41,8 +41,8 @@
 #include <functional>
 
 QString LernkarteViewer::header = "\\documentclass[11pt]{extarticle}\n \
-\\usepackage[paperheight=100mm,paperwidth=50mm,landscape]{geometry}\n\\pagestyle{empty}\n \
-\\topmargin -36mm\n\\textheight 76mm\n \\oddsidemargin -22mm\n\\textwidth=98mm\n\
+\\usepackage[paperheight=90mm,paperwidth=50mm,landscape]{geometry}\n\\pagestyle{empty}\n \
+\\topmargin -36mm\n\\textheight 46mm\n \\oddsidemargin -22mm\n\\textwidth=88mm\n\
 \\parindent=0pt \n\\parskip=0.15 true in\n\\begin{document}\n\\sffamily\n";
 QString LernkarteViewer::footer = "\\end{document}";
 
@@ -55,6 +55,7 @@ LernkartensatzViewer::LernkartensatzViewer(lernkartensatz *ls, QWidget *parent, 
     connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(setSelected(int)));
 
     this->karteViewer = new LernkarteViewer(parent,ori);
+    //karteViewer->setFixedSize(500,250);
     connect(karteViewer,SIGNAL(nextRequested()),this,SLOT(advance()));
 
     QVBoxLayout *topLayout = new QVBoxLayout(this);
@@ -75,16 +76,21 @@ LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation o
     RepositoryProperty *rp= 0;
     rp=Repository::getInstance()->getRepositoryEntry("lernkarte")->getProperty("SourceVorn");
     viewerVorn = new TextPropertyViewer(0,rp,this);
-    viewerVorn->setFitToView(true);
-    viewerVorn->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    viewerVorn->setResizePolicy(false);
+    viewerVorn->setZoomFactor(1.0);
+    //viewerVorn->setFitToView(true);
+    //viewerVorn->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //viewerVorn->setMinimumSize(300,200);
     viewerVorn->setHeader(header);
     viewerVorn->setFooter(footer);
     viewerVorn->setBackgroundColor(QColor(255, 255, 255, 127));
     rp= Repository::getInstance()->getRepositoryEntry("lernkarte")->getProperty("SourceHinten");
     viewerHinten= new TextPropertyViewer(0,rp,this);
-    viewerHinten->setFitToView(true);
-    viewerHinten->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    viewerHinten->setResizePolicy(false);
+    viewerHinten->setZoomFactor(1.0);
+
+    //viewerHinten->setFitToView(true);
+    //viewerHinten->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     viewerHinten->setHeader(header);
     viewerHinten->setFooter(footer);
     viewerHinten->setBackgroundColor(QColor(255, 0, 0, 27));
@@ -142,8 +148,8 @@ LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation o
         viewerVorn->setMinimumSize(100,100);
         stack->addWidget(viewerVorn);
         viewerHinten->setParent(stack);
+        viewerVorn->setMinimumSize(100,100);
         stack->addWidget(viewerHinten);
-
 
         topLayout->addWidget(stack);
         this->setStyleSheet("background-color:red;");
@@ -254,6 +260,7 @@ void LernkarteViewer::showVorn()
     if(orientation==Stacked){
         stack->setCurrentWidget(viewerVorn);
     }
+    /*
     viewerHinten->stopEdit();
     //viewerHinten->setHidden(true);
     stack->setCurrentWidget(blankWidget);
@@ -263,27 +270,22 @@ void LernkarteViewer::showVorn()
     //viewerVorn->show();
     viewerVorn->readVorn();
     viewerVorn->setFocus();
-
+    */
 	showsVorn=true;
 }
 
 void LernkarteViewer::switchHinten()
 {
+    /*
     if(orientation==Stacked){
-        stack->setCurrentWidget(viewerHinten);
+        if(stack->currentWidget()!=viewerHinten){
+            stack->setCurrentWidget(viewerHinten);
+        } else {
+            stack->setCurrentWidget(viewerVorn);
+        }
     }
-    //viewerVorn->stopEdit();
-    //viewerVorn->setHidden(true);
-    //viewerVorn->readVorn();
-    if(stack->currentWidget()!=viewerHinten){
-        stack->setCurrentWidget(viewerHinten);
-        viewerHinten->readVorn();
-        viewerHinten->setFocus();
-    } else {
-        stack->setCurrentWidget(blankWidget);
-        showsHinten=false;
-    }
-    //showsVorn=false;
+    */
+    switchDisplay();
 }
 
 void LernkarteViewer::showHinten()
@@ -291,13 +293,16 @@ void LernkarteViewer::showHinten()
     if(orientation==Stacked){
         stack->setCurrentWidget(viewerHinten);
     }
+    /*
     viewerVorn->stopEdit();
     viewerVorn->hide();
     viewerVorn->readVorn();
     viewerHinten->show();
     viewerHinten->readVorn();
     viewerHinten->setFocus();
+    */
 	showsVorn=false;
+
 }
 
 void LernkarteViewer::switchDisplay()

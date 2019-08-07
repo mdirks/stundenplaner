@@ -29,7 +29,7 @@ public:
     WeekMapView(QWidget * parent = 0, const char * name = 0);
     ~WeekMapView();
 
-    //list<KAction*>*  initActions(KActionCollection *actionCollection=0);
+    //list<QAction*>*  initActions(QActionCollection *actionCollection=0);
     virtual void dummy(){};
     QMenu* getPopupMenu();
     //QPopupMenu* getPopupMenu();

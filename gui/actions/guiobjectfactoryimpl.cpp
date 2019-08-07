@@ -35,9 +35,9 @@
 
 #include <qfile.h>
 
-#include <kdialog.h>
-#include <kinputdialog.h>
-#include <kfiledialog.h>
+//#include <kdialog.h>
+#include <qinputdialog.h>
+#include <qfiledialog.h>
 
 
 GuiObjectFactoryImpl::GuiObjectFactoryImpl()
@@ -56,8 +56,8 @@ PObject* GuiObjectFactoryImpl::create(string className)
 	if(className == "stundenplantemplateeintrag"){
 		SStundenplan *ss = SStundenplan::getInstance();
 		
-		int tag = KInputDialog::getInteger("Tag","Tag der Stunde",1,1,7,1,10);
-		int stunde = KInputDialog::getInteger("StundenNr.", "Nr. der Stunde",1,1,10,1,10);
+        int tag = QInputDialog::getInt(0,"Tag","Tag der Stunde",1,1,7,1);
+        int stunde = QInputDialog::getInt(0,"StundenNr.", "Nr. der Stunde",1,1,10,1);
 		PObject *oo = PObjectDialog::choosePObject(MappingControler::getInstance()->getMapperByName( "klasse" ) );
 		o = ss->createTemplateEintrag(tag,stunde,dynamic_cast<klasse*>(oo));
 	} else if (className == "WeekMap"){
@@ -86,7 +86,7 @@ PObject* GuiObjectFactoryImpl::create(string className)
 		}
 
 		if(className=="material"){
-			QString filename = KFileDialog::getOpenFileName();
+            QString filename = QFileDialog::getOpenFileName();
 			QFile file(filename);
 			if(! file.exists()){
                 file.open(QIODevice::ReadWrite);

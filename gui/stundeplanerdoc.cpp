@@ -20,10 +20,10 @@
 #include <qwidget.h>
 
 // include files for KDE
-#include <klocale.h>
+//#include <klocale.h>
 #include <kmessagebox.h>
 #include <kio/job.h>
-#include <kio/netaccess.h>
+//#include <kio/netaccess.h>
 
 // application specific includes
 #include "stundeplanerdoc.h"
@@ -75,13 +75,13 @@ void StundePlanerDoc::removeView(StundePlanerView *view)
 {
   pViewList->removeOne(view);
 }
-void StundePlanerDoc::setURL(const KUrl &url)
+void StundePlanerDoc::setURL(const QUrl &url)
 {
   doc_url=url;
 }
 
 /*
-const KUrl& StundePlanerDoc::URL() const
+const QUrl& StundePlanerDoc::URL() const
 {
   return doc_url;
 }
@@ -183,7 +183,7 @@ bool StundePlanerDoc::newDocument()
  */
 }
 
-bool StundePlanerDoc::openDocument(const KUrl& url, const char *format /*=0*/)
+bool StundePlanerDoc::openDocument(const QUrl& url, const char *format /*=0*/)
 {
     qDebug() << "Warning: StundePlanerDoc::openDocument not implemented";
   /*
@@ -201,7 +201,7 @@ bool StundePlanerDoc::openDocument(const KUrl& url, const char *format /*=0*/)
     return false;
 }
 
-bool StundePlanerDoc::saveDocument(const KUrl& url, const char *format /*=0*/)
+bool StundePlanerDoc::saveDocument(const QUrl& url, const char *format /*=0*/)
 {
   /////////////////////////////////////////////////
   // TODO: Add your document saving code here

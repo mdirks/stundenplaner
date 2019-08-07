@@ -30,7 +30,7 @@
 
 #include <QTableWidget>
 #include <QStringList>
-#include <KDialog>
+#include <QDialog>
 #include <list>
 
 using namespace std;
