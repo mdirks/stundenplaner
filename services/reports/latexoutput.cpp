@@ -16,6 +16,7 @@
 #include <map>
 #include <string>
 #include <QDebug>
+#include <QProcess>
 
 #include "datamodel/krusbucheintrag.h"
 #include "datamodel/schueler.h"
@@ -55,8 +56,26 @@ void LatexOutput::close()
 void LatexOutput::edit()
 {
     qDebug() << QString("Editing %1").arg(this->fileName());
-	//new KRun(this->name());
-    KRun::runCommand(QString("texmaker %1").arg(this->fileName()),0);
+
+    //KRun::runCommand(QString("texmaker %1").arg(this->fileName()),0);
+
+    QString prog=QString("texmaker");
+    QStringList args;
+    args << QString(this->fileName());
+
+    QProcess *p  = new QProcess(this);
+    /*p->setStandardErrorFile(QString("/home/mopp/err%2.txt").arg(parent->getID()),
+                            QIODevice::Append);
+    p->setStandardOutputFile(QString("/home/mopp/out%2.txt").arg(parent->getID()),
+                            QIODevice::Append);
+    */
+
+    qDebug() << prog << args;
+
+    p->start(prog,args);
+    if(!p->waitForStarted()){
+        qDebug() << "Process could not be started";
+    }
 
 }
 

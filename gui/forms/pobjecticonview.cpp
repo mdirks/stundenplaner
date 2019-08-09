@@ -39,6 +39,7 @@
 #include <QLabel>
 #include <QClipboard>
 #include <QApplication>
+#include <QDesktopServices>
 
 #define GRIDX 100
 #define GRIDY 40
@@ -274,11 +275,14 @@ void PObjectIconView::activateItem(QListWidgetItem *item)
 		material *m=0;
 		if(o->getClassName() == "material" && (m = dynamic_cast<material*>(o))){
             QString fileName = m->getFile()->fileName();
+            QDesktopServices::openUrl(fileName);
+            /*
 			if(fileName.contains(".tex")){ // hack to handel tex-files
                 KRun::runCommand(QString("kile %1").arg(fileName),this);
 			} else {	
                 new KRun(fileName,this);
 			}
+            */
 		} else {
 			GuiRepository::getInstance()->showFormForObject(o);
 		}

@@ -17,6 +17,7 @@
 
 #include "repository.h"
 
+
 #include "services/utils/utils.h"
 #include <QDebug>
 
@@ -45,12 +46,16 @@ RepositoryEntry* Repository::getRepositoryEntry(string className){
    if(it != classNameToRe.end()){
        return it->second;
 	}else {
-        qDebug() << "Not found in map";
+        qDebug() << "ClassName " << className.c_str() << "Not found in map";
       		return 0;
 	}
+
 }
 
 void Repository::addRepositoryEntry(RepositoryEntry* entry){
+   if(!entry){
+       qDebug() << "TROUBLE given entry is 0";
+   }
    string className = entry->getClassName();
    qDebug() << QString("Added: ").append(className.c_str());
     classNameToRe[className/*.c_str()*/] = entry;

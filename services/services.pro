@@ -21,10 +21,11 @@ DEPENDPATH += .
 INCLUDEPATH += .
 INCLUDEPATH += ..
 INCLUDEPATH += reports filter
-INCLUDEPATH += /usr/include/poppler/qt4
+INCLUDEPATH += /usr/include/poppler/qt5
 INCLUDEPATH += /usr/include/KDE
 
 CONFIG += qt
+
 unix {
         CONFIG += link_pkgconfig
         PKGCONFIG += poppler-qt5

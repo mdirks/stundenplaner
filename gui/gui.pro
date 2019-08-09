@@ -109,6 +109,7 @@ QT+=KParts
 QT+=KIOCore
 
 
+
 OTHER_FILES += \
     actions/persistence.xml\
     stundenplanerui.rc

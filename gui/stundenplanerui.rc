@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gui name="stundenplaner" version="1">
+
 <MenuBar>
   <Menu name="file">
           <Action name="schuljahr_waehlen" />
@@ -23,3 +24,4 @@
         <Action name="add_objectview" />
 </ToolBar>
 </gui>
+

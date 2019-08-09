@@ -99,7 +99,7 @@ StundePlanerApp::StundePlanerApp(QWidget* , const char* name): KXmlGuiWindow() /
   initActions();
   
   //setupGUI();
-  setupGUI(Default,"/home/mopp/dev/stundenplaner/gui/stundenplanerui.rc");
+  setupGUI(Default,"/data3/mopp/dev2/stundenplaner/gui/stundenplanerui.rc");
   qDebug() << QString("Build gui from local xml file %1").arg(localXMLFile());
   qDebug() << QString("Build gui from local xml file %1").arg(xmlFile());
   initDocument();

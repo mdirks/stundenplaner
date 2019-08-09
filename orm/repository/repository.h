@@ -19,7 +19,9 @@
 #define REPOSITORY_H
 
 #include <map>
-#include <ext/hash_map>
+#include <unordered_map>
+//#include <hash_map>
+//#include <ext/hash_map>
 #include <string>
 
 #include "repositoryentry.h"
@@ -29,9 +31,11 @@
   *@author Marcus Dirks
   */
 
+#include <string>
 using namespace std;
 //using namespace __gnu_cxx;
 
+/*
 struct equal_char {
 
 	bool operator() (const char* c1, const char* c2){
@@ -39,6 +43,8 @@ struct equal_char {
 	}
 
 };
+*/
+
 
 class strless {
    public:
@@ -49,7 +55,7 @@ class strless {
 
 
 //typedef  /*hash_map*/map<const char*, RepositoryEntry*, /*hash<const char*>,*/equal_char> entrymap;
-typedef  /*hash_map*/map<string, RepositoryEntry*, /*hash<const char*>,*/strless> entrymap;
+typedef  /*hash_map*/std::map<std::string, RepositoryEntry*, /*hash<const char*>,*/strless> entrymap;
 //typedef  hash_map<const char*, RepositoryEntry> entrymap;
 
 class Repository {
