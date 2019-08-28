@@ -150,7 +150,7 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
         pmenu->addAction("Neu laden",iconView,SLOT(reload()));
         pmenu->addAction("Neues Element",  confAction, SLOT(addNewObject()));
 
-        pmenu->addAction("Filter setzen",  iconView, SLOT(chooseFilter()));
+        pmenu->addAction("Filter setzen",  confAction, SLOT(createFilter()));
         pmenu->addAction("Neuer Objectbrowser", confAction, SLOT(newIconView()));
         pmenu->addAction("Konfigurieren", confAction, SLOT(configure()));
         pmenu->addAction("Icon wählen", confAction, SLOT(selectIcon()));

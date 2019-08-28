@@ -25,6 +25,7 @@
 #include <QAction>
 #include "../persistence/pobject.h"
 #include "orm/mapping/murl.h"
+#include "../services/filter/filter.h"
 //#include "propertyaction.h"
 
 using namespace std;
@@ -65,6 +66,8 @@ public:
     virtual bool asBoolean(PObject *o) = 0;
     virtual bool isUrl() =0;
     virtual MUrl asUrl(PObject *o) = 0;
+
+    virtual Filter *getFilter() = 0;
     
 };
 

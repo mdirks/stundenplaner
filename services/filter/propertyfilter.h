@@ -32,7 +32,7 @@ public:
     PropertyFilter(RepositoryProperty *rp);
 
     string getPropertyName();
-    virtual string getValueString()=0;
+    virtual string getValueString(){return "empty";}
 
 protected:
 	RepositoryProperty *rp;

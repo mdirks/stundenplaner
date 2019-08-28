@@ -22,9 +22,9 @@ using namespace std;
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
-class StringPropertyFilter : PropertyFilter {
+class StringPropertyFilter : public PropertyFilter {
 public:
-    StringPropertyFilter(RepositoryProperty *rp, string testItem);
+    StringPropertyFilter(RepositoryProperty *rp, string testItem="");
     ~StringPropertyFilter();
 
     bool apply(PObject *o);

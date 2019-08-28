@@ -10,6 +10,7 @@
 //
 //
 #include "pobjectproperty.h"
+#include "../services/filter/pobjectpropertyfilter.h"
 
 /*
 template<class PropertyType, class ObjectType>

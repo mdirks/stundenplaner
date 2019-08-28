@@ -26,11 +26,35 @@
 
 #include <QDebug>
 
-FilterEditorItem::FilterEditorItem(RepositoryProperty *rp, QListWidgetItem *parent)
-    : QListWidgetItem(rp->getName().c_str())
+FilterModel::FilterModel(RepositoryEntry *re)
+{
+    list_filter=new list<Filter*>();
+    list<RepositoryProperty*> *list_prop = re->getAllProperties(true);
+    list_prop->sort(NamedObjectPtrComp<RepositoryProperty>());
+    for(list<RepositoryProperty*>::iterator it = list_prop->begin(); it != list_prop->end(); it++){
+        list_filter->push_back((*it)->getFilter());
+    }
+}
+
+int FilterModel::rowCount(const QModelIndex &parent) const
+{
+    return list_filter->size();
+}
+
+QVariant FilterModel::data(const QModelIndex &index, int role) const
+{
+    list<Filter*>::iterator it=list_filter->begin();
+    for(int i=0; i<index.row(); i++)
+        it++;
+    return QVariant("unknown");
+}
+
+FilterEditorItem::FilterEditorItem(RepositoryProperty *rp, QListWidget *lw)
+    : QListWidgetItem(rp->getName().c_str(),lw)
 {
 	this->rp = rp;
 	filter = 0;
+    setFlags(flags() | Qt::ItemIsEditable);
 }
 
 void FilterEditorItem::activate()
@@ -56,23 +80,60 @@ PropertyFilter* FilterEditorItem::getFilter()
 	return filter;
 }
 
+FilterEditorDelegate::FilterEditorDelegate(QObject *p)
+ : QStyledItemDelegate(p)
+{
 
+}
+QWidget *FilterEditorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+                                   const QModelIndex &index) const
+{
+    QLineEdit *editor = new QLineEdit("Mein Editor", parent);
+    return editor;
+}
+
+void FilterEditorDelegate::setEditorData(QWidget *editor,
+                                    const QModelIndex &index) const
+{
+    QString modelData = index.model()->data(index, Qt::EditRole).toString();
+
+    QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
+    QString value = lineEdit->text().append(modelData);
+    lineEdit->setText(value);
+}
+
+void FilterEditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
+                                    const QModelIndex &index) const
+{
+    QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
+    QString value = lineEdit->text();
+    model->setData(index, value, Qt::EditRole);
+}
+
+void FilterEditorDelegate::updateEditorGeometry(QWidget *editor,
+                                           const QStyleOptionViewItem &option,
+                                           const QModelIndex &/* index */) const
+{
+    editor->setGeometry(option.rect);
+}
 
 FilterEditor::FilterEditor(RepositoryEntry *re, QWidget *parent)
     : QListWidget(parent)
 {
 	this->re = re;
-    root = new QListWidgetItem("Filter",this);
-	rootFilter = 0;
+    //root = new QListWidgetItem("Filter",this);
+    //rootFilter = 0;
 	hasContents=false;
 
 	list<RepositoryProperty*> *list_prop = re->getAllProperties(true);
 	list_prop->sort(NamedObjectPtrComp<RepositoryProperty>());
 	for(list<RepositoryProperty*>::iterator it = list_prop->begin(); it != list_prop->end(); it++){
-		new FilterEditorItem(*it,root);
+        new FilterEditorItem(*it,this);
 	}
     //addColumn("Property");
     //addColumn("Filterwert");
+
+    setItemDelegate(new FilterEditorDelegate());
 }
 
 AbstractFilter* FilterEditor::getFilter()

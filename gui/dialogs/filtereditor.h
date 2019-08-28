@@ -20,11 +20,14 @@
 #ifndef FILTEREDITOR_H
 #define FILTEREDITOR_H
 
+#include "services/filter/filter.h"
 #include "services/filter/propertyfilter.h"
 #include "orm/repository/repositoryentry.h"
 #include "orm/repository/repositoryproperty.h"
 
+#include <QAbstractListModel>
 #include <QListWidgetItem>
+#include <QStyledItemDelegate>
 #include <QDialog>
 
 /**
@@ -32,14 +35,40 @@
 */
 
 
+class FilterModel : public QAbstractListModel {
+    Q_OBJECT
+public:
+    FilterModel(RepositoryEntry *re);
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+private:
+    list<Filter*> *list_filter;
+};
+
 class FilterEditorItem : public QListWidgetItem{
 public: 
-    FilterEditorItem(RepositoryProperty *rp, QListWidgetItem *parent);
+    FilterEditorItem(RepositoryProperty *rp, QListWidget *lw);
 	void activate();
 	PropertyFilter* getFilter();
 private:
 	PropertyFilter *filter;
 	RepositoryProperty *rp;
+};
+
+class FilterEditorDelegate : public QStyledItemDelegate{
+    Q_OBJECT
+
+public:
+    FilterEditorDelegate(QObject *p=nullptr);
+    QWidget *createEditor(QWidget *p, const QStyleOptionViewItem &option,
+                          const QModelIndex &index) const override;
+    void setEditorData(QWidget *e, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model,
+                      const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
+                              const QModelIndex &index) const override;
+
 };
 
 class FilterEditor : public QListWidget {

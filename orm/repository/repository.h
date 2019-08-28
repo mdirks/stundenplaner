@@ -24,8 +24,10 @@
 //#include <ext/hash_map>
 #include <string>
 
+
 #include "repositoryentry.h"
 #include "../persistence/pobject.h"
+#include "../services/filter/filter.h"
 
 /**
   *@author Marcus Dirks

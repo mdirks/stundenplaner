@@ -70,7 +70,7 @@ bool AbstractFilter::apply(PObject *o)
 /*!
     \fn AbstractFilter::addOr(Filter *f)
  */
-void AbstractFilter::addOr(Filter *f)
+void AbstractFilter:: addOr(Filter *f)
 {
     list_or->push_back(f);
 }

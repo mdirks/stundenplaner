@@ -736,7 +736,7 @@ void PObjectIconView::show()
 void PObjectIconView::chooseFilter()
 {
     if(filter){
-	
+
     }
 }
 

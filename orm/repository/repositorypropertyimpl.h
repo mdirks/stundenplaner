@@ -14,6 +14,7 @@
 
 #include <string>
 #include "repositoryproperty.h"
+#include "../services/filter/filter.h"
 
 #include <QDebug>
 using namespace std;
@@ -56,6 +57,7 @@ public:
     list<PropertyAction*> * getAllActions();
     void registerAction(string name, PropertyAction *a);
     virtual void add(PObject *o, PObject *oo);
+    virtual Filter* getFilter();
  
 private:
     string name, type;

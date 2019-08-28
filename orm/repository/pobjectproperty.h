@@ -17,6 +17,8 @@
 
 #include "../persistence/pobject.h"
 #include "repositorypropertyimpl.h"
+#include "../services/filter/filter.h"
+#include "../services/filter/pobjectpropertyfilter.h"
 
 using namespace std;
 
@@ -35,9 +37,10 @@ public:
     string asString(PObject *o);
     PObject* asPObject(PObject *o);
     PropertyType* asFullObject(PObject *o);
-   void set(PObject *o, PObject *parent);
+    void set(PObject *o, PObject *parent);
 
     bool isPObject(){return true;}
+    Filter *getFilter();
 
 private:
      ppobjectmf mf;
@@ -99,6 +102,14 @@ void PObjectProperty<PropertyType,ObjectType>::set(PObject *o, PObject *parent)
         }
     } else { qDebug() << "PObjectProperty: Could not set value - setter missing";}
 }
+
+template<class PropertyType, class ObjectType>
+Filter *PObjectProperty<PropertyType,ObjectType>::getFilter()
+{
+    Filter *f=new PObjectPropertyFilter(this);
+    return f;
+}
+
 
 
 #endif

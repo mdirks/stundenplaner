@@ -10,6 +10,7 @@
 //
 //
 #include "repositorypropertyimpl.h"
+#include "../services/filter/propertyfilter.h"
 
 RepositoryPropertyImpl::RepositoryPropertyImpl(string n, string t, bool cp)
 	: name(n), type(t), collection_property(cp)
@@ -101,4 +102,10 @@ void RepositoryPropertyImpl::registerAction(string name, PropertyAction *a)
 void RepositoryPropertyImpl::add(PObject *o, PObject *oo)
 {
     qDebug("RepositoryPropertyImpl::add : WARNING : implemented only for CollectionProperty");
+}
+
+Filter *RepositoryPropertyImpl::getFilter()
+{
+    Filter *f = new PropertyFilter(this);
+    return f;
 }

@@ -15,6 +15,7 @@
 #include <string>
 #include "../persistence/pobject.h"
 #include "repositorypropertyimpl.h"
+#include "../services/filter/stringpropertyfilter.h"
 
 using namespace std;
 
@@ -41,6 +42,7 @@ public:
     void fromString(string text, PObject *parent);
     bool isString(){return !is_text;}
     bool isText(){return is_text;}
+    Filter *getFilter();
     
 private:
 
@@ -79,5 +81,12 @@ void StringProperty<ObjectType>::fromString(string text, PObject *o)
 	} else {
     		qDebug("Conversion failed due to wrong object type");
    	 }
+}
+
+template<class ObjectType>
+Filter *StringProperty<ObjectType>::getFilter()
+{
+    Filter *f=new StringPropertyFilter(this);
+    return f;
 }
 #endif

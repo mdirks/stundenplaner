@@ -21,7 +21,7 @@
 */
 class PObjectPropertyFilter : public PropertyFilter {
 public:
-    PObjectPropertyFilter(RepositoryProperty *rp, PObject *testObject);
+    PObjectPropertyFilter(RepositoryProperty *rp, PObject *testObject=nullptr);
     ~PObjectPropertyFilter();
     bool  apply(PObject *o);
     string getValueString();

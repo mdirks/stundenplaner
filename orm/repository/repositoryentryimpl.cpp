@@ -46,7 +46,7 @@ void RepositoryEntryImpl::addProperty(RepositoryProperty *p)
 }
 
 
-RepositoryProperty* RepositoryEntryImpl::getProperty(string name){
+RepositoryProperty* RepositoryEntryImpl::getProperty(std::string name){
 	RepositoryProperty *rp=0;
 	if(name.find("/") != string::npos){
         qDebug() << "Looking for indirect property";
