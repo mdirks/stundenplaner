@@ -99,7 +99,7 @@ StundePlanerApp::StundePlanerApp(QWidget* , const char* name): KXmlGuiWindow() /
   initActions();
   
   //setupGUI();
-  setupGUI(Default,"/data3/mopp/dev2/stundenplaner/gui/stundenplanerui.rc");
+  setupGUI(Default,"/data3/mopp/dev/stundenplaner/gui/stundenplanerui.rc");
   qDebug() << QString("Build gui from local xml file %1").arg(localXMLFile());
   qDebug() << QString("Build gui from local xml file %1").arg(xmlFile());
   initDocument();
@@ -159,6 +159,10 @@ void StundePlanerApp::initActions()
   action= actionCollection()->addAction("add_objectview", this, SLOT(slotNewObjectIconView()));
   action->setIcon(GuiConfig::getInstance()->getIcon("objectview"));
   action->setText("Objektbrowser");
+
+  action= actionCollection()->addAction("check_dm", this, SLOT(slotCheckDatamodel()));
+  action->setIcon(GuiConfig::getInstance()->getIcon("checkdm"));
+  action->setText("Check Datamodel");
 
 
   actionCollection()->addAction("kalender",  this, SLOT(slotShowKalender()));
@@ -462,6 +466,32 @@ void StundePlanerApp::slotNewObjectIconView()
 	PObjectIconView *iconView = new PObjectIconView(GuiCreateAction::chooseMapper());
 	GuiRepository::getInstance()->addIconView(iconView, QString("Leer %1").arg(getNewIconViewNumber()),"Leer");
 }
+
+
+void StundePlanerApp::slotCheckDatamodel()
+{
+    AbstractMapper *m=MappingControler::getInstance()->getMapperByName("klasse");
+    if(m){
+        list<PObject*> *l_o=m->find_gen();
+        for(list<PObject*>::iterator it=l_o->begin(); it!=l_o->end(); it++)
+        {
+            klasse *kl = dynamic_cast<klasse*>(*it);
+            if(kl){
+                Transactions::getCurrentTransaction()->add(kl);
+                list<schueler*> *l_s=kl->getSchueler();
+                for(list<schueler*>::iterator itt=l_s->begin(); itt!=l_s->end(); itt++)
+                {
+                    schueler *s=(*itt);
+                    s->setKlasse(kl);
+                    Transactions::getCurrentTransaction()->add(s);
+                }
+
+            }
+        }
+    }
+}
+
+
 void StundePlanerApp::slotShowKalender()
 {
 	GuiRepository::getInstance()->showFormForObject(SKalender::getInstance());

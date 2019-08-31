@@ -99,6 +99,7 @@ private:
     void slotDatabaseReadFinished();
     void slotAddFehlzeitmeldung();
     void slotAddStundenplaneintrag();
+    void slotCheckDatamodel();
 
     void slotFileNewWindow();
     void slotFileNew();

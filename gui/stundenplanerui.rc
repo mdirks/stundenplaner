@@ -17,6 +17,7 @@
 	  <Action name="read_db" />
           <Action name="add_objectview" />
           <Action name="add_stundenplaneintrag" />
+          <Action name="check_dm" />
   </Menu>
 </MenuBar>
 <ToolBar name="mainToolBar" fullWidth="false" newline="false">
