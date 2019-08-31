@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *   Copyright (C) 2008 by Marcus Dirks   *
  *   m-dirks@web.de   *
  *                                                                         *
@@ -24,90 +24,147 @@
 #include "services/filter/pobjectpropertyfilter.h"
 #include "services/utils/namedobjectptrcomp.h"
 
+#include "pobjectcombobox.h"
+
 #include <QDebug>
+#include <QStringListModel>
 
 FilterModel::FilterModel(RepositoryEntry *re)
+        : QAbstractListModel ()
 {
-    list_filter=new list<Filter*>();
+    rootFilter = new AbstractFilter();
+
     list<RepositoryProperty*> *list_prop = re->getAllProperties(true);
+    v_filter=new vector<Filter*>(list_prop->size());
+
     list_prop->sort(NamedObjectPtrComp<RepositoryProperty>());
+    unsigned int i=0;
     for(list<RepositoryProperty*>::iterator it = list_prop->begin(); it != list_prop->end(); it++){
-        list_filter->push_back((*it)->getFilter());
+        v_filter->at(i) = (*it)->getFilter();
+        i++;
     }
 }
 
 int FilterModel::rowCount(const QModelIndex &parent) const
 {
-    return list_filter->size();
+    return (int) v_filter->size();
 }
 
 QVariant FilterModel::data(const QModelIndex &index, int role) const
 {
-    list<Filter*>::iterator it=list_filter->begin();
-    for(int i=0; i<index.row(); i++)
-        it++;
-    return QVariant("unknown");
+    /*
+
+    */
+    if (!index.isValid())
+            return QVariant();
+
+    if (index.row() >= v_filter->size())
+            return QVariant();
+
+    if (role == Qt::DisplayRole){
+            Filter *f =  v_filter->at(index.row());
+            return QVariant(f->getDisplayString().c_str());
+            //return stringList.at(index.row());
+    } else {
+            return QVariant();
+    }
 }
 
-FilterEditorItem::FilterEditorItem(RepositoryProperty *rp, QListWidget *lw)
-    : QListWidgetItem(rp->getName().c_str(),lw)
+Filter *FilterModel::filter(const QModelIndex &index) const
 {
-	this->rp = rp;
-	filter = 0;
-    setFlags(flags() | Qt::ItemIsEditable);
+    if (!index.isValid())
+            return nullptr;
+
+    if (index.row() >= v_filter->size())
+            return nullptr;
+
+    Filter *f =  v_filter->at(index.row());
+    return f;
+
 }
 
-void FilterEditorItem::activate()
+Filter *FilterModel::getRootFilter() const
 {
-	if(rp->isPObject()){
-		AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName(rp->getType());
-		if(mapper){
-			PObject *o = PObjectDialog::choosePObject(mapper);
-			if(o){
-				filter = new PObjectPropertyFilter(rp,o);
-			}
-		}
-	} else if(rp->isString()){
-		//filter = new StringPropertyFilter(rp);
-	} 
-	if(filter){
-        setText(filter->getValueString().c_str());
-	}
+    return rootFilter;
 }
 
-PropertyFilter* FilterEditorItem::getFilter()
+Qt::ItemFlags FilterModel::flags(const QModelIndex &index) const
 {
-	return filter;
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
+    return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
+
 
 FilterEditorDelegate::FilterEditorDelegate(QObject *p)
  : QStyledItemDelegate(p)
 {
-
+    editorType=0;
 }
 QWidget *FilterEditorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                                    const QModelIndex &index) const
 {
-    QLineEdit *editor = new QLineEdit("Mein Editor", parent);
+    //const QAbstractItemModel *model = index.model();
+    const FilterModel *fmodel=static_cast<const FilterModel*>(index.model());
+    Filter *f = fmodel->filter(index);
+
+    QWidget *editor=0;
+
+    switch(f->type()){
+        case 1: {const PObjectPropertyFilter *pofilter = dynamic_cast<const PObjectPropertyFilter*>(f);
+                if(pofilter){
+                    editor = new PObjectComboBox(pofilter->getPropertyType().c_str(), parent);
+                } else {
+                    editor = new QLineEdit("Unknown property", parent);
+                }
+                break;}
+    default: { editor = new QLineEdit("MeinEditor", parent);
+               break;}
+    }
     return editor;
 }
 
 void FilterEditorDelegate::setEditorData(QWidget *editor,
                                     const QModelIndex &index) const
 {
+
+    /*
     QString modelData = index.model()->data(index, Qt::EditRole).toString();
 
     QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
     QString value = lineEdit->text().append(modelData);
     lineEdit->setText(value);
+    */
 }
 
 void FilterEditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                     const QModelIndex &index) const
 {
+    const FilterModel *fmodel=static_cast<const FilterModel*>(index.model());
+    Filter *f = fmodel->filter(index);
+    switch(f->type()){
+    case 1: {
+        PObjectComboBox *pov = dynamic_cast<PObjectComboBox*>(editor);
+        if(pov){
+            PObject *o=pov->getCurrentObject();
+            if(o){
+                PObjectPropertyFilter *pof = dynamic_cast<PObjectPropertyFilter*>(f);
+                if(pof){
+                    pof->setValue(o);
+                    fmodel->getRootFilter()->addAnd(f);
+                }
+
+            }
+        }
+        break;
+    }
+    default: break;
+    }
+    /*
     QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
     QString value = lineEdit->text();
     model->setData(index, value, Qt::EditRole);
+    */
 }
 
 void FilterEditorDelegate::updateEditorGeometry(QWidget *editor,
@@ -118,27 +175,19 @@ void FilterEditorDelegate::updateEditorGeometry(QWidget *editor,
 }
 
 FilterEditor::FilterEditor(RepositoryEntry *re, QWidget *parent)
-    : QListWidget(parent)
+    : QListView(parent)
 {
-	this->re = re;
-    //root = new QListWidgetItem("Filter",this);
-    //rootFilter = 0;
-	hasContents=false;
-
-	list<RepositoryProperty*> *list_prop = re->getAllProperties(true);
-	list_prop->sort(NamedObjectPtrComp<RepositoryProperty>());
-	for(list<RepositoryProperty*>::iterator it = list_prop->begin(); it != list_prop->end(); it++){
-        new FilterEditorItem(*it,this);
-	}
-    //addColumn("Property");
-    //addColumn("Filterwert");
-
+    model=new FilterModel(re);
+    setModel(model);
     setItemDelegate(new FilterEditorDelegate());
+    show();
+
+
 }
 
 AbstractFilter* FilterEditor::getFilter()
 {
-    qDebug() << "WARNING: FilterEditor::getFilter() not implemented";
+    model->getRootFilter();
 
     /*
     rootFilter = new AbstractFilter();
@@ -151,6 +200,7 @@ AbstractFilter* FilterEditor::getFilter()
     */
 }
 
+/*
 void FilterEditor::addFilterFromChild(FilterEditorItem* fei)
 {
 	if(fei->getFilter()){
@@ -158,6 +208,7 @@ void FilterEditor::addFilterFromChild(FilterEditorItem* fei)
 		hasContents = true;
 	}
 }
+*/
 
 FilterEditor::~FilterEditor()
 {
@@ -167,7 +218,18 @@ FilterEditorDialog::FilterEditorDialog(RepositoryEntry *re, QWidget *parent)
     : QDialog(parent)
 {
 	filterEditor = new FilterEditor(re,this);
-    // ToDO: Does the editor show up, add it to layout ?
+
+
+    /*
+    QStringList numbers;
+    numbers << "One" << "Two" << "Three" << "Four" << "Five";
+
+    QAbstractItemModel *model = new QStringListModel(numbers);
+    */
+
+
+    filterEditor->show();
+    // ToDo: Does the editor show up, add it to layout ?
     //setMainWidget(filterEditor);
 }
 

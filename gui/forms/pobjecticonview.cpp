@@ -197,10 +197,14 @@ void PObjectIconView::reload()
 
 void PObjectIconView::load(list<PObject*>* olist){
 	for( list<PObject*>::iterator it = olist->begin(); it != olist->end(); it++){
-		if(filter && filter->apply(*it)){
-			createItem(*it);
-		} else {
-			createItem(*it);
+        if(filter){
+            if(filter->apply(*it)){
+                createItem(*it);
+            } else {
+                qDebug() << "PObjectIconView::load : Item dropped by filter";
+            }
+        } else { //no filter set
+            createItem(*it);
 		}
 	}
 }
@@ -741,43 +745,17 @@ void PObjectIconView::chooseFilter()
 }
 
 
-/*!
-    \fn PObjectIconView::getMapper()
- */
-/*
-AbstractMapper* PObjectIconView::getMapper()
+void PObjectIconView::setFilter(Filter *f)
 {
-    return mapper;
+    this->filter=f;
+    reload();
 }
-*/
 
-
-/*!
-    \fn PObjectIconView::getProperty()
- */
-/*
-RepositoryProperty* PObjectIconView::getProperty()
+void PObjectIconView::clearFilter()
 {
-    return prop;
+    this->filter=0;
+    reload();
 }
-*/
-
-/*!
-    \fn PObjectIconView::getParentObject()
- */
-/*
-PObject* PObjectIconView::getParentObject()
-{
-    return parentObject;
-}
-*/
-
-/*
-void PObjectIconView::setParentObject(PObject *o)
-{
-    this->parentObject=o;
-}
-*/
 
 
 void PObjectIconView::setObjectListProvider(PObjectListProvider *prov)
@@ -790,3 +768,7 @@ PObjectListProvider* PObjectIconView::getProvider()
 {
     return this->provider;
 }
+
+
+
+

@@ -25,6 +25,7 @@ public:
     void apply(list<PObject*> *input);
     bool apply(PObject *o);
     void addOr(Filter *f);
+    string getDisplayString();
 
      bool operator()(PObject *o){return apply(o);}
      bool operator()(list<PObject*> *input){apply(input); return true;}

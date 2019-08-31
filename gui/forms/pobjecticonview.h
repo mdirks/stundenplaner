@@ -95,6 +95,9 @@ public:
     void setObjectListProvider(PObjectListProvider *prov);
     PObjectListProvider* getProvider();
 
+    void setFilter(Filter *f);
+    void clearFilter();
+
 protected:
 	//QPopupMenu*  getDatenPopupForSelected();
 private:

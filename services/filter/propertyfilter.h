@@ -33,6 +33,7 @@ public:
 
     string getPropertyName();
     virtual string getValueString(){return "empty";}
+    virtual string getDisplayString();
 
 protected:
 	RepositoryProperty *rp;

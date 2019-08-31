@@ -31,6 +31,10 @@ string PObjectPropertyFilter::getValueString()
 	}
 }
 
+string PObjectPropertyFilter::getDisplayString()
+{
+    return PropertyFilter::getDisplayString() + " (PObject) \n" + getValueString();
+}
 
 
 /*!
@@ -38,10 +42,29 @@ string PObjectPropertyFilter::getValueString()
  */
 bool  PObjectPropertyFilter::apply(PObject *o)
 {
-    if(rp->asPObject(o) == testObject){
-	return true;
+    PObject *po = rp->asPObject(o);
+    if(po){
+        if(po->getID() == testObject->getID()){
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
     }
-    return false;
 }
 
+string PObjectPropertyFilter::getPropertyType() const
+{
+    return rp->getType();
+}
 
+int PObjectPropertyFilter::type()
+{
+    return 1;
+}
+
+void PObjectPropertyFilter::setValue(PObject *po)
+{
+    testObject=po;
+}

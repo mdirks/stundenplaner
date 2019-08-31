@@ -114,8 +114,15 @@ void ConfigurePObjectIconViewAction::createFilter()
 {
     PObjectListProvider *prov = iconView->getProvider();
     if(RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry(prov->getClassName().toStdString())){
-			FilterEditorDialog::createFilter(re);
+            AbstractFilter *f = FilterEditorDialog::createFilter(re);
+            iconView->setFilter(f);
+            iconView->reload();
 	} else {
         qDebug() << "ConfigurePObjectIconViewAction::createFilter : mapper not set, aborting";
 	}
+}
+
+void ConfigurePObjectIconViewAction::clearFilter()
+{
+    iconView->clearFilter();
 }

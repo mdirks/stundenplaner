@@ -74,3 +74,8 @@ void AbstractFilter:: addOr(Filter *f)
 {
     list_or->push_back(f);
 }
+
+string AbstractFilter::getDisplayString()
+{
+    return "AbstractFilter::getDisplayString()";
+}

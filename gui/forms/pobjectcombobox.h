@@ -18,7 +18,8 @@ public:
     PObjectComboBox(QWidget *parent = 0);
     PObjectComboBox(PObjectListProvider *prov, QWidget *parent = 0);
     PObjectComboBox(RepositoryProperty *rp, PObject *parent, QWidget *pw = 0);
-    
+    PObjectComboBox(QString className, QWidget *pw);
+
     void load();
     void setProvider(PObjectListProvider *prov);
     void setParentObject(PObject *po);

@@ -45,6 +45,7 @@ public slots:
     void selectIcon();
     void chooseProperty();
     void createFilter();
+    void clearFilter();
     void switchView();
 
 private:

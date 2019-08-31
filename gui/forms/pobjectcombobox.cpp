@@ -3,6 +3,7 @@
 #include "orm/transactions/transactions.h"
 #include "gui/base/guiconfig.h"
 #include "gui/actions/guicreateaction.h"
+#include "pobjectlistprovider.h"
 #include "orm/repository/collectionproperty.h"
 
 #define HEIGHT 17
@@ -28,6 +29,14 @@ PObjectComboBox::PObjectComboBox(PObjectListProvider *prov, QWidget *pw)
     : QComboBox(pw)
 {
     provider=prov;
+
+    doCommonSetup();
+}
+
+PObjectComboBox::PObjectComboBox(QString className, QWidget *pw)
+    : QComboBox(pw)
+{
+    provider=new MapperListProvider(className);
 
     doCommonSetup();
 }
@@ -196,4 +205,9 @@ void PObjectComboBox::nameChanged(QString newName)
         Transactions::getCurrentTransaction()->add(o);
         o->setName(newName.toStdString());
     }
+}
+
+PObject *PObjectComboBox::getCurrentObject()
+{
+    return getObject(currentIndex());
 }

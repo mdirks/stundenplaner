@@ -13,12 +13,14 @@
 #define COLLECTIONPROPERTY_H
 
 
+
 #include "../persistence/pobject.h"
+#include "repositoryproperty.h"
 
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
-class CollectionProperty 
+class CollectionProperty
 {
 public:
     

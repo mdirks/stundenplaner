@@ -36,4 +36,9 @@ string PropertyFilter::getPropertyName()
 	}
 }
 
+string PropertyFilter::getDisplayString()
+{
+    return getPropertyName();
+}
+
 

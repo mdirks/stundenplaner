@@ -11,7 +11,9 @@
 //
 #include "filter.h"
 
-
+int Filter::type(){
+    return 0;
+}
 
 
 

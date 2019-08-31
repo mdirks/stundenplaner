@@ -25,6 +25,10 @@ public:
     ~PObjectPropertyFilter();
     bool  apply(PObject *o);
     string getValueString();
+    string getDisplayString();
+    string getPropertyType() const;
+    int type();
+    void setValue(PObject *po);
 
 private:
 	//RepositoryProperty *rp;

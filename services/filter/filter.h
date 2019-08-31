@@ -15,7 +15,7 @@
 #include "orm/persistence/pobject.h"
 
 #include <list>
-
+#include <string>
 using namespace std;
 
 /**
@@ -28,6 +28,8 @@ public:
     virtual bool apply(PObject *o) = 0;
     virtual void addAnd(Filter *f) = 0;
     virtual void addOr(Filter *f) = 0;
+    virtual string getDisplayString() = 0;
+    virtual int type();
 };
 
 #endif

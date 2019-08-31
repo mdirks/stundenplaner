@@ -26,9 +26,12 @@
 #include "orm/repository/repositoryproperty.h"
 
 #include <QAbstractListModel>
+#include <QListView>
 #include <QListWidgetItem>
 #include <QStyledItemDelegate>
 #include <QDialog>
+
+#include <vector>
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>
@@ -41,20 +44,17 @@ public:
     FilterModel(RepositoryEntry *re);
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
+    Filter *filter(const QModelIndex &index) const;
+    Filter *getRootFilter() const;
 private:
-    list<Filter*> *list_filter;
+    vector<Filter*> *v_filter;
+    AbstractFilter *rootFilter;
+
 };
 
-class FilterEditorItem : public QListWidgetItem{
-public: 
-    FilterEditorItem(RepositoryProperty *rp, QListWidget *lw);
-	void activate();
-	PropertyFilter* getFilter();
-private:
-	PropertyFilter *filter;
-	RepositoryProperty *rp;
-};
+
 
 class FilterEditorDelegate : public QStyledItemDelegate{
     Q_OBJECT
@@ -69,19 +69,21 @@ public:
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
                               const QModelIndex &index) const override;
 
+private:
+    int editorType;
 };
 
-class FilterEditor : public QListWidget {
+class FilterEditor : public QListView {
 public:
     FilterEditor(RepositoryEntry *re, QWidget *parent=0);
     ~FilterEditor();
 	AbstractFilter *getFilter();
-	void addFilterFromChild(FilterEditorItem *fei);
+    //void addFilterFromChild(FilterEditorItem *fei);
 	
 private:
 	RepositoryEntry *re;
-	AbstractFilter *rootFilter;
-	bool hasContents;
+    FilterModel *model;
+    bool hasContents;
     QListWidgetItem *root;
 };
 

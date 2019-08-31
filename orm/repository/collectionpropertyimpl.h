@@ -17,6 +17,7 @@
 
 #include "repositorypropertyimpl.h"
 #include "collectionproperty.h"
+#include "../services/filter/collectionpropertyfilter.h"
 
 using namespace std;
 
@@ -43,6 +44,7 @@ public:
     list<PObject*>* asCollection(PObject *o);
     void add(PObject *o, PObject *po);
     void remove(PObject *o, PObject *po);
+    Filter *getFilter();
     
 private:
      pcollectionmf mf;
@@ -131,7 +133,7 @@ void CollectionPropertyImpl<EntryType,ObjectType>::remove(PObject *o, PObject *p
 
 
 
-template<class EntryType, class ObjectType> 
+template<class EntryType, class ObjectType>
 list<PObject*>* CollectionPropertyImpl<EntryType,ObjectType>::asPObjectList(PObject *o)
 {
    ObjectType *ot = dynamic_cast<ObjectType*>(o);
@@ -154,6 +156,12 @@ list<PObject*>* CollectionPropertyImpl<EntryType,ObjectType>::asPObjectList(PObj
    return ol;
 }
 
+template<class EntryType, class ObjectType>
+Filter *CollectionPropertyImpl<EntryType,ObjectType>::getFilter()
+{
+    Filter *f=new CollectionPropertyFilter(this);
+    return f;
+}
 
 
 

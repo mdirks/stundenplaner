@@ -2,13 +2,15 @@ TEMPLATE = lib
 TARGET = services
 CONFIG += staticlib
 SOURCES += \
-    *.cpp
+    *.cpp \
+    filter/collectionpropertyfilter.cpp
 
 SOURCES += $$system(ls reports/*.cpp) $$system(ls filter/*.cpp) $$system(ls xml-export/*.cpp)
 SOURCES += $$system(ls utils/*.cpp) $$system(ls actions/*.cpp)
 
 HEADERS += \
-    *.h
+    *.h \
+    filter/collectionpropertyfilter.h
 
 HEADERS += $$system(ls reports/*.h) $$system(ls filter/*.h) $$system(ls xml-export/*.h)
 HEADERS += $$system(ls utils/*.h) $$system(ls actions/*.h)
