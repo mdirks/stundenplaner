@@ -34,7 +34,10 @@ schueler::~schueler()
  */
 klasse* schueler::getKlasse()
 {
-    	return this->kl;
+    if(kl==0){
+      kl= (klasse*) schuelermapper::getInstance()->findReference("Klasse",getID());
+    }
+    return this->kl;
 }
 
 
@@ -43,7 +46,7 @@ klasse* schueler::getKlasse()
  */
 void schueler::setKlasse(klasse* kl)
 {
-    this->kl = kl;
+   this->kl = kl;
 }
 
 
