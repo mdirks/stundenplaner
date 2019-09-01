@@ -9,6 +9,7 @@
 #include <qstring.h>
 #include <qdatetime.h>
 #include "orm/mapping/murl.h"
+#include <QUrl>
 
 using namespace std;
                                                                        
@@ -36,6 +37,7 @@ template< >
     return streamOut.str( );
 }
 
+
 template< >
     inline std::string to_string( const QUrl & Value)
 {
@@ -43,6 +45,7 @@ template< >
     streamOut << Value.url().toStdString();
     return streamOut.str( );
 }
+
 
 template< >
     inline std::string to_string( const QDateTime & Value)

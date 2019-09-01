@@ -216,11 +216,15 @@ void DatabaseImpl_Q::save(PObject *object){
 			QSqlQuery q2(qs);
 			if(! q2.isActive() ){ qDebug("DatabaseImpl::save: Failed to delete object (Ph 2)");return;}
 		} else {
+
             QString qs = QString("update  ").append(getTableName(persistenceObject).c_str() ).append(  "  set name=\"" ).append(object->getName().c_str()).append("\"") ;
 		
-		
+            std::locale::global(std::locale("en_US")); // Hack to have a decimal point in Data
+
 			string *columns = persistenceObject->getColumns();
 			string *values = persistenceObject->getValues(object);
+
+            std::locale::global(std::locale("")); //Reset from previous Hack
 		
 			int cc = persistenceObject->getColumnCount();
 			for(int i=0; i <cc; i++){
@@ -248,7 +252,7 @@ void DatabaseImpl_Q::save(PObject *object){
 
 QString DatabaseImpl_Q::mask(QString qs)
 {
-	return qs.replace("\\","\\\\").replace("\"", "\\\"");
+    return qs.replace("\\","\\\\").replace("\"", "\\\"");
 }
 
 void DatabaseImpl_Q::save(PCollection* collection)
@@ -256,8 +260,7 @@ void DatabaseImpl_Q::save(PCollection* collection)
     qDebug() << QString("Saving collection %1").arg(collection->getID());
 	
     if(isOpen()){
-	
-		//PersistenceClass *persistenceObject = collection.getPersistenceObject();
+        //PersistenceClass *persistenceObject = collection.getPersistenceObject();
 		int collId = collection->getID();
 		string name = collection->getName();
 		
