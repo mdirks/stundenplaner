@@ -88,11 +88,11 @@
 #include <QWidget>
 
 //#include <KParts/ComponentFactory>
-#include <KXMLGUIFactory>
+//#include <KXMLGUIFactory>
 //#include <kglobal.h>
-#include <KConfig>
-#include <KIconLoader>
-#include <KIconDialog>
+//#include <KConfig>
+//#include <KIconLoader>
+//#include <KIconDialog>
 //#include <ktrader.h>
 //#include <klibloader.h>
 #include <kmessagebox.h>
@@ -658,6 +658,8 @@ list<AbstractMapper*>* GuiRepositoryImpl::getMapViews()
 {
     return listMapViews;
 }
+
+/* TODO: Can icon-handling be completely removed ????? */
 
 /*
 

@@ -30,7 +30,8 @@ SOURCES += \
     forms/pdfview/synctexhandler.cpp \
     forms/pdfview/zoomaction.cpp \
     forms/pdfview/synctex/synctex_parser.c \
-    forms/pdfview/synctex/synctex_parser_utils.c
+    forms/pdfview/synctex/synctex_parser_utils.c \
+    stundenplanermainwindow.cpp
 
 SOURCES += $$system(ls mapviews/*.cpp) $$system(ls data/*.cpp) $$system(ls draganddrop/*.cpp)
 SOURCES += $$system(ls actions/*.cpp) $$system(ls base/*.cpp) $$system(ls dialogs/*.cpp)
@@ -70,7 +71,8 @@ HEADERS += \
     forms/pdfview/zoomaction.h \
     forms/pdfview/synctex/synctex_parser.h \
     forms/pdfview/synctex/synctex_parser_local.h \
-    forms/pdfview/synctex/synctex_parser_utils.h
+    forms/pdfview/synctex/synctex_parser_utils.h \
+    stundenplanermainwindow.h
 
 HEADERS += $$system(ls mapviews/*.h) $$system(ls data/*.h) $$system(ls draganddrop/*.h)
 HEADERS += $$system(ls actions/*.h) $$system(ls base/*.h) $$system(ls dialogs/*.h)
@@ -103,7 +105,8 @@ unix {
 }
 
 QT+=sql xml widgets printsupport
-QT+=KXmlGui KIOFileWidgets KIOWidgets KNTLM
+//QT+=KXmlGui
+//QT+=KIOFileWidgets KIOWidgets KNTLM
 QT+=KIconThemes
 QT+=KParts
 QT+=KIOCore
