@@ -100,6 +100,7 @@ private:
     void slotAddFehlzeitmeldung();
     void slotAddStundenplaneintrag();
     void slotCheckDatamodel();
+    void slotCreateAppmodel();
 
     void slotFileNewWindow();
     void slotFileNew();
