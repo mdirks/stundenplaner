@@ -1,5 +1,65 @@
 #include "stundenplanermainwindow.h"
 
+#include <QDockWidget>
+#include <QDebug>
+#include <QList>
+#include <QKeyEvent>
+#include <qdir.h>
+#include <QPrinter>
+#include <qpainter.h>
+#include <qprogressdialog.h>
+#include <qprocess.h>
+//#include <QStackedWidget>
+#include <QStatusBar>
+
+
+// include files for KDE
+//#include <QActionCollection>
+//#include <kcmdlineargs.h>
+//#include <kaboutdata.h>
+//#include <klocale.h>
+//#include <kapp.h>
+//#include <kiconloader.h>
+//#include <kmessagebox.h>
+//#include <kfiledialog.h>
+//#include <kmenubar.h>
+//#include <kstatusbar.h>
+//#include <klocale.h>
+//#include <kconfig.h>
+//#include <kstdaction.h>
+//#include <krun.h>
+#include <qlayout.h>
+//#include <kdockwidget.h>
+//#include <kglobal.h>
+//#include <kinputdialog.h>
+#include <KXmlGui/KActionCollection>
+#include <QInputDialog>
+#include <QFileDialog>
+
+
+// application specific includes
+#include "stundeplaner.h"
+#include "stundeplanerview.h"
+#include "stundeplanerdoc.h"
+
+
+#include "gui/guirepository.h"
+#include "gui/base/guicontroler.h"
+#include "gui/base/guiconfig.h"
+#include "gui/dialogs/xmlimportdialog.h"
+#include "gui/dialogs/xmlexportdialog.h"
+//#include "gui/dialogs/fehlzeitdialog.h"
+#include "gui/forms/pobjecticonview.h"
+#include "gui/forms/pobjectdialog.h"
+#include "services/skalender.h"
+#include "services/sstundenplan.h"
+#include "orm/transactions/transactions.h"
+#include "gui/actions/guicreateaction.h"
+#include "orm/mapping/mappingcontroler.h"
+#include "datamodel/schuljahrmapper.h"
+#include "datamodel/fehlzeitmeldung.h"
+
+
 StundenPlanerMainWindow::StundenPlanerMainWindow(QWidget *parent) : QMainWindow(parent)
 {
 
@@ -29,12 +89,12 @@ GuiRepository::getInstance()->setMainFrame(this);
 
 }
 
-StundePlanerApp::~StundePlanerApp()
+StundenPlanerMainWindow::~StundenPlanerMainWindow()
 {
 
 }
 
-void StundePlanerApp::initActions()
+void StundenPlanerMainWindow::initActions()
 {
 QAction *action;
 
@@ -91,22 +151,22 @@ editPaste = KStandardAction::paste(this, SLOT(slotEditPaste()), actionCollection
 }
 
 
-void StundePlanerApp::initStatusBar()
+void StundenPlanerMainWindow::initStatusBar()
 {
 //statusBar()->insertItem(i18n("Ready."), ID_STATUS_MSG);
 }
 
-void StundePlanerApp::initDocument()
+void StundenPlanerMainWindow::initDocument()
 {
 doc = new StundePlanerDoc(this);
 }
 
-QStackedWidget* StundePlanerApp::getCentralWidget()
+QStackedWidget* StundenPlanerMainWindow::getCentralWidget()
 {
   return centralWidget;
 }
 
-void StundePlanerApp::initView()
+void StundenPlanerMainWindow::initView()
 {
 centralWidget = new QStackedWidget(this);
 setCentralWidget(centralWidget);
@@ -122,7 +182,7 @@ setCentralWidget(centralWidget);
 
 
 
-void StundePlanerApp::addDockWindow(QWidget *w, QString name, Qt::DockWidgetArea area)
+void StundenPlanerMainWindow::addDockWindow(QWidget *w, QString name, Qt::DockWidgetArea area)
 {
 
   QDockWidget *dock = new QDockWidget(name,this);
@@ -132,20 +192,20 @@ void StundePlanerApp::addDockWindow(QWidget *w, QString name, Qt::DockWidgetArea
 
 }
 
-void StundePlanerApp::openDocumentFile(const QUrl& url)
+void StundenPlanerMainWindow::openDocumentFile(const QUrl& url)
 {
-  qDebug()<<"Warning StundePlanerApp::openDocumentFile not implemented";
+  qDebug()<<"Warning StundenPlanerMainWindow::openDocumentFile not implemented";
 }
 
 
-StundePlanerDoc *StundePlanerApp::getDocument() const
+StundePlanerDoc *StundenPlanerMainWindow::getDocument() const
 {
 return doc;
 }
 
-void StundePlanerApp::saveOptions()
+void StundenPlanerMainWindow::saveOptions()
 {
-qDebug() << "Warning: StundePlanerApp::saveOptions() not implemented" ;
+qDebug() << "Warning: StundenPlanerMainWindow::saveOptions() not implemented" ;
 /*
 config->setGroup("General Options");
 config->writeEntry("Geometry", size());
@@ -157,9 +217,9 @@ fileOpenRecent->saveEntries(config,"Recent Files");
 }
 
 
-void StundePlanerApp::readOptions()
+void StundenPlanerMainWindow::readOptions()
 {
-qDebug()<< "Warning: StundePlanerApp::readOptions() not implemented" ;
+qDebug()<< "Warning: StundenPlanerMainWindow::readOptions() not implemented" ;
 /*
 config->setGroup("General Options");
 
@@ -191,7 +251,7 @@ if(!size.isEmpty())
 
 
 /*
-void StundePlanerApp::saveProperties(KConfig *_cfg)
+void StundenPlanerMainWindow::saveProperties(KConfig *_cfg)
 {
 if(doc->URL().fileName()!=i18n("Untitled") && !doc->isModified())
 {
@@ -213,7 +273,7 @@ else
 
 
 /*
-void StundePlanerApp::readProperties(KConfig* _cfg)
+void StundenPlanerMainWindow::readProperties(KConfig* _cfg)
 {
 QString filename = _cfg->readEntry("filename", "");
 KURL url(filename);
@@ -243,12 +303,12 @@ else
 }
 */
 
-bool StundePlanerApp::queryClose()
+bool StundenPlanerMainWindow::queryClose()
 {
 return doc->saveModified();
 }
 
-bool StundePlanerApp::queryExit()
+bool StundenPlanerMainWindow::queryExit()
 {
 saveOptions();
 return true;
@@ -257,23 +317,23 @@ return true;
 /////////////////////////////////////////////////////////////////////
 // SLOT IMPLEMENTATION
 /////////////////////////////////////////////////////////////////////
-void StundePlanerApp::slotAddStundenplaneintrag()
+void StundenPlanerMainWindow::slotAddStundenplaneintrag()
 {
   GuiCreateAction::getInstance()->addStundenplaneintrag();
 }
 
-void StundePlanerApp::slotAddFehlzeitmeldung()
+void StundenPlanerMainWindow::slotAddFehlzeitmeldung()
 {
   /*
   fehlzeitmeldung *fzm = (fehlzeitmeldung*) GuiCreateAction::getInstance()->create("fehlzeitmeldung");
   GuiRepository::getInstance()->showDialogForObject(fzm);
   */
 
-  qDebug() << "Warning: StundePlanerApp::slotAddFehlzeitmeldung() not implemented";
+  qDebug() << "Warning: StundenPlanerMainWindow::slotAddFehlzeitmeldung() not implemented";
   //FehlzeitDialog::createFehlzeitmeldung();
 }
 
-void StundePlanerApp::slotChangeSchuljahr()
+void StundenPlanerMainWindow::slotChangeSchuljahr()
 {
   schuljahr *sj = (schuljahr*) PObjectDialog::choosePObject(schuljahrmapper::getInstance());
   if(sj){
@@ -282,15 +342,15 @@ void StundePlanerApp::slotChangeSchuljahr()
       SStundenplan::setActiveStundenplan(sj->getStundenplana());
       qDebug() << QString("Schuljahr set to %1").arg(sj->getName().c_str());
   } else {
-      qDebug("StundePlanerApp::slotChangeSchuljahr() : selection of schuljahr failed");
+      qDebug("StundenPlanerMainWindow::slotChangeSchuljahr() : selection of schuljahr failed");
   }
 }
 
-void StundePlanerApp::slotShowStundenplan()
+void StundenPlanerMainWindow::slotShowStundenplan()
 {
   GuiRepository::getInstance()->showFormForObject(SStundenplan::getInstance());
 }
-void StundePlanerApp::slotChangeDatabase()
+void StundenPlanerMainWindow::slotChangeDatabase()
 {
   QString db_name = QInputDialog::getText(this,"Datenbank wechseln","Neue Datenbank",QLineEdit::Normal,Database::getDatabaseName());
 
@@ -308,13 +368,13 @@ void StundePlanerApp::slotChangeDatabase()
 }
 
 
-void StundePlanerApp::slotDumpDatabase()
+void StundenPlanerMainWindow::slotDumpDatabase()
 {
   QString fileName = QFileDialog::getSaveFileName();
   dumpDatabase(fileName);
 }
 
-void StundePlanerApp::dumpDatabase(QString fileName)
+void StundenPlanerMainWindow::dumpDatabase(QString fileName)
 {
   QString databasename = GuiConfig::getInstance()->getDatabaseName();
   QStringList args = databasename.split(":");
@@ -329,7 +389,7 @@ void StundePlanerApp::dumpDatabase(QString fileName)
   KRun::runCommand(com,this);
 }
 
-void StundePlanerApp::slotReadDatabase()
+void StundenPlanerMainWindow::slotReadDatabase()
 {
   QString fileName = QFileDialog::getOpenFileName();
   QString dbName = QInputDialog::getText(this,"Datenbank einlesen","Datenbankname",QLineEdit::Normal,Database::getDatabaseName());
@@ -348,7 +408,7 @@ void StundePlanerApp::slotReadDatabase()
   GuiConfig::getInstance()->setDatabaseName(dbName);
 }
 
-void StundePlanerApp::slotDatabaseReadFinished(){
+void StundenPlanerMainWindow::slotDatabaseReadFinished(){
   if(p && p->exitStatus() == QProcess::NormalExit){
       QString dbName = GuiConfig::getInstance()->getDatabaseName();
       GuiRepository::getInstance()->closeGui();
@@ -369,14 +429,14 @@ void StundePlanerApp::slotDatabaseReadFinished(){
 }
 
 
-void StundePlanerApp::slotNewObjectIconView()
+void StundenPlanerMainWindow::slotNewObjectIconView()
 {
   PObjectIconView *iconView = new PObjectIconView(GuiCreateAction::chooseMapper());
   GuiRepository::getInstance()->addIconView(iconView, QString("Leer %1").arg(getNewIconViewNumber()),"Leer");
 }
 
 
-void StundePlanerApp::slotCheckDatamodel()
+void StundenPlanerMainWindow::slotCheckDatamodel()
 {
   AbstractMapper *m=MappingControler::getInstance()->getMapperByName("klasse");
   if(m){
@@ -400,29 +460,29 @@ void StundePlanerApp::slotCheckDatamodel()
 }
 
 
-void StundePlanerApp::slotShowKalender()
+void StundenPlanerMainWindow::slotShowKalender()
 {
   GuiRepository::getInstance()->showFormForObject(SKalender::getInstance());
 }
 
 
-int StundePlanerApp::getNewIconViewNumber()
+int StundenPlanerMainWindow::getNewIconViewNumber()
 {
   return iv_nr++;
 }
 
 
 
-void StundePlanerApp::slotFileNewWindow()
+void StundenPlanerMainWindow::slotFileNewWindow()
 {
 
-StundePlanerApp *new_window= new StundePlanerApp();
+StundenPlanerMainWindow *new_window= new StundenPlanerMainWindow();
 new_window->show();
 
 
 }
 
-void StundePlanerApp::slotFileNew()
+void StundenPlanerMainWindow::slotFileNew()
 {
 
 if(!doc->saveModified())
@@ -438,14 +498,14 @@ else
 
 }
 
-void StundePlanerApp::slotFileOpen()
+void StundenPlanerMainWindow::slotFileOpen()
 {
 
 XmlImportDialog *dialog = new XmlImportDialog(this);
 dialog->exec();
 }
 
-void StundePlanerApp::slotFileOpenRecent(const QUrl& url)
+void StundenPlanerMainWindow::slotFileOpenRecent(const QUrl& url)
 {
 
 if(!doc->saveModified())
@@ -460,7 +520,7 @@ else
 
 }
 
-void StundePlanerApp::slotFileSave()
+void StundenPlanerMainWindow::slotFileSave()
 {
 
 GuiControler::getInstance()->stopEdit();
@@ -468,27 +528,27 @@ Transactions::getCurrentTransaction()->commit();
 
 }
 
-void StundePlanerApp::slotFileSaveAs()
+void StundenPlanerMainWindow::slotFileSaveAs()
 {
 XmlExportDialog *dialog = new XmlExportDialog(this);
 dialog->show();
 
 }
 
-void StundePlanerApp::slotFileClose()
+void StundenPlanerMainWindow::slotFileClose()
 {
 
 close();
 
 }
 
-void StundePlanerApp::slotFilePrint()
+void StundenPlanerMainWindow::slotFilePrint()
 {
-  qDebug()<< "Warning: StundePlanerApp::slotFilePrint() not implemented";
+  qDebug()<< "Warning: StundenPlanerMainWindow::slotFilePrint() not implemented";
 
 }
 
-void StundePlanerApp::slotFileQuit()
+void StundenPlanerMainWindow::slotFileQuit()
 {
 dumpDatabase(QString("/home/mopp/schule/stundenplaner/stundenplaner-%1.sql").arg(QDate::currentDate().toString("yy-MM-dd")));
 
@@ -496,26 +556,26 @@ saveOptions();
 
 }
 
-void StundePlanerApp::slotEditCut()
+void StundenPlanerMainWindow::slotEditCut()
 {
 }
 
-void StundePlanerApp::slotEditCopy()
+void StundenPlanerMainWindow::slotEditCopy()
 {
 
 }
 
-void StundePlanerApp::slotEditPaste()
+void StundenPlanerMainWindow::slotEditPaste()
 {
 }
 
-void StundePlanerApp::slotViewToolBar()
+void StundenPlanerMainWindow::slotViewToolBar()
 {
-  qDebug() << "Warning: StundePlanerApp::slotViewToolBar() not implemented";
+  qDebug() << "Warning: StundenPlanerMainWindow::slotViewToolBar() not implemented";
 
 }
 
-void StundePlanerApp::slotViewStatusBar()
+void StundenPlanerMainWindow::slotViewStatusBar()
 {
 //turn Statusbar on or off
 if(!viewStatusBar->isChecked())
@@ -530,25 +590,25 @@ else
 }
 
 
-void StundePlanerApp::slotStatusMsg(const QString &text)
+void StundenPlanerMainWindow::slotStatusMsg(const QString &text)
 {
- qDebug() << "Warning: StundePlanerApp::slotStatusMsg() not implemented";
+ qDebug() << "Warning: StundenPlanerMainWindow::slotStatusMsg() not implemented";
 
 }
 
 
-void StundePlanerApp::keyPressEvent( QKeyEvent *k )
+void StundenPlanerMainWindow::keyPressEvent( QKeyEvent *k )
 {
-  qDebug() << QString("StundePlanerApp: ") + k->text();
+  qDebug() << QString("StundenPlanerMainWindow: ") + k->text();
 }
 
 
 
 /*!
-  \fn StundePlanerApp::getTree
+  \fn StundenPlanerMainWindow::getTree
 */
 /*
-doctree_stunden* StundePlanerApp::getTree()
+doctree_stunden* StundenPlanerMainWindow::getTree()
 {
   return view->getTree();
 }
