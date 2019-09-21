@@ -948,7 +948,7 @@ bool GuiRepositoryImpl::versionChangeRequested(string className)
  */
 SitzplanMap*  GuiRepositoryImpl::getMapForSitzplan(sitzplan *sp)
 {
-    	list<PObject*> *list_maps = SitzplanMapmapper::getInstance()->find_gen();
+    list<PObject*> *list_maps = SitzplanMapmapper::getInstance()->find_gen();
 	SitzplanMap *result=0;
 	list<PObject*>::iterator it = list_maps->begin();
 	while(it != list_maps->end() && result ==0)

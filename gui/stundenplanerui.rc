@@ -18,6 +18,7 @@
           <Action name="add_objectview" />
           <Action name="add_stundenplaneintrag" />
           <Action name="check_dm" />
+          <Action name="create_am" />
   </Menu>
 </MenuBar>
 <ToolBar name="mainToolBar" fullWidth="false" newline="false">

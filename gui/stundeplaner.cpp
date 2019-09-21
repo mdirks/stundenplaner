@@ -74,7 +74,9 @@
 #include "orm/mapping/mappingcontroler.h"
 #include "datamodel/schuljahrmapper.h" 
 #include "datamodel/fehlzeitmeldung.h"
-
+#include "services/xml-export/xmlfactory.h"
+#include "gui/data/sitzplanmap.h"
+#include "gui/data/sitzplanmapmapper.h"
 
 #define ID_STATUS_MSG 1
 
@@ -163,6 +165,10 @@ void StundePlanerApp::initActions()
   action= actionCollection()->addAction("check_dm", this, SLOT(slotCheckDatamodel()));
   action->setIcon(GuiConfig::getInstance()->getIcon("checkdm"));
   action->setText("Check Datamodel");
+
+  action= actionCollection()->addAction("create_am", this, SLOT(slotCreateAppmodel()));
+  action->setIcon(GuiConfig::getInstance()->getIcon("createam"));
+  action->setText("Create Appmodel");
 
 
   actionCollection()->addAction("kalender",  this, SLOT(slotShowKalender()));
@@ -491,6 +497,27 @@ void StundePlanerApp::slotCheckDatamodel()
     }
 }
 
+void StundePlanerApp::slotCreateAppmodel()
+{
+       QString fileName = QFileDialog::getSaveFileName();
+       list<PObject*> *l_export = new list<PObject*>();
+       list<stundenplaneintrag*> *l_eintraege=SStundenplan::getInstance()->getEintraegeForWeek(QDate::currentDate());
+       for(list<stundenplaneintrag*>::iterator it=l_eintraege->begin(); it!=l_eintraege->end();it++)
+       {
+           l_export->push_back(*it);
+       }
+
+       list<PObject*> *l_spm = SitzplanMapmapper::getInstance()->find_gen();
+       for(list<PObject*>::iterator it=l_spm->begin();it!=l_spm->end();it++)
+       {
+           l_export->push_back(*it);
+       }
+
+
+       XmlFactory::getInstance()->exportObjectList(fileName,l_export);
+
+
+}
 
 void StundePlanerApp::slotShowKalender()
 {

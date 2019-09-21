@@ -40,7 +40,7 @@ public:
     void processFile(const QString fileName, list<PObject*> *results);
     PObject* readObjectElement(QDomElement objectElement);
     void exportObjectList(QString filename, list<PObject*> *objectList);
-    
+    //void writeAppmodel(QString filename, list<StundenplanEintrag*> *listEinträge);
 
 protected:
 	void exportObjectList(QDomElement &parent, list<PObject*> *objectList);
