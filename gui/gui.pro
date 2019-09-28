@@ -126,3 +126,33 @@ FORMS += \
     actions/modeplanung.ui \
     forms/urleditor.ui \
     forms/formarea.ui
+
+DISTFILES += \
+    icons/Favorites/icons8-aktie-3-100.png \
+    icons/Favorites/icons8-aktie-3-50.png \
+    icons/Favorites/icons8-aktualisieren-100.png \
+    icons/Favorites/icons8-aktualisieren-50.png \
+    icons/Favorites/icons8-box-100.png \
+    icons/Favorites/icons8-box-50.png \
+    icons/Favorites/icons8-dokument-100.png \
+    icons/Favorites/icons8-dokument-50.png \
+    icons/Favorites/icons8-entfernen-100.png \
+    icons/Favorites/icons8-entfernen-50.png \
+    icons/Favorites/icons8-geprüft-100.png \
+    icons/Favorites/icons8-geprüft-50.png \
+    icons/Favorites/icons8-löschen-100.png \
+    icons/Favorites/icons8-löschen-50.png \
+    icons/Favorites/icons8-neustart-100.png \
+    icons/Favorites/icons8-neustart-50.png \
+    icons/Favorites/icons8-ordner-öffnen-100.png \
+    icons/Favorites/icons8-ordner-öffnen-50.png \
+    icons/Favorites/icons8-puzzle-100.png \
+    icons/Favorites/icons8-puzzle-50.png \
+    icons/Favorites/icons8-support-100.png \
+    icons/Favorites/icons8-support-50.png \
+    icons/Favorites/icons8-teilen-2-100.png \
+    icons/Favorites/icons8-teilen-2-50.png \
+    icons/Favorites/icons8-uhr-100.png \
+    icons/Favorites/icons8-uhr-50.png \
+    icons/Favorites/icons8-zuhause-100.png \
+    icons/Favorites/icons8-zuhause-50.png
