@@ -16,11 +16,10 @@
 #include "services/skalender.h"
 #include "datamodel/tutoriummapper.h"
 
-//#include <kglobal.h>
-#include <KConfig>
-#include <KConfigGroup>
-#include <kiconloader.h>
-#include <kicondialog.h>
+#include <QFileDialog>
+#include <QSettings>
+
+
 
 GuiConfig* GuiConfig::instance=0;
 
@@ -39,8 +38,7 @@ GuiConfig::GuiConfig() :
     //KConfig *config = KGlobal::config();
     //config->setGroup("Gui");
 
-    KConfig config("stundenplanerrc");
-    config.group("Gui");
+
 
     activesj=0;
 	activetut=0;
@@ -53,13 +51,9 @@ GuiConfig::~GuiConfig()
 
 QString GuiConfig::readEntry(QString group, QString name)
 {	
-    /*
-    KConfig *config = KGlobal::config();
-	config->setGroup(group);
-	return config->readEntry(name,"");
-    */
-    KConfig config("stundenplanerrc");
-    return config.group(group).readEntry(name,"");
+    QString valueString=group + "/" + name;
+    QSettings settings("MD","Stundenplaner");
+    return settings.value(valueString).toString();
 
 }
    
@@ -70,40 +64,39 @@ void GuiConfig::writeEntry(QString group, QString name, QString entry)
 	config->setGroup(group);
 	config->writeEntry(name, entry);
     */
-    KConfig config("stundenplanerrc");
-    config.group(group).writeEntry(name, entry);
+    QString valueString=group + "/" + name;
+    QSettings settings("MD","Stundenplaner");
+    settings.setValue(valueString, entry);
 
 }
 
 
-QPixmap GuiConfig::loadIcon(QString iconName, KIconLoader::Group group)
+QPixmap GuiConfig::loadIcon(QString iconFileName)
 {
-    KIconLoader *loader = KIconLoader::global();
-	return loader->loadIcon(iconName, group);
+    return QPixmap(iconFileName);
 }
 
 
 
 
-QPixmap GuiConfig::getIcon(QString name, KIconLoader::Group group)
+QPixmap GuiConfig::getIcon(QString name)
 {
     QPixmap pm;
-    KIconLoader *loader = KIconLoader::global();
 	map<QString,QString>::iterator it = mapIcons.find(name);
 	if(it != mapIcons.end()){
 		QString iconName = it->second;
-        pm= loader->loadIcon(iconName, group);
+        pm= QPixmap(iconName);
     } else {
         QString iconName = GuiConfig::getInstance()->readEntry("Gui",name + "_icon");
 		mapIcons[name]=iconName;
-        pm= loader->loadIcon(iconName,group);
+        pm= QPixmap(iconName);
 	}
     if(pm.isNull()){
         selectIcon(name);
         it = mapIcons.find(name);
         if(it != mapIcons.end()){
             QString iconName = it->second;
-            pm= loader->loadIcon(iconName, group);
+            pm= QPixmap(iconName);
         }
     }
     return pm;
@@ -112,28 +105,27 @@ QPixmap GuiConfig::getIcon(QString name, KIconLoader::Group group)
 /*!
     \fn GuiRepositoryImpl::getIconForObject(PObject *o)
  */
-QPixmap GuiConfig::getIcon(PObject *o, KIconLoader::Group group)
+QPixmap GuiConfig::getIcon(PObject *o)
 {
-    KIconLoader *loader = KIconLoader::global();
     if(o && o->getPersistenceObject()){
     QString className(o->getPersistenceObject()->getClassName().c_str());
-	return getIcon(className,group);
+	return getIcon(className);
     } else {
         qDebug("GuiConfig::getIcon: Warning: getPersistenceObject failed for object");
-    	return getIcon("kfind",group);//loader->loadIcon("kfind",group);
+    	return getIcon("kfind");//loader->loadIcon("kfind",group);
     }
 }
 
-QPixmap GuiConfig::getIcon(RepositoryProperty *rp, KIconLoader::Group group)
+QPixmap GuiConfig::getIcon(RepositoryProperty *rp)
 {
 	if(rp->isCollection()){
-		return getIcon("Collection", group);
+		return getIcon("Collection");
 	} else if (rp->isString()){
-		return getIcon("String", group);
+		return getIcon("String");
 	} else if (rp->isText()){
-		return getIcon("Text", group);
+		return getIcon("Text");
 	} else {
-		return getIcon("Unknown", group);
+		return getIcon("Unknown");
 	}
 }
 
@@ -147,11 +139,10 @@ void GuiConfig::selectIcon(PObject *o)
 
 void GuiConfig::selectIcon(QString name)
 {
-    QString iconName = KIconDialog::getIcon(KIconLoader::Desktop,KIconLoader::Application,false,0,false,0,name);
+    QString iconName = QFileDialog::getOpenFileName(nullptr,QString("Choose Icon"),QString(),QString("Images (*.png *.xpm *.jpg)"));
 	mapIcons[name] = iconName;
 	
-    KConfig config("stundenplanerrc");
-    config.group("Gui").writeEntry(name+"_icon", iconName);
+    writeEntry("Icon",name+"_icon", iconName);
 }
 
 

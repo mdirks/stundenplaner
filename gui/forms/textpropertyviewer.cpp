@@ -15,8 +15,8 @@
 #include "orm/transactions/transactions.h"
 //#include <ktrader.h>
 //#include <klibloader.h>
-#include <kprocess.h>
-#include <krun.h>
+//#include <kprocess.h>
+//#include <krun.h>
 #include <poppler-qt5.h>
 #include <QDebug>
 #include <QKeyEvent>

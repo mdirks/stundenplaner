@@ -31,7 +31,7 @@
 #include <qstring.h>
 
 #include <list>
-#include <krun.h>
+//#include <krun.h>
 //#include <kurl.h>
 
 #include <QDragEnterEvent>

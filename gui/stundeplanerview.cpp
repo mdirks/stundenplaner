@@ -22,7 +22,7 @@
 // application specific includes
 #include "stundeplanerview.h"
 #include "stundeplanerdoc.h"
-#include "stundeplaner.h"
+//#include "stundeplaner.h"
 #include "guirepository.h"
 #include "guirepositoryimpl.h"
 #include "../datamodel/opomapper.h"
@@ -84,7 +84,7 @@ doctree_stunden* StundePlanerView::getTree(){
 
 StundePlanerDoc *StundePlanerView::getDocument() const
 {
-  StundePlanerApp *theApp=(StundePlanerApp *) parentWidget();
+  StundenPlanerMainWindow *theApp=(StundenPlanerMainWindow *) parentWidget();
 
   return theApp->getDocument();
 }

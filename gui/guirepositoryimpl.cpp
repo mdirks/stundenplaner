@@ -15,7 +15,6 @@
 #include "gui/forms/pobjecteditor3.h"
 #include "../datamodel/stunde.h"
 #include "splashscreenimpl.h"
-#include "stundeplaner.h"
 #include "orm/mapping/mappingcontroler.h"
 #include "orm/mapping/abstractmapper.h"
 #include "data/themaitemmapper.h"
@@ -95,10 +94,10 @@
 //#include <KIconDialog>
 //#include <ktrader.h>
 //#include <klibloader.h>
-#include <kmessagebox.h>
+//#include <kmessagebox.h>
 //#include <kservice.h>
 //#include <kservicetypetrader.h>
-#include <KParts/Part>
+//#include <KParts/Part>
 
 
 
@@ -455,7 +454,8 @@ void GuiRepositoryImpl::setGraphicsView(QGraphicsView *GraphicsView)
  */
 void GuiRepositoryImpl::initGui()
 {
-    stundeplaner = new StundePlanerApp();
+    //stundeplaner = new StundePlanerApp();
+    stundeplaner = new StundenPlanerMainWindow();
 
     //rightToolBar = new QToolBar(stundeplaner);
     //stundeplaner->addToolBar(Qt::RightToolBarArea,rightToolBar);

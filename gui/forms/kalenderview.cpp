@@ -26,7 +26,6 @@
 #include "gui/mapviews/genericmapview.h"
 #include "orm/transactions/transactions.h"
 #include "gui/actions/weekmapviewcontroler.h"
-#include <KDatePicker>
 
 KalenderView::KalenderView(QWidget *parent, const char *name)
  : QWidget(parent)
@@ -48,7 +47,7 @@ KalenderView::KalenderView(QWidget *parent, const char *name)
     buttonWidget->addAction("<",this, SLOT(decrementWeek()));
     buttonWidget->addAction(">",this, SLOT(incrementWeek()));
     buttonWidget->addWidget(empty);
-    dateWidget = new KDatePicker();
+    dateWidget = new QCalendarWidget(this);
 
 
 	mapView = new WeekMapView(this);
@@ -74,7 +73,7 @@ void KalenderView::setMap(WeekMap *map)
     mapView->setMap(map);
 	Transactions::getCurrentTransaction()->add(map);
 	QDate d = map->getStartDate();
-    dateWidget->setDate(d);
+    dateWidget->setSelectedDate(d);
 	wnr = d.weekNumber();
     //map->readStundenplan();
     mapView->fitInView(map->sceneRect(), Qt::KeepAspectRatio);
@@ -90,21 +89,21 @@ void KalenderView::readStundenplan()
 
 void KalenderView::setWeek()
 {
-    QDate isdate = dateWidget->date();
+    QDate isdate = dateWidget->selectedDate();
     wnr = isdate.weekNumber();
     setMap(skal-> getWeek(isdate));
 }
 
 void KalenderView::decrementWeek()
 {
-    QDate isdate = dateWidget->date();
+    QDate isdate = dateWidget->selectedDate();
 	isdate = isdate.addDays(-6);
 	setMap(skal->getWeek(isdate));
 }
 
 void KalenderView::incrementWeek()
 {
-	QDate isdate = dateWidget->date();
+    QDate isdate = dateWidget->selectedDate();
 	isdate = isdate.addDays(8);
 	setMap(skal->getWeek(isdate));
 }
@@ -121,7 +120,7 @@ DayMapDisplay::DayMapDisplay(QWidget *parent, const char *name)
 	btor = new QPushButton(">", buttonWidget);
 	btol = new QPushButton("<", buttonWidget);
 	bset = new QPushButton("Ok", buttonWidget);
-    dateWidget = new KDatePicker(buttonWidget);
+    dateWidget = new QCalendarWidget(buttonWidget);
 
 	connect(btor, SIGNAL(clicked()), this, SLOT(incrementDay()));
 	connect(btol, SIGNAL(clicked()), this, SLOT(decrementDay()));
@@ -153,28 +152,28 @@ void DayMapDisplay::setMap(DayMap *map)
 	mapView->setMap(map);
 	Transactions::getCurrentTransaction()->add(map);
 	QDate d = map->getDate();
-	dateWidget->setDate(d);
+    dateWidget->setSelectedDate(d);
 	map->readStundenplan();
 	
 }
 
 void DayMapDisplay::setDay()
 {
-	QDate isdate = dateWidget->date();
+    QDate isdate = dateWidget->selectedDate();
 	//wnr = isdate.weekNumber();
 	setMap(skal-> getDay(isdate));
 }
 
 void DayMapDisplay::decrementDay()
 {
-	QDate isdate = dateWidget->date();
+    QDate isdate = dateWidget->selectedDate();
 	isdate = isdate.addDays(-1);
 	setMap(skal->getDay(isdate));
 }
 
 void DayMapDisplay::incrementDay()
 {
-	QDate isdate = dateWidget->date();
+    QDate isdate = dateWidget->selectedDate();
 	isdate = isdate.addDays(1);
 	setMap(skal->getDay(isdate));
 }

@@ -28,8 +28,9 @@
 #include "services/skalender.h"
 
 #include "qpushbutton.h"
+#include <QCalendarWidget>
 
-#include <KDatePicker>
+
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
@@ -57,7 +58,7 @@ public:
 private:
     WeekMap *weekMap;
     
-    KDatePicker *dateWidget;
+    QCalendarWidget *dateWidget;
     QPushButton *btor, *btol, *bset;
     int wnr;
     SKalender *skal;
@@ -86,7 +87,7 @@ public:
 private:
     GenericMap *map;
     
-    KDatePicker *dateWidget;
+    QCalendarWidget *dateWidget;
     QPushButton *btor, *btol, *bset;
     int wnr;
     SKalender *skal;

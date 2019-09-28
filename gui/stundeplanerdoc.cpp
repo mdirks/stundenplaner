@@ -18,16 +18,12 @@
 // include files for Qt
 #include <qdir.h>
 #include <qwidget.h>
-
+#include <QMessageBox>
 // include files for KDE
 //#include <klocale.h>
-#include <kmessagebox.h>
-#include <kio/job.h>
-//#include <kio/netaccess.h>
 
 // application specific includes
 #include "stundeplanerdoc.h"
-#include "stundeplaner.h"
 #include "stundeplanerview.h"
 //#include "./persistence/database.h"
 #include "../datamodel/stundemapper.h"
@@ -107,42 +103,7 @@ bool StundePlanerDoc::saveModified()
 
   if(modified)
   {
-    StundePlanerApp *win=(StundePlanerApp *) parent();
-    /*int want_save = KMessageBox::warningYesNoCancel(win,
-                                         i18n("The current file has been modified.\n"
-                                              "Do you want to save it?"),
-                                         i18n("Warning"));
-    switch(want_save)
-    {
-      case KMessageBox::Yes:
-           if (doc_url.fileName() == i18n("Untitled"))
-           {
-             win->slotFileSaveAs();
-           }
-           else
-           {
-             saveDocument(URL());
-       	   };
-
-       	   deleteContents();
-           completed=true;
-           break;
-
-      case KMessageBox::No:
-           setModified(false);
-           deleteContents();
-           completed=true;
-           break;
-
-      case KMessageBox::Cancel:
-           completed=false;
-           break;
-
-      default:
-           completed=false;
-           break;
-    }
-    */
+    QMessageBox::warning(0,"Todo","StundePlanerDoc::saveModified() : Not implemented");
   }
 
   return completed;

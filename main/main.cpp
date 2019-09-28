@@ -131,29 +131,11 @@ int main(int argc, char *argv[])
 {
 
         cout << "TEST";
-    /*
-	KAboutData aboutData( "stundeplaner", I18N_NOOP("StundePlaner"),
-		"0.1", description, KAboutData::License_GPL,
-		"(c) 2004, Marcus Dirks", 0, 0, "marcus.dirks@web.de");
-	aboutData.addAuthor("Marcus Dirks",0, "marcus.dirks@web.de");
-    */
 
-    /*
-    KCmdLineArgs::init( argc, argv,QByteArray("stundenplaner"),QByteArray(),ki18n("Stundenplaner"), QByteArray("2.0"));
-    KCmdLineOptions options;
-    options.add("+Database",  ki18n("database to open"));
-
-	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
-    */
 
     QApplication app(argc,argv);
     QCoreApplication::setApplicationName("Stundenplaner");
     QCoreApplication::setOrganizationName("MD");
-   /*
-     app.setStyleSheet("* {border: 0px solid lightgray; padding: 0px; margin: 0px; spacing: 0px} \
-                      QScrollBar {border: 2px solid transparent}\
-                      QComboBox { color: blue; background-color: grey  }");
-    */
 
     GuiRepository::showSplashScreen();
 

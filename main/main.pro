@@ -15,9 +15,9 @@ unix {
         PKGCONFIG += poppler-qt5
 }
 QT+=sql xml widgets printsupport
-QT+=KIconThemes
-QT+=KXmlGui
-QT+=KIOFileWidgets KIOWidgets KNTLM
+#QT+=KIconThemes
+#QT+=KXmlGui
+#QT+=KIOFileWidgets KIOWidgets KNTLM
 #QT+=KParts
 
 INCLUDEPATH += .. \

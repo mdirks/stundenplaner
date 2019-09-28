@@ -4,7 +4,8 @@
 
 #include <QDebug>
 #include <QFileDialog>
-#include <KRun>
+#include <QProcess>
+//#include <KRun>
 
 ServiceXml::ServiceXml()
     : GuiService("XML")
@@ -27,7 +28,8 @@ void ServiceXml::handleObject(PObject *o)
         fact->exportObjectList(filename,olist);
 
         qDebug() << "ServiceXml: done exporting!";
-        KRun::runCommand(QString("kate %1").arg(filename),0);
+        QProcess *p = new QProcess(this);
+        p->start(QString("kate %1").arg(filename));
     } else {
         qDebug() << "ServiceXml: WARNING - got invalid object to handle";
     }

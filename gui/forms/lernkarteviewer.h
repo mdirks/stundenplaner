@@ -33,8 +33,6 @@
 #include <QDir>
 //#include <ktrader.h>
 //#include <klibloader.h>
-#include <KParts/Part>
-#include <KParts/ReadOnlyPart>
 
 #include <list>
 #include <QProcess>
@@ -125,7 +123,7 @@ public slots:
 
 private:
     lernkarte* active_lk;
-    KParts::ReadOnlyPart *pdf_part;
+    //KParts::ReadOnlyPart *pdf_part;
 
     TextPropertyViewer *viewerVorn, *viewerHinten;
     //LernkarteViewerLabel *label_vorn, *label_hinten;

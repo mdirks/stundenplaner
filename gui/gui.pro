@@ -12,6 +12,7 @@ unix {
 SOURCES += \
     *.cpp \
     actions/modenotes.cpp \
+    base/myactionlist.cpp \
     forms/testform.cpp \
     dialogs/collectionselectiondialog.cpp \
     forms/pobjectform.cpp \
@@ -40,6 +41,7 @@ SOURCES += $$system(ls forms/*.cpp)
 
 HEADERS += \
     *.h \
+    base/myactionlist.h \
     forms/textviewer.h \
     data/reihemap.h \
     actions/modematerail.h \
@@ -94,7 +96,7 @@ message(The projects sources: $$SOURCES)
 DEPENDPATH += .
 INCLUDEPATH += .
 INCLUDEPATH += ..
-INCLUDEPATH += /usr/include/KF5
+#INCLUDEPATH += /usr/include/KF5
 #INCLUDEPATH += /usr/include/KF5/KConfigCore
 INCLUDEPATH += actions base data dialogs dragandrop forms mapviews
 #INCLUDEPATH += /usr/include/poppler/qt5
@@ -105,11 +107,11 @@ unix {
 }
 
 QT+=sql xml widgets printsupport
-//QT+=KXmlGui
-//QT+=KIOFileWidgets KIOWidgets KNTLM
-QT+=KIconThemes
-QT+=KParts
-QT+=KIOCore
+#QT+=KXmlGui
+#QT+=KIOFileWidgets KIOWidgets KNTLM
+#QT+=KIconThemes
+#QT+=KParts
+#QT+=KIOCore
 
 
 

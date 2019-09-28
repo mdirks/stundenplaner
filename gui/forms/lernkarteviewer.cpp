@@ -29,8 +29,8 @@
 #include "orm/repository/repositoryproperty.h"
 //#include <ktrader.h>
 //#include <klibloader.h>
-#include <kprocess.h>
-#include <krun.h>
+//#include <kprocess.h>
+//#include <krun.h>
 #include <poppler-qt5.h>
 #include <QDebug>
 #include <QMouseEvent>
@@ -68,7 +68,7 @@ LernkartensatzViewer::LernkartensatzViewer(lernkartensatz *ls, QWidget *parent, 
 LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation ori)
  : tmpDir(QDir::current().path() + QDir::separator() + "tmp"),  orientation(ori), QWidget(parent)
 {
-	pdf_part=0;
+    //pdf_part=0;
     list_karten=0;
     active_lk=0;
 

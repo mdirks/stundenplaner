@@ -20,9 +20,9 @@
 #include <QString>
 #include <QPixmap>
 #include <QWidget>
-//#include <kiconloader.h>
-#include <KIconLoader>
-//#include <string>
+
+
+
 #include <map>
 
 using namespace std;
@@ -40,11 +40,11 @@ public:
    void writeEntry(QString group, QString name, QString entry);
 
 
-   QPixmap loadIcon(QString iconName, KIconLoader::Group group=KIconLoader::Desktop);
+   QPixmap loadIcon(QString iconName);
 
-    QPixmap getIcon(RepositoryProperty *rp, KIconLoader::Group group=KIconLoader::Desktop) ;
-    QPixmap getIcon(PObject *o, KIconLoader::Group group=KIconLoader::Desktop);
-    QPixmap getIcon(QString className, KIconLoader::Group group=KIconLoader::Desktop) ;
+    QPixmap getIcon(RepositoryProperty *rp) ;
+    QPixmap getIcon(PObject *o);
+    QPixmap getIcon(QString className) ;
 
     void selectIcon(QString name); 
     void selectIcon(PObject *o);

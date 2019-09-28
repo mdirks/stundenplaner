@@ -11,6 +11,7 @@
 #include <qprocess.h>
 //#include <QStackedWidget>
 #include <QStatusBar>
+#include <QMenuBar>
 
 
 // include files for KDE
@@ -32,13 +33,11 @@
 //#include <kdockwidget.h>
 //#include <kglobal.h>
 //#include <kinputdialog.h>
-#include <KXmlGui/KActionCollection>
 #include <QInputDialog>
 #include <QFileDialog>
 
 
 // application specific includes
-#include "stundeplaner.h"
 #include "stundeplanerview.h"
 #include "stundeplanerdoc.h"
 
@@ -62,14 +61,15 @@
 
 StundenPlanerMainWindow::StundenPlanerMainWindow(QWidget *parent) : QMainWindow(parent)
 {
+actionList = new MyActionList();
 
 initStatusBar();
 initActions();
 
 //setupGUI();
-setupGUI(Default,"/data3/mopp/dev/stundenplaner/gui/stundenplanerui.rc");
-qDebug() << QString("Build gui from local xml file %1").arg(localXMLFile());
-qDebug() << QString("Build gui from local xml file %1").arg(xmlFile());
+//setupGUI(Default,"/data3/mopp/dev/stundenplaner/gui/stundenplanerui.rc");
+//qDebug() << QString("Build gui from local xml file %1").arg(localXMLFile());
+//qDebug() << QString("Build gui from local xml file %1").arg(xmlFile());
 initDocument();
 initView();
 
@@ -78,12 +78,14 @@ initView();
 readOptions();
 //createTaskBar();
 
+/*
 fileSave->setEnabled(true);
 fileSaveAs->setEnabled(true);
 filePrint->setEnabled(false);
 editCut->setEnabled(false);
 editCopy->setEnabled(false);
 editPaste->setEnabled(false);
+*/
 
 GuiRepository::getInstance()->setMainFrame(this);
 
@@ -98,59 +100,68 @@ void StundenPlanerMainWindow::initActions()
 {
 QAction *action;
 
+QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
 
-changeSchuljahrAction = actionCollection()->addAction("schuljahr_waehlen", this, SLOT(slotChangeSchuljahr()));
+changeSchuljahrAction = actionCollection()->addAction("schuljahr_waehlen", this, "slotChangeSchuljahr()");
 changeSchuljahrAction->setIcon(GuiConfig::getInstance()->getIcon("action_schuljahr"));
 changeSchuljahrAction->setText("Schuljahr wählen");
+fileMenu->addAction(changeSchuljahrAction);
 
-changeDatabaseAction = actionCollection()->addAction("change_database", this, SLOT(slotChangeDatabase()));
+changeDatabaseAction = actionCollection()->addAction("change_database", this, "slotChangeDatabase()");
 changeDatabaseAction->setIcon(GuiConfig::getInstance()->getIcon("action_database"));
 changeDatabaseAction->setText("Datenbank wechseln");
 
 addStundenplaneintragAction = actionCollection()->addAction("add_stundenplaneintrag", this,
-                                                               SLOT(slotAddStundenplaneintrag()));
+                                                               "slotAddStundenplaneintrag()");
 addStundenplaneintragAction->setIcon(GuiConfig::getInstance()->getIcon("add_stundenplaneintrag"));
 addStundenplaneintragAction->setText("Neuer Stundenplaneintrag");
 
-action=actionCollection()->addAction("fehlzeitmeldung", this, SLOT(slotAddFehlzeitmeldung()));
+action=actionCollection()->addAction("fehlzeitmeldung", this, "slotAddFehlzeitmeldung()");
 action->setIcon(GuiConfig::getInstance()->getIcon("fehlzeitmeldung"));
 action->setText("Fehlzeitmeldung");
 
-action=actionCollection()->addAction("dump_database", this, SLOT(slotDumpDatabase()));
+action=actionCollection()->addAction("dump_database", this, "slotDumpDatabase()");
 action->setIcon(GuiConfig::getInstance()->getIcon("DumpDB"));
 action->setText("DB sichern");
 
-action=actionCollection()->addAction("read_database", this, SLOT(slotReadDatabase()));
+action=actionCollection()->addAction("read_database", this, "slotReadDatabase()");
 action->setIcon(GuiConfig::getInstance()->getIcon("ReadDB"));
 action->setText("DB lesen");
 
-action= actionCollection()->addAction("add_objectview", this, SLOT(slotNewObjectIconView()));
+action= actionCollection()->addAction("add_objectview", this, "slotNewObjectIconView()");
 action->setIcon(GuiConfig::getInstance()->getIcon("objectview"));
 action->setText("Objektbrowser");
 
-action= actionCollection()->addAction("check_dm", this, SLOT(slotCheckDatamodel()));
+action= actionCollection()->addAction("check_dm", this, "slotCheckDatamodel()");
 action->setIcon(GuiConfig::getInstance()->getIcon("checkdm"));
 action->setText("Check Datamodel");
 
 
-actionCollection()->addAction("kalender",  this, SLOT(slotShowKalender()));
-actionCollection()->addAction("stundenplan",  this, SLOT(slotShowStundenplan()));
-fileNewWindow = actionCollection()->addAction("new_window", this, SLOT(slotFileNewWindow()));
-fileNew = KStandardAction::openNew(GuiCreateAction::getInstance(), SLOT(createObject()), actionCollection());
-fileOpen = KStandardAction::open(this, SLOT(slotFileOpen()), actionCollection());
+actionCollection()->addAction("kalender",  this, "slotShowKalender()");
+actionCollection()->addAction("stundenplan",  this, "slotShowStundenplan()");
+fileNewWindow = actionCollection()->addAction("new_window", this, "slotFileNewWindow()");
+//fileNew = KStandardAction::openNew(GuiCreateAction::getInstance(), SLOT(createObject()), actionCollection());
+//fileOpen = KStandardAction::open(this, SLOT(slotFileOpen()), actionCollection());
 //fileOpenRecent = KStandardAction::openRecent(this, SLOT(slotFileOpenRecent(const KURL&)), actionCollection());
-fileSave = KStandardAction::save(this, SLOT(slotFileSave()), actionCollection());
-fileSaveAs = KStandardAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection());
-fileClose = KStandardAction::close(this, SLOT(slotFileClose()), actionCollection());
-filePrint = KStandardAction::print(this, SLOT(slotFilePrint()), actionCollection());
-fileQuit = KStandardAction::quit(this, SLOT(slotFileQuit()), actionCollection());
-editCut = KStandardAction::cut(this, SLOT(slotEditCut()), actionCollection());
-editCopy = KStandardAction::copy(this, SLOT(slotEditCopy()), actionCollection());
-editPaste = KStandardAction::paste(this, SLOT(slotEditPaste()), actionCollection());
+//fileSave = KStandardAction::save(this, SLOT(slotFileSave()), actionCollection());
+fileSave = actionCollection()->addAction("Save",this,"slotFileSave()");
+//fileSaveAs = KStandardAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection());
+//fileClose = KStandardAction::close(this, SLOT(slotFileClose()), actionCollection());
+//filePrint = KStandardAction::print(this, SLOT(slotFilePrint()), actionCollection());
+//fileQuit = KStandardAction::quit(this, SLOT(slotFileQuit()), actionCollection());
+fileQuit = actionCollection()->addAction("Quit",this,"slotFileQuit");
+//editCut = KStandardAction::cut(this, SLOT(slotEditCut()), actionCollection());
+//editCopy = KStandardAction::copy(this, SLOT(slotEditCopy()), actionCollection());
+//editPaste = KStandardAction::paste(this, SLOT(slotEditPaste()), actionCollection());
 
 }
 
-
+MyActionList* StundenPlanerMainWindow::actionCollection()
+{
+    if(!actionList)
+        actionList=new MyActionList();
+    return actionList;
+}
 void StundenPlanerMainWindow::initStatusBar()
 {
 //statusBar()->insertItem(i18n("Ready."), ID_STATUS_MSG);
@@ -170,6 +181,11 @@ void StundenPlanerMainWindow::initView()
 {
 centralWidget = new QStackedWidget(this);
 setCentralWidget(centralWidget);
+
+
+
+
+
 //GuiRepository::getInstance()->setCentralWidget(centralWidget);
 
 //sideBar = new MySideBar(this);
@@ -386,7 +402,8 @@ void StundenPlanerMainWindow::dumpDatabase(QString fileName)
       com = QString("mysqldump -user=root %1 > %2").arg(dbName).arg(fileName);
   }
   qDebug() << com;
-  KRun::runCommand(com,this);
+  QProcess *p = new QProcess(this);
+  p->start(com);
 }
 
 void StundenPlanerMainWindow::slotReadDatabase()
@@ -616,25 +633,5 @@ doctree_stunden* StundenPlanerMainWindow::getTree()
 
 
 
-MySideBar::MySideBar(QWidget *parent)
-  : QListWidget(parent)
-{
 
-  setViewMode(QListView::IconMode);
-  setSelectionRectVisible(false);
-  setStyleSheet("QListWidget { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 100, 100, 255), stop:1 rgba(150, 150, 150, 255)); border-right: 2px groove gray; }"
-         "QListWidget::item:hover { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(200, 200, 200, 255)); }"
-                "QListWidget::item:selected { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255));}"
-                "QListWidget::item {border-bottom: 2px groove gray; padding: 10px; color: white;}");
 
-  setIconSize(QSize(48,48));
-  connect(this,SIGNAL(itemActivated(QListWidgetItem*)),this,SLOT(activateItem(QListWidgetItem*)));
-}
-
-void MySideBar::activateItem(QListWidgetItem *item)
-{
-  GuiMode *mode = dynamic_cast<GuiMode*>(item);
-  if(mode){
-      GuiRepository::getInstance()->setActiveMode(mode);
-  }
-}

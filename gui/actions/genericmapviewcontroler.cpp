@@ -33,7 +33,7 @@
 #include "datenpopup.h"
 #include "showhistoryaction.h"
 
-#include <krun.h>
+//#include <krun.h>
 #include <qfiledialog.h>
 
 #include <QDebug>
@@ -127,9 +127,11 @@ void GenericMapViewControler::activateSelected(PObjectGraphicsItemNP *selectedIt
 				if(material *m = dynamic_cast<material*>(o)){
                     QString fileName = m->getFile()->fileName();
 					if(fileName.contains(".tex")){ // hack to handel tex-files
-                        KRun::runCommand(QString("texmaker %1").arg(fileName),0);
+                                            QProcess *p = new QProcess(this);
+                                            p->start(QString("texmaker %1").arg(fileName));
 					} else {	
-                        new KRun(fileName,0);
+                                            qDebug("activateSelected: NOT IMPLEMENTED FOR GENERAL FILE");
+                                            //new KRun(fileName,0);
 					}
 				} else  if (stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o) ){
 					krusbucheintrag *ke = se->getKursbuchEintrag();

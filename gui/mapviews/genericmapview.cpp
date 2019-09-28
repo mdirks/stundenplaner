@@ -19,7 +19,6 @@
 
 #include <QFileDialog>
 //#include <kaction.h>
-#include <krun.h>
 
 //#include "gui/draganddrop/pobjectdrag.h"
 #include "services/actions/relateaction.h"

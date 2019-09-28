@@ -29,7 +29,8 @@
 
 #include "guirepository.h"
 #include "splashscreen.h"
-#include "stundeplaner.h"
+//#include "stundeplaner.h"
+#include "stundenplanermainwindow.h"
 #include "orm/persistence/pobject.h"
 #include "orm/mapping/abstractmapper.h"
 #include "orm/mapping/mappingeventlistener.h"
@@ -140,7 +141,8 @@ private:
 protected:
     QGraphicsView* GraphicsView;
     //KApplication *app;
-    StundePlanerApp *stundeplaner;
+    StundenPlanerMainWindow *stundeplaner;
+    //StundePlanerApp *stundeplaner;
     list<AbstractMapper*> *listMappers, *listMapViews;
     map<QString, QString> mapIcons;
 

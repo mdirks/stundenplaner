@@ -16,7 +16,7 @@
 #include "orm/repository/repositoryproperty.h"
 #include "orm/persistence/pobject.h"
 
-#include <kurlrequester.h>
+//#include <kurlrequester.h>
 
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>

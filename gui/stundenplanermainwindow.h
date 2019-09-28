@@ -19,12 +19,14 @@
 //#include "doctree_stunden.h"
 //#include "pobjectlistbox.h"
 #include "mapviews/themamapview.h"
+#include "base/myactionlist.h"
 #include "guimode.h"
 // forward declaration of the StundePlaner classes
 class StundePlanerDoc;
 class StundePlanerView;
 class MyPane;
 class MySideBar;
+
 
 
 class StundenPlanerMainWindow : public QMainWindow
@@ -57,6 +59,7 @@ public:
       //virtual void readProperties(KConfig *_cfg);
   
       void dumpDatabase(QString fileName);
+      MyActionList *actionCollection();
   
   private:
       int getNewIconViewNumber();
@@ -95,10 +98,12 @@ public:
       void keyPressEvent( QKeyEvent *k ) ;
   
     private:
-      KConfig *config;
+      //KConfig *config;
   
       StundePlanerView *view;
       StundePlanerDoc *doc;
+
+      MyActionList *actionList;
   
       // QAction pointers to enable/disable actions
       QAction* changeSchuljahrAction;
@@ -141,6 +146,7 @@ signals:
 
 public slots:
 };
+
 
 
 /*
