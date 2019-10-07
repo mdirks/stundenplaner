@@ -33,6 +33,7 @@
 //#include <kdockwidget.h>
 //#include <kglobal.h>
 //#include <kinputdialog.h>
+
 #include <QInputDialog>
 #include <QFileDialog>
 
@@ -57,6 +58,12 @@
 #include "orm/mapping/mappingcontroler.h"
 #include "datamodel/schuljahrmapper.h"
 #include "datamodel/fehlzeitmeldung.h"
+#include "services/xml-export/xmlfactory.h"
+#include "gui/data/sitzplanmap.h"
+#include "gui/data/sitzplanmapmapper.h"
+
+#define ID_STATUS_MSG 1
+
 
 
 StundenPlanerMainWindow::StundenPlanerMainWindow(QWidget *parent) : QMainWindow(parent)
@@ -70,6 +77,7 @@ initActions();
 //setupGUI(Default,"/data3/mopp/dev/stundenplaner/gui/stundenplanerui.rc");
 //qDebug() << QString("Build gui from local xml file %1").arg(localXMLFile());
 //qDebug() << QString("Build gui from local xml file %1").arg(xmlFile());
+
 initDocument();
 initView();
 
@@ -101,55 +109,69 @@ void StundenPlanerMainWindow::initActions()
 QAction *action;
 
 QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
-
+QMenu *extraMenu = menuBar() ->addMenu(tr("&Extra"));
 changeSchuljahrAction = actionCollection()->addAction("schuljahr_waehlen", this, "slotChangeSchuljahr()");
 changeSchuljahrAction->setIcon(GuiConfig::getInstance()->getIcon("action_schuljahr"));
 changeSchuljahrAction->setText("Schuljahr wählen");
-fileMenu->addAction(changeSchuljahrAction);
+extraMenu->addAction(changeSchuljahrAction);
 
 changeDatabaseAction = actionCollection()->addAction("change_database", this, "slotChangeDatabase()");
 changeDatabaseAction->setIcon(GuiConfig::getInstance()->getIcon("action_database"));
 changeDatabaseAction->setText("Datenbank wechseln");
+extraMenu->addAction(changeDatabaseAction);
 
 addStundenplaneintragAction = actionCollection()->addAction("add_stundenplaneintrag", this,
                                                                "slotAddStundenplaneintrag()");
 addStundenplaneintragAction->setIcon(GuiConfig::getInstance()->getIcon("add_stundenplaneintrag"));
 addStundenplaneintragAction->setText("Neuer Stundenplaneintrag");
+extraMenu->addAction(addStundenplaneintragAction);
 
 action=actionCollection()->addAction("fehlzeitmeldung", this, "slotAddFehlzeitmeldung()");
 action->setIcon(GuiConfig::getInstance()->getIcon("fehlzeitmeldung"));
 action->setText("Fehlzeitmeldung");
+extraMenu->addAction(action);
 
 action=actionCollection()->addAction("dump_database", this, "slotDumpDatabase()");
 action->setIcon(GuiConfig::getInstance()->getIcon("DumpDB"));
 action->setText("DB sichern");
+extraMenu->addAction(action);
 
 action=actionCollection()->addAction("read_database", this, "slotReadDatabase()");
 action->setIcon(GuiConfig::getInstance()->getIcon("ReadDB"));
 action->setText("DB lesen");
+extraMenu->addAction(action);
 
 action= actionCollection()->addAction("add_objectview", this, "slotNewObjectIconView()");
 action->setIcon(GuiConfig::getInstance()->getIcon("objectview"));
 action->setText("Objektbrowser");
+extraMenu->addAction(action);
 
 action= actionCollection()->addAction("check_dm", this, "slotCheckDatamodel()");
 action->setIcon(GuiConfig::getInstance()->getIcon("checkdm"));
 action->setText("Check Datamodel");
+extraMenu->addAction(action);
 
 
-actionCollection()->addAction("kalender",  this, "slotShowKalender()");
-actionCollection()->addAction("stundenplan",  this, "slotShowStundenplan()");
+action=actionCollection()->addAction("kalender",  this, "slotShowKalender()");
+extraMenu->addAction(action);
+
+action=actionCollection()->addAction("stundenplan",  this, "slotShowStundenplan()");
+extraMenu->addAction(action);
+
 fileNewWindow = actionCollection()->addAction("new_window", this, "slotFileNewWindow()");
 //fileNew = KStandardAction::openNew(GuiCreateAction::getInstance(), SLOT(createObject()), actionCollection());
 //fileOpen = KStandardAction::open(this, SLOT(slotFileOpen()), actionCollection());
 //fileOpenRecent = KStandardAction::openRecent(this, SLOT(slotFileOpenRecent(const KURL&)), actionCollection());
 //fileSave = KStandardAction::save(this, SLOT(slotFileSave()), actionCollection());
 fileSave = actionCollection()->addAction("Save",this,"slotFileSave()");
+fileMenu->addAction(fileSave);
+
 //fileSaveAs = KStandardAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection());
 //fileClose = KStandardAction::close(this, SLOT(slotFileClose()), actionCollection());
 //filePrint = KStandardAction::print(this, SLOT(slotFilePrint()), actionCollection());
 //fileQuit = KStandardAction::quit(this, SLOT(slotFileQuit()), actionCollection());
-fileQuit = actionCollection()->addAction("Quit",this,"slotFileQuit");
+action = actionCollection()->addAction("Quit",this,"slotFileQuit");
+fileMenu->addAction(action);
 //editCut = KStandardAction::cut(this, SLOT(slotEditCut()), actionCollection());
 //editCopy = KStandardAction::copy(this, SLOT(slotEditCopy()), actionCollection());
 //editPaste = KStandardAction::paste(this, SLOT(slotEditPaste()), actionCollection());

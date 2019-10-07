@@ -87,7 +87,7 @@ QPixmap GuiConfig::getIcon(QString name)
 		QString iconName = it->second;
         pm= QPixmap(iconName);
     } else {
-        QString iconName = GuiConfig::getInstance()->readEntry("Gui",name + "_icon");
+        QString iconName = GuiConfig::getInstance()->readEntry("Icon",name + "_icon");
 		mapIcons[name]=iconName;
         pm= QPixmap(iconName);
 	}
