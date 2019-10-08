@@ -61,6 +61,7 @@
 #include "services/xml-export/xmlfactory.h"
 #include "gui/data/sitzplanmap.h"
 #include "gui/data/sitzplanmapmapper.h"
+#include "gui/dialogs/iconchooser.h"
 
 #define ID_STATUS_MSG 1
 
@@ -110,67 +111,83 @@ QAction *action;
 
 QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
 QMenu *extraMenu = menuBar() ->addMenu(tr("&Extra"));
-changeSchuljahrAction = actionCollection()->addAction("schuljahr_waehlen", this, "slotChangeSchuljahr()");
+changeSchuljahrAction = actionCollection()->addAction("schuljahr_waehlen", this);
+connect(changeSchuljahrAction,&QAction::triggered,this,&StundenPlanerMainWindow::slotChangeSchuljahr);
 changeSchuljahrAction->setIcon(GuiConfig::getInstance()->getIcon("action_schuljahr"));
 changeSchuljahrAction->setText("Schuljahr wählen");
 extraMenu->addAction(changeSchuljahrAction);
 
-changeDatabaseAction = actionCollection()->addAction("change_database", this, "slotChangeDatabase()");
+changeDatabaseAction = actionCollection()->addAction("change_database", this);
+connect(changeDatabaseAction, &QAction::triggered,this,&StundenPlanerMainWindow::slotChangeDatabase);
 changeDatabaseAction->setIcon(GuiConfig::getInstance()->getIcon("action_database"));
 changeDatabaseAction->setText("Datenbank wechseln");
 extraMenu->addAction(changeDatabaseAction);
 
-addStundenplaneintragAction = actionCollection()->addAction("add_stundenplaneintrag", this,
-                                                               "slotAddStundenplaneintrag()");
+addStundenplaneintragAction = actionCollection()->addAction("add_stundenplaneintrag", this);
+connect(addStundenplaneintragAction,&QAction::triggered,this,&StundenPlanerMainWindow::slotAddStundenplaneintrag);
 addStundenplaneintragAction->setIcon(GuiConfig::getInstance()->getIcon("add_stundenplaneintrag"));
 addStundenplaneintragAction->setText("Neuer Stundenplaneintrag");
 extraMenu->addAction(addStundenplaneintragAction);
 
-action=actionCollection()->addAction("fehlzeitmeldung", this, "slotAddFehlzeitmeldung()");
+action=actionCollection()->addAction("fehlzeitmeldung", this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotAddFehlzeitmeldung);
 action->setIcon(GuiConfig::getInstance()->getIcon("fehlzeitmeldung"));
 action->setText("Fehlzeitmeldung");
 extraMenu->addAction(action);
 
-action=actionCollection()->addAction("dump_database", this, "slotDumpDatabase()");
+action=actionCollection()->addAction("dump_database", this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotDumpDatabase);
 action->setIcon(GuiConfig::getInstance()->getIcon("DumpDB"));
 action->setText("DB sichern");
 extraMenu->addAction(action);
 
-action=actionCollection()->addAction("read_database", this, "slotReadDatabase()");
+action=actionCollection()->addAction("read_database", this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotReadDatabase);
 action->setIcon(GuiConfig::getInstance()->getIcon("ReadDB"));
 action->setText("DB lesen");
 extraMenu->addAction(action);
 
-action= actionCollection()->addAction("add_objectview", this, "slotNewObjectIconView()");
+action= actionCollection()->addAction("add_objectview", this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotNewObjectIconView);
 action->setIcon(GuiConfig::getInstance()->getIcon("objectview"));
 action->setText("Objektbrowser");
 extraMenu->addAction(action);
 
-action= actionCollection()->addAction("check_dm", this, "slotCheckDatamodel()");
+action= actionCollection()->addAction("check_dm", this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotCheckDatamodel);
 action->setIcon(GuiConfig::getInstance()->getIcon("checkdm"));
 action->setText("Check Datamodel");
 extraMenu->addAction(action);
 
 
-action=actionCollection()->addAction("kalender",  this, "slotShowKalender()");
+action=actionCollection()->addAction("kalender",  this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotShowKalender);
 extraMenu->addAction(action);
 
-action=actionCollection()->addAction("stundenplan",  this, "slotShowStundenplan()");
+action=actionCollection()->addAction("stundenplan",  this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotShowStundenplan);
 extraMenu->addAction(action);
 
-fileNewWindow = actionCollection()->addAction("new_window", this, "slotFileNewWindow()");
+
+action=actionCollection()->addAction("editIcons", this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::editIcons);
+extraMenu->addAction(action);
+
+
 //fileNew = KStandardAction::openNew(GuiCreateAction::getInstance(), SLOT(createObject()), actionCollection());
 //fileOpen = KStandardAction::open(this, SLOT(slotFileOpen()), actionCollection());
 //fileOpenRecent = KStandardAction::openRecent(this, SLOT(slotFileOpenRecent(const KURL&)), actionCollection());
 //fileSave = KStandardAction::save(this, SLOT(slotFileSave()), actionCollection());
-fileSave = actionCollection()->addAction("Save",this,"slotFileSave()");
+fileSave = actionCollection()->addAction("Save",this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotFileSave);
 fileMenu->addAction(fileSave);
 
 //fileSaveAs = KStandardAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection());
 //fileClose = KStandardAction::close(this, SLOT(slotFileClose()), actionCollection());
 //filePrint = KStandardAction::print(this, SLOT(slotFilePrint()), actionCollection());
 //fileQuit = KStandardAction::quit(this, SLOT(slotFileQuit()), actionCollection());
-action = actionCollection()->addAction("Quit",this,"slotFileQuit");
+action = actionCollection()->addAction("Quit",this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotFileQuit);
 fileMenu->addAction(action);
 //editCut = KStandardAction::cut(this, SLOT(slotEditCut()), actionCollection());
 //editCopy = KStandardAction::copy(this, SLOT(slotEditCopy()), actionCollection());
@@ -628,6 +645,15 @@ else
 
 }
 
+
+void StundenPlanerMainWindow::editIcons()
+{
+    QDialog *d=new IconChooserDialog();
+    d->show();
+    d->raise();
+    d->activateWindow();
+
+}
 
 void StundenPlanerMainWindow::slotStatusMsg(const QString &text)
 {

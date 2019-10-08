@@ -61,6 +61,7 @@ public:
     void setActiveSchuljahr(schuljahr *sj);
     tutorium* getActiveTutorium();
     void setActiveTutorium(tutorium *tu);
+    QStringList getRegisteredIconObjects();
 
    //QWidget* getEditor(PObject *o, RepositoryProperty *rp, QWidget *parent=0);
 

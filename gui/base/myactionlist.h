@@ -9,7 +9,7 @@ class MyActionList : public QObject
     Q_OBJECT
 public:
     MyActionList();
-    QAction *addAction(QString text, QObject *receiver, const char* slot_name );
+    QAction *addAction(QString text, QObject *receiver);
 
 private:
     QList<QAction*> *actionlist;

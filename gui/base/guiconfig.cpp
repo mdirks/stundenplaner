@@ -145,6 +145,15 @@ void GuiConfig::selectIcon(QString name)
     writeEntry("Icon",name+"_icon", iconName);
 }
 
+QStringList GuiConfig::getRegisteredIconObjects()
+{
+    QStringList result;
+    for(map<QString,QString>::iterator it=mapIcons.begin(); it!=mapIcons.end(); it++)
+    {
+        result.append(it->first);
+    }
+    return result;
+}
 
 void GuiConfig::selectIcon(RepositoryProperty *rp)
 {

@@ -1,5 +1,6 @@
 #include "myactionlist.h"
 
+#include <QObject>
 
 MyActionList::MyActionList()
 {
@@ -7,10 +8,9 @@ MyActionList::MyActionList()
 }
 
 
-QAction *MyActionList::addAction(QString text, QObject *reciever, const char* slot_name)
+QAction *MyActionList::addAction(QString text, QObject *reciever)
 {
     QAction *a = new QAction(text,reciever);
-    connect(a, SIGNAL(triggered(bool)), reciever, SLOT(slot_name));
     actionlist->append(a);
     return a;
 }

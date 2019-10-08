@@ -13,6 +13,7 @@ SOURCES += \
     *.cpp \
     actions/modenotes.cpp \
     base/myactionlist.cpp \
+    dialogs/iconchooser.cpp \
     forms/testform.cpp \
     dialogs/collectionselectiondialog.cpp \
     forms/pobjectform.cpp \
@@ -42,6 +43,7 @@ SOURCES += $$system(ls forms/*.cpp)
 HEADERS += \
     *.h \
     base/myactionlist.h \
+    dialogs/iconchooser.h \
     forms/textviewer.h \
     data/reihemap.h \
     actions/modematerail.h \
