@@ -179,7 +179,7 @@ extraMenu->addAction(action);
 //fileOpenRecent = KStandardAction::openRecent(this, SLOT(slotFileOpenRecent(const KURL&)), actionCollection());
 //fileSave = KStandardAction::save(this, SLOT(slotFileSave()), actionCollection());
 fileSave = actionCollection()->addAction("Save",this);
-connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotFileSave);
+connect(fileSave,&QAction::triggered,this,&StundenPlanerMainWindow::slotFileSave);
 fileMenu->addAction(fileSave);
 
 //fileSaveAs = KStandardAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection());

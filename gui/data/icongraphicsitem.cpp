@@ -18,7 +18,7 @@ IconGraphicsItem::IconGraphicsItem(qreal x, qreal y, qreal dx, qreal dy, QString
  : QGraphicsRectItem(0,0,dx,dy), text(t), iconName(in)
 {
     moveBy(x,y);
-	icon = GuiConfig::getInstance()->loadIcon(iconName);
+    icon = GuiConfig::getInstance()->getIcon(iconName);
 }
 
 

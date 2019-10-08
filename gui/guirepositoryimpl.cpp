@@ -408,11 +408,11 @@ void GuiRepositoryImpl::showEditorForProperty(PObject *o,RepositoryProperty *rp)
 
             if(rp->isString()){
                 StringEditor *se= new StringEditor(o,rp,dialog);
-                connect(dialog,SIGNAL(okClicked()),se,SLOT(stopEdit()));
+                connect(dialog,SIGNAL(finished(int)),se,SLOT(stopEdit()));
                 form=se;
             } else if(rp->isText()){
                 TextPropertyEditor *pe = new TextPropertyEditor(o,rp,dialog);
-                connect(dialog,SIGNAL(okClicked()),pe,SLOT(stopEdit()));
+                connect(dialog,SIGNAL(finished(int)),pe,SLOT(stopEdit()));
                 form=pe;
             } else if(rp->isNumeric()){
                 form = new StringEditor(o,rp,dialog);
