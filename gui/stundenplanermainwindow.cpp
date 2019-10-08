@@ -487,8 +487,11 @@ void StundenPlanerMainWindow::slotDatabaseReadFinished(){
 
 void StundenPlanerMainWindow::slotNewObjectIconView()
 {
-  PObjectIconView *iconView = new PObjectIconView(GuiCreateAction::chooseMapper());
-  GuiRepository::getInstance()->addIconView(iconView, QString("Leer %1").arg(getNewIconViewNumber()),"Leer");
+  AbstractMapper *mapper=GuiCreateAction::chooseMapper();
+  if(mapper){
+      PObjectIconView *iconView = new PObjectIconView(mapper);
+      GuiRepository::getInstance()->addIconView(iconView, QString("Leer %1").arg(getNewIconViewNumber()),"Leer");
+   }
 }
 
 

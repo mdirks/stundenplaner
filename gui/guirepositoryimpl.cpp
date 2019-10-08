@@ -403,7 +403,8 @@ void GuiRepositoryImpl::showEditorForProperty(PObject *o,RepositoryProperty *rp)
         if(rp->isPObject()){
             showFormForObject(rp->asPObject(o));
         } else {
-            EditorBase *dialog = new EditorBase(stundeplaner);
+            QString title=rp->getName().c_str();
+            EditorBase *dialog = new EditorBase(stundeplaner,title);
             QWidget *form=0;
 
             if(rp->isString()){
@@ -1044,9 +1045,10 @@ QString GuiRepositoryImpl::getDisplayString(PObject *po)
 }
 
 
-EditorBase::EditorBase(QWidget *parent) : QDialog(parent)
+EditorBase::EditorBase(QWidget *parent,QString title) : QDialog(parent)
 {
-    mainWidget=new QLabel("Empty Label",this);
+    setWindowTitle(title);
+    mainWidget=new QLabel("",this);
 
     QPushButton *closeButton = new QPushButton(tr("Close"));
     connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
@@ -1066,6 +1068,8 @@ EditorBase::EditorBase(QWidget *parent) : QDialog(parent)
     setLayout(mainLayout);
 
 }
+
+
 
 
 void EditorBase::slotOk()

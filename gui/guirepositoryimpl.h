@@ -154,7 +154,7 @@ private:
 class EditorBase : public QDialog
 {
 public:
-    EditorBase(QWidget *parent);
+    EditorBase(QWidget *parent=nullptr,QString title=QString());
     void setMainWidget(QWidget *mw);
 
 protected slots:
@@ -163,6 +163,7 @@ protected slots:
 private:
     QWidget *mainWidget;
     QVBoxLayout *contentsLayout;
+    QString title;
 
 };
 #endif

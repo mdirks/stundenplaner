@@ -11,6 +11,8 @@
 //
 #include "mapperview.h"
 
+#include <QVBoxLayout>
+
 #include "gui/guirepository.h"
 #include "gui/base/guiconfig.h"
 #include "datamodel/datamodelrepository.h"
@@ -49,7 +51,7 @@ MapperView::MapperView(QWidget *parent, QStringList classList)
 		}
 	}
 
-	resize(600,800);
+    //resize(600,800);
 	
 }
 
@@ -75,10 +77,16 @@ AbstractMapper* MapperViewItem::getMapper()
 
 MapperDialog::MapperDialog(QWidget *parent, QStringList classList) : QDialog(parent)
 {
-	mapperView = new MapperView(this, classList);
+    QVBoxLayout *la=new QVBoxLayout(this);
+    QScrollArea *sa=new QScrollArea();
+    sa->setWidgetResizable(true);
+    mapperView = new MapperView(sa, classList);
+    sa->setWidget(mapperView);
+    la->addWidget(sa);
+    setLayout(la);
     //ToDo: does chooser show up, add to layout ?
     //setMainWidget(mapperView);
-	resize(400,400);
+    resize(400,400);
 	
 }
 
