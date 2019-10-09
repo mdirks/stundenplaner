@@ -60,15 +60,16 @@ QSqlDatabase DatabaseImpl_Q::getConnection(){
             }
             qDebug() << "Trying to get connections";
 
-            connection = QSqlDatabase::addDatabase("QMYSQL3");
             qDebug() << QString("Setting database Name to %1").arg(Database::databasename);
             QStringList args = databasename.split(":");
-            connection.setDatabaseName(args.at(0));
-            if(args.size()>1){
-                connection.setHostName(args.at(1));
-                if(args.size()>2){
-                    connection.setUserName(args.at(2));
-                    connection.setPassword(args.at(3));
+            //connection = QSqlDatabase::addDatabase("QMYSQL3");
+            connection = QSqlDatabase::addDatabase(args.at(0));
+            connection.setDatabaseName(args.at(1));
+            if(args.size()>3){
+                connection.setHostName(args.at(2));
+                if(args.size()>4){
+                    connection.setUserName(args.at(3));
+                    connection.setPassword(args.at(4));
                 } else {
 
                 }
