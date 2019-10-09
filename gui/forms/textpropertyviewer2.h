@@ -58,6 +58,7 @@ public slots:
 
     void print();
     void updatePreview();
+    void showPreview(const QImage& preview, bool latexerror);
 
 signals:
     void applyRequested();

@@ -72,8 +72,6 @@ TextPropertyViewer2::~TextPropertyViewer2()
 
 void TextPropertyViewer2::doCommonSetup()
 {
-
-
     label = new QLabel(this);
     label->setFrameStyle(QFrame::NoFrame);
 
@@ -87,9 +85,10 @@ void TextPropertyViewer2::doCommonSetup()
     hidden=false;
     fit=false;
 
-    splitter = new QSplitter(this);
-    splitter->addWidget(editor);
+    splitter = new QSplitter(Qt::Vertical,this);
+
     splitter->addWidget(label);
+    splitter->addWidget(editor);
     /*
     stack= new QStackedWidget(this);
     stack->setFrameStyle(QFrame::NoFrame);
@@ -100,6 +99,7 @@ void TextPropertyViewer2::doCommonSetup()
     l->setContentsMargins(0,0,0,0);
     l->setSpacing(0);
     l->addWidget(splitter);
+    setLayout(l);
     /*
     l->addWidget(stack);
     stack->addWidget(label);
@@ -107,7 +107,8 @@ void TextPropertyViewer2::doCommonSetup()
     */
 
 
-    input.mathmode = "\\[ ... \\]";
+    //input.mathmode = "\\[ ... \\]";
+    input.mathmode = " ... ";
     input.dpi = 150;
     input.preamble = QString("\\usepackage{amssymb,amsmath,mathrsfs}");
 
@@ -120,9 +121,9 @@ void TextPropertyViewer2::doCommonSetup()
     mPreviewBuilderThread = new KLFPreviewBuilderThread(this, input, settings);
 
     connect(editor, SIGNAL(textChanged()), this,
-        SLOT(updatePreviewBuilderThreadInput()), Qt::QueuedConnection);
+        SLOT(updatePreview()), Qt::QueuedConnection);
     connect(mPreviewBuilderThread, SIGNAL(previewAvailable(const QImage&, bool)),
-        this, SLOT(showRealTimePreview(const QImage&, bool)), Qt::QueuedConnection);
+        this, SLOT(showPreview(const QImage&, bool)), Qt::QueuedConnection);
     //connect(ui->clipBtn, SIGNAL(clicked()), this, SLOT(copyToClipboard()));
 
 }
@@ -139,6 +140,18 @@ void TextPropertyViewer2::updatePreview()
   }
 }
 
+
+void TextPropertyViewer2::showPreview(const QImage& preview, bool latexerror)
+{
+    if (latexerror) {
+      qDebug()<<"Unable to render your equation. Please double check.";
+    } else {
+      //ui->statusBar->showMessage("render is succesful!! :D");
+      displayPm = QPixmap::fromImage(preview);
+      label->setPixmap(displayPm);
+      label->adjustSize();
+    }
+}
 
 void TextPropertyViewer2::setParentObject(PObject *o)
 {
