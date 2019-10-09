@@ -433,9 +433,10 @@ void StundenPlanerMainWindow::dumpDatabase(QString fileName)
 {
   QString databasename = GuiConfig::getInstance()->getDatabaseName();
   QStringList args = databasename.split(":");
-  QString dbName=args.at(0);
+  // change 0th argument is the drive now
+  QString dbName=args.at(1);
   QString com;
-  if(args.size()>1){
+  if(args.size()>2){
       com = QString("mysqldump -h%1 -u%2 -p%3 %4 > %5").arg(args.at(1),args.at(2),args.at(3),dbName,fileName);
   } else {
       com = QString("mysqldump -user=root %1 > %2").arg(dbName).arg(fileName);
