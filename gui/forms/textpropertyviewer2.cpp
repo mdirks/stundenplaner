@@ -66,6 +66,10 @@ TextPropertyViewer2::TextPropertyViewer2(PObject *parent, RepositoryProperty *pr
 
 }
 
+TextPropertyViewer2::~TextPropertyViewer2()
+{
+}
+
 void TextPropertyViewer2::doCommonSetup()
 {
 
@@ -163,3 +167,204 @@ void TextPropertyViewer2::setBackgroundColor(QColor c)
 {
     bgColor=c;
 }
+
+
+void TextPropertyViewer2::setHidden(bool h)
+{
+    hidden=h;
+}
+
+void TextPropertyViewer2::setZoomFactor(double f)
+{
+    qDebug() << "WARNING TextPropertyViewer2::setZoomFactor : do nothing";
+    //label->setZoomFactor(f);
+}
+
+void TextPropertyViewer2::setResizePolicy(bool res)
+{
+    qDebug() << "WARNING TextPropertyViewer2::setResizePolicy : do nothing";
+    //label->setResizePolicy(res);
+}
+
+void TextPropertyViewer2::setFitToView(bool f)
+{
+    fit=f;
+    QSizePolicy policy=QSizePolicy();
+    policy.setHeightForWidth(true);
+    policy.setVerticalPolicy(QSizePolicy::Fixed);
+    policy.setHorizontalPolicy(QSizePolicy::Expanding);
+    setSizePolicy(policy);
+}
+
+/*
+void TextPropertyViewer2::readVorn()
+{
+    if(hidden || !parent){
+        //displayPm = QPixmap();
+        //label->setPixmap(QPixmap());
+    } else {
+        QString fileName = getFileName();
+        label->loadNewFile(fileName);
+
+    }
+
+}
+*/
+
+void TextPropertyViewer2::print()
+{
+       QPrinter printer;
+       //QPrinter printer(QPrinter::HighResolution);
+
+       QPrintDialog printDialog(&printer);
+       if (printDialog.exec() == QDialog::Accepted) {
+            QPainter painter;
+            painter.begin(&printer);
+            painter.drawPixmap(0,0,displayPm);
+            painter.end();
+       }
+
+}
+
+void TextPropertyViewer2::contextMenuEvent(QContextMenuEvent *e)
+{
+    const QPoint p=mapToGlobal(e->pos());
+    QMenu *pmenu = new QMenu();
+    pmenu->addAction("Drucken",this,SLOT(print()));
+
+    pmenu->popup(p);
+    e->accept();
+
+}
+
+
+
+void TextPropertyViewer2::setScrollBarPolicy(Qt::ScrollBarPolicy policy){
+    //label->setVerticalScrollBarPolicy(policy);
+    //label->setHorizontalScrollBarPolicy(policy);
+}
+
+void TextPropertyViewer2::editVorn()
+{
+       //stack->setCurrentWidget(editor);
+        editing = true;
+}
+
+void TextPropertyViewer2::stopEdit()
+{
+    editor->stopEdit();
+    /*
+    compileVorn(true);
+    readVorn();
+    stack->setCurrentWidget(label);
+    */
+    editing = false;
+}
+
+void TextPropertyViewer2::keyPressEvent ( QKeyEvent * e )
+{
+    qDebug() << "TextPropertyViewer2::keyPressEvent ";
+    if(editing){
+        if (e->key() == Qt::Key_F2){
+            qDebug() << "TextPropertyViewer2::keyPressEvent : F2 -> applyRequested";
+                stopEdit();
+                emit applyRequested();
+        } else {
+            qDebug() << QString("TextPropertyEditorDialog::keyPressEvent unknown key %1,%2").arg(e->text()).arg(e->key());
+            //emit applyRequested();
+        }
+    } else if(e->key()<128){
+        //label->emitEditRequested();
+    } else {
+        e->ignore();
+    }
+}
+// void TextPropertyEditorDialog::stopEdit()
+// {
+// 	if(editor){
+// 		editor->stopEdit();
+// 	}
+// }
+
+void TextPropertyViewer2::resizeEvent(QResizeEvent *e)
+{
+
+    if(fit){
+        QSize eventSize=e->size();
+        //QPixmap copy = displayPm.scaledToWidth(eventSize.width());
+        //QSize originalSize=displayPm.size();
+        //displaySize = copy.size();
+        //label->setPixmap(copy);
+
+
+        //if(this->size().height()!=displaySize.height()){
+        //    if(displaySize.width()>0){
+                //label->resize(eventSize);
+                editor->resize(eventSize);
+                //resize(displaySize);
+        //    }
+        //}
+
+    }
+}
+
+QSize TextPropertyViewer2::sizeHint()
+{
+    if(fit){
+        return label->size();
+    } else {
+        return QWidget::sizeHint();
+    }
+}
+
+void TextPropertyViewer2::compileFinished(int code, QProcess::ExitStatus exitStatus)
+{
+    qDebug() << QString("Compile finished with code %1").arg(code);
+    //readVorn();
+}
+
+void TextPropertyViewer2::compileError( QProcess::ProcessError error)
+{
+    qDebug() << QString("Compile Error %1").arg(error);
+}
+
+ QString TextPropertyViewer2::getCompileStringVorn()
+{
+   qDebug() << "WARNING QString TextPropertyViewer::getCompileStringVorn() : do nothing";
+   /*
+     QString fileName = getTexFileName();
+
+   QFile texFile(fileName);
+    if(!texFile.open(QIODevice::WriteOnly|QIODevice::Text)){
+        return "Failed to open file";
+    }
+    QTextStream stream(&texFile);
+    stream << header.arg(height).arg(width);
+
+    if(prop && parent){
+        stream << prop->asString(parent).c_str();
+    } else {
+        stream << displayString;
+    }
+
+    stream << footer;
+
+
+    return fileName;
+    */
+}
+
+
+
+void TextPropertyViewer2::compileVorn(bool reload)
+{
+
+
+}
+
+
+
+
+
+
+

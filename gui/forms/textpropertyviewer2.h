@@ -51,7 +51,7 @@ public:
 
 public slots:
     void editVorn();
-    void readVorn();
+    //void readVorn();
     void stopEdit();
     void compileFinished(int code, QProcess::ExitStatus exitStatus);
     void compileError( QProcess::ProcessError error);
@@ -68,8 +68,8 @@ protected:
     void contextMenuEvent(QContextMenuEvent *e);
 
 private:
-    QString getFileName();
-    QString getTexFileName();
+    //QString getFileName();
+    //QString getTexFileName();
     //void setDisplayPixmapToLabel(QPixmap dpm);
     void doCommonSetup();
 

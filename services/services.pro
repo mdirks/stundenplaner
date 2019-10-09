@@ -33,6 +33,6 @@ unix {
         PKGCONFIG += poppler-qt5
 }
 QT+=sql xml widgets
-QT+=KIOCore KIOFileWidgets KIOWidgets KNTLM
-QT+=KIconThemes
-QT+=KParts
+#QT+=KIOCore KIOFileWidgets KIOWidgets KNTLM
+#QT+=KIconThemes
+#QT+=KParts
