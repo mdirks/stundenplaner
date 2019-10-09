@@ -52,6 +52,11 @@ QMAKE_LIBDIR += $$OUT_PWD/../services
 #     QMAKE_LIBDIR += /home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Release/services
 #}
 
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
+else:unix: LIBS += -L$$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/build-KLFBackend/ -lKLFBackend
+
+message($$LIBS)
 
 stundenplaner.path=/usr/bin
 stundenplaner.files=$$OUT_PWD/stundenplaner
