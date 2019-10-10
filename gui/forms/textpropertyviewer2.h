@@ -58,7 +58,7 @@ public slots:
 
     void print();
     void updatePreview();
-    void showPreview(const QImage& preview, bool latexerror);
+    void showPreview(const QByteArray& pdfData, bool latexerror);
 
 signals:
     void applyRequested();
@@ -86,8 +86,9 @@ private:
     QDir tmpDir;
     TextPropertyEditor *editor;
     //TextPropertyLabel *label;
-    QLabel *label;
-    //PdfViewer *label;
+    QScrollArea *scroll;
+    //QLabel *label;
+    PdfViewer *label;
     QString displayString;
     bool editing;
     bool hidden;
@@ -108,6 +109,8 @@ private:
      KLFBackend::klfOutput output;
      QClipboard *clipboard;
      QPixmap pixmap;
+
+     QString name;
 
 };
 

@@ -48,7 +48,7 @@ TextPropertyViewer2::TextPropertyViewer2(PObject *parent, QString dT, QWidget *p
     this->parent = parent;
     this->prop=0;
     displayString=dT;
-
+    name=parent->getName().c_str();
     doCommonSetup();
 
 }
@@ -60,7 +60,12 @@ TextPropertyViewer2::TextPropertyViewer2(PObject *parent, RepositoryProperty *pr
     this->parent = parent;
     this->prop = prop;
     displayString=QString("Shouldnt be used");
-
+    if(parent){
+        name=parent->getName().c_str();
+        if(prop){
+            name.append(prop->getName().c_str());
+        }
+    }
 
     doCommonSetup();
 
@@ -72,8 +77,15 @@ TextPropertyViewer2::~TextPropertyViewer2()
 
 void TextPropertyViewer2::doCommonSetup()
 {
-    label = new QLabel(this);
-    label->setFrameStyle(QFrame::NoFrame);
+    //scroll = new QScrollArea(this);
+    //label = new QLabel(this);
+    label = new PdfViewer(this);
+    label->setMinimumWidth(200);
+
+    //label->setFrameStyle(QFrame::NoFrame);
+    //label->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    //scroll->setWidget(label);
+    //scroll->setWidgetResizable(true);
 
     if(prop){
         editor = new TextPropertyEditor(parent,prop,this);
@@ -81,7 +93,6 @@ void TextPropertyViewer2::doCommonSetup()
         editor = new TextPropertyEditor(this);
     }
     editor->setFrameStyle(QFrame::NoFrame);
-    label->setMinimumHeight(10);
     hidden=false;
     fit=false;
 
@@ -100,30 +111,32 @@ void TextPropertyViewer2::doCommonSetup()
     l->setSpacing(0);
     l->addWidget(splitter);
     setLayout(l);
-    /*
-    l->addWidget(stack);
-    stack->addWidget(label);
-    stack->addWidget(editor);
-    */
+
 
 
     //input.mathmode = "\\[ ... \\]";
     input.mathmode = " ... ";
     input.dpi = 150;
+    //input.dpi = 75;
     input.preamble = QString("\\usepackage{amssymb,amsmath,mathrsfs}");
 
+    KLFBackend::klfSettings settings;
     if(!KLFBackend::detectSettings(&settings)) {
         qDebug() << "unable to find LaTeX in default directories.";
     } else {
         qDebug() << "default settings working!";
     }
-
+    settings.epstopdfexec="/usr/bin/epstopdf";
+    settings.pdflatex="/usr/bin/pdflatex";
+    settings.outputType="PdfPage";
     mPreviewBuilderThread = new KLFPreviewBuilderThread(this, input, settings);
 
     connect(editor, SIGNAL(textChanged()), this,
         SLOT(updatePreview()), Qt::QueuedConnection);
-    connect(mPreviewBuilderThread, SIGNAL(previewAvailable(const QImage&, bool)),
-        this, SLOT(showPreview(const QImage&, bool)), Qt::QueuedConnection);
+    //connect(mPreviewBuilderThread, SIGNAL(previewAvailable(const QImage&, bool)),
+    //    this, SLOT(showPreview(const QImage&, bool)), Qt::QueuedConnection);
+    connect(mPreviewBuilderThread, SIGNAL(previewPdfAvailable(const QByteArray&, bool)),
+            this, SLOT(showPreview(const QByteArray&, bool)), Qt::QueuedConnection);
     //connect(ui->clipBtn, SIGNAL(clicked()), this, SLOT(copyToClipboard()));
 
 }
@@ -141,15 +154,20 @@ void TextPropertyViewer2::updatePreview()
 }
 
 
-void TextPropertyViewer2::showPreview(const QImage& preview, bool latexerror)
+void TextPropertyViewer2::showPreview(const QByteArray& pdfData, bool latexerror)
 {
     if (latexerror) {
       qDebug()<<"Unable to render your equation. Please double check.";
     } else {
       //ui->statusBar->showMessage("render is succesful!! :D");
-      displayPm = QPixmap::fromImage(preview);
+      /*
+      displayPm = QPixmap::fromImage(preview);//.scaledToWidth(editor->width());
       label->setPixmap(displayPm);
       label->adjustSize();
+      */
+
+      label->loadNewData(pdfData,name);
+
     }
 }
 

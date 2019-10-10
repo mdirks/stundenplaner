@@ -558,10 +558,20 @@ void PdfView::slotToggleShowForms(bool visible)
 
 /*******************************************************************/
 // Load and close document
-
 bool PdfView::load(const QString &fileName)
 {
-	Poppler::Document *popplerDocument = Poppler::Document::load(fileName);
+    Poppler::Document *popplerDocument = Poppler::Document::load(fileName);
+    return load(popplerDocument, fileName);
+}
+
+bool PdfView::load(const QByteArray &fileContents, QString name)
+{
+    Poppler::Document *popplerDocument = Poppler::Document::loadFromData(fileContents);
+    return load(popplerDocument,name);
+}
+
+bool PdfView::load(Poppler::Document *popplerDocument, QString fileName)
+{
 	if (!popplerDocument)
 		return false;
 	d->m_fileName = fileName;

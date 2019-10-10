@@ -114,7 +114,7 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbac
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
 else:unix: LIBS += -L$$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/build-KLFBackend/ -lKLFBackend
 
-INCLUDEPATH += $$PWD/../../klfbackend
+INCLUDEPATH += $$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/klfbackend
 message($$INCLUDEPATH)
 message($$LIBS)
 

@@ -194,6 +194,9 @@ public:
 	Poppler::Document::RenderHints renderHints() const;
 
 	bool load(const QString &fileName);
+    bool load(const QByteArray &fileContents, QString name);
+    bool load(Poppler::Document *popplerDocument, QString name);
+
 	QString fileName() const;
 	Poppler::Document *document() const;
 //	void loadFileSpecificSettings();
