@@ -22,6 +22,7 @@ public:
     
     void setPage(int i);
     void load();
+    void setResizePolicy(bool res);
 
 private:
     void doCommonSetup();

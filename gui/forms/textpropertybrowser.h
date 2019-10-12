@@ -2,6 +2,7 @@
 #define TEXTPROPERTYBROWSER_H
 
 #include "textpropertyviewer.h"
+#include "textpropertyviewer2.h"
 #include "orm/persistence/pobject.h"
 #include "orm/repository/repositoryproperty.h"
 #include "orm/repository/collectionproperty.h"
@@ -36,7 +37,7 @@ public slots:
     void nameChanged(QString newName);
 
 private:
-    TextPropertyViewer *viewer;
+    TextPropertyViewer2 *viewer;
     QToolBar *toolBar;
     PObjectComboBox *combo;
     //list<PObject*> *olist;

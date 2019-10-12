@@ -98,17 +98,35 @@ void PdfViewer::dragMoveEvent(QDragMoveEvent* e)
 
 }
 
+
+
+
+
 void PdfViewer::loadNewFile(QString fileName)
 {
      close();
-      load(fileName);
-     Poppler::Document *doc=document();
-     if(doc){
+     load(fileName);
+     doInitialSetup();
+}
+
+void PdfViewer::loadNewData(const QByteArray &fileContents, QString name)
+{
+     close();
+     load(fileContents,name);
+     doInitialSetup();
+}
+
+void PdfViewer::doInitialSetup()
+{
+    Poppler::Document *doc=document();
+    if(doc){
          int n = doc->numPages();
          Poppler::Page *page=doc->page(n/2);
          psize = page->pageSize();
      }
 }
+
+
 void PdfViewer::setResizePolicy(bool res)
 {
     resize=res;

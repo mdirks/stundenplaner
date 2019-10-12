@@ -125,8 +125,6 @@ GuiRepositoryImpl::GuiRepositoryImpl()
 	activeplan = 0;
     activeMode = 0;
 
-
-	
 	
 	activeEditors = new list<PropertyEditor*>();
 	activeIconViews = new list<PObjectIconView*>();
@@ -160,9 +158,6 @@ GuiRepositoryImpl::GuiRepositoryImpl()
 	listMapViews->push_back(ThemaMapmapper::getInstance());
 	listMapViews->push_back(DayMapmapper::getInstance());
 	listMapViews->push_back(WeekMapmapper::getInstance());
-
-
-	
 	
 }
 

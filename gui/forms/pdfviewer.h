@@ -10,6 +10,7 @@ public:
     PdfViewer(QWidget *parent=0);
 
     void loadNewFile(QString fileName);
+    void loadNewData(const QByteArray &fileContents, QString name);
     void setResizePolicy(bool res);
 
 protected:
@@ -18,6 +19,9 @@ protected:
     virtual void dragMoveEvent(QDragMoveEvent* e);
 
     virtual void resizeEvent(QResizeEvent *event);
+
+private:
+    void doInitialSetup();
 
 private:
     QSize psize;

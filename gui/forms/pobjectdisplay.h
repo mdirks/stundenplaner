@@ -24,11 +24,15 @@ public:
 class PObjectDisplayScene : public QGraphicsScene
 {
 public:
-    PObjectDisplayScene(int numRow, int numCol, list<PObject*> *olist=0);
+    PObjectDisplayScene(list<PObject*> *olist=0,int numRow=-1, int numCol=-1);
     ~PObjectDisplayScene();
 
     void setPrototype(PObjectDisplayItem *protoItem);
     void load(list<PObject*> *olist);
+    void setLayout(int ncol,int nrow);
+
+private:
+    void reload();
 
 private:
     PObjectDisplayItem* protoItem;
@@ -40,9 +44,10 @@ private:
 class PObjectDisplay : public QGraphicsView
 {
 public:
-    PObjectDisplay(QWidget *parent=0, list<PObject*> *olist=0);
+    PObjectDisplay(QWidget *parent=0, list<PObject*> *olist=0,int ncol=-1,int nrow=-1);
     void setObjectList(list<PObject*> *olist);
     void setPrototype(PObjectDisplayItem *protoItem);
+    void setLayout(int ncol,int nrow);
 
 private:
     list<PObject*> *olist;

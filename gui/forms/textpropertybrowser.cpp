@@ -12,7 +12,7 @@ TextPropertyBrowser::TextPropertyBrowser(PObject *po, RepositoryProperty *cP, Re
     this->colProp=cP;
     parentObject=0;
 
-    viewer = new TextPropertyViewer(0,dispProp,this);
+    viewer = new TextPropertyViewer2(0,dispProp,this);
     toolBar = new QToolBar(this);
 
     combo = new PObjectComboBox(colProp,po,this);

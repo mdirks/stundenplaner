@@ -40,7 +40,12 @@ void TextViewer::doCommonSetup()
     l->addWidget(viewer);
 
     connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(selectionChanged(int)));
+    // load initial entry
+}
 
+void TextViewer::setResizePolicy(bool res)
+{
+    viewer->setResizePolicy(res);
 }
 
 void TextViewer::load(){

@@ -17,6 +17,7 @@ SOURCES += \
     forms/testform.cpp \
     dialogs/collectionselectiondialog.cpp \
     forms/pobjectform.cpp \
+    forms/textpropertyviewer2.cpp \
     forms/urleditor.cpp \
     forms/formarea.cpp \
     actions/servicepdf.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     *.h \
     base/myactionlist.h \
     dialogs/iconchooser.h \
+    forms/textpropertyviewer2.h \
     forms/textviewer.h \
     data/reihemap.h \
     actions/modematerail.h \
@@ -107,6 +109,16 @@ unix {
         CONFIG += link_pkgconfig
         PKGCONFIG += poppler-qt5
 }
+
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
+#else:unix: LIBS += -L$$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/build-KLFBackend/ -lKLFBackend
+
+#INCLUDEPATH += $$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/klfbackend
+message($$INCLUDEPATH)
+
+#message($$LIBS)
+
 
 QT+=sql xml widgets printsupport
 #QT+=KXmlGui

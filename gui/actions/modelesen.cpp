@@ -71,15 +71,20 @@ void ModeLesen::setupMode()
 
         splitter = new QSplitter(Qt::Horizontal,sw);
 
-        browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
         PObjectListProvider *prov = new MapperListProvider("lektuere");
-        viewer = new TextViewer(prov,sw);
+        viewer = new TextViewer(prov,splitter);
+
+        browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
+        lkDisplay = new PObjectDisplay(sw,0,1,0);
+        lkDisplay->setPrototype(new LernkarteDisplayItem());
         lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Stacked);
+
 
         QWidget *notew = new QWidget(splitter);
         QVBoxLayout *l= new QVBoxLayout(notew);
         l->setContentsMargins(0,0,0,0);
         l->addWidget(browser);
+        l->addWidget(lkDisplay);
         l->addWidget(lkViewer);
 
 
@@ -102,11 +107,18 @@ void ModeLesen::setupMode()
         toolBar->addAction(pm,"",this,SLOT(showNotizeditor()));
         pm = GuiConfig::getInstance()->getIcon("Lernkarten");
         toolBar->addAction(pm,"",this,SLOT(showLernkarten()));
+        pm = GuiConfig::getInstance()->getIcon("LernkartenDisplay");
+        toolBar->addAction(pm,"",this,SLOT(showLernkartenDisplay()));
 
         guirep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
     } else {
         toolBar->show();
     }
+
+    //load initial item if present
+    viewer->selectionChanged(0);
+    viewer->setResizePolicy(true);
+
 }
 
 void ModeLesen::close()
@@ -174,6 +186,15 @@ void ModeLesen::showLernkarten()
 
 }
 
+void ModeLesen::showLernkartenDisplay()
+{
+    if(lkDisplay->isVisible()){
+        lkDisplay->hide();
+    } else {
+        lkDisplay->show();
+    }
+}
+
 void ModeLesen::activateObject(PObject *o)
 {
 
@@ -215,6 +236,7 @@ void ModeLesen::setActiveText(lektuere *l)
         t->add(l);
     }
     lkViewer->setLernkartensatz(lks);
+    lkDisplay->setObjectList((list<PObject*>*) lks->getLernkarten());
 }
 
 AdaptingSplitter::AdaptingSplitter(QWidget *w1, QWidget *w2, QWidget *parent)

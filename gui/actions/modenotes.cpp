@@ -88,16 +88,21 @@ void ModeNotes::setupMode()
         splitter->addWidget(displayWidget);
         //splitter->setStyleSheet("margin: 0; padding: 0;");
         RepositoryProperty *rp = Repository::getInstance()->getRepositoryEntry("notiz")->getProperty("Body");
+
+        /*
         viewer = new TextPropertyViewer(0,rp,displayWidget);
+        */
+        viewer = new TextPropertyViewer2(0,rp,displayWidget);
         editorWidget=new QStackedWidget(displayWidget);
         editorWidget->setFrameStyle(QFrame::NoFrame);
         editorWidget->setContentsMargins(0,0,0,0);
         editorWidget->addWidget(viewer);
         editorWidget->setCurrentWidget(viewer);
 
-
-
         splitter->addWidget(editorWidget);
+
+
+
         sw->addWidget(splitter);
 
         rp= Repository::getInstance()->getRepositoryEntry("notizsatz")->getProperty("Notizen");
