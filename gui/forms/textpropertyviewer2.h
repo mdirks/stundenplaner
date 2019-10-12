@@ -19,8 +19,8 @@
 #include <QSplitter>
 
 #include <QClipboard>
-#include "klfbackend.h"
-#include "klfpreviewbuilderthread.h"
+#include "klfbackend/klfbackend.h"
+#include "klfbackend/klfpreviewbuilderthread.h"
 
 class TextPropertyViewer2 : public QWidget
 {

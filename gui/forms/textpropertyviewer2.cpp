@@ -114,6 +114,7 @@ void TextPropertyViewer2::doCommonSetup()
 
 
 
+
     //input.mathmode = "\\[ ... \\]";
     input.mathmode = " ... ";
     input.dpi = 150;

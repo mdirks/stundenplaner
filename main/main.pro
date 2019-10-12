@@ -31,7 +31,7 @@ INCLUDEPATH += gui
 LIBS     += -lpoppler-qt5
 #LIBS     += -lpdfview
 
-LIBS     +=  -lgui -lorm -ldatamodel -lservices
+LIBS     +=  -lgui -lorm -ldatamodel -lservices -lklfbackend
 
 message($$OUT_PWD)
 
@@ -40,6 +40,8 @@ QMAKE_LIBDIR += $$OUT_PWD/../gui
 QMAKE_LIBDIR += $$OUT_PWD/../orm
 QMAKE_LIBDIR += $$OUT_PWD/../datamodel
 QMAKE_LIBDIR += $$OUT_PWD/../services
+QMAKE_LIBDIR += $$OUT_PWD/../klfbackend
+
 #CONFIG( debug,debug|release){
 #     QMAKE_LIBDIR += /home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Debug/gui
 #     QMAKE_LIBDIR += /home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Debug/orm
@@ -52,9 +54,9 @@ QMAKE_LIBDIR += $$OUT_PWD/../services
 #     QMAKE_LIBDIR += /home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Release/services
 #}
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
-else:unix: LIBS += -L$$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/build-KLFBackend/ -lKLFBackend
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
+#else:unix: LIBS += -L$$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/build-KLFBackend/ -lKLFBackend
 
 message($$LIBS)
 
