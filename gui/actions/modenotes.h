@@ -5,6 +5,7 @@
 #include "gui/forms/pobjectlistprovider.h"
 #include "gui/forms/pobjecticonview.h"
 #include "gui/forms/textpropertyviewer.h"
+#include "gui/forms/textpropertyviewer2.h"
 
 #include <QWidget>
 #include <QToolBar>
@@ -31,7 +32,8 @@ private:
     QStackedWidget *editorWidget;
     PObjectIconView *viewSaetze, *viewNotizen;
     PObjectIconView *sviewSaetze, *sviewNotizen;
-    TextPropertyViewer *viewer;
+    //TextPropertyViewer *viewer;
+    TextPropertyViewer2 *viewer;
     PObjectListProvider *prov,*sprov;
     QToolBar *toolBar;
 };

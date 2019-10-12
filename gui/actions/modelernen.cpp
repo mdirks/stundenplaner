@@ -75,7 +75,7 @@ void ModeLernen::setupMode()
 
 void ModeLernen::tearDownMode()
 {
-
+    toolBar->hide();
 }
 
 void ModeLernen::activateObject(PObject *o)

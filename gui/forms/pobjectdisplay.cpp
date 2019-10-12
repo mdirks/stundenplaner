@@ -5,17 +5,26 @@
 
 //Jup funktioniert auch mobil
 
-PObjectDisplay::PObjectDisplay(QWidget *parent,list<PObject*> *olist)
+PObjectDisplay::PObjectDisplay(QWidget *parent,list<PObject*> *olist,int ncol, int nrow)
     : QGraphicsView(parent)
 {
     this->olist=olist;
-    this->scene = new PObjectDisplayScene(5,4,olist);
+    this->scene = new PObjectDisplayScene(olist,ncol,nrow);
+
     setScene(scene);
+    //setSceneRect(0,0,0,0);
 }
 
 void PObjectDisplay::setPrototype(PObjectDisplayItem *protoItem)
 {
     scene->setPrototype(protoItem);
+}
+
+void PObjectDisplay::setLayout(int ncol, int nrow)
+{
+    if(scene){
+        scene->setLayout(ncol,nrow);
+    }
 }
 
 void PObjectDisplay::setObjectList(list<PObject*> *olist)
@@ -29,7 +38,7 @@ void PObjectDisplay::setObjectList(list<PObject*> *olist)
 
 
 
-PObjectDisplayScene::PObjectDisplayScene(int nr, int nc, list<PObject*> *olist)
+PObjectDisplayScene::PObjectDisplayScene(list<PObject*> *olist,int nr, int nc)
     : numRow(nr), numCol(nc), QGraphicsScene(0,0,1200,800)
 {
 
@@ -49,12 +58,25 @@ void PObjectDisplayScene::setPrototype(PObjectDisplayItem *protoItem)
     QGraphicsProxyWidget *pitem= addWidget(protoItem);
     itemWidth=pitem->size().width();
     itemHeight = pitem->size().height();
-    numRow = this->height()/itemHeight;
-    numCol = this->width()/itemWidth;
+    if(numRow<0) numRow = this->height()/itemHeight;
+    if(numCol<0) numCol = this->width()/itemWidth;
     removeItem(pitem);
 }
 
+void PObjectDisplayScene::setLayout(int ncol, int nrow)
+{
+    numCol=ncol;
+    numRow=nrow;
+    reload();
+}
 
+void PObjectDisplayScene::reload()
+{
+    if(olist){
+        load(olist);
+    }
+
+}
 void PObjectDisplayScene::load(list<PObject*> *olist)
 {
     int r=0;
@@ -78,6 +100,8 @@ void PObjectDisplayScene::load(list<PObject*> *olist)
             }
 
     }
+
+    setSceneRect(QRectF(itemWidth/2,0,c*itemWidth,r*itemHeight));
 }
 
 

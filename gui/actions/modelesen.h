@@ -7,6 +7,7 @@
 #include "gui/forms/textpropertybrowser.h"
 #include "gui/forms/textviewer.h"
 #include "gui/forms/lernkarteviewer.h"
+#include "gui/forms/pobjectdisplay.h"
 
 #include <list>
 #include <QSplitter>
@@ -39,12 +40,14 @@ public:
 public slots:
     void showNotizeditor();
     void showLernkarten();
+    void showLernkartenDisplay();
 
 private:
     static ModeLesen *instance;
     TextViewer *viewer;
     TextPropertyBrowser *browser;
     LernkartensatzViewer *lkViewer;
+    PObjectDisplay *lkDisplay;
 
     list<lektuere*> *list_texte;
     lektuere *activeText;

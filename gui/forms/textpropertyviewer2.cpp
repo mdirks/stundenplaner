@@ -118,7 +118,7 @@ void TextPropertyViewer2::doCommonSetup()
     input.mathmode = " ... ";
     input.dpi = 150;
     //input.dpi = 75;
-    input.preamble = QString("\\usepackage{amssymb,amsmath,mathrsfs}");
+    input.preamble = QString("\\usepackage{amssymb,amsmath,mathrsfs} \\usepackage[whole]{bxcjkjatype} \\usepackage{hyperref}");
 
     KLFBackend::klfSettings settings;
     if(!KLFBackend::detectSettings(&settings)) {
@@ -144,8 +144,8 @@ void TextPropertyViewer2::doCommonSetup()
 void TextPropertyViewer2::updatePreview()
 {
     // in linux, I need to reinstate the preamble when rendering. No idea why.
-    input.preamble = QString("\\usepackage{amssymb,amsmath}");
-    input.latex = editor->toPlainText();
+    input.preamble = QString("\\usepackage{amssymb,amsmath} \\usepackage[whole]{bxcjkjatype}");
+    input.latex = editor->toPlainText().toUtf8();
     if(mPreviewBuilderThread->inputChanged(input)) {
         qDebug() << "input changed. Render...";
         //ui->statusBar->showMessage("Input changed. Render...");
