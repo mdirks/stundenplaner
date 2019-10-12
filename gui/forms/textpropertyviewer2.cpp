@@ -119,8 +119,11 @@ void TextPropertyViewer2::doCommonSetup()
     input.mathmode = " ... ";
     input.dpi = 150;
     //input.dpi = 75;
-    input.preamble = QString("\\usepackage{amssymb,amsmath,mathrsfs} \\usepackage[whole]{bxcjkjatype} \\usepackage{hyperref}");
-
+    /* this gets reset on every call below
+    input.preamble = QString("\\usepackage{amssymb,amsmath,mathrsfs}").
+            append("\\usepackage[whole]{bxcjkjatype}").
+            append("\\usepackage{hyperref}").append("");
+    */
     KLFBackend::klfSettings settings;
     if(!KLFBackend::detectSettings(&settings)) {
         qDebug() << "unable to find LaTeX in default directories.";
@@ -145,7 +148,9 @@ void TextPropertyViewer2::doCommonSetup()
 void TextPropertyViewer2::updatePreview()
 {
     // in linux, I need to reinstate the preamble when rendering. No idea why.
-    input.preamble = QString("\\usepackage{amssymb,amsmath} \\usepackage[whole]{bxcjkjatype}");
+    input.preamble = QString("\\usepackage{amssymb,amsmath} "
+                             "\\usepackage[whole]{bxcjkjatype}"
+                             "\\usepackage{hyperref}");
     input.latex = editor->toPlainText().toUtf8();
     if(mPreviewBuilderThread->inputChanged(input)) {
         qDebug() << "input changed. Render...";

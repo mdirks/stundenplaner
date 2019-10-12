@@ -220,7 +220,8 @@ static void correct_eps_bbox(const QByteArray& epsdata, const klfbbox& bbox_corr
 KLFBackend::klfOutput KLFBackend::getPdfPage(const klfInput& in, const klfSettings& settings)
 {
       // ALLOW ONLY ONE RUNNING getLatexFormula() AT A TIME
-      QMutexLocker mutexlocker(&__mutex);
+
+    QMutexLocker mutexlocker(&__mutex);
 
       int k;
 
