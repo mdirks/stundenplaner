@@ -77,15 +77,9 @@ TextPropertyViewer2::~TextPropertyViewer2()
 
 void TextPropertyViewer2::doCommonSetup()
 {
-    //scroll = new QScrollArea(this);
-    //label = new QLabel(this);
     label = new PdfViewer(this);
     label->setMinimumWidth(200);
-
-    //label->setFrameStyle(QFrame::NoFrame);
-    //label->setStyleSheet("QLabel { background-color : white; color : blue; }");
-    //scroll->setWidget(label);
-    //scroll->setWidgetResizable(true);
+    label->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
 
     if(prop){
         editor = new TextPropertyEditor(parent,prop,this);
@@ -100,11 +94,6 @@ void TextPropertyViewer2::doCommonSetup()
 
     splitter->addWidget(label);
     splitter->addWidget(editor);
-    /*
-    stack= new QStackedWidget(this);
-    stack->setFrameStyle(QFrame::NoFrame);
-    stack->setContentsMargins(0,0,0,0);
-    */
 
     QVBoxLayout *l = new QVBoxLayout(this);
     l->setContentsMargins(0,0,0,0);
@@ -113,17 +102,8 @@ void TextPropertyViewer2::doCommonSetup()
     setLayout(l);
 
 
-
-
-    //input.mathmode = "\\[ ... \\]";
     input.mathmode = " ... ";
     input.dpi = 150;
-    //input.dpi = 75;
-    /* this gets reset on every call below
-    input.preamble = QString("\\usepackage{amssymb,amsmath,mathrsfs}").
-            append("\\usepackage[whole]{bxcjkjatype}").
-            append("\\usepackage{hyperref}").append("");
-    */
     KLFBackend::klfSettings settings;
     if(!KLFBackend::detectSettings(&settings)) {
         qDebug() << "unable to find LaTeX in default directories.";
@@ -137,12 +117,8 @@ void TextPropertyViewer2::doCommonSetup()
 
     connect(editor, SIGNAL(textChanged()), this,
         SLOT(updatePreview()), Qt::QueuedConnection);
-    //connect(mPreviewBuilderThread, SIGNAL(previewAvailable(const QImage&, bool)),
-    //    this, SLOT(showPreview(const QImage&, bool)), Qt::QueuedConnection);
     connect(mPreviewBuilderThread, SIGNAL(previewPdfAvailable(const QByteArray&, bool)),
             this, SLOT(showPreview(const QByteArray&, bool)), Qt::QueuedConnection);
-    //connect(ui->clipBtn, SIGNAL(clicked()), this, SLOT(copyToClipboard()));
-
 }
 
 void TextPropertyViewer2::updatePreview()
@@ -164,16 +140,9 @@ void TextPropertyViewer2::showPreview(const QByteArray& pdfData, bool latexerror
 {
     if (latexerror) {
       qDebug()<<"Unable to render your equation. Please double check.";
+
     } else {
-      //ui->statusBar->showMessage("render is succesful!! :D");
-      /*
-      displayPm = QPixmap::fromImage(preview);//.scaledToWidth(editor->width());
-      label->setPixmap(displayPm);
-      label->adjustSize();
-      */
-
       label->loadNewData(pdfData,name);
-
     }
 }
 
@@ -281,20 +250,17 @@ void TextPropertyViewer2::setScrollBarPolicy(Qt::ScrollBarPolicy policy){
     //label->setHorizontalScrollBarPolicy(policy);
 }
 
+/*
 void TextPropertyViewer2::editVorn()
 {
        //stack->setCurrentWidget(editor);
         editing = true;
 }
+*/
 
 void TextPropertyViewer2::stopEdit()
 {
     editor->stopEdit();
-    /*
-    compileVorn(true);
-    readVorn();
-    stack->setCurrentWidget(label);
-    */
     editing = false;
 }
 
@@ -306,13 +272,10 @@ void TextPropertyViewer2::keyPressEvent ( QKeyEvent * e )
             qDebug() << "TextPropertyViewer2::keyPressEvent : F2 -> applyRequested";
                 stopEdit();
                 emit applyRequested();
-        } else {
-            qDebug() << QString("TextPropertyEditorDialog::keyPressEvent unknown key %1,%2").arg(e->text()).arg(e->key());
-            //emit applyRequested();
         }
-    } else if(e->key()<128){
-        //label->emitEditRequested();
     } else {
+        editor->startEdit();
+        editing=true;
         e->ignore();
     }
 }
@@ -354,16 +317,6 @@ QSize TextPropertyViewer2::sizeHint()
     }
 }
 
-void TextPropertyViewer2::compileFinished(int code, QProcess::ExitStatus exitStatus)
-{
-    qDebug() << QString("Compile finished with code %1").arg(code);
-    //readVorn();
-}
-
-void TextPropertyViewer2::compileError( QProcess::ProcessError error)
-{
-    qDebug() << QString("Compile Error %1").arg(error);
-}
 
  QString TextPropertyViewer2::getCompileStringVorn()
 {
@@ -392,12 +345,13 @@ void TextPropertyViewer2::compileError( QProcess::ProcessError error)
 }
 
 
-
+/*
 void TextPropertyViewer2::compileVorn(bool reload)
 {
 
 
 }
+*/
 
 
 

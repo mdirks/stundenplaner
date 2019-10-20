@@ -70,14 +70,11 @@
 StundenPlanerMainWindow::StundenPlanerMainWindow(QWidget *parent) : QMainWindow(parent)
 {
 actionList = new MyActionList();
-
-initStatusBar();
+mainToolBar= new QToolBar("MainToolBar", this);
+mainToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+addToolBar(Qt::TopToolBarArea,mainToolBar);
 initActions();
 
-//setupGUI();
-//setupGUI(Default,"/data3/mopp/dev/stundenplaner/gui/stundenplanerui.rc");
-//qDebug() << QString("Build gui from local xml file %1").arg(localXMLFile());
-//qDebug() << QString("Build gui from local xml file %1").arg(xmlFile());
 
 initDocument();
 initView();
@@ -174,13 +171,11 @@ connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::editIcons);
 extraMenu->addAction(action);
 
 
-//fileNew = KStandardAction::openNew(GuiCreateAction::getInstance(), SLOT(createObject()), actionCollection());
-//fileOpen = KStandardAction::open(this, SLOT(slotFileOpen()), actionCollection());
-//fileOpenRecent = KStandardAction::openRecent(this, SLOT(slotFileOpenRecent(const KURL&)), actionCollection());
-//fileSave = KStandardAction::save(this, SLOT(slotFileSave()), actionCollection());
+
 fileSave = actionCollection()->addAction("Save",this);
 connect(fileSave,&QAction::triggered,this,&StundenPlanerMainWindow::slotFileSave);
 fileMenu->addAction(fileSave);
+mainToolBar->addAction(fileSave);
 
 //fileSaveAs = KStandardAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection());
 //fileClose = KStandardAction::close(this, SLOT(slotFileClose()), actionCollection());
@@ -200,10 +195,6 @@ MyActionList* StundenPlanerMainWindow::actionCollection()
     if(!actionList)
         actionList=new MyActionList();
     return actionList;
-}
-void StundenPlanerMainWindow::initStatusBar()
-{
-//statusBar()->insertItem(i18n("Ready."), ID_STATUS_MSG);
 }
 
 void StundenPlanerMainWindow::initDocument()

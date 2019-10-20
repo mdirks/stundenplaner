@@ -50,11 +50,11 @@ public:
     QSize sizeHint();
 
 public slots:
-    void editVorn();
+    //void editVorn();
     //void readVorn();
     void stopEdit();
-    void compileFinished(int code, QProcess::ExitStatus exitStatus);
-    void compileError( QProcess::ProcessError error);
+    //void compileFinished(int code, QProcess::ExitStatus exitStatus);
+    //void compileError( QProcess::ProcessError error);
 
     void print();
     void updatePreview();

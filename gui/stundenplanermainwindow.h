@@ -144,6 +144,7 @@ public:
       //MySideBar *sideBar;
       QStackedWidget *centralWidget;
       QToolBar *rightToolBar;
+      QToolBar *mainToolBar;
 
 /*
     friend class StundePlanerView;

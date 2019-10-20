@@ -62,10 +62,7 @@ void TextPropertyEditor::startEdit(RepositoryProperty *prop, PObject *parent)
 void TextPropertyEditor::startEdit()
 {
     if(!editing){
-        //QString propString  = QString::fromStdString(property->asString(parent));
-        //setText(propString);
-
-		GuiControler::getInstance()->addActiveEditor(this);
+        GuiControler::getInstance()->addActiveEditor(this);
 		editing = true;
 		Transactions::getCurrentTransaction()->add(parent);
 	}
@@ -102,6 +99,9 @@ void TextPropertyEditor::setProperty(RepositoryProperty *rp)
 
 void TextPropertyEditor::setParentObject(PObject *po)
 {
+    //consider a previous Parent having been edited
+    stopEdit();
+
     this->parent=po;
     if(property && po){
         setText(property->asString( parent ).c_str());
