@@ -24,6 +24,7 @@ ModeLesen::ModeLesen()
     list_texte=0;
     activeText=0;
     toolBar = 0;
+    splitter = 0;
 
     QPixmap pm = GuiConfig::getInstance()->getIcon("ModeLesen");
     if(pm.isNull()){
@@ -32,9 +33,8 @@ ModeLesen::ModeLesen()
     }
     setIcon(pm);
 
+    //doCommonSetup();
 
-
-    splitter = 0;
 
 
 }
@@ -56,14 +56,12 @@ ModeLesen* ModeLesen::getInstance()
     return instance;
 }
 
-void ModeLesen::setupMode()
+void ModeLesen::doCommonSetup()
 {
     GuiRepository *guirep=GuiRepository::getInstance();
     QStackedWidget *sw=guirep->getCentralWidget();
 
-    guirep->setActiveMode(this);
-
-    if(!splitter){
+     if(!splitter){
         RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry("lektuere");
         RepositoryProperty *colProp = re->getProperty("Notizen");
         re = Repository::getInstance()->getRepositoryEntry("lektuerenotiz");
@@ -71,8 +69,7 @@ void ModeLesen::setupMode()
 
         splitter = new QSplitter(Qt::Horizontal,sw);
 
-        PObjectListProvider *prov = new MapperListProvider("lektuere");
-        viewer = new TextViewer(prov,splitter);
+        viewer = new TextViewer(splitter);
 
         browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
         lkDisplay = new PObjectDisplay(sw,0,1,0);
@@ -94,35 +91,64 @@ void ModeLesen::setupMode()
         QList<int> sizes;
         sizes << 600 << 500 << 10;
         splitter->setSizes(sizes);
-        sw->addWidget(splitter);
+        //sw->addWidget(splitter);
 
-        browser->hide();
-        lkViewer->hide();
+        //browser->hide();
+        //lkViewer->hide();
+
+        setModeWidget(splitter);
     }
-    sw->setCurrentWidget(splitter);
 
-    if(!toolBar){
-        toolBar = new QToolBar(guirep->getMainFrame());
+    //sw->setCurrentWidget(splitter);
+
+
         QPixmap pm = GuiConfig::getInstance()->getIcon("Notizeditor");
-        toolBar->addAction(pm,"",this,SLOT(showNotizeditor()));
+        modeToolBar->addAction(pm,"",this,SLOT(showNotizeditor()));
         pm = GuiConfig::getInstance()->getIcon("Lernkarten");
-        toolBar->addAction(pm,"",this,SLOT(showLernkarten()));
+        modeToolBar->addAction(pm,"",this,SLOT(showLernkarten()));
         pm = GuiConfig::getInstance()->getIcon("LernkartenDisplay");
-        toolBar->addAction(pm,"",this,SLOT(showLernkartenDisplay()));
+        modeToolBar->addAction(pm,"",this,SLOT(showLernkartenDisplay()));
 
-        guirep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
-    } else {
-        toolBar->show();
-    }
 
+
+
+    viewer->setResizePolicy(true);
+}
+
+void ModeLesen::setupMode()
+{
+    doCommonSetup();
+
+
+    GuiRepository *guirep=GuiRepository::getInstance();
+    QStackedWidget *sw=guirep->getCentralWidget();
+
+
+
+    PObjectListProvider *prov = new MapperListProvider("lektuere");
+    viewer->setProvider(prov);
+
+    browser->setParentObject(activeText);
+
+
+    viewer->selectionChanged(0);
+    //viewer->setResizePolicy(true);
+    //guirep->setActiveMode(this);
+}
+
+void ModeLesen::load()
+{
+    PObjectListProvider *prov = new MapperListProvider("lektuere");
+    viewer->setProvider(prov);
     //load initial item if present
     viewer->selectionChanged(0);
-    viewer->setResizePolicy(true);
 
 }
 
 void ModeLesen::close()
 {
+
+    /*
     GuiRepository *guirep=GuiRepository::getInstance();
     QStackedWidget *sw=guirep->getCentralWidget();
 
@@ -135,10 +161,13 @@ void ModeLesen::close()
         toolBar->deleteLater();
         toolBar=0;
     }
+    */
 
     list_texte=0;
     activeText=0;
-    toolBar = 0;
+    viewer->setProvider(0);
+    browser->setParentObject(0);
+    //toolBar = 0;
 }
 
 void ModeLesen::tearDownMode()

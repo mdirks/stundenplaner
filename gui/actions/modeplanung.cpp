@@ -108,34 +108,30 @@ void ModePlanung::setupMode()
         //spl->addWidget(stack);
 
 
-        sw->addWidget(displayWidget);
-        stack->setCurrentWidget(dp);
+        //sw->addWidget(displayWidget);
+        setModeWidget(displayWidget);
+        //stack->setCurrentWidget(dp);
     }
-    sw->setCurrentWidget(displayWidget);
+    //sw->setCurrentWidget(displayWidget);
 
 
-    if(!toolBar){
-        toolBar = new QToolBar(rep->getMainFrame());
         QPixmap pm = GuiConfig::getInstance()->getIcon("ReihePlaner");
-        toolBar->addAction(pm," ",this,SLOT(showReihePlaner()));
+        modeToolBar->addAction(pm," ",this,SLOT(showReihePlaner()));
 
         pm = GuiConfig::getInstance()->getIcon("TeilleistungEditor");
-        toolBar->addAction(pm," ",this,SLOT(showLeistungen()));
+        modeToolBar->addAction(pm," ",this,SLOT(showLeistungen()));
 
         pm = GuiConfig::getInstance()->getIcon("Sitzplan");
-        toolBar->addAction(pm," ",this,SLOT(showSitzplan()));
+        modeToolBar->addAction(pm," ",this,SLOT(showSitzplan()));
 
         pm = GuiConfig::getInstance()->getIcon("Forms");
-        toolBar->addAction(pm," ",this,SLOT(showFormArea()));
+        modeToolBar->addAction(pm," ",this,SLOT(showFormArea()));
         /*
         pm = GuiConfig::getInstance()->getIcon("Lernkarten");
         toolBar->addAction(pm,"",this,SLOT(showLernkarten()));
         */
 
-        rep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
-    } else {
-        toolBar->show();
-    }
+        //rep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
 
     kw->readStundenplan();
 

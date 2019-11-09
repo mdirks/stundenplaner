@@ -24,6 +24,7 @@ public:
     void setupMode();
     void tearDownMode();
     void close();
+    void load();
 
     void activateObject(PObject *o);
     void showForm(QWidget *w);
@@ -36,6 +37,9 @@ public:
     static ModeLesen* getInstance();
 
     void setActivePage(int i);
+
+private:
+    void doCommonSetup();
 
 public slots:
     void showNotizeditor();
