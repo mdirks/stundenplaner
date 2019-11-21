@@ -827,6 +827,9 @@ void PdfViewPrivate::clearNonVisiblePages(int pageNumberStart, int pageNumberEnd
 void PdfView::setPage(double pageNumber, PositionHandling keepPosition)
 {
 //QTime t = QTime::currentTime();
+    //if(pageNumber<0 || pageNumber>d->m_popplerPageTopPositions.size())
+    //    return; //somethign wrong
+
 	if (!d->m_popplerDocument)
 		return;
 

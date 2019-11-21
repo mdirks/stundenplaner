@@ -76,6 +76,7 @@ private:
       	bool tableExists(PersistenceClass *persObj);
     	void close();
 	QString mask(QString qs);
+    QString unmask(QString qs);
     void checkForOldstyleDb();
      // void writeVersions();
 

@@ -46,6 +46,7 @@ public:
      QDate asQDate();
      QUrl asQUrl();
      MUrl asMUrl();
+     QString asQString();
      string asstring();
      double asdouble();
      bool asbool();

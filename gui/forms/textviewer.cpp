@@ -82,7 +82,7 @@ void TextViewer::selectionChanged(int i){
         viewer->loadNewFile(l->getFileName().c_str());
         activeText=l;
         emit textChanged(l);
-        ModeLesen::getInstance()->setActiveText(l);
+        //ModeLesen::getInstance()->setActiveText(l);
     }
 }
 

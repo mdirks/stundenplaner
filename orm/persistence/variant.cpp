@@ -42,17 +42,28 @@ Variant::Variant(const Variant& v){
 
 Variant::operator string()
 {
-	QString str = qv.toString();
-	if(str != QString::null)
-	{
-           stdstr = (qv.toString()).toStdString();
-	} else {
-	   stdstr = "";
-	 }
-	
-	//qDebug(QString("Variant conversion to %1").arg(stdstr));
-	return stdstr;
+    return asstring();
 }
+
+string Variant::asstring()
+{
+    QString str = qv.toString();
+    if(str != QString::null)
+    {
+        stdstr = (qv.toString()).toStdString();
+    } else {
+       stdstr = "";
+     }
+
+    return stdstr;
+}
+
+QString Variant::asQString()
+{
+    return qv.toString();
+}
+
+
 
 Variant::operator double()
 {
@@ -106,18 +117,7 @@ QDateTime Variant::asQDateTime()
 	return datetime;
 	//return qv.toDateTime();
 }
-string Variant::asstring()
-{
-	QString str = qv.toString();
-	if(str != QString::null)
-	{
-        stdstr = (qv.toString()).toStdString();
-	} else {
-	   stdstr = "";
-	 }
-	
-    return stdstr;
-}
+
 
 double Variant::asdouble()
 {

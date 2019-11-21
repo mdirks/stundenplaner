@@ -33,7 +33,8 @@ public:
     void addToTexte(lektuere *l);
     void deleteFromTexte(lektuere *l);
 
-    void setActiveText(lektuere *l);
+
+
     static ModeLesen* getInstance();
 
     void setActivePage(int i);
@@ -45,6 +46,8 @@ public slots:
     void showNotizeditor();
     void showLernkarten();
     void showLernkartenDisplay();
+    void setActiveText(lektuere *l);
+
 
 private:
     static ModeLesen *instance;

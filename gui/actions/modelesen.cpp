@@ -130,10 +130,13 @@ void ModeLesen::setupMode()
 
     browser->setParentObject(activeText);
 
-
+    connect(viewer, SIGNAL(textChanged(lektuere*)), this, SLOT(setActiveText(lektuere*)));
     viewer->selectionChanged(0);
+
     //viewer->setResizePolicy(true);
     //guirep->setActiveMode(this);
+
+
 }
 
 void ModeLesen::load()
@@ -252,6 +255,10 @@ void ModeLesen::deleteFromTexte(lektuere *l)
 {
     getTexte()->remove(l);
 }
+
+
+
+
 
 void ModeLesen::setActiveText(lektuere *l)
 {

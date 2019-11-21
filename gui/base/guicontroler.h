@@ -15,6 +15,7 @@
 #include "propertyeditor.h"
 #include <list>
 
+#include <QMutex>
 #include <qobject.h>
 
 using namespace std;
@@ -42,6 +43,7 @@ private:
     
     static GuiControler* instance;
     list<PropertyEditor*> *activeEditors;
+    QMutex mymutex;
 
 };
 

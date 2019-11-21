@@ -218,7 +218,8 @@ void DatabaseImpl_Q::save(PObject *object){
 			if(! q2.isActive() ){ qDebug("DatabaseImpl::save: Failed to delete object (Ph 2)");return;}
 		} else {
 
-            QString qs = QString("update  ").append(getTableName(persistenceObject).c_str() ).append(  "  set name=\"" ).append(object->getName().c_str()).append("\"") ;
+            QString qs = QString("update  ").append(getTableName(persistenceObject).c_str() )
+                    .append(  "  set name=\"" ).append(object->getName().c_str()).append("\"") ;
 		
             std::locale::global(std::locale("en_US")); // Hack to have a decimal point in Data
 
@@ -229,7 +230,8 @@ void DatabaseImpl_Q::save(PObject *object){
 		
 			int cc = persistenceObject->getColumnCount();
 			for(int i=0; i <cc; i++){
-                qs.append(",").append(columns[i].c_str()).append( " = \"").append(mask(values[i].c_str())).append( "\" " );
+                qs.append(",").append(columns[i].c_str()).
+                        append( " = \"").append(mask(values[i].c_str())).append( "\" " );
 				/*
 				if(i<cc-1){
 					qs.append( ", ");
@@ -253,7 +255,16 @@ void DatabaseImpl_Q::save(PObject *object){
 
 QString DatabaseImpl_Q::mask(QString qs)
 {
-    return qs.replace("\\","\\\\").replace("\"", "\\\"");
+    /* The masking of \ is required for MySql but not for SQLite it seems.
+     * Moreover with MySql the additional \ is automatically removed upon insertion
+     */
+    //return qs.replace("\\","\\\\").replace("\"", "\\\"");
+    return qs;
+}
+
+QString DatabaseImpl_Q::unmask(QString qs)
+{
+    return qs.replace("\\\\","\\").replace("\\\"", "\"");
 }
 
 void DatabaseImpl_Q::save(PCollection* collection)
@@ -459,7 +470,8 @@ PObject * DatabaseImpl_Q::load(string className, int id) {
                 qs.append(",").append(cols[i].c_str());
 				
 			}
-            qs = qs.append(" from ").append(getTableName(persObj).c_str()).append(" where id = %1;").arg(id);
+            qs = qs.append(" from ").append(getTableName(persObj).c_str())
+                    .append(" where id = %1;").arg(id);
 	
             /* use the query result to init object */
             QSqlQuery q(qs);
@@ -477,7 +489,7 @@ PObject * DatabaseImpl_Q::load(string className, int id) {
 					for(int i=0; i<colcount ; i++){
 						res[i] = q.value(i+2);
                         if(! res[i].isValid())  qWarning() << QString("DatabseImpl_Q: Invalid value from query > ").append(qs);
-					}
+                    }
 					persObj->init(o,res);
 					delete[] res;
                     //qDebug() << QString("DatabseImpl_Q: Loading ok: %1, %2").arg(className.c_str()).arg(id);
