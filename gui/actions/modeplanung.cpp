@@ -9,10 +9,12 @@
 #include "kalenderviewcontroler.h"
 #include "orm/repository/repository.h"
 #include "sitzplanmapviewcontroler.h"
+#include "textpropertyviewer2.h"
 
 #include <QIcon>
 #include <QLabel>
 #include <QApplication>
+#include <QVBoxLayout>
 
 ModePlanung* ModePlanung::instance=0;
 
@@ -30,9 +32,12 @@ ModePlanung::ModePlanung() :
 
     sePropertyList = new list<RepositoryProperty*>();
     RepositoryEntry *re=Repository::getInstance()->getRepositoryEntry("stundenplaneintrag");
-    sePropertyList->push_back(re->getProperty("Verlauf"));
+    //sePropertyList->push_back(re->getProperty("KursbuchEintrag/Eintrag"));
+    //sePropertyList->push_back(re->getProperty("Verlauf"));
     sePropertyList->push_back(re->getProperty("Notizen"));
     sePropertyList->push_back(re->getProperty("Materialien"));
+    seVerlauf=re->getProperty("Verlauf");
+    seEintrag=re->getProperty("KursbuchEintrag/Eintrag");
 
     dp=0;
     //spl=0;
@@ -97,7 +102,6 @@ void ModePlanung::setupMode()
 
         spmvd = new SitzplanMapViewDialog(0);
         new SitzplanMapViewControler(spmvd->getMapView());
-
         stack->addWidget(spmvd);
         spmvd->hide();
 
@@ -110,7 +114,7 @@ void ModePlanung::setupMode()
 
         //sw->addWidget(displayWidget);
         setModeWidget(displayWidget);
-        //stack->setCurrentWidget(dp);
+        stack->setCurrentWidget(dp);
     }
     //sw->setCurrentWidget(displayWidget);
 
@@ -139,12 +143,29 @@ void ModePlanung::setupMode()
     //r->start();
 }
 
+void ModePlanung::close()
+{
+    displayWidget=0;
+    GuiMode::close();
+}
+
 void ModePlanung::activateObject(PObject *o)
 {
     if(stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o))
     {
         if(klasse *kl = se->getKlasse()){
-            QWidget *editor=new PObjectEditor3(se,dp,sePropertyList);
+            PObjectEditor3 *editor=new PObjectEditor3(se,dp,sePropertyList);
+            QWidget *w=new QWidget(editor);
+            TextPropertyEditor *pe=new TextPropertyEditor(se,seEintrag,w);
+            TextPropertyViewer2 *tv = new TextPropertyViewer2(se,seVerlauf,w);
+
+            QVBoxLayout *rl=new QVBoxLayout();
+            rl->addWidget(pe,1);
+            rl->addWidget(tv,9);
+            w->setLayout(rl);
+
+
+            editor->addTab(w,"Doku");
             dp->showFormAtTop(editor);
             QApplication::processEvents();
 

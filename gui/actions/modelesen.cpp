@@ -32,6 +32,7 @@ ModeLesen::ModeLesen()
         pm = GuiConfig::getInstance()->getIcon("ModeLesen");
     }
     setIcon(pm);
+    setToolTip("Lesen");
 
     //doCommonSetup();
 
@@ -93,21 +94,25 @@ void ModeLesen::doCommonSetup()
         splitter->setSizes(sizes);
         //sw->addWidget(splitter);
 
-        //browser->hide();
-        //lkViewer->hide();
+        browser->hide();
+        lkDisplay->hide();
+        lkViewer->hide();
 
         setModeWidget(splitter);
     }
 
     //sw->setCurrentWidget(splitter);
 
-
+        QAction *a;
         QPixmap pm = GuiConfig::getInstance()->getIcon("Notizeditor");
-        modeToolBar->addAction(pm,"",this,SLOT(showNotizeditor()));
+        a=modeToolBar->addAction(pm,"",this,SLOT(showNotizeditor()));
+        a->setToolTip("Notizeditor");
         pm = GuiConfig::getInstance()->getIcon("Lernkarten");
-        modeToolBar->addAction(pm,"",this,SLOT(showLernkarten()));
+        a=modeToolBar->addAction(pm,"",this,SLOT(showLernkarten()));
+        a->setToolTip("Lernkarten");
         pm = GuiConfig::getInstance()->getIcon("LernkartenDisplay");
-        modeToolBar->addAction(pm,"",this,SLOT(showLernkartenDisplay()));
+        a=modeToolBar->addAction(pm,"",this,SLOT(showLernkartenDisplay()));
+        a->setToolTip("LK-Display");
 
 
 
@@ -168,8 +173,17 @@ void ModeLesen::close()
 
     list_texte=0;
     activeText=0;
-    viewer->setProvider(0);
-    browser->setParentObject(0);
+    // viewer->setProvider(0);
+    //browser->setParentObject(0);
+    /*
+    delete viewer;
+    delete browser;
+    delete splitter;
+    */
+    splitter=0;
+    GuiMode::close();
+    //splitter->setVisible(false);
+
     //toolBar = 0;
 }
 

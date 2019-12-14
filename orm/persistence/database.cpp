@@ -40,8 +40,30 @@ QString Database::getDatabaseName(){
 	return databasename;
 }
 
+void Database::close(){
+    if(instance){
+        delete instance;
+        instance=0;
+    }
+}
 
 
+/*!
+    \fn DatabaseImpl_Q::changeTo(string db_name)
+ */
+bool Database::changeTo(string db_name)
+{
+    Database::close();
+
+    Database::setDatabaseName(QString::fromStdString(db_name));
+
+    if(Database::getInstance()->isOpen()){
+    return true;
+    } else {
+    return false;
+    }
+
+}
 
 
 /*!

@@ -35,6 +35,16 @@ void GuiMode::setModeWidget(QWidget *w)
     sw->addWidget(modeWidget);
 }
 
+void GuiMode::close()
+{
+    if(modeWidget){
+        GuiRepository *guirep=GuiRepository::getInstance();
+        QStackedWidget *sw=guirep->getCentralWidget();
+        sw->removeWidget(modeWidget);
+        setupDone=false;
+    }
+}
+
 void GuiMode::activate()
 {
     if(!setupDone){

@@ -926,12 +926,13 @@ void GuiRepositoryImpl::showInfo(QString cap, QString mesg)
  */
 void GuiRepositoryImpl::closeGui()
 {
-    SKalender::close();
-
     for(list<GuiMode*>::iterator it = modelist->begin(); it!=modelist->end(); it++)
     {
         (*it)->close();
     }
+    SKalender::close();
+
+
 }
 
 bool GuiRepositoryImpl::versionChangeRequested(string className)

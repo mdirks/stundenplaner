@@ -40,6 +40,10 @@ DatabaseImpl_Q::DatabaseImpl_Q(){
     connection=QSqlDatabase(); // invalid dummy
 }
 DatabaseImpl_Q::~DatabaseImpl_Q(){
+    connection.close();
+    cache.clear();
+    tables.clear();
+    mapPersistentClasses.clear();
 }
 
 QSqlDatabase DatabaseImpl_Q::getConnection(){
@@ -175,14 +179,7 @@ bool DatabaseImpl_Q::isOpen()
 /*!
     \fn DatabaseImpl_Q::close()
  */
-void DatabaseImpl_Q::close()
-{
-    if(connection.isValid()){
-        connection.close();
-        cache.clear();
-        connection=QSqlDatabase(); // invalid dummy
-    }
-}
+
 void DatabaseImpl_Q::deleteObject(PObject *object){
     if(isOpen()){
 	
@@ -712,33 +709,7 @@ void DatabaseImpl_Q::executeSql(string sql)
 }
 
 
-/*!
-    \fn DatabaseImpl_Q::changeTo(string db_name)
- */
-bool DatabaseImpl_Q::changeTo(string db_name)
-{
-    close();
 
-    Database::setDatabaseName(QString::fromStdString(db_name));
-
-    if(isOpen()){
-	return true;
-    } else {
-	return false;
-    }
-
-	
-    
-	/* Not required: getConnection() will create if not existing
-	QString qs = QString("create database %1").arg(db_name);
- 	QSqlQuery q1(qs);
-	if(q1.isActive()){
-		qDebug(QString("New database created "));
-	} else {
-		qWarning(QString("Query failed: %1").arg(qs));
-	}
-	*/
-}
 
 
 /*!

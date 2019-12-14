@@ -14,7 +14,7 @@
 #include "orm/repository/repositoryproperty.h"
 #include "stringeditor.h"
 #include "textpropertyeditor.h"
-#include "textpropertyviewer.h"
+#include "textpropertyviewer2.h"
 #include "pobjecticonview.h"
 #include "dateeditor.h"
 #include "pobjecttable.h"
@@ -125,7 +125,7 @@ void PObjectEditor3::doCommonSetup()
         for(list<RepositoryProperty*>::iterator it = list_txt_prop->begin();
             it != list_txt_prop->end();it++){
             RepositoryProperty *prop = (*it);
-            TextPropertyViewer *w = new TextPropertyViewer(mo,prop,mainTab);
+            TextPropertyViewer2 *w = new TextPropertyViewer2(mo,prop,mainTab);
             mainTab->addTab(w,prop->getName().c_str());
             mainTab->setCurrentWidget(w);
         }
@@ -154,6 +154,12 @@ void PObjectEditor3::doCommonSetup()
         l->addWidget(splitter,0,0);
         //setWidget(splitter);
 
+}
+
+void PObjectEditor3::addTab(QWidget *w, QString title)
+{
+    mainTab->addTab(w,title);
+    mainTab->setCurrentWidget(w);
 }
 
 /*

@@ -17,7 +17,7 @@ public:
     virtual void setupMode(){qDebug() << "GuiMode: calling empty setupMode()";}
 
     virtual void tearDownMode(){}
-    virtual void close(){}
+    virtual void close();
     virtual void load(){}
     virtual void reload();
     virtual void activate();

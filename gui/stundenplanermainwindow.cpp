@@ -404,7 +404,9 @@ void StundenPlanerMainWindow::slotChangeDatabase()
   GuiRepository::getInstance()->closeGui();
   if(MappingControler::getInstance()->initNewDatabase(db_name.toStdString())){
       SStundenplan::getInstance()->close();
+      SStundenplan::getInstance();
       SKalender::getInstance()->close;
+      SKalender::getInstance();
       GuiConfig::getInstance()->setDatabaseName(db_name);
 
   } else {

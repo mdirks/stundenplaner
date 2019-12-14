@@ -109,7 +109,7 @@ bool MappingControler::initNewDatabase(string dbName)
 {
 	//mapVersions.clear();
 
-	if(Database::getInstance()->changeTo(dbName)){
+    if(Database::changeTo(dbName)){
 		createAdministrativTables();
 		for(list<AbstractMapper*>::iterator it=listRegisteredMappers->begin(); it!=listRegisteredMappers->end();it++){
 			(*it)->reset();
@@ -132,24 +132,6 @@ QString MappingControler::getCurrentVersion(QString className)
 		//return mapVersions[className];
 	}
 }
-
-/*
-void MappingControler::writeVersions()
-{
-	QString qs("delete from versions;");
-	QSqlQuery q(qs);
-	if(!q.isActive()){qDebug("Criticla","Could not delete from versions");}
-
-	QString qs2("insert into versions values (\"%1\",\"%2\");");
-	map<QString,QString>::iterator it;
-	for(it = mapVersions.begin(); it != mapVersions.end(); it++){
-		QString qs2p = qs2.arg(it->first).arg(it->second);
-		QSqlQuery q2(qs2p);
-		if(!q2.isActive()){qDebug(QString("Critical: Could not insert into versions : %1").arg(qs2p));}
-	}
-
-}
-*/
 
 /*!
     \fn MappingControler::createAdministrativTables()

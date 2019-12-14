@@ -1,4 +1,4 @@
-//
+ //
 // C++ Implementation: %{MODULE}
 //
 // Description:
@@ -108,4 +108,9 @@ Filter *RepositoryPropertyImpl::getFilter()
 {
     Filter *f = new PropertyFilter(this);
     return f;
+}
+
+PObject *RepositoryPropertyImpl::getTrueParent(PObject *o)
+{
+    return o;
 }

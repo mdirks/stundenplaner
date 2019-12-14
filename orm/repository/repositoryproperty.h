@@ -68,6 +68,7 @@ public:
     virtual MUrl asUrl(PObject *o) = 0;
 
     virtual Filter *getFilter() = 0;
+    virtual PObject *getTrueParent(PObject *o) =0;
     
 };
 

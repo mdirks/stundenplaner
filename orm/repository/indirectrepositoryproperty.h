@@ -59,10 +59,10 @@ public:
     	list<PropertyAction*> * getAllActions();
     	void registerAction(string name, PropertyAction *a);
      	void add(PObject *o, PObject *oo);
-	
+        PObject* getTrueParent(PObject *o);
 
 private:
-	PObject* getTrueParent(PObject *o);
+
 
 private:
 	list<RepositoryProperty*> *list_properties;

@@ -123,7 +123,7 @@ void PObjectComboBox::setParentObject(PObject *o)
 
 void PObjectComboBox::setProvider(PObjectListProvider *prov)
 {
-    this->provider=prov;
+    provider=prov;
     reload();
 }
 
