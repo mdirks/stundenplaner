@@ -3,17 +3,21 @@ TARGET = services
 CONFIG += staticlib
 SOURCES += \
     *.cpp \
+    docstore/annexdocstore.cpp \
+    docstore/docstore.cpp \
     filter/collectionpropertyfilter.cpp
 
 SOURCES += $$system(ls reports/*.cpp) $$system(ls filter/*.cpp) $$system(ls xml-export/*.cpp)
-SOURCES += $$system(ls utils/*.cpp) $$system(ls actions/*.cpp)
+SOURCES += $$system(ls utils/*.cpp) $$system(ls actions/*.cpp) $$system(ls docstore/*.cpp)
 
 HEADERS += \
     *.h \
+    docstore/annexdocstore.h \
+    docstore/docstore.h \
     filter/collectionpropertyfilter.h
 
 HEADERS += $$system(ls reports/*.h) $$system(ls filter/*.h) $$system(ls xml-export/*.h)
-HEADERS += $$system(ls utils/*.h) $$system(ls actions/*.h)
+HEADERS += $$system(ls utils/*.h) $$system(ls actions/*.h) $$system(ls docstore/*.h)
 
 message(The projects sources: $$SOURCES)
 
