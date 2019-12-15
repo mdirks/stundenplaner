@@ -63,19 +63,17 @@ void ModeLernen::setupMode()
     sw->setCurrentWidget(mainWidget);
 
 
-    if(!toolBar){
-        toolBar = new QToolBar(guirep->getMainFrame());
+
+        modeToolBar = new QToolBar(guirep->getMainFrame());
         QPixmap pm = GuiConfig::getInstance()->getIcon("Karteneditor");
-        toolBar->addAction(pm,"",this,SLOT(showKartenEditor()));
-        guirep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
-    } else {
-        toolBar->show();
-    }
+        modeToolBar->addAction(pm,"",this,SLOT(showKartenEditor()));
+
+
 }
 
 void ModeLernen::tearDownMode()
 {
-    toolBar->hide();
+    //toolBar->hide();
 }
 
 void ModeLernen::activateObject(PObject *o)

@@ -112,7 +112,8 @@ void ModeNotes::setupMode()
         connect(viewSaetze,SIGNAL(currentChanged()),this,SLOT(changeSatz()));
         connect(viewNotizen,SIGNAL(currentChanged()),this,SLOT(changeNotiz()));
     }
-    sw->setCurrentWidget(splitter);
+    setModeWidget(splitter);
+    //sw->setCurrentWidget(splitter);
 
     if(!toolBar){
         toolBar = new QToolBar(guirep->getMainFrame());

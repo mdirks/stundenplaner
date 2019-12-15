@@ -43,6 +43,12 @@ void TextViewer::doCommonSetup()
     // load initial entry
 }
 
+void TextViewer::setProvider(PObjectListProvider *prov)
+{
+    combo->setProvider(prov);
+    combo->load();
+}
+
 void TextViewer::setResizePolicy(bool res)
 {
     viewer->setResizePolicy(res);
@@ -76,7 +82,7 @@ void TextViewer::selectionChanged(int i){
         viewer->loadNewFile(l->getFileName().c_str());
         activeText=l;
         emit textChanged(l);
-        ModeLesen::getInstance()->setActiveText(l);
+        //ModeLesen::getInstance()->setActiveText(l);
     }
 }
 

@@ -23,6 +23,7 @@ public:
     void setPage(int i);
     void load();
     void setResizePolicy(bool res);
+    void setProvider(PObjectListProvider *prov);
 
 private:
     void doCommonSetup();

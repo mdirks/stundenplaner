@@ -31,6 +31,7 @@
 
 QString TextPropertyViewer::StandardHeader = QString("\\documentclass[12pt]{article} \\pagestyle{empty}"
                                                         "\\usepackage{ngerman} "
+                                                        "\\usepackage[utf8]{inputenc}"
                                                        "\\oddsidemargin -1cm \n \\topmargin -3.0cm"
                                                        "\\textheight %1cm \\textwidth %2cm"
                                                         "\\parindent=0pt \\parskip=0.15 true in"

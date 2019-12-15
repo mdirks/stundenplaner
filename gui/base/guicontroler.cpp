@@ -47,15 +47,17 @@ void GuiControler::addActiveEditor(PropertyEditor *editor)
 
 void GuiControler::stopEdit()
 {
+    mymutex.lock();
     if(activeEditors){
-	for(list<PropertyEditor*>::iterator it = activeEditors->begin(); it != activeEditors->end(); it++){
-		if((*it)){
-			(*it)->stopEdit();
-		} else {
-            qDebug() << QString("GuiControler::stopEdit : !!! Invalid editor in editor-list");
+        for(list<PropertyEditor*>::iterator it = activeEditors->begin(); it != activeEditors->end(); it++){
+            if((*it)){
+                (*it)->stopEdit();
+            } else {
+                qDebug() << QString("GuiControler::stopEdit : !!! Invalid editor in editor-list");
 		}
 	}
 	activeEditors->clear();
    }
+   mymutex.unlock();
 }
 

@@ -542,9 +542,10 @@ void GuiRepositoryImpl::setSelectedObject(PObject *o)
 void GuiRepositoryImpl::setActiveMode(GuiMode *mode)
 {
     if(activeMode != mode){
-        if(activeMode) activeMode->tearDownMode();
+        if(activeMode) activeMode->deactivate();
         activeMode=mode;
-        mode->setupMode();
+        //mode->setupMode();
+        mode->activate();
     }
 }
 
@@ -902,6 +903,11 @@ void GuiRepositoryImpl::reloadGui()
 		(*it)->clear();
 		(*it)->load();
 	}
+    for(list<GuiMode*>::iterator it=modelist->begin(); it!=modelist->end(); it++)
+    {
+        (*it)->reload();
+
+    }
 }
 
 
@@ -920,12 +926,13 @@ void GuiRepositoryImpl::showInfo(QString cap, QString mesg)
  */
 void GuiRepositoryImpl::closeGui()
 {
-    SKalender::close();
-
     for(list<GuiMode*>::iterator it = modelist->begin(); it!=modelist->end(); it++)
     {
         (*it)->close();
     }
+    SKalender::close();
+
+
 }
 
 bool GuiRepositoryImpl::versionChangeRequested(string className)

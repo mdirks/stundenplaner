@@ -26,6 +26,7 @@ public:
     void activateObject(PObject *o);
     void showForm(QWidget *w);
     void tearDownMode();
+    void close();
 
     static ModePlanung* getInstance();
 
@@ -48,7 +49,7 @@ private:
     list<RepositoryProperty*> *sePropertyList;
     SitzplanMapViewDialog *spmvd;
     KalenderView *kw;
-
+    RepositoryProperty *seVerlauf, *seEintrag;
 private:
     Ui::ModePlanung *ui;
 

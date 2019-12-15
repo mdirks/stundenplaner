@@ -65,6 +65,7 @@ void PObjectComboBox::doCommonSetup()
 
 void PObjectComboBox::load()
 {
+    clear();
     if(provider){
         load(provider->objectList());
         //isLoaded=true;
@@ -122,8 +123,8 @@ void PObjectComboBox::setParentObject(PObject *o)
 
 void PObjectComboBox::setProvider(PObjectListProvider *prov)
 {
-    this->provider=prov;
-    if(provider) reload();
+    provider=prov;
+    reload();
 }
 
 void PObjectComboBox::indexChanged(QString text)

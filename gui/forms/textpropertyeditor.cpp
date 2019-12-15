@@ -18,6 +18,8 @@
 TextPropertyEditor::TextPropertyEditor(QWidget *parent)
  : QTextEdit(parent) , property(0)
 {
+    editing=false;
+
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
     setLineWrapMode(QTextEdit::NoWrap);
 }
@@ -25,6 +27,8 @@ TextPropertyEditor::TextPropertyEditor(QWidget *parent)
 TextPropertyEditor::TextPropertyEditor(PObject *o, RepositoryProperty *prop, QWidget *p)
  : QTextEdit(p), property(prop), parent(o)
 {
+    editing=false;
+
     setLineWrapMode(QTextEdit::NoWrap);
     setText(property->asString( parent ).c_str());
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
@@ -34,6 +38,7 @@ TextPropertyEditor::TextPropertyEditor(PObject *o, RepositoryProperty *prop, QWi
 TextPropertyEditor::TextPropertyEditor(PObject *o, QString displayString, QWidget *p)
  : QTextEdit(p), property(0), parent(o)
 {
+    editing=false;
     setLineWrapMode(QTextEdit::NoWrap);
     setText(displayString);
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
@@ -64,7 +69,9 @@ void TextPropertyEditor::startEdit()
     if(!editing){
         GuiControler::getInstance()->addActiveEditor(this);
 		editing = true;
-		Transactions::getCurrentTransaction()->add(parent);
+        if(property && parent){
+            Transactions::getCurrentTransaction()->add(property->getTrueParent(parent));
+        }
 	}
 }
 

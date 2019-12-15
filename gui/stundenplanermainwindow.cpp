@@ -400,10 +400,13 @@ void StundenPlanerMainWindow::slotChangeDatabase()
 {
   QString db_name = QInputDialog::getText(this,"Datenbank wechseln","Neue Datenbank",QLineEdit::Normal,Database::getDatabaseName());
 
+  GuiControler::getInstance()->stopEdit();
   GuiRepository::getInstance()->closeGui();
   if(MappingControler::getInstance()->initNewDatabase(db_name.toStdString())){
       SStundenplan::getInstance()->close();
+      SStundenplan::getInstance();
       SKalender::getInstance()->close;
+      SKalender::getInstance();
       GuiConfig::getInstance()->setDatabaseName(db_name);
 
   } else {

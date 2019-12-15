@@ -29,6 +29,7 @@ IndirectRepositoryProperty::IndirectRepositoryProperty(list<RepositoryProperty*>
 
 IndirectRepositoryProperty::~IndirectRepositoryProperty()
 {
+
 }
 
 

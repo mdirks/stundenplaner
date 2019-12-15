@@ -58,6 +58,7 @@ public:
     void registerAction(string name, PropertyAction *a);
     virtual void add(PObject *o, PObject *oo);
     virtual Filter* getFilter();
+    virtual PObject * getTrueParent(PObject *o);
  
 private:
     string name, type;

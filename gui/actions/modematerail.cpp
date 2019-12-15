@@ -27,6 +27,8 @@ ModeMaterial::ModeMaterial()
     displayWidget=0;
 
 
+
+
 }
 ModeMaterial* ModeMaterial::getInstance()
 {
@@ -55,7 +57,8 @@ void ModeMaterial::setupMode()
         connect(ui->viewMaterialien,SIGNAL(currentChanged()),this,SLOT(changeMaterial()));
     }
 
-    sw->setCurrentWidget(displayWidget);
+    setModeWidget(displayWidget);
+    //sw->setCurrentWidget(displayWidget);
 
     RepositoryProperty *rp= Repository::getInstance()->getRepositoryEntry("materialsatz")->getProperty("Materialien");
     prov = new RpListProvider(rp);
@@ -63,19 +66,13 @@ void ModeMaterial::setupMode()
 
 
 
-    if(!toolBar){
-        toolBar = new QToolBar(guirep->getMainFrame());
         QPixmap pm = GuiConfig::getInstance()->getIcon("action_material_new");
-        toolBar->addAction(pm,"",this,SLOT(createNew()));
+        modeToolBar->addAction(pm,"",this,SLOT(createNew()));
         pm = GuiConfig::getInstance()->getIcon("action_material_open");
-        toolBar->addAction(pm,"",this,SLOT(open()));
+        modeToolBar->addAction(pm,"",this,SLOT(open()));
         pm = GuiConfig::getInstance()->getIcon("action_material_save");
-        toolBar->addAction(pm,"",this,SLOT(save()));
+        modeToolBar->addAction(pm,"",this,SLOT(save()));
 
-        guirep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
-    } else {
-        toolBar->show();
-    }
 }
 
 void ModeMaterial::changeMaterial()

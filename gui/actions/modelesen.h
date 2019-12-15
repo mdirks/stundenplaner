@@ -24,6 +24,7 @@ public:
     void setupMode();
     void tearDownMode();
     void close();
+    void load();
 
     void activateObject(PObject *o);
     void showForm(QWidget *w);
@@ -32,15 +33,21 @@ public:
     void addToTexte(lektuere *l);
     void deleteFromTexte(lektuere *l);
 
-    void setActiveText(lektuere *l);
+
+
     static ModeLesen* getInstance();
 
     void setActivePage(int i);
+
+private:
+    void doCommonSetup();
 
 public slots:
     void showNotizeditor();
     void showLernkarten();
     void showLernkartenDisplay();
+    void setActiveText(lektuere *l);
+
 
 private:
     static ModeLesen *instance;

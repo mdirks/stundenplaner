@@ -44,6 +44,7 @@ public:
 	EditRequestor *editRequestor;
     void addProperty(RepositoryProperty *rp);
     void addEditor(QWidget *w, QString title);
+    void addTab(QWidget *w, QString title);
 
 private:
     void doCommonSetup();

@@ -131,6 +131,8 @@ void TextPropertyViewer2::updatePreview()
     if(mPreviewBuilderThread->inputChanged(input)) {
         qDebug() << "input changed. Render...";
         //ui->statusBar->showMessage("Input changed. Render...");
+
+        //drop for the moment: slashes bug to time-consuming
         mPreviewBuilderThread->start();
   }
 }

@@ -86,6 +86,7 @@ void LatexOutput::writeHeader()
 	if(stream){
 		*stream << "\\documentclass[a4paper,10pt]{article} \n\
 \\usepackage{mdstd} \n\
+\\usepackage[utf8]{inputenc} \n\
 \n\
 \\begin{document} \n\n";
 	}

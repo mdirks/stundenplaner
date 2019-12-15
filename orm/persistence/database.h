@@ -42,6 +42,8 @@ public:
 	static Database* getInstance();
 	static void setDatabaseName(QString name);
 	static QString getDatabaseName();
+    static void close();
+    static bool changeTo(string db_name);
 
   	virtual void save(PObject* object) = 0;
 	virtual void save(PCollection* collection) = 0;
@@ -59,11 +61,12 @@ public:
 
 	virtual PObject* loadObjectById(int id)=0;
     	virtual void loadCollection(PCollection* col)=0;
-        virtual void close() = 0;
-	virtual bool isOpen()=0;
-        virtual void deleteObject(PObject *o) = 0;
+    virtual bool isOpen()=0;
+    virtual void deleteObject(PObject *o) = 0;
     virtual void executeSql(string sql) = 0;
-    virtual bool changeTo(string db_name) = 0;
+
+
+
     virtual string getCurrentVersion(string clName) = 0;
 
 
