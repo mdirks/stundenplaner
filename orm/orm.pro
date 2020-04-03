@@ -2,6 +2,7 @@ TEMPLATE = lib
 TARGET = orm
 DEPENDPATH += .
 CONFIG += staticlib
+CONFIG += c++11
 
 include(persistence/persistence.pro)
 include(mapping/mapping.pro)

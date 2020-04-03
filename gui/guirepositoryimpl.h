@@ -65,6 +65,7 @@ public:
     void showEditorForProperty(PObject *o,RepositoryProperty *rp);
     void showCentralWidget(QWidget *w);
     QWidget* getFormForObject(PObject *o,QWidget *parent=0, list<RepositoryProperty*> *properties=0);
+
     SitzplanMapView* getMapViewForSitzplan(sitzplan *sp);
     void setSelectedObject(PObject *o);
     void setFormWorkspace(QMdiArea *w);
@@ -136,6 +137,7 @@ private:
      stundenplan *activeplan;
      list<PObjectIconView*> *activeIconViews;
      GuiMode *activeMode;
+
 
 
 protected:

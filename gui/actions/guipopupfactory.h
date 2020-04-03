@@ -26,12 +26,15 @@
 #include "gui/mapviews/genericmapview.h"
 #include "gui/mapviews/weekmapview.h"
 #include "orm/persistence/pobject.h"
+
+#include "actionpopup.h"
+#include "pobjectaction.h"
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
 class GuiPopupFactory : public FormsPopupFactory, public MapviewsPopupFactory {
 public:
-    GuiPopupFactory(){};
+    GuiPopupFactory();
     ~GuiPopupFactory();
 
     static GuiPopupFactory* getInstance();
@@ -41,8 +44,16 @@ public:
     QMenu* getPopupFor(PObjectTable *table);
     QMenu* getPopupForGenericMapView(GenericMapView *mapView, QPoint pos);
     QMenu* getPopupForWeekMapView(WeekMapView *mapView, QPoint pos);
+    QMenu* getActionPopupForObject(PObject *o);
+
+private:
+    list<PObjectAction*>* getActionsForObject(PObject *o);
+
+
 private:
 	static GuiPopupFactory* instance;
+    map<QString,ActionPopup*> mapActionMenu;
+    map<QString,list<PObjectAction*>*> mapActions;
 
 };
 

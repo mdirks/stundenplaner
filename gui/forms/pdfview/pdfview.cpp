@@ -841,12 +841,14 @@ void PdfView::setPage(double pageNumber, PositionHandling keepPosition)
 	}
 	d->m_realPageNumber = pageNumber;
 
+    // had to add this hack for some situations ??? MD
+    if(pageNumber<0) pageNumber=0;
 	// calculate which are the visible pages and load them
 	int pageNumberStart = pageNumber;
 	int pageNumberEnd = pageNumberStart;
 
     // had to add this hack for some situations ??? MD
-    if(pageNumberStart>=d->m_popplerPageTopPositions.size()) pageNumberStart--;
+    while(pageNumberStart>=d->m_popplerPageTopPositions.size()) pageNumberStart--;
 
 	const double maxTopPosition = d->m_popplerPageTopPositions.at(pageNumberStart) + viewport()->height() / d->scaleFactorY(); // minimize calculations by scaling this instead of d->m_popplerPageTopPositions.at(pageNumberEnd) in the following for-loop
 	const int pageCount = d->m_popplerDocument->numPages();

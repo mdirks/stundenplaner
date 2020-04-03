@@ -129,7 +129,11 @@ GuiRepositoryImpl::GuiRepositoryImpl()
 	activeEditors = new list<PropertyEditor*>();
 	activeIconViews = new list<PObjectIconView*>();
     modelist = new list<GuiMode*>();
+
+
 	
+
+
 	listMappers = new list<AbstractMapper*>();
 	listMappers->push_back(ThemaItemmapper::getInstance());
 	listMappers->push_back(ThemaMapmapper::getInstance());
@@ -279,6 +283,11 @@ QWidget* GuiRepositoryImpl::getFormForObject(PObject *o, QWidget *parent, list<R
     form->setWindowIcon(GuiConfig::getInstance()->getIcon(className.c_str()));
 	return form;
 }
+
+
+
+
+
 
 SitzplanMapView* GuiRepositoryImpl::getMapViewForSitzplan(sitzplan *sp)
 {

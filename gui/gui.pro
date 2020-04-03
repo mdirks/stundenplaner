@@ -3,6 +3,7 @@ TARGET = gui
 
 CONFIG += qt
 CONFIG += staticlib
+CONFIG += c++11
 
 unix {
         CONFIG += link_pkgconfig
@@ -11,9 +12,13 @@ unix {
 
 SOURCES += \
     *.cpp \
+    actions/actionpopup.cpp \
+    actions/importtodocstoreaction.cpp \
     actions/modenotes.cpp \
+    actions/pobjectaction.cpp \
     base/myactionlist.cpp \
     dialogs/iconchooser.cpp \
+    dialogs/scanner.cpp \
     forms/testform.cpp \
     dialogs/collectionselectiondialog.cpp \
     forms/pobjectform.cpp \
@@ -43,8 +48,12 @@ SOURCES += $$system(ls forms/*.cpp)
 
 HEADERS += \
     *.h \
+    actions/actionpopup.h \
+    actions/importtodocstoreaction.h \
+    actions/pobjectaction.h \
     base/myactionlist.h \
     dialogs/iconchooser.h \
+    dialogs/scanner.h \
     forms/textpropertyviewer2.h \
     forms/textviewer.h \
     data/reihemap.h \
@@ -105,10 +114,10 @@ INCLUDEPATH += ..
 INCLUDEPATH += actions base data dialogs dragandrop forms mapviews
 #INCLUDEPATH += /usr/include/poppler/qt5
 
-unix {
+#unix {
         CONFIG += link_pkgconfig
         PKGCONFIG += poppler-qt5
-}
+#}
 
 #win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
 #else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend

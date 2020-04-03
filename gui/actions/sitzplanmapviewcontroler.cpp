@@ -246,3 +246,8 @@ list<fehlzeit*>* SitzplanMapViewControler::getFehlzeitenForSchueler()
     qDebug() << "SitzplanMapViewControler::getFehlzeitenForSchueler:  no schueler";
 	return 0;
 }
+
+void SitzplanMapViewControler::printSitzplan()
+{
+
+}

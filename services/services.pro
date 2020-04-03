@@ -1,6 +1,7 @@
 TEMPLATE = lib
 TARGET = services
 CONFIG += staticlib
+CONFIG += c++11
 SOURCES += \
     *.cpp \
     docstore/annexdocstore.cpp \

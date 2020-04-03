@@ -31,26 +31,47 @@ public:
     void load(list<PObject*> *olist);
     void setLayout(int ncol,int nrow);
 
+
 private:
     void reload();
 
 private:
-    PObjectDisplayItem* protoItem;
     list<PObject*> *olist;
+
+
+    PObjectDisplayItem* protoItem;
     int itemWidth,itemHeight;
     int numRow, numCol;
+
 };
 
 class PObjectDisplay : public QGraphicsView
 {
+Q_OBJECT
+
 public:
-    PObjectDisplay(QWidget *parent=0, list<PObject*> *olist=0,int ncol=-1,int nrow=-1);
+    PObjectDisplay(QWidget *parent=0, int ncol=-1,int nrow=-1,bool addable=false);
+    PObjectDisplay(list<PObject*> *olist, QWidget *parent=0, int ncol=-1,int nrow=-1,bool addable=false);
+    PObjectDisplay(string className,QWidget *parent=0,int ncol=-1,int nrow=-1,bool addable=false);
+    PObjectDisplay(AbstractMapper *mapper, QWidget *parent=0,int ncol=-1,int nrow=-1, bool addable=true);
+    PObjectDisplay(RepositoryProperty *prop, PObject *parentObject=0, QWidget *parent=0,int ncol=-1,int nrow=-1,bool addable=true);
+
     void setObjectList(list<PObject*> *olist);
+    void setParentObject(PObject *po);
+
     void setPrototype(PObjectDisplayItem *protoItem);
     void setLayout(int ncol,int nrow);
 
+public slots:
+    void addElement();
+
 private:
     list<PObject*> *olist;
+    RepositoryProperty *prop;
+    PObject *parentObject;
+    AbstractMapper *mapper;
+    string typeName;
+
     PObjectDisplayScene *scene;
 };
 
@@ -66,5 +87,7 @@ private:
     lernkarte *lk;
     LernkarteViewer *viewer;
 };
+
+
 
 #endif // POBJECTDISPLAY_H

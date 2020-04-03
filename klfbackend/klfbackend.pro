@@ -17,6 +17,7 @@ DEFINES +=KLF_VERSION_STRING=\\\"$$KLF_BACKEND_VERSION\\\" \
 TARGET = klfbackend
 TEMPLATE = lib
 CONFIG += staticlib
+CONFIG += c++11
 
 SOURCES += klfbackend.cpp \
     klfdebug.cpp \

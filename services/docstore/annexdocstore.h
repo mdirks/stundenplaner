@@ -3,24 +3,28 @@
 
 #include "docstore.h"
 #include <QString>
+#include <QFile>
 
 class AnnexDocStore : public DocStore
 {
 public:
-    AnnexDocStore();
+    AnnexDocStore(QString name, QString dir);
 
-    AnnexDocStore *createStore(QString name, QString dir);
-    void addRemote();
+    static AnnexDocStore *getAnnexDocStore(QString name, QString dir);
+    void addRemote(){};
 
-    void addDocument();
-    void removeDocument();
+    bool addDocument(material *m);
+    void removeDocument(QFile *file){};
 
-    void getDocument();
-    void dropDocument();
-    void moveDocument();
+    void getDocument(){};
+    void dropDocument(){};
+    void moveDocument(){};
+
+    //QString getDirectory();
 
 private:
     QString baseDir;
+    QString storeName;
 };
 
 #endif // ANNEXDOCSTORE_H

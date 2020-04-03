@@ -23,6 +23,7 @@
 #include "datamodel/stundenplaneintrag.h"
 #include "services/sstundenplan.h"
 #include "services/skalender.h"
+#include "services/docstore/docstore.h"
 #include "gui/base/guiconfig.h"
 
 
@@ -138,46 +139,11 @@ PObject* GuiCreateAction::create(string className)
 	if(className == "stundenplantemplateeintrag"){
 
         qDebug() << "Stundenplaneintraege should be added via addStundenplaneintrag";
-        /*
-        schuljahr *sj = GuiConfig::getInstance()->getActiveSchuljahr();
 
-		int tag = KInputDialog::getInteger("Tag","Tag der Stunde",1,1,7,1,10);
-		int stunde = KInputDialog::getInteger("StundenNr.", "Nr. der Stunde",1,1,10,1,10);
-		
-        klasse *kl;
-        if(sj){
-            kl=(klasse*) PObjectDialog::choosePObject((list<PObject*>*)sj->getKlassen());
-		} else {
-            kl=(klasse*) PObjectDialog::choosePObject(MappingControler::getInstance()->getMapperByName( "klasse" ) );
-		}
-        //klasse *kl = dynamic_cast<klasse*>(oo);
-
-
-        AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName("stundenplantemplateeintrag");
-
-        stundenplantemplateeintrag *te = (stundenplantemplateeintrag*) mapper->create();
-        te->setTag(tag);
-        te->setNrStunde(stunde);
-        te->setKlasse(kl);
-        te->setName(QString("%1 / %2").arg(tag).arg(stunde).toStdString());
-
-
-
-        o=te;
-        */
 	} else if (className == "WeekMap"){
 		QDate date = DateDialog::getDate();
 		WeekMap *wm = SKalender::getInstance()->getWeek(date);
-		
-		/*
-		date = wm->getStartDate();
-		SStundenplan* ss = SStundenplan::getInstance();
-		for(int i=0; i<6;i++){
-			schultag *st = ss->getSchultag(  date.addDays(i) );
-			wm->addItem( st );
-		}
-		*/
-		
+
 		o=wm;
 		
 	} else {
@@ -199,6 +165,7 @@ PObject* GuiCreateAction::create(string className)
 			material *m = dynamic_cast<material*>(o);
 			if(m){
                 m->setFileName(file.fileName().toStdString());
+                DocStore::getInstance()->addDocument(m);
 			}
         } else if (className=="lektuere"){
             QString filename = QFileDialog::getOpenFileName();
@@ -206,6 +173,7 @@ PObject* GuiCreateAction::create(string className)
             lektuere *l = dynamic_cast<lektuere*>(o);
             if(l){
                 l->setFileName(file.fileName().toStdString());
+                DocStore::getInstance()->addDocument(l);
             }
         }
 		/* 
