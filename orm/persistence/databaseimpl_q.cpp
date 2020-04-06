@@ -250,13 +250,18 @@ void DatabaseImpl_Q::save(PObject *object){
 	}		
 }
 
+/* Why is this needed ?
+    Seems to be an sql-problem: SQL treats \ as escape-ch meaning the following one should be
+    understood literally
+*/
 QString DatabaseImpl_Q::mask(QString qs)
 {
-    /* The masking of \ is required for MySql but not for SQLite it seems.
+   /* The masking of \ is required for MySql but not for SQLite it seems.
      * Moreover with MySql the additional \ is automatically removed upon insertion
      */
     //return qs.replace("\\","\\\\").replace("\"", "\\\"");
     return qs;
+
 }
 
 QString DatabaseImpl_Q::unmask(QString qs)
@@ -446,7 +451,7 @@ PCollection* DatabaseImpl_Q::createCollection(){
 
 
 
-PObject * DatabaseImpl_Q::load(string className, int id) {
+PObject * DatabaseImpl_Q:: load(string className, int id) {
 	 PObject *o=0;
 
      if(isOpen()){
