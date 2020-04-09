@@ -46,6 +46,7 @@ public slots:
 	void showFehlzeitenForSchueler();
 	void showStundenbewertungenForSchueler();
 	void writeFehlzeitenForSchueler();
+    void printSitzplan();
 
 
 protected:

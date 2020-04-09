@@ -111,24 +111,26 @@ void ModeNotes::setupMode()
 
         connect(viewSaetze,SIGNAL(currentChanged()),this,SLOT(changeSatz()));
         connect(viewNotizen,SIGNAL(currentChanged()),this,SLOT(changeNotiz()));
+        setModeWidget(splitter);
+
     }
-    setModeWidget(splitter);
     //sw->setCurrentWidget(splitter);
 
+
+    QPixmap pm = GuiConfig::getInstance()->getIcon("NotizSelector");
+    modeToolBar->addAction(pm," ",this,SLOT(showSelector()));
+    /*
     if(!toolBar){
         toolBar = new QToolBar(guirep->getMainFrame());
         QPixmap pm = GuiConfig::getInstance()->getIcon("NotizSelector");
         toolBar->addAction(pm," ",this,SLOT(showSelector()));
 
-        /*
-        pm = GuiConfig::getInstance()->getIcon("Lernkarten");
-        toolBar->addAction(pm,"",this,SLOT(showLernkarten()));
-        */
 
         guirep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
     } else {
         toolBar->show();
     }
+    */
 }
 
 void ModeNotes::tearDownMode()

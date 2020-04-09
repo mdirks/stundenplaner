@@ -50,15 +50,10 @@ PObjectTable::PObjectTable(string className, QWidget *parent, bool addable)
 		typeName=mapper->getClassName();
 	}
 	this->prop = 0;
-	//this->propList = 0;
-	this->controler=0;
-
-    //setSorting(true);
+    this->controler=0;
 
     doConnects();
-    //connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
-    //connect(this, SIGNAL(valueChanged(int,int)), this, SLOT(valueChanged(int,int)));
-    //connect((QTable*) this, SIGNAL(contextMenuRequested( int, int, const QPoint &)),(QTable*)this,SLOT(showContextMenu( int, int, const QPoint &)));
+
 }
 
 PObjectTable::PObjectTable(list<PObject*> *olist, QString type, QWidget *parent, bool addable) 
@@ -70,17 +65,13 @@ PObjectTable::PObjectTable(list<PObject*> *olist, QString type, QWidget *parent,
 	this->pmenu=0;
 	this->mapper = 0;
 	this->prop = 0;
-	//this->propList = 0;
-	this->controler=0;
+    this->controler=0;
 
     loadType(type.toStdString());
-    //setSorting(true);
 
     doConnects();
-    //connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
-    //connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(valueChanged(int,int)));
-    //connect((QTable*) this, SIGNAL(contextMenuRequested( int, int, const QPoint &)),(QTable*)this,SLOT(showContextMenu( int, int, const QPoint &)));
 }
+
 PObjectTable::~PObjectTable()
 {
 
@@ -103,27 +94,7 @@ PObjectTable::PObjectTable(AbstractMapper *mapper, QWidget *parent, bool addable
 		loadType(typeName);
 	}
 	
-	/*
-	if(mapper){
-		this->icon = GuiRepository::getInstance()->getIcon( mapper->getClassName() );
-		setIcon(icon);
-		typed = true;
-		clName = mapper->getClassName();
-		typedMimeType = QString("application/pobject/").append(clName);
-	}
-	*/
 
-    doConnects();
-    //connect(this, SIGNAL(currentChanged(int,int)), this, SLOT(currentChanged(int,int)));
-    //connect(this, SIGNAL(valueChanged(int,int)), this, SLOT(valueChanged(int,int)));
-    //connect((QTable*)this,SIGNAL(QTable::contextMenuRequested( int, int, const QPoint &)),this,SLOT(showContextMenu( int, int, const QPoint &)));
-	/*
-	setXMLFile("/home/mopp/dev/c++/1304/stundenplaner/stundeplanerui.rc");
-	connect(this,SIGNAL(doubleClicked(QIconViewItem *)), this, SLOT(activateItem(QIconViewItem *)));
-	connect(this,SIGNAL(dropped( QDropEvent *, const QValueList<QIconDragItem> & )), this, SLOT( handleDrop(QDropEvent *)));
-	connect(this,SIGNAL(itemRenamed(QIconViewItem * , const QString & )), this, SLOT( renameObject(QIconViewItem *, const QString &)) );
-	*/
-    //setSorting(true);
 }
 
 
@@ -134,7 +105,6 @@ PObjectTable::PObjectTable(RepositoryProperty *prop, PObject *parentObject, QWid
 	this->addable = addable;
 
 	this->pmenu = 0;	
-	//this->objectList = 0;
 	this->controler=0;
 	this->mapper = 0;
 	this->prop = prop;
@@ -143,12 +113,6 @@ PObjectTable::PObjectTable(RepositoryProperty *prop, PObject *parentObject, QWid
 	
 	loadType(prop->getType());
     doConnects();
-    //this->icon = GuiConfig::getInstance()->getIcon( prop );
-    //setIcon(icon);
-
-
-    //setColumnStretchable(map_prop.size()-1, true);
-    //setSorting(true);
 }
 
 
@@ -415,10 +379,6 @@ void PObjectTable::createRow(int row, PObject *o)
                 QPixmap i=GuiConfig::getInstance()->getIcon(prop->getType().c_str());
                 QString t=QString::fromStdString(prop->asString(o));
                 setItem(row,col,new QTableWidgetItem(i,t));
-                /*
-				PObjectLabel *label = new PObjectLabel(prop,o ,this,false,false);
-                setCellWidget(row,col,label);
-                */
 			} else if(prop -> isDate()){
 				DateEditor *dateEditor = new DateEditor(o,prop,this);
 				setCellWidget(row,col,dateEditor);
@@ -428,15 +388,7 @@ void PObjectTable::createRow(int row, PObject *o)
 			}
 		}
         setRowHeight( row, ROW_HEIGHT);
-
-
-        //adjustRow(row);
-    }/* else {
-        for(int i=0; i<map_prop.size();i++){
-            QTableWidgetItem *item=new QTableWidgetItem("+");
-            setItem(row,i,item);
-        }
-    }*/
+   }
 }
 
 

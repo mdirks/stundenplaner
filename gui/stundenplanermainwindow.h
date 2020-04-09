@@ -97,6 +97,7 @@ public:
       void slotViewStatusBar();
       void slotStatusMsg(const QString &text);
       void editIcons();
+      void slotEditDocStore();
   
   
       void keyPressEvent( QKeyEvent *k ) ;

@@ -1,6 +1,7 @@
 TEMPLATE = lib
 TARGET = datamodel
 CONFIG += staticlib
+CONFIG += c++11
 SOURCES += \
     *.cpp \
     notizsatz.cpp \

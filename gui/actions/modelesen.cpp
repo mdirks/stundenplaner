@@ -73,7 +73,11 @@ void ModeLesen::doCommonSetup()
         viewer = new TextViewer(splitter);
 
         browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
-        lkDisplay = new PObjectDisplay(sw,0,1,0);
+
+        re = Repository::getInstance()->getRepositoryEntry("lernkartensatz");
+        RepositoryProperty *kartenProp = re->getProperty("Lernkarten");
+        lkDisplay = new PObjectDisplay(kartenProp,0,sw,0,1,true);
+
         lkDisplay->setPrototype(new LernkarteDisplayItem());
         lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Stacked);
 
@@ -155,36 +159,10 @@ void ModeLesen::load()
 
 void ModeLesen::close()
 {
-
-    /*
-    GuiRepository *guirep=GuiRepository::getInstance();
-    QStackedWidget *sw=guirep->getCentralWidget();
-
-    if(splitter){
-        sw->removeWidget(splitter);
-        delete(splitter);
-        splitter=0;
-    }
-    if(toolBar){
-        toolBar->deleteLater();
-        toolBar=0;
-    }
-    */
-
     list_texte=0;
     activeText=0;
-    // viewer->setProvider(0);
-    //browser->setParentObject(0);
-    /*
-    delete viewer;
-    delete browser;
-    delete splitter;
-    */
     splitter=0;
     GuiMode::close();
-    //splitter->setVisible(false);
-
-    //toolBar = 0;
 }
 
 void ModeLesen::tearDownMode()
@@ -204,14 +182,6 @@ void ModeLesen::showNotizeditor()
     } else {
         browser->show();
     }
-    /*
-    if(stack->currentWidget()!=browser)
-    {
-        stack->setCurrentWidget(browser);
-    } else {
-        stack->setCurrentWidget(blankWidget);
-    }
-    */
 }
 
 void ModeLesen::showLernkarten()
@@ -221,15 +191,6 @@ void ModeLesen::showLernkarten()
     } else {
         lkViewer->show();
     }
-
-    /*
-    if(stack->currentWidget()!=lkViewer){
-        stack->setCurrentWidget(lkViewer);
-    } else {
-        stack->setCurrentWidget(blankWidget);
-    }
-    */
-
 }
 
 void ModeLesen::showLernkartenDisplay()
@@ -286,7 +247,8 @@ void ModeLesen::setActiveText(lektuere *l)
         t->add(l);
     }
     lkViewer->setLernkartensatz(lks);
-    lkDisplay->setObjectList((list<PObject*>*) lks->getLernkarten());
+    //lkDisplay->setObjectList((list<PObject*>*) lks->getLernkarten());
+    lkDisplay->setParentObject(l->getLernkartensatz());
 }
 
 AdaptingSplitter::AdaptingSplitter(QWidget *w1, QWidget *w2, QWidget *parent)

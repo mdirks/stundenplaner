@@ -99,22 +99,24 @@ private:
 
 private:
 	QString clName, typedMimeType;
+
+    list<PObject*> *olist;
 	RepositoryProperty *prop;
 	PObject *parentObject;
-    QMenu *pmenu;
-	AbstractMapper *mapper;
+    AbstractMapper *mapper;
+    string typeName;
+
 	QPixmap icon;
 	bool editing;
 
-	//list<RepositoryProperty*> *propList;
-	//list<PObject*> *objectList;
-	QString teststring;
+    QMenu *pmenu;
+
+
+    QString teststring;
 	PObjectTableControler *controler;
 	set<int> set_editing;
 	map<int,PObject*> map_obj;
-	list<PObject*> *olist;
-	map<int,RepositoryProperty*> map_prop;
-	string typeName;
+    map<int,RepositoryProperty*> map_prop;
 
 	bool addable;
     bool isloading;

@@ -2,17 +2,103 @@
 
 #include <QHBoxLayout>
 #include <QGraphicsProxyWidget>
+#include <QPushButton>
+
+#include "orm/mapping/mappingcontroler.h"
+#include "orm/transactions/transactions.h"
+#include "orm/repository/collectionproperty.h"
+
+#include "gui/actions/guicreateaction.h"
 
 //Jup funktioniert auch mobil
 
-PObjectDisplay::PObjectDisplay(QWidget *parent,list<PObject*> *olist,int ncol, int nrow)
+
+
+PObjectDisplay::PObjectDisplay(QWidget *parent,  int ncol, int nrow,bool addable)
     : QGraphicsView(parent)
 {
-    this->olist=olist;
+    olist=0;
+    prop=0;
+    parentObject=0;
+    mapper=0;
+
+    this->scene = new PObjectDisplayScene(olist,ncol,nrow);
+    if(addable){
+        QPushButton *addButton = new QPushButton("Add",this);
+        connect(addButton,SIGNAL(clicked()),this,SLOT(addElement()));
+        scene->addWidget(addButton);
+    }
+
+    setScene(scene);
+    //setSceneRect(0,0,0,0);
+}
+
+
+PObjectDisplay::PObjectDisplay(list<PObject*> *ol, QWidget *parent, int ncol, int nrow,bool addable)
+    : QGraphicsView(parent)
+{
+    olist=ol;
+    prop=0;
+    parentObject=0;
+    mapper=0;
+
     this->scene = new PObjectDisplayScene(olist,ncol,nrow);
 
     setScene(scene);
     //setSceneRect(0,0,0,0);
+}
+
+PObjectDisplay::PObjectDisplay(string className, QWidget *parent,int ncol,int nrow,bool addable)
+    :QGraphicsView(parent)
+{
+    olist=0;
+    prop=0;
+    parentObject=0;
+    mapper = MappingControler::getInstance()->getMapperByName(className);
+    if(mapper){
+        typeName=mapper->getClassName();
+        olist=mapper->find_gen();
+        this->scene = new PObjectDisplayScene(olist,ncol,nrow);
+        setScene(scene);
+    } else {
+        qDebug() << "PObjectDisplay : Failed to load, given className invalid";
+    }
+
+
+}
+
+PObjectDisplay::PObjectDisplay(AbstractMapper *mapper, QWidget *parent,int ncol,int nrow, bool addable)
+    :QGraphicsView(parent)
+{
+    olist=0;
+    prop=0;
+    parentObject=0;
+    if(mapper){
+        typeName=mapper->getClassName();
+        olist=mapper->find_gen();
+        this->scene = new PObjectDisplayScene(olist,ncol,nrow);
+        setScene(scene);
+    } else {
+        qDebug() << "PObjectDisplay : Failed to load, given className invalid";
+    }
+}
+PObjectDisplay::PObjectDisplay(RepositoryProperty *pr, PObject *po, QWidget *parent,int ncol,int nrow,bool addable)
+    :QGraphicsView(parent)
+{
+    olist=0;
+    mapper=0;
+    prop=pr;
+    parentObject=po;
+    if(prop && parentObject){
+        olist = prop->asCollection( parentObject );
+    }
+    this->scene = new PObjectDisplayScene(olist,ncol,nrow);
+    if(addable){
+                QPushButton *addButton = new QPushButton("Add",this);
+                connect(addButton,SIGNAL(clicked()),this,SLOT(addElement()));
+                scene->addWidget(addButton);
+    }
+    setScene(scene);
 }
 
 void PObjectDisplay::setPrototype(PObjectDisplayItem *protoItem)
@@ -27,6 +113,14 @@ void PObjectDisplay::setLayout(int ncol, int nrow)
     }
 }
 
+void PObjectDisplay::setParentObject(PObject *po)
+{
+    parentObject=po;
+    if(po && prop){
+        setObjectList(prop->asCollection( parentObject ));
+    }
+}
+
 void PObjectDisplay::setObjectList(list<PObject*> *olist)
 {
     scene->clear();
@@ -36,6 +130,22 @@ void PObjectDisplay::setObjectList(list<PObject*> *olist)
     }
 }
 
+
+void PObjectDisplay::addElement()
+{
+    Transaction *t=Transactions::getCurrentTransaction();
+    if(prop && parentObject){
+        t->add(parentObject);
+        //string className = prop->getType();
+        PObject *o = GuiCreateAction::getInstance()->create(prop->getType());
+        if(CollectionProperty *cp = dynamic_cast<CollectionProperty*>(prop)){
+            //table->startEdit();
+            cp->add(o,parentObject);
+
+        }
+        setParentObject(parentObject);
+    }
+}
 
 
 PObjectDisplayScene::PObjectDisplayScene(list<PObject*> *olist,int nr, int nc)

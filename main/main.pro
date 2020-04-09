@@ -10,10 +10,11 @@ OTHER_FILES += \
     stundenplanerui.rc
 
 CONFIG += qt
-unix {
+CONFIG += c++11
+#unix {
         CONFIG += link_pkgconfig
         PKGCONFIG += poppler-qt5
-}
+#}
 QT+=sql xml widgets printsupport
 #QT+=KIconThemes
 #QT+=KXmlGui

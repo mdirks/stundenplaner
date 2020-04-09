@@ -62,6 +62,7 @@
 #include "gui/data/sitzplanmap.h"
 #include "gui/data/sitzplanmapmapper.h"
 #include "gui/dialogs/iconchooser.h"
+#include "services/docstore/docstore.h"
 
 #define ID_STATUS_MSG 1
 
@@ -168,6 +169,10 @@ extraMenu->addAction(action);
 
 action=actionCollection()->addAction("editIcons", this);
 connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::editIcons);
+extraMenu->addAction(action);
+
+action=actionCollection()->addAction("editDocStore",this);
+connect(action,&QAction::triggered,this,&StundenPlanerMainWindow::slotEditDocStore);
 extraMenu->addAction(action);
 
 
@@ -651,6 +656,14 @@ void StundenPlanerMainWindow::editIcons()
     d->raise();
     d->activateWindow();
 
+}
+
+void StundenPlanerMainWindow::slotEditDocStore()
+{
+    DocStore *docStore =DocStore::getInstance();
+    QFileDialog *dialog = new QFileDialog();
+    dialog->setDirectory(docStore->getDirectory());
+    dialog->show();
 }
 
 void StundenPlanerMainWindow::slotStatusMsg(const QString &text)

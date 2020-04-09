@@ -24,6 +24,7 @@
 #include <QtCore/QPointer>
 #include <QtCore/QProcess>
 #include <QComboBox>
+#include <QPainter>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QPrintDialog>

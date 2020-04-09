@@ -29,6 +29,7 @@
 #include "orm/repository/repositoryproperty.h"
 #include "orm/repository/repositoryentry.h"
 
+#include "importtodocstoreaction.h"
 
 #include <QAction>
 #include <QDebug>
@@ -42,6 +43,13 @@ GuiPopupFactory* GuiPopupFactory::getInstance()
 		instance = new GuiPopupFactory();
 	}	
 	return instance;
+}
+
+GuiPopupFactory::GuiPopupFactory()
+{
+    list<PObjectAction*> *la = new list<PObjectAction*>();
+    la->push_back(new ImportToDocStoreAction());
+    mapActions[QString("lektuere")]=la;
 }
 
 QMenu* GuiPopupFactory::getPopupForWeekMapView(WeekMapView *mapView, QPoint pos)
@@ -172,9 +180,65 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
 			PObject *o = item->getObject();
 			if(o){
                 pmenu->addMenu(new DatenPopup(o,iconView));
+                QMenu *am = getActionPopupForObject(o);
+                if(am){
+                    pmenu->addMenu(am);
+                }
 			}
 		}
 
 
 		return pmenu;
+}
+
+QMenu* GuiPopupFactory::getActionPopupForObject(PObject *o)
+{
+
+    if(o==0)
+    {
+        qWarning("GuiRepositoryImp::getFormForObject: Null objet given given");
+        return 0;
+    }
+
+
+    ActionPopup *am=0;
+    QString className(o->getPersistenceObject()->getClassName().c_str());
+
+    map<QString,ActionPopup*>::iterator it = mapActionMenu.find(className);
+    if(it != mapActionMenu.end()){
+        am = it->second;
+        if(am){
+            am->setPObject(o);
+        }
+    } else {
+            list<PObjectAction*> *la=getActionsForObject(o);
+            if(la){
+                am = new ActionPopup();
+                for(list<PObjectAction*>::iterator it=la->begin();it!=la->end();it++){
+                    am->addAction(*it);
+                }
+                am->setPObject(o);
+            }
+    }
+    return am;
+}
+
+list<PObjectAction*>* GuiPopupFactory::getActionsForObject(PObject *o)
+{
+    if(o==0)
+    {
+        qWarning("GuiRepositoryImp::getFormForObject: Null objet given given");
+        return 0;
+    }
+
+
+
+    QString className = QString(o->getPersistenceObject()->getClassName().c_str());
+
+    list<PObjectAction*> *al=0;
+    map<QString,list<PObjectAction*>*>::iterator it = mapActions.find(className);
+    if(it != mapActions.end()){
+        al = it->second;
+    }
+    return al;
 }

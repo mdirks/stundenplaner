@@ -50,13 +50,11 @@ void GuiControler::stopEdit()
     mymutex.lock();
     if(activeEditors){
         for(list<PropertyEditor*>::iterator it = activeEditors->begin(); it != activeEditors->end(); it++){
-            if((*it)){
-                (*it)->stopEdit();
-            } else {
-                qDebug() << QString("GuiControler::stopEdit : !!! Invalid editor in editor-list");
-		}
-	}
-	activeEditors->clear();
+                qDebug() << "Trying to remove editor";
+                //(*it)->stopEdit();
+        }
+        activeEditors->clear();
+
    }
    mymutex.unlock();
 }

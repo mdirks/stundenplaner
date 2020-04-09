@@ -4,6 +4,8 @@
 #include "gui/forms/pobjectdisplay.h"
 #include "orm/mapping/mappingcontroler.h"
 #include "gui/forms/pobjectlistprovider.h"
+#include "orm/repository/repositoryproperty.h"
+#include "orm/repository/repository.h"
 
 #include <QStackedWidget>
 #include <QHBoxLayout>
@@ -36,14 +38,16 @@ void ModeLernen::setupMode()
     GuiRepository *guirep=GuiRepository::getInstance();
     QStackedWidget *sw=guirep->getCentralWidget();
 
-    guirep->setActiveMode(this);
+    //guirep->setActiveMode(this);
     if(!mainWidget){
         mainWidget = new QWidget(sw);
 
         PObjectListProvider *prov=new MapperListProvider("lernkartensatz");
         combo=new PObjectComboBox(prov,mainWidget);
 
-        objectDisplay = new PObjectDisplay(mainWidget);
+        RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry("lernkartensatz");
+        RepositoryProperty *rp = re->getProperty("Lernkarten");
+        objectDisplay = new PObjectDisplay(rp,0,mainWidget);
         objectDisplay->setPrototype(new LernkarteDisplayItem());
         editor = new PObjectIconView(mainWidget);
         editor->setMinimumWidth(500);
@@ -59,12 +63,12 @@ void ModeLernen::setupMode()
         sw->addWidget(mainWidget);
 
         connect(combo,SIGNAL(activated(int)),this,SLOT(newListSelected(int)));
+        setModeWidget(mainWidget);
     }
-    sw->setCurrentWidget(mainWidget);
+    //sw->setCurrentWidget(mainWidget);
 
 
 
-        modeToolBar = new QToolBar(guirep->getMainFrame());
         QPixmap pm = GuiConfig::getInstance()->getIcon("Karteneditor");
         modeToolBar->addAction(pm,"",this,SLOT(showKartenEditor()));
 
@@ -96,7 +100,8 @@ void ModeLernen::newListSelected(int i)
 {
     PObject *o=combo->getObject(i);
     if(lernkartensatz *lks = dynamic_cast<lernkartensatz*>(o)){
-        objectDisplay->setObjectList((list<PObject*>*) lks->getLernkarten());
+        //objectDisplay->setObjectList((list<PObject*>*) lks->getLernkarten());
+        objectDisplay->setParentObject(lks);
         editor->setObjectListProvider(new PoLListProvider( (list<PObject*>*) lks->getLernkarten(), "lernkarte" ));
     }
 }
