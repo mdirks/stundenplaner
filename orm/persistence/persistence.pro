@@ -6,7 +6,9 @@ HEADERS += \
     persistence/database.h \
     persistence/abstractpersistenceclass.h \
     persistence/variant.h \
-    persistence/pobject.h
+    persistence/pobject.h \
+    persistence/ptree.h \
+    persistence/ptreepersistence.h
 
 SOURCES += \
     persistence/pobject.cpp \
@@ -16,7 +18,9 @@ SOURCES += \
     persistence/databaseimpl_q.cpp \
     persistence/database.cpp \
     persistence/abstractpersistenceclass.cpp \
-    persistence/variant.cpp
+    persistence/variant.cpp \
+    persistence/ptree.cpp \
+    persistence/ptreepersistence.cpp
 
 INCLUDEPATH += /usr/include/KDE
 CONFIG += qt

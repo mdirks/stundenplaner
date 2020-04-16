@@ -25,6 +25,7 @@
 
 #include "pobject.h"
 #include "pcollection.h"
+#include "ptree.h"
 #include "persistenceclass.h"
 #include "qstring.h"
 
@@ -47,6 +48,7 @@ public:
 
   	virtual void save(PObject* object) = 0;
 	virtual void save(PCollection* collection) = 0;
+    virtual void save(PTree* tr)=0;
 
   	//virtual PObject* create(string className) = 0;
 	virtual PObject* create(PersistenceClass *persObj)=0;
@@ -60,7 +62,10 @@ public:
 	virtual void registerVersion(PersistenceClass *po, string version)=0;
 
 	virtual PObject* loadObjectById(int id)=0;
-    	virtual void loadCollection(PCollection* col)=0;
+
+    virtual void loadCollection(PCollection* col)=0;
+    virtual void loadTree(PTree *tr)=0;
+
     virtual bool isOpen()=0;
     virtual void deleteObject(PObject *o) = 0;
     virtual void executeSql(string sql) = 0;

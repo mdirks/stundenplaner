@@ -308,6 +308,46 @@ void DatabaseImpl_Q::save(PCollection* collection)
 	}
 }
 
+void DatabaseImpl_Q::save(PTree* tree)
+{
+    qDebug() << QString("Saving collection %1").arg(collection->getID());
+
+    if(isOpen()){
+        //PersistenceClass *persistenceObject = collection.getPersistenceObject();
+        int collId = collection->getID();
+        string name = collection->getName();
+
+        string qs = "update collections set name=\"" + name + "\" where id=" + to_string(collId) + ";";
+        QSqlQuery q(qs.c_str());
+
+        for(PCollection::iterator it=collection->begin(); it!=collection->end(); it++)
+        {
+            PObject *o = *it;
+            int id = o->getID();
+
+            QString select_string("select * from collections_contents where collid=%1 and id=%2;");
+            QSqlQuery qq(select_string.arg(collId).arg(id));
+            if(qq.size()==0){
+                qDebug("Insert into collections_contents ...");
+                QString insert_string = QString("insert into collections_contents values (%1,%2);");
+                QSqlQuery qqq(insert_string.arg(collId).arg(id));
+                if(qqq.isActive()){
+                    qDebug(" OK !! ");
+                } else {
+                    qDebug() << QString(" Error !! > ").append(qqq.lastQuery());
+                }
+            } else if(qq.size() > 1){
+                qWarning() << QString("Dublicated entries for collection %1 in collections_contents").arg(collId);
+            } else {
+                qDebug() << QString("Query on collectons_contents returned %1 elements").arg(qq.size());
+            }
+
+            save(o);
+        }
+    }
+}
+
+
 
 string DatabaseImpl_Q::getTableName(PersistenceClass *persOb){
 	 return persOb->getTableName();
@@ -417,36 +457,6 @@ PCollection* DatabaseImpl_Q::createCollection(){
 		}
 	}	
 	return col;
-	/*
-	PersistenceClass *persObj  = PCollectionPersistence::getInstance();
-	QString className = persObj->getClassName();
-	QString tableName = getTableName(persObj);
-	
-	QString insert_query_string("insert into %1 (id) values ( %2 );");
-	
-	PCollection *col = (PCollection*) PCollectionPersistence::getInstance()->createNewObject();
-	int id = getNewId();
-	col->setID(id);
-	col->setName("New collection");
-	
-	QSqlQuery q(insert_query_string.arg(getTableName(persObj)).arg(id));
-        if(q.isActive()){
-          	 qDebug(QString("Added object: ") + q.lastQuery());
-	} else {
- 		 qWarning(QString("Query failed: ") + q.lastQuery());
-	}
-	
-	QString idtoname_query_string("insert into idtoname values (%1,\"%2\");");
-	QSqlQuery q2(idtoname_query_string.arg(id).arg(className));
-	if(!q2.isActive()){
-		qWarning(QString("Failed to insert into idtoname > ").append(q2.lastQuery()));
-	} else {   
-		qDebug(QString("Inserted %1,%2  into idtoname").arg(id).arg(className));
-	}
-	
-	save(col);
-	*/
-	
 }
 
 
@@ -670,7 +680,24 @@ void DatabaseImpl_Q::loadCollection(PCollection *col)
 }
 
 
-
+void DatabaseImpl_Q::loadTree(PTree *tr)
+{
+       if(isOpen()){
+    int id = tr->getID();
+    int idd=0;
+    QSqlQuery q1(QString("select * from collections_contents where collid=%1;").arg(id));
+    if(q1.isActive()){
+            while(q1.next()){
+                    idd=q1.value(1).toInt();
+                    PObject *o=loadObjectById(idd);
+                    col->push_back(o);
+                    qDebug() << QString("Added object to collection: id=").append(idd);
+    }
+    }else {
+        qWarning() << QString("Collection %1 empty !?").arg(id);
+    }
+       }
+}
 
 /*!
     \fn DatabaseImpl_Q::loadObjectById(int id)

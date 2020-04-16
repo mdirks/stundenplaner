@@ -46,6 +46,7 @@ public:
 
 	void save(PObject* object);
 	void save(PCollection* collection);
+    void save(PTree *tr);
 	void deleteObject(PObject *object);
 	
   	 PObject* create(string className);
@@ -61,6 +62,8 @@ public:
     	void registerPersistentClass(PersistenceClass *po,string version=string());
 
     void loadCollection(PCollection *col);
+    void loadTree(PTree *tr);
+
     PObject* loadObjectById(int id);
     bool changeTo(string db_name);
     void executeSql(string sql);
