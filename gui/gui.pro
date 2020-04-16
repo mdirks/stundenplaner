@@ -179,3 +179,6 @@ DISTFILES += \
     icons/Favorites/icons8-uhr-50.png \
     icons/Favorites/icons8-zuhause-100.png \
     icons/Favorites/icons8-zuhause-50.png
+
+RESOURCES += \
+    icons.qrc
