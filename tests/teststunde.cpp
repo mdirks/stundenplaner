@@ -1,5 +1,6 @@
 
 #include "teststunde.h"
+#include "testrunner.h"
 #include "services/actions/createaction.h"
 #include "datamodel/stunde.h"
 #include "orm/persistence/pobject.h"
@@ -58,7 +59,8 @@ void TestStunde::run()
 
 	int id = st->getID();
 
-	Database::getInstance()->close();
+    TestRunner::restartDatabase();
+
 	PObject *o=Database::getInstance()->loadObjectById(id);
 	if(!o){fail("could not retrieve object from database");return;}
 	st = dynamic_cast<stunde*>(o);

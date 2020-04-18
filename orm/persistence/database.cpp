@@ -17,6 +17,8 @@
 
 #include "database.h"
 #include "databaseimpl_q.h"
+#include "pcollectionpersistence.h"
+#include "ptreepersistence.h"
 
 #include <QStringList>
 
@@ -28,8 +30,15 @@ Database* Database::getInstance(){
  	if(!instance)
 	{
 		instance = new DatabaseImpl_Q();
+        instance->registerBasicTypes();
 	}
 	return instance;
+}
+
+void Database::registerBasicTypes()
+{
+    registerPersistentClass(PCollectionPersistence::getInstance(),"1.0");
+    registerPersistentClass(PTreePersistence::getInstance(), "1.0");
 }
 
 void Database::setDatabaseName(QString name){

@@ -44,6 +44,7 @@ public:
     
 private:
 	PCollectionPersistence();    
+    void checkTable();
 
 
 private:

@@ -47,15 +47,6 @@ DatabaseImpl_Q::~DatabaseImpl_Q(){
 }
 
 QSqlDatabase DatabaseImpl_Q::getConnection(){
-	/*	
-      QStringList list = QSqlDatabase::drivers();
-    	QStringList::Iterator it = list.begin();
-    	while( it != list.end() ) {
-        	qDebug( *it );
-       	 	++it;
-   	 }
-	*/
-
     if( ! connection.isOpen() ){
         if( ! connection.isValid()){
             if(Database::databasename == ""){
@@ -310,40 +301,24 @@ void DatabaseImpl_Q::save(PCollection* collection)
 
 void DatabaseImpl_Q::save(PTree* tree)
 {
-    qDebug() << QString("Saving collection %1").arg(collection->getID());
+    qDebug() << QString("Saving ptree %1").arg(tree->getID());
 
     if(isOpen()){
         //PersistenceClass *persistenceObject = collection.getPersistenceObject();
-        int collId = collection->getID();
-        string name = collection->getName();
+        int collId = tree->getID();
+        string name = tree->getName();
+        int pId = 0;
+        int cId=0;
 
-        string qs = "update collections set name=\"" + name + "\" where id=" + to_string(collId) + ";";
-        QSqlQuery q(qs.c_str());
-
-        for(PCollection::iterator it=collection->begin(); it!=collection->end(); it++)
-        {
-            PObject *o = *it;
-            int id = o->getID();
-
-            QString select_string("select * from collections_contents where collid=%1 and id=%2;");
-            QSqlQuery qq(select_string.arg(collId).arg(id));
-            if(qq.size()==0){
-                qDebug("Insert into collections_contents ...");
-                QString insert_string = QString("insert into collections_contents values (%1,%2);");
-                QSqlQuery qqq(insert_string.arg(collId).arg(id));
-                if(qqq.isActive()){
-                    qDebug(" OK !! ");
-                } else {
-                    qDebug() << QString(" Error !! > ").append(qqq.lastQuery());
-                }
-            } else if(qq.size() > 1){
-                qWarning() << QString("Dublicated entries for collection %1 in collections_contents").arg(collId);
-            } else {
-                qDebug() << QString("Query on collectons_contents returned %1 elements").arg(qq.size());
-            }
-
-            save(o);
+        if(PTree *pt = tree->getParent()){
+                pId = pt->getID();
         }
+        if(PCollection *cc = tree->getChildren()){
+            save(cc);
+            cId = tree->getChildren()->getID();
+        }
+        string qs = "update trees set (name,parent,children) =\"" + name + "\"," + to_string(pId) + "," + to_string(cId) +") where id=" + to_string(collId) + ";";
+        QSqlQuery q(qs.c_str());
     }
 }
 
@@ -447,17 +422,7 @@ PObject* DatabaseImpl_Q::create(PersistenceClass *persObj){
 }
 
 
-PCollection* DatabaseImpl_Q::createCollection(){
-	PCollection *col = 0;
-    if(isOpen()){
-		PObject *ob =  create(PCollectionPersistence::getInstance()->getClassName());
-		PCollection *col = dynamic_cast<PCollection*>(ob);
-		if(!col){
-            qWarning() << "Failed to create Collection !!";
-		}
-	}	
-	return col;
-}
+
 
 
 
@@ -593,7 +558,31 @@ int DatabaseImpl_Q::getNewId(){
 }
 
 
+void DatabaseImpl_Q::createTable(QString tableName, QStringList columns)
+{
+     QString qs = QString("show tables like '%1';").arg(tableName);
+     QSqlQuery query0(qs);
+     if(query0.isActive() && query0.next()){
+         qDebug() << QString("Table %1 already exists, not creating!").arg(tableName);
+         return;
+     }
 
+     qs = QString("create table %1 ( ").arg(tableName);
+
+
+     for(int i=0; i< columns.size(); i++)
+     {
+         qs = qs.append(",").append(columns.at(i));
+     }
+     qs = qs.append(" );");
+
+     qDebug() << QString("Creating table with > ").append(qs);
+     QSqlQuery query(qs);
+
+     //tables.push_back(tname);
+     qDebug() << QString("Done create");
+
+}
 
 
 
@@ -680,24 +669,7 @@ void DatabaseImpl_Q::loadCollection(PCollection *col)
 }
 
 
-void DatabaseImpl_Q::loadTree(PTree *tr)
-{
-       if(isOpen()){
-    int id = tr->getID();
-    int idd=0;
-    QSqlQuery q1(QString("select * from collections_contents where collid=%1;").arg(id));
-    if(q1.isActive()){
-            while(q1.next()){
-                    idd=q1.value(1).toInt();
-                    PObject *o=loadObjectById(idd);
-                    col->push_back(o);
-                    qDebug() << QString("Added object to collection: id=").append(idd);
-    }
-    }else {
-        qWarning() << QString("Collection %1 empty !?").arg(id);
-    }
-       }
-}
+
 
 /*!
     \fn DatabaseImpl_Q::loadObjectById(int id)

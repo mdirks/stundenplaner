@@ -19,6 +19,7 @@
 #include "gui/forms/pobjectdialog.h"
 #include "services/utils/datedialog.h"
 #include "orm/mapping/mappingcontroler.h"
+#include "orm/persistence/database.h"
 #include "datamodel/stundenplaneintrag.h"
 #include "services/sstundenplan.h"
 #include "services/skalender.h"
@@ -120,10 +121,10 @@ PObject* CreateAction::create(string className)
 		AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName(className);
 		if(mapper){
 			o = mapper->create();
-		} else {
+        } else { // not a mapped class
             qDebug() << QString("Could not get mapper for %1").arg(className.c_str());
-			return 0;
-		}
+            o=Database::getInstance()->create(className);
+       }
 
 		if(className=="material"){
             QString filename = QFileDialog::getOpenFileName();

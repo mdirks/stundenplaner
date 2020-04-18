@@ -27,6 +27,7 @@ public:
 	void run();
     QTableWidgetItem *getMessageItem();
 
+
 private:
 	TestCase *test;
     QTableWidgetItem *messageItem;
@@ -54,11 +55,11 @@ private:
 
 class TestRunner : public QWidget {
 public:
-    TestRunner();
+    TestRunner(QString dbName);
     ~TestRunner();
 
 	void testFailed(QString messages);
-
+    static void restartDatabase();
 
 
 protected:

@@ -38,6 +38,7 @@ public:
    */	
     list<AbstractMapper*>* getPersistentClasses();
     //list<PObject*>* getAll(string className);
+    void registerTypesWithDatabase();
    
    /** \brief
 	Given a class name find the corresponding mapper

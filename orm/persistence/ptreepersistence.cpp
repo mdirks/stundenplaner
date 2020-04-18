@@ -11,6 +11,7 @@
 //
 #include "ptreepersistence.h"
 #include "database.h"
+//#include "ptree.h"
 
 PTreePersistence* PTreePersistence::instance = 0;
 
@@ -26,11 +27,15 @@ PTreePersistence* PTreePersistence::getInstance()
 PTreePersistence::PTreePersistence()
  : PersistenceClass()
 {
-    columns = new string[1];
+    columns = new string[3];
     columns[0] = "name";
+    columns[1] = "pid";
+    columns[2] = "cid";
 
-    columnTypes = new string[1];
+    columnTypes = new string[3];
     columnTypes[0] = "char(20)";
+    columnTypes[1] = "int";
+    columnTypes[2] = "int";
 }
 
 
@@ -48,7 +53,7 @@ string PTreePersistence::getClassName()
     return string("PTree");
 }
 
-string* TreePersistence::getColumnTypes()
+string* PTreePersistence::getColumnTypes()
 {
     return columnTypes;
 }
@@ -60,8 +65,22 @@ string* PTreePersistence::getColumns()
 
 string* PTreePersistence::getValues(PObject* realSubject)
 {
-    string* values = new string[1];
-    values[0] = realSubject->getName();
+    string* values = new string[3];
+
+    PTree *tr = (PTree*)realSubject;
+    if(tr){
+        values[0] = realSubject->getName();
+        values[1] = "0";
+        if(PTree *pt = tr->getParent()){
+            values[2] = pt->getID();
+        }
+        values[2] = "0";
+        if(PCollection *cc = tr->getChildren()){
+                values[1] = cc->getID();
+        }
+
+
+    }
 
     return values;
 }
@@ -90,5 +109,11 @@ void PTreePersistence::init(PObject* o, Variant *res)
 {
     qDebug("Init PTree ...");
     PTree *tr = (PTree*) o;
-    Database::getInstance()->loadTree(tr);
+    int pId = res[0].asint();
+    PTree *ptr = (PTree*) Database::getInstance()->loadObjectById(pId);
+    tr->setParent(ptr);
+    int cId = res[1].asint();
+    PCollection *cc = (PCollection*) Database::getInstance()->loadObjectById(cId);
+    tr->setChildren(cc);
+
 }

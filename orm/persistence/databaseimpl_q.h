@@ -51,7 +51,9 @@ public:
 	
   	 PObject* create(string className);
 	 PObject* create(PersistenceClass *persObj);
-	 virtual PCollection* createCollection();
+
+     void createTable(QString tableName, QStringList columns);
+     //virtual PCollection* createCollection();
    
    	//list<PObject*>* getAll(string className);
 	list<PObject*>* getAll(PersistenceClass *persObj);
@@ -62,7 +64,6 @@ public:
     	void registerPersistentClass(PersistenceClass *po,string version=string());
 
     void loadCollection(PCollection *col);
-    void loadTree(PTree *tr);
 
     PObject* loadObjectById(int id);
     bool changeTo(string db_name);

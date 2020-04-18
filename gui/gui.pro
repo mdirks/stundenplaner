@@ -95,46 +95,20 @@ HEADERS += $$system(ls forms/*.h)
 
 message(The projects sources: $$SOURCES)
 
-#include(mapviews/mapviews.pro)
-#include(actions/actions.pro)
-#include(base/base.pro)
-#include(data/data.pro)
-#include(dialogs/dialogs.pro)
-#include(draganddrop/draganddrop.pro)
-#include(forms/forms.pro)
-
-#SUBDIRS = mapviews actions base data dialogs draganddrop forms
-
-
 DEPENDPATH += .
 INCLUDEPATH += .
 INCLUDEPATH += ..
-#INCLUDEPATH += /usr/include/KF5
-#INCLUDEPATH += /usr/include/KF5/KConfigCore
 INCLUDEPATH += actions base data dialogs dragandrop forms mapviews
-#INCLUDEPATH += /usr/include/poppler/qt5
 
-#unix {
-        CONFIG += link_pkgconfig
-        PKGCONFIG += poppler-qt5
-#}
+CONFIG += link_pkgconfig
+PKGCONFIG += poppler-qt5
 
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-KLFBackend/ -lklfbackend
-#else:unix: LIBS += -L$$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/build-KLFBackend/ -lKLFBackend
 
-#INCLUDEPATH += $$PWD/../../bruceoutdoors-tiny-tex-bed47a5e2a7a/klfbackend
 message($$INCLUDEPATH)
 
-#message($$LIBS)
 
 
 QT+=sql xml widgets printsupport
-#QT+=KXmlGui
-#QT+=KIOFileWidgets KIOWidgets KNTLM
-#QT+=KIconThemes
-#QT+=KParts
-#QT+=KIOCore
 
 
 

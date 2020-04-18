@@ -7,59 +7,24 @@ TARGET = testrunner
 DEPENDPATH += .
 INCLUDEPATH += .
 INCLUDEPATH += ..
-INCLUDEPATH += ../ /usr/include/KDE
+
 
 CONFIG += qt
-QT+=sql
+QT+=sql core xml widgets printsupport
 
 
 # Input
-HEADERS += testcase.h \
-           testindirectrepositoryproperty.h \
-           testklasse.h \
-           testobserver.h \
-           testqdatetime.h \
-           testreadcsvlistaction.h \
-           testrunner.h \
-           testsitzplan.h \
-           testskalender.h \
-           testsstundenplan.h \
-           teststunde.h \
-           teststundenplantemplateeintrag.h \
-    testlektuere.h
-SOURCES += testcase.cpp \
-           testindirectrepositoryproperty.cpp \
-           testklasse.cpp \
-           testobserver.cpp \
-           testqdatetime.cpp \
-           testreadcsvlistaction.cpp \
-           testrunner.cpp \
-           testsitzplan.cpp \
-           testskalender.cpp \
-           testsstundenplan.cpp \
-           teststunde.cpp \
-           teststundenplantemplateeintrag.cpp \
-    testlektuere.cpp
+SOURCES += $$system(ls *.cpp)
+
+HEADERS += $$system(ls *.h)
 
 
-LIBS     += -lkdeui
-LIBS     += -lkdecore
-LIBS     += -lkio
-LIBS     += -lkparts
-LIBS     += -lpoppler-qt4
-LIBS     += -lpdfview
+LIBS     +=  -lgui -lservices  -ldatamodel  -lklfbackend -lorm
+LIBS     += -lpoppler-qt5
 
-#release {
-#LIBS     += -L/home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Release/gui -lgui
-#LIBS     += -L/home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Release/orm -lorm
-#LIBS     += -L/home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Release/datamodel -ldatamodel
-#LIBS     += -L/home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Release/services -lservices
-#}
-
-debug {
-LIBS     += -L/home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Debug/gui -lgui
-LIBS     += -L/home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Debug/orm -lorm
-LIBS     += -L/home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Debug/datamodel -ldatamodel
-LIBS     += -L/home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Debug/services -lservices
-}
-LIBS     += -L/usr/lib
+QMAKE_LIBDIR += -L/usr/lib
+QMAKE_LIBDIR += $$OUT_PWD/../gui
+QMAKE_LIBDIR += $$OUT_PWD/../orm
+QMAKE_LIBDIR += $$OUT_PWD/../datamodel
+QMAKE_LIBDIR += $$OUT_PWD/../services
+QMAKE_LIBDIR += $$OUT_PWD/../klfbackend

@@ -10,10 +10,12 @@ public:
     PTree();
 
     void setParent(PTree *tr);
+    PTree* getParent();
 
     void addToChildren(PTree *tr);
     void deleteFromChildren(PTree *tr);
     PCollection* getChildren();
+    void setChildren(PCollection *cc);
 
 private:
     PTree *parent;

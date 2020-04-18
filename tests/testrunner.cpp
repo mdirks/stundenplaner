@@ -11,20 +11,26 @@
 #include "testskalender.h"
 #include "testreadcsvlistaction.h"
 #include "testindirectrepositoryproperty.h"
+#include "testpcollection.h"
 
 #include "orm/persistence/database.h"
-
+#include "orm/mapping/mappingcontroler.h"
+#include "datamodel/datamodelrepository.h"
 #include <QApplication>
 #include <QLayout>
 #include <QPushButton>
+#include <QString>
 
 int main(int argc, char** argv){
-	QApplication a(argc,argv);
+    QApplication app(argc,argv);
+    QCoreApplication::setApplicationName("Testrunner");
+    QCoreApplication::setOrganizationName("MD");
 
-	TestRunner *runner=new TestRunner();
+    QString dbName=app.arguments().at(1);
+    TestRunner *runner=new TestRunner(dbName);
     //a.setMainWidget(runner);
 
-	a.exec();
+    app.exec();
 }
 
 
@@ -36,7 +42,7 @@ int main(int argc, char** argv){
 * ----------------------------------------------------------------------*/
 
 
-TestRunner::TestRunner() : QWidget()
+TestRunner::TestRunner(QString dbName) : QWidget()
 {
 	QBoxLayout *layout = new QVBoxLayout(this);
 
@@ -52,11 +58,27 @@ TestRunner::TestRunner() : QWidget()
 	//setCentralWidget(centralWidget);
 	testView->show();
 
-	Database::setDatabaseName("test_orx");
+    //Database::setDatabaseName(dbName);
+
+    MappingControler::setDatabaseName(dbName);
+    MappingControler::getInstance();
+
+    //GuiConfig::getInstance()->setDatabaseName(dbName);
+
+
+    DataModelRepository::getInstance();
+    //GuiRepository *rp=GuiRepository::getInstance();
+    //rp->initGui();
 
 	init_tests();		
 	
 	show();
+}
+
+void TestRunner::restartDatabase()
+{
+    Database::getInstance()->close();
+    DataModelRepository::getInstance()->registerTypesWithDatabase();
 }
 
 void TestRunner::init_tests()
@@ -67,6 +89,7 @@ void TestRunner::init_tests()
     listTests->push_back( new TestStunde() );
     listTests->push_back( new TestLektuere() );
     listTests->push_back( new TestQDateTime() );
+    listTests->push_back( new TestPCollection() );
 
     /*
     listTests->push_back( new TestSStundenplan() );

@@ -19,8 +19,24 @@ PCollectionPersistence* PCollectionPersistence::getInstance()
 	if(!instance)
 	{
 		instance = new PCollectionPersistence();
+        instance->checkTable();
 	}
 	return instance;
+}
+
+void PCollectionPersistence::checkTable()
+{
+    QStringList columns;
+    //columns << "id int" << "name varchar(30)";
+    string *cols = getColumns();
+    string *coltypes = getColumnTypes();
+
+    int colcount = getColumnCount();
+    for(int i=0;i<colcount;i++){
+               QString col = QString("%1 %2").arg(cols[i].c_str()).arg(coltypes[i].c_str());
+               columns << col;
+    }
+    Database::getInstance()->createTable(getTableName().c_str(),columns);
 }
 
 PCollectionPersistence::PCollectionPersistence()
@@ -30,7 +46,7 @@ PCollectionPersistence::PCollectionPersistence()
 	columns[0] = "name";
 	
 	columnTypes = new string[1];
-	columnTypes[0] = "char(20)";
+    columnTypes[0] = "varchar(30)";
 }
 
 

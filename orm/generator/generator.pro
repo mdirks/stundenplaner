@@ -12,4 +12,6 @@ HEADERS += mappinggenerator.h
 SOURCES += mappinggenerator.cpp
 
 
-QT +=xml
+
+CONFIG += qt
+QT+=sql widgets xml

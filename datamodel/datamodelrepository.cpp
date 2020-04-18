@@ -63,6 +63,12 @@
 DataModelRepository* DataModelRepository::instance=0;
 
 
+DataModelRepository::~DataModelRepository()
+{
+    delete listMappers;
+}
+
+
 DataModelRepository::DataModelRepository()
 {
 	listMappers = new list<AbstractMapper*>();
@@ -107,28 +113,29 @@ DataModelRepository::DataModelRepository()
     listMappers->push_back(materialsatzmapper::getInstance());
 
 	
-	
-	for(list<AbstractMapper*>::iterator it = listMappers->begin();
-		it!=listMappers->end(); ++it)
-	{
-		MappingControler::getInstance()->registerPersistentClass(*it);
-		RepositoryEnabled *re = dynamic_cast<RepositoryEnabled*>(*it);
-		if(re){
-			Repository::getInstance()->addRepositoryEntry(re->getRepositoryEntry());
-		}
+
+
+}
+
+
+
+
+void DataModelRepository::registerTypesWithDatabase()
+{
+    for(list<AbstractMapper*>::iterator it = listMappers->begin();
+        it!=listMappers->end(); ++it)
+    {
+        MappingControler::getInstance()->registerPersistentClass(*it);
+        RepositoryEnabled *re = dynamic_cast<RepositoryEnabled*>(*it);
+        if(re){
+            Repository::getInstance()->addRepositoryEntry(re->getRepositoryEntry());
+        }
         RepositoryEntry *ent = Repository::getInstance()->getRepositoryEntry((*it)->getClassName());
         if(!ent){
               qDebug() << "TROUBLE Repository not working correctly";
         }
-	}
+    }
 }
-
-
-DataModelRepository::~DataModelRepository()
-{
-
-}
-
 
 
 
@@ -137,9 +144,10 @@ DataModelRepository::~DataModelRepository()
  */
 DataModelRepository* DataModelRepository::getInstance()
 {
-    	if(!instance)
+    if(!instance)
 	{
 		instance= new DataModelRepository();
+        instance->registerTypesWithDatabase();
 	}
 	return instance;
 }
