@@ -125,6 +125,7 @@ FORMS += \
     forms/formarea.ui
 
 DISTFILES += \
+    data/persistence.xml \
     icons/Favorites/icons8-aktie-3-100.png \
     icons/Favorites/icons8-aktie-3-50.png \
     icons/Favorites/icons8-aktualisieren-100.png \

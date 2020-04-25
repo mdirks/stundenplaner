@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "schultaggraphicsitem.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  SchultagGraphicsItemmapper* SchultagGraphicsItemmapper::instance=0;
@@ -28,7 +29,7 @@
 
  SchultagGraphicsItemmapper::SchultagGraphicsItemmapper()
   {
- 	version = "0.1";
+ 	version = "0.1-0.6";
 	columns = new string[6];
  	columnTypes = new string[6];
  	columns[0] = "xpos";

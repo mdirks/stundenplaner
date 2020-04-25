@@ -15,6 +15,13 @@
 #include <QDomDocument>
 #include <QString>
 #include <QTextStream>
+#include <QWidget>
+
+
+
+
+
+
 
 /** Generates a concrete mapper for persistent classes as defined in persistence.xml.
 
@@ -34,7 +41,7 @@
 
 @author Marcus Dirks
 */
-class MappingGenerator{
+class MappingGenerator : QWidget{
 public:
     MappingGenerator();
 

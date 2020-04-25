@@ -8,10 +8,22 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += mappinggenerator.h
-SOURCES += mappinggenerator.cpp
+HEADERS += mappinggenerator.h \
+    domitem.h \
+    dommodel.h \
+    elementmodel.h \
+    mappinggeneratordialog.h
+SOURCES += mappinggenerator.cpp \
+    domitem.cpp \
+    dommodel.cpp \
+    elementmodel.cpp \
+    main.cpp \
+    mappinggeneratordialog.cpp
 
 
 
 CONFIG += qt
 QT+=sql widgets xml
+
+FORMS += \
+    mappinggeneratordialog.ui

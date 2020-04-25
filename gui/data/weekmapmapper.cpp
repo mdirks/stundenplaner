@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "weekmap.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  WeekMapmapper* WeekMapmapper::instance=0;

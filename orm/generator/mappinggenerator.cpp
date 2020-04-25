@@ -18,38 +18,18 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QTextStream>
-#include <QApplication>
+
 #include <QRegExp>
 #include <QFileInfo>
 #include <QDateTime>
 #include <QDebug>
 
 
-/**
-
-*/
- int main(int argc, char** argv){
-	QApplication a(argc,argv);
-	
-	MappingGenerator gen;
-	if(argc < 4){
-        qWarning("usage: MappingGenerator  xml-file include-dir source-dir");
-		return -1;
-	}
-
-    QMessageBox::critical( 0, "Critical", QString("Directory is: ").append(QDir().absolutePath()));
-
-	const char* fileName = argv[1];
-	const char* includeDir = argv[2];  // 
-	const char* srcDir = argv[3]; //where the class declarations live
-	gen.parse(fileName, includeDir,srcDir);
-	//generator.parse(argv[1]);
-	return 0;
-}
 
 
 MappingGenerator::MappingGenerator() : declStream(), implStream()
 {
+
 }
 
 

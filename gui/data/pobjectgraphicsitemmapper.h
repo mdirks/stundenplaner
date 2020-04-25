@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Mo. Jun 22 20:25:28 2015
+ // Written on Mo. Apr. 20 13:52:16 2020
 // 
  #ifndef PObjectGraphicsItemMAPPER_H 
  #define PObjectGraphicsItemMAPPER_H 
@@ -16,6 +16,7 @@
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
+#include "orm/mapping/murl.h" 
 #include "orm/persistence/persistenceclass.h" 
  #include "pobjectgraphicsitem.h" 
 #include "orm/persistence/pobject.h" 
