@@ -53,6 +53,8 @@
 
 #include <QtXml>
 
+/* nur für einen Testcommit */
+
 
 DomModel::DomModel(const QDomDocument &document, QObject *parent)
     : QAbstractItemModel(parent),
