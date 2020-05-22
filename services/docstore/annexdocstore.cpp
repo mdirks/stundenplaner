@@ -15,26 +15,31 @@ AnnexDocStore::AnnexDocStore(QString name, QString dir)
 AnnexDocStore *AnnexDocStore::getAnnexDocStore(QString name, QString dir)
 {
     AnnexDocStore *store=new AnnexDocStore(name,dir);
+    store->init();
+    return store;
+}
 
-
-    QDir("/").mkpath(DocStore::getDirectory());
+void AnnexDocStore::init(){
+    QDir("/").mkpath(baseDir);
 
     QProcess p;
-    p.setWorkingDirectory(DocStore::getDirectory());
+    p.setWorkingDirectory(baseDir);
     p.start("/usr/bin/git", QStringList()<<"init");
     if(!p.waitForFinished()){
         qDebug() << "Git FAILED";
-        return 0;
     }
 
-    p.start("/usr/bin/git", QStringList()<<"annex init");
+    p.start("/usr/bin/git-annex", QStringList()<<"init");
     if(!p.waitForFinished()){
         qDebug() << "Git annex FAILED";
-        return 0;
     }
 
+}
 
-    return store;
+void AnnexDocStore::setLocation(QString locationDirName)
+{
+    baseDir=locationDirName;
+    init();
 }
 
 
@@ -43,7 +48,8 @@ bool AnnexDocStore::addDocument(material *m) //m should have been added to trans
     QFile *file=m->getFile();
 
     QString fn = QFileInfo(*file).fileName();
-    QString newName(DocStore::getDirectory().append("/").append(fn));
+    QString newName;
+    newName=newName.append(baseDir).append("/").append(fn);
 
 
     if(file->copy(newName)){
@@ -62,14 +68,16 @@ bool AnnexDocStore::addDocument(material *m) //m should have been added to trans
     */
 
     QProcess p;
-    p.setWorkingDirectory(DocStore::getDirectory());
-    p.start("/usr/bin/git", QStringList()<<"annex add " << ". ");
+    p.setWorkingDirectory(baseDir);
+    p.start("/usr/bin/git-annex", QStringList()<<"add"<<".");
     if(!p.waitForFinished()){
-        qDebug() << "git annex add FAILED";
+        qDebug() << "git annex add FAILED in " << baseDir
+                    ;
         return false;
     }
 
-    p.start("/usr/bin/git", QStringList()<<"commit -a -m added");
+
+    p.start("/usr/bin/git", QStringList()<<"commit"<<"-a"<<"-m"<<"added");
     if(!p.waitForFinished()){
         qDebug() << "git commit FAILED";
         return false;

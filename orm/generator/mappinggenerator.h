@@ -48,12 +48,13 @@ public:
     ~MappingGenerator();
     void parse(const QString fileName, const QString includeDir, const QString srcDir);
     void readDomDoc(const QString fileName);
-   
+    void setOutDirs(const QString includeDir, const QString srcDir);
+    void handleClassElement(const QDomElement classElement);
+
 
 protected:
     QDomDocument  domDoc;
 private:
-    void handleClassElement(const QDomElement classElement);
     void writeDeclaration(QTextStream &declStream);
     void writeDefinition(QTextStream &implStream);
     

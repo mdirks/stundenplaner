@@ -17,6 +17,7 @@ SOURCES += \
     actions/modenotes.cpp \
     actions/pobjectaction.cpp \
     base/myactionlist.cpp \
+    dialogs/docstoredialog.cpp \
     dialogs/iconchooser.cpp \
     dialogs/scanner.cpp \
     forms/testform.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     actions/importtodocstoreaction.h \
     actions/pobjectaction.h \
     base/myactionlist.h \
+    dialogs/docstoredialog.h \
     dialogs/iconchooser.h \
     dialogs/scanner.h \
     forms/textpropertyviewer2.h \
@@ -117,6 +119,7 @@ OTHER_FILES += \
     stundenplanerui.rc
 
 FORMS += \
+    dialogs/docstoredialog.ui \
     forms/testform.ui \
     actions/modematerial.ui \
     forms/reihebrowser.ui \

@@ -11,6 +11,7 @@ public:
     AnnexDocStore(QString name, QString dir);
 
     static AnnexDocStore *getAnnexDocStore(QString name, QString dir);
+    void init();
     void addRemote(){};
 
     bool addDocument(material *m);
@@ -19,6 +20,8 @@ public:
     void getDocument(){};
     void dropDocument(){};
     void moveDocument(){};
+
+    void setLocation(QString locationDirName) override;
 
     //QString getDirectory();
 

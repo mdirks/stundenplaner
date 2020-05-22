@@ -62,6 +62,39 @@ QVariant ElementModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+bool ElementModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if(!index.isValid()) return false;
+
+    QDomNode node=nodeMap.item(index.row());
+
+    switch (index.column()) {
+        case 0:
+        {
+           qDebug() << "Strange: Why do you want to edit the property name?";
+        }
+
+
+
+        case 1:
+        {
+            node.setNodeValue(value.toString());
+        }
+
+       default:
+            break;
+    }
+    return true;
+}
+
+Qt::ItemFlags ElementModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Qt::NoItemFlags;
+
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}
+
 /*
 Qt::ItemFlags ElementModel::flags(const QModelIndex &index) const
 {

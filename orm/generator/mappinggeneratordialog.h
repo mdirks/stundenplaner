@@ -26,13 +26,21 @@ public slots:
     void chooseOut();
     void chooseDesc();
     void addClass();
+    void addBaseClass();
     void addProperty();
-    void addAsociation();
+    void addReference();
+    void addAssociation();
+    void generate();
+    void deleteElementSlot();
 
 
     void accept() override;
     void onCustomContextMenu(const QPoint &point);
     void newSelection(QModelIndex ind);
+    void saveToFile();
+
+private:
+    void loadModelIntoTree();
 
 private:
     QString HtmlFromXml(const QString &xmlFileName);
@@ -48,7 +56,7 @@ private:
 
     bool selectOk;
     DomModel *domModel;
-    QDomNode selectedNode;
+    QDomElement selectedNode;
     QDomDocument doc;
 };
 

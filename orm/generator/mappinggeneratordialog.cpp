@@ -19,8 +19,11 @@ MappingGeneratorDialog::MappingGeneratorDialog(QWidget *parent) :
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
     ui->buttonAddClass->setEnabled(false);
+    ui->buttonAddBaseClass->setEnabled(false);
+    ui->buttonGenerate->setEnabled(false);
     ui->buttonAddProperty->setEnabled(false);
-    ui->buttonAddProperty->setEnabled(false);
+    ui->buttonAddAsociation->setEnabled(false);
+    ui->buttonAddReference->setEnabled(false);
 }
 
 
@@ -29,16 +32,24 @@ MappingGeneratorDialog::MappingGeneratorDialog(QWidget *parent) :
 void MappingGeneratorDialog::onCustomContextMenu(const QPoint &point)
 {
     QModelIndex index = ui->treeView->indexAt(point);
-    if (index.isValid() && index.row() % 2 == 0) {
+    if (index.isValid()) {
         delete contextMenu;
         contextMenu=new QMenu(ui->treeView);
-        QVariant nodeData = ui->treeView->model()->data(index,0);
-        if(nodeData.toString().contains("persistence")){
-            contextMenu->addAction("Add class", this, SLOT(addClassSlot()));
-        }
+
+        contextMenu->addAction("Delete Element", this, SLOT(deleteElementSlot()));
+
 
 
         contextMenu->exec(ui->treeView->viewport()->mapToGlobal(point));
+    }
+}
+
+void MappingGeneratorDialog::deleteElementSlot()
+{
+    if(!selectedNode.isNull()){
+        QDomNode pNode=selectedNode.parentNode();
+        pNode.removeChild(selectedNode);
+        selectedNode=QDomElement();
     }
 }
 
@@ -75,15 +86,28 @@ void MappingGeneratorDialog::chooseDesc()
             ui->labelOut->setText(outDirName);
 
             if(doc.setContent(&descFile)){
+                /*
                 DomModel *newModel=new DomModel(doc);
                 ui->treeView->setModel(newModel);
                 delete domModel;
                 domModel=newModel;
                 selectOk=true;
+                */
+                loadModelIntoTree();
             }
         }
     }
 }
+
+void MappingGeneratorDialog::loadModelIntoTree()
+{
+    DomModel *newModel=new DomModel(doc);
+    ui->treeView->setModel(newModel);
+    delete domModel;
+    domModel=newModel;
+    selectOk=true;
+}
+
 
 void MappingGeneratorDialog::chooseOut()
 {
@@ -92,48 +116,134 @@ void MappingGeneratorDialog::chooseOut()
 
 void MappingGeneratorDialog::accept()
 {
+    exit(1);
+}
+
+void MappingGeneratorDialog::generate()
+{
     MappingGenerator *gen=new MappingGenerator();
-    gen->parse(descFileName,outDirName,outDirName);
+    //gen->parse(descFileName,outDirName,outDirName);
+    gen->setOutDirs(outDirName,outDirName);
+    if(selectedNode.tagName().contains("class")){
+        gen->handleClassElement(selectedNode);
+    } else {
+        qDebug()<<"Unable to handle other then class Elements";
+    }
+
+}
+
+void MappingGeneratorDialog::saveToFile()
+{
+    QFile file(descFileName);
+    if( !file.open( QIODevice::WriteOnly | QIODevice::Text ) )
+    {
+        qDebug( "Failed to open file for writing." );
+        return;
+    }
+    QTextStream stream(&file);
+    stream << doc.toString();
+    file.close();
 }
 
 void MappingGeneratorDialog::addClass()
 {
     QDomElement newNode=doc.createElement("class");
+    newNode.setAttribute("name","");
+    newNode.setAttribute("tname","");
+    newNode.setAttribute("version","");
+
     selectedNode.appendChild(newNode);
+    loadModelIntoTree();
+}
+
+void MappingGeneratorDialog::addBaseClass()
+{
+    QDomElement newNode=doc.createElement("baseclass");
+    newNode.setAttribute("name","");
+
+    selectedNode.appendChild(newNode);
+    loadModelIntoTree();
 }
 
 void MappingGeneratorDialog::addProperty()
 {
     QDomElement newNode=doc.createElement("property");
     selectedNode.appendChild(newNode);
-}
+    newNode.setAttribute("name","");
+    newNode.setAttribute("type","");
+    newNode.setAttribute("ctype","");
+    newNode.setAttribute("cname","");
+    newNode.setAttribute("getter","");
+    newNode.setAttribute("setter","");
 
-void MappingGeneratorDialog::addAsociation()
-{
-    QDomElement newNode=doc.createElement("class");
     selectedNode.appendChild(newNode);
+    loadModelIntoTree();
+
 }
 
+void MappingGeneratorDialog::addAssociation()
+{
+    QDomElement newNode=doc.createElement("association");
+    selectedNode.appendChild(newNode);
+
+    newNode.setAttribute("name","");
+    newNode.setAttribute("ascClass","");
+    newNode.setAttribute("table","");
+    newNode.setAttribute("priCol","");
+    newNode.setAttribute("ascCol","");
+
+    selectedNode.appendChild(newNode);
+    loadModelIntoTree();
+
+}
+
+void MappingGeneratorDialog::addReference()
+{
+    QDomElement newNode=doc.createElement("reference");
+    selectedNode.appendChild(newNode);
+
+    newNode.setAttribute("name","");
+    newNode.setAttribute("refClass","");
+    newNode.setAttribute("table","");
+    newNode.setAttribute("getter","");
+
+    selectedNode.appendChild(newNode);
+    loadModelIntoTree();
+
+}
 
 void MappingGeneratorDialog::newSelection(QModelIndex index)
 {
     if (index.isValid() ) {
         DomModel *mod = static_cast<DomModel*>(ui->treeView->model());
         if(mod){
-            selectedNode=mod->node(index);
+            QDomNode node=mod->node(index);
+            selectedNode=node.toElement();
             QVariant nodeData = mod->data(index,0);
             if(nodeData.toString().contains("persistence")){
                 ui->buttonAddClass->setEnabled(true);
+                ui->buttonAddBaseClass->setEnabled(false);
+                ui->buttonGenerate->setEnabled(false);
                 ui->buttonAddProperty->setEnabled(false);
-                ui->buttonAddProperty->setEnabled(false);
+                ui->buttonAddAsociation->setEnabled(false);
+                ui->buttonAddReference->setEnabled(false);
             } else if(nodeData.toString().contains("class")){
                 ui->buttonAddClass->setEnabled(false);
+                ui->buttonAddBaseClass->setEnabled(true);
+                ui->buttonGenerate->setEnabled(true);
                 ui->buttonAddProperty->setEnabled(true);
                 ui->buttonAddProperty->setEnabled(true);
+                ui->buttonAddReference->setEnabled(true);
+
             } else {
                 ui->buttonAddClass->setEnabled(false);
+                ui->buttonAddBaseClass->setEnabled(false);
+                ui->buttonGenerate->setEnabled(false);
+
                 ui->buttonAddProperty->setEnabled(false);
                 ui->buttonAddProperty->setEnabled(false);
+                ui->buttonAddReference->setEnabled(true);
+
             }
             QDomElement elm=selectedNode.toElement();
             if(!elm.isNull()){

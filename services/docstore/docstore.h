@@ -26,6 +26,8 @@ public:
     virtual void dropDocument()=0;
     virtual void moveDocument()=0;
 
+    virtual void setLocation(QString locationDirName)=0;
+
 
 private:
     static DocStore *instance;

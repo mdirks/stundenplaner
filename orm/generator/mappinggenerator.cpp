@@ -37,7 +37,11 @@ MappingGenerator::~MappingGenerator()
 {
 }
 
-
+void MappingGenerator::setOutDirs(const QString includeDir, const QString srcDir)
+{
+    this->includeDir=includeDir;
+    this->srcDir=srcDir;
+}
 
 
 /*!

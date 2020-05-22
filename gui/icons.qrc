@@ -28,9 +28,9 @@
         <file>icons/Favorites/icons8-uhr-50.png</file>
         <file>icons/Favorites/icons8-zuhause-100.png</file>
         <file>icons/Favorites/icons8-zuhause-50.png</file>
-        <file>icons/Hobbies-BW/001-reading book.png</file>
+        <file>icons/Hobbies-BW/001-reading-book.png</file>
         <file>icons/Hobbies-BW/002-photography.png</file>
-        <file>icons/Hobbies-BW/003-poker cards.png</file>
+        <file>icons/Hobbies-BW/003-poker-cards.png</file>
         <file>icons/Hobbies-BW/004-chatting.png</file>
         <file>icons/Hobbies-BW/005-painting.png</file>
         <file>icons/Hobbies-BW/006-football.png</file>
@@ -40,13 +40,13 @@
         <file>icons/Hobbies-BW/010-beer.png</file>
         <file>icons/Hobbies-BW/011-cooking.png</file>
         <file>icons/Hobbies-BW/012-keyboard.png</file>
-        <file>icons/Hobbies-BW/013-game control.png</file>
-        <file>icons/Hobbies-BW/014-camping tent.png</file>
+        <file>icons/Hobbies-BW/013-game-control.png</file>
+        <file>icons/Hobbies-BW/014-camping-tent.png</file>
         <file>icons/Hobbies-BW/015-fishing.png</file>
         <file>icons/Hobbies-BW/016-barbecue.png</file>
         <file>icons/Hobbies-BW/017-tea.png</file>
         <file>icons/Hobbies-BW/018-music.png</file>
-        <file>icons/Hobbies-BW/019-shopping bag.png</file>
+        <file>icons/Hobbies-BW/019-shopping-bag.png</file>
         <file>icons/Hobbies-BW/020-gardening.png</file>
         <file>icons/Hobbies-BW/021-archery.png</file>
         <file>icons/Hobbies-BW/022-weight.png</file>
@@ -57,15 +57,15 @@
         <file>icons/Hobbies-BW/027-sleeping.png</file>
         <file>icons/Hobbies-BW/028-origami.png</file>
         <file>icons/Hobbies-BW/029-basketball.png</file>
-        <file>icons/Hobbies-BW/030-watching tv.png</file>
+        <file>icons/Hobbies-BW/030-watching-tv.png</file>
         <file>icons/Hobbies-BW/031-dices.png</file>
         <file>icons/Hobbies-BW/032-golf.png</file>
-        <file>icons/Hobbies-BW/033-magic hat.png</file>
+        <file>icons/Hobbies-BW/033-magic-hat.png</file>
         <file>icons/Hobbies-BW/034-telescope.png</file>
-        <file>icons/Hobbies-BW/035-disco dance.png</file>
+        <file>icons/Hobbies-BW/035-disco-dance.png</file>
         <file>icons/Hobbies-BW/036-bowling.png</file>
         <file>icons/Hobbies-BW/037-treadmill.png</file>
-        <file>icons/Hobbies-BW/038-nail polish.png</file>
+        <file>icons/Hobbies-BW/038-nail-polish.png</file>
         <file>icons/Hobbies-BW/039-Sunbed.png</file>
         <file>icons/Hobbies-BW/040-theater.png</file>
         <file>icons/Hobbies-BW/041-guitar.png</file>
@@ -74,13 +74,13 @@
         <file>icons/Hobbies-BW/044-surf.png</file>
         <file>icons/Hobbies-BW/045-skateboard.png</file>
         <file>icons/Hobbies-BW/046-sewing.png</file>
-        <file>icons/Hobbies-BW/047-american football.png</file>
+        <file>icons/Hobbies-BW/047-american-football.png</file>
         <file>icons/Hobbies-BW/048-kite.png</file>
         <file>icons/Hobbies-BW/049-party.png</file>
-        <file>icons/Hobbies-BW/050-ping pong.png</file>
-        <file>icons/Hobbies-C/001-reading book.png</file>
+        <file>icons/Hobbies-BW/050-ping-pong.png</file>
+        <file>icons/Hobbies-C/001-reading-book.png</file>
         <file>icons/Hobbies-C/002-photography.png</file>
-        <file>icons/Hobbies-C/003-poker cards.png</file>
+        <file>icons/Hobbies-C/003-poker-cards.png</file>
         <file>icons/Hobbies-C/004-chatting.png</file>
         <file>icons/Hobbies-C/005-painting.png</file>
         <file>icons/Hobbies-C/006-football.png</file>
@@ -90,13 +90,13 @@
         <file>icons/Hobbies-C/010-beer.png</file>
         <file>icons/Hobbies-C/011-cooking.png</file>
         <file>icons/Hobbies-C/012-keyboard.png</file>
-        <file>icons/Hobbies-C/013-game control.png</file>
-        <file>icons/Hobbies-C/014-camping tent.png</file>
+        <file>icons/Hobbies-C/013-game-control.png</file>
+        <file>icons/Hobbies-C/014-camping-tent.png</file>
         <file>icons/Hobbies-C/015-fishing.png</file>
         <file>icons/Hobbies-C/016-barbecue.png</file>
         <file>icons/Hobbies-C/017-tea.png</file>
         <file>icons/Hobbies-C/018-music.png</file>
-        <file>icons/Hobbies-C/019-shopping bag.png</file>
+        <file>icons/Hobbies-C/019-shopping-bag.png</file>
         <file>icons/Hobbies-C/020-gardening.png</file>
         <file>icons/Hobbies-C/021-archery.png</file>
         <file>icons/Hobbies-C/022-weight.png</file>
@@ -107,15 +107,15 @@
         <file>icons/Hobbies-C/027-sleeping.png</file>
         <file>icons/Hobbies-C/028-origami.png</file>
         <file>icons/Hobbies-C/029-basketball.png</file>
-        <file>icons/Hobbies-C/030-watching tv.png</file>
+        <file>icons/Hobbies-C/030-watching-tv.png</file>
         <file>icons/Hobbies-C/031-dices.png</file>
         <file>icons/Hobbies-C/032-golf.png</file>
-        <file>icons/Hobbies-C/033-magic hat.png</file>
+        <file>icons/Hobbies-C/033-magic-hat.png</file>
         <file>icons/Hobbies-C/034-telescope.png</file>
-        <file>icons/Hobbies-C/035-disco dance.png</file>
+        <file>icons/Hobbies-C/035-disco-dance.png</file>
         <file>icons/Hobbies-C/036-bowling.png</file>
         <file>icons/Hobbies-C/037-treadmill.png</file>
-        <file>icons/Hobbies-C/038-nail polish.png</file>
+        <file>icons/Hobbies-C/038-nail-polish.png</file>
         <file>icons/Hobbies-C/039-Sunbed.png</file>
         <file>icons/Hobbies-C/040-theater.png</file>
         <file>icons/Hobbies-C/041-guitar.png</file>
@@ -124,9 +124,9 @@
         <file>icons/Hobbies-C/044-surf.png</file>
         <file>icons/Hobbies-C/045-skateboard.png</file>
         <file>icons/Hobbies-C/046-sewing.png</file>
-        <file>icons/Hobbies-C/047-american football.png</file>
+        <file>icons/Hobbies-C/047-american-football.png</file>
         <file>icons/Hobbies-C/048-kite.png</file>
         <file>icons/Hobbies-C/049-party.png</file>
-        <file>icons/Hobbies-C/050-ping pong.png</file>
+        <file>icons/Hobbies-C/050-ping-pong.png</file>
     </qresource>
 </RCC>

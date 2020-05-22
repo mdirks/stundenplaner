@@ -91,6 +91,8 @@ QPixmap GuiConfig::getIcon(QString name)
 		mapIcons[name]=iconName;
         pm= QPixmap(iconName);
 	}
+
+    /* do not force selection for now
     if(pm.isNull()){
         selectIcon(name);
         it = mapIcons.find(name);
@@ -99,6 +101,7 @@ QPixmap GuiConfig::getIcon(QString name)
             pm= QPixmap(iconName);
         }
     }
+    */
     return pm;
 
 }
