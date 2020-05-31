@@ -30,6 +30,9 @@ using namespace std;
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
 class GuiConfig{
+
+
+
 public:
     GuiConfig();
     ~GuiConfig();
@@ -46,9 +49,13 @@ public:
     QPixmap getIcon(PObject *o);
     QPixmap getIcon(QString className) ;
 
+
+
     void selectIcon(QString name); 
     void selectIcon(PObject *o);
     void selectIcon(RepositoryProperty *rp);
+
+    void registerIcon(QString className, QString iconName);
     QDate getCurrentTermEnd();
     QDate getCurrentTermStart();
     void setCurrentTermEnd(QDate date);

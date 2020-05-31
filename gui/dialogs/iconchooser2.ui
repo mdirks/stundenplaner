@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>IconChooser2</class>
+ <widget class="QWidget" name="IconChooser2">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>545</width>
+    <height>342</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QListWidget" name="listChosen"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QListWidget" name="listCollection"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>listCollection</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>IconChooser2</receiver>
+   <slot>slotSelectIcon(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>321</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slotSelectIcon(QListWidgetItem*)</slot>
+ </slots>
+</ui>

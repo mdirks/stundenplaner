@@ -136,6 +136,8 @@ int main(int argc, char *argv[])
     QApplication app(argc,argv);
     QCoreApplication::setApplicationName("Stundenplaner");
     QCoreApplication::setOrganizationName("MD");
+    Q_INIT_RESOURCE(icons);
+
 
     GuiRepository::showSplashScreen();
 

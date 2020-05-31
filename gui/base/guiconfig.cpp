@@ -39,7 +39,6 @@ GuiConfig::GuiConfig() :
     //config->setGroup("Gui");
 
 
-
     activesj=0;
 	activetut=0;
 }
@@ -142,10 +141,15 @@ void GuiConfig::selectIcon(PObject *o)
 
 void GuiConfig::selectIcon(QString name)
 {
-    QString iconName = QFileDialog::getOpenFileName(nullptr,QString("Choose Icon"),QString(),QString("Images (*.png *.xpm *.jpg)"));
-	mapIcons[name] = iconName;
-	
-    writeEntry("Icon",name+"_icon", iconName);
+    //QString iconName = QFileDialog::getOpenFileName(nullptr,QString("Choose Icon"),QString(),QString("Images (*.png *.xpm *.jpg)"));
+    registerIcon(name,"");
+}
+
+void GuiConfig::registerIcon(QString className, QString iconName)
+{
+    mapIcons[className] = iconName;
+
+    writeEntry("Icon",className+"_icon", iconName);
 }
 
 QStringList GuiConfig::getRegisteredIconObjects()

@@ -19,6 +19,7 @@ SOURCES += \
     base/myactionlist.cpp \
     dialogs/docstoredialog.cpp \
     dialogs/iconchooser.cpp \
+    dialogs/iconchooser2.cpp \
     dialogs/scanner.cpp \
     forms/testform.cpp \
     dialogs/collectionselectiondialog.cpp \
@@ -55,6 +56,7 @@ HEADERS += \
     base/myactionlist.h \
     dialogs/docstoredialog.h \
     dialogs/iconchooser.h \
+    dialogs/iconchooser2.h \
     dialogs/scanner.h \
     forms/textpropertyviewer2.h \
     forms/textviewer.h \
@@ -120,6 +122,7 @@ OTHER_FILES += \
 
 FORMS += \
     dialogs/docstoredialog.ui \
+    dialogs/iconchooser2.ui \
     forms/testform.ui \
     actions/modematerial.ui \
     forms/reihebrowser.ui \

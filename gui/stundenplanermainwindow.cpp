@@ -61,7 +61,7 @@
 #include "services/xml-export/xmlfactory.h"
 #include "gui/data/sitzplanmap.h"
 #include "gui/data/sitzplanmapmapper.h"
-#include "gui/dialogs/iconchooser.h"
+#include "gui/dialogs/iconchooser2.h"
 #include "services/docstore/docstore.h"
 #include "gui/dialogs/docstoredialog.h"
 
@@ -652,7 +652,7 @@ else
 
 void StundenPlanerMainWindow::editIcons()
 {
-    QDialog *d=new IconChooserDialog();
+    QDialog *d=new IconChooserDialog2();
     d->show();
     d->raise();
     d->activateWindow();
