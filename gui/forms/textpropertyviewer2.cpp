@@ -20,6 +20,9 @@
 #include <QPrintDialog>
 #include <QMenu>
 
+#include "gui/base/guiconfig.h"
+#include "services/mail/smtp.h"
+
 
 QString TextPropertyViewer2::StandardHeader = QString("\\documentclass[12pt]{article} \\pagestyle{empty}"
                                                         "\\usepackage{ngerman} "
@@ -77,9 +80,13 @@ TextPropertyViewer2::~TextPropertyViewer2()
 
 void TextPropertyViewer2::doCommonSetup()
 {
+    publishAction = new QAction(GuiConfig::getInstance()->getIcon("publishAction"), "Publish",this);
+    connect(publishAction,&QAction::triggered,this,&TextPropertyViewer2::publish);
+
     label = new PdfViewer(this);
     label->setMinimumWidth(200);
     label->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    label->addContextMenuAction(publishAction);
 
     if(prop){
         editor = new TextPropertyEditor(parent,prop,this);
@@ -127,7 +134,8 @@ void TextPropertyViewer2::updatePreview()
     input.preamble = QString("\\usepackage{amssymb,amsmath} "
                              "\\usepackage[whole]{bxcjkjatype}"
                              "\\usepackage{hyperref}");
-    input.latex = editor->toPlainText().toUtf8();
+    input.latex = QString("{\\bf ").append(parent->getName().c_str()).append("}\\\\[.3cm]\\hrule ").toUtf8();
+    input.latex = input.latex.append(editor->toPlainText().toUtf8());
     if(mPreviewBuilderThread->inputChanged(input)) {
         qDebug() << "input changed. Render...";
         //ui->statusBar->showMessage("Input changed. Render...");
@@ -144,9 +152,20 @@ void TextPropertyViewer2::showPreview(const QByteArray& pdfData, bool latexerror
       qDebug()<<"Unable to render your equation. Please double check.";
 
     } else {
+      currentPdfData=pdfData;
       label->loadNewData(pdfData,name);
     }
 }
+
+void TextPropertyViewer2::publish()
+{
+    Smtp* smtp = new Smtp("marcus.dirks", "tomoko-web", "smtp.web.de", 587);
+    //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+
+    smtp->sendMail("marcus_dirks.30c4795@m.evernote.com", "" /*ui->rcpt->text()*/ ,
+                        "Notiz", "Notiz", currentPdfData );
+}
+
 
 void TextPropertyViewer2::setParentObject(PObject *o)
 {

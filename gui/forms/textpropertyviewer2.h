@@ -59,6 +59,7 @@ public slots:
     void print();
     void updatePreview();
     void showPreview(const QByteArray& pdfData, bool latexerror);
+    void publish();
 
 signals:
     void applyRequested();
@@ -111,6 +112,8 @@ private:
      QPixmap pixmap;
 
      QString name;
+     QAction *publishAction;
+     QByteArray currentPdfData;
 
 };
 

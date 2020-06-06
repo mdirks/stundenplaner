@@ -15,7 +15,7 @@ CONFIG += c++11
         CONFIG += link_pkgconfig
         PKGCONFIG += poppler-qt5
 #}
-QT+=sql xml widgets printsupport
+QT+=sql xml widgets printsupport network
 #QT+=KIconThemes
 #QT+=KXmlGui
 #QT+=KIOFileWidgets KIOWidgets KNTLM

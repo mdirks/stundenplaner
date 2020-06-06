@@ -37,8 +37,8 @@ void GuiRepository::showFormForObject(PObject *o)
 SplashScreen* GuiRepository::showSplashScreen()
 {
      if(splash == 0){ 
-        QPixmap pm("gui/splash.png");
-	splash = new SplashScreenImpl( pm );
+        QPixmap pm(":/splash.png");
+        splash = new SplashScreenImpl( pm );
      }
      splash->show();
      return splash;

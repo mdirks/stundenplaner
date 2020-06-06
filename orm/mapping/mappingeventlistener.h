@@ -24,6 +24,8 @@
 
 using namespace std;
 
+#include "mappingeventsource.h"
+
 /**
 	@author Marcus Dirks <m-dirks@web.de>
 */
@@ -32,7 +34,7 @@ public:
 	MappingEventListener();
 	~MappingEventListener();
 
-	virtual bool versionChangeRequested(string className){return true;};
+    virtual bool consider(MappingEvent &me){return true;};
 
 };
 

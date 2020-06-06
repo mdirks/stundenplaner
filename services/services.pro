@@ -9,8 +9,9 @@ CONFIG += c++11
 #    docstore/docstore.cpp \
 #    filter/collectionpropertyfilter.cpp
 
-SOURCES += $$system(ls *.cpp) $$system(ls reports/*.cpp) $$system(ls filter/*.cpp) $$system(ls xml-export/*.cpp)
-SOURCES += $$system(ls utils/*.cpp) $$system(ls actions/*.cpp) $$system(ls docstore/*.cpp)
+SOURCES += $$system(ls *.cpp) $$system(ls reports/*.cpp) $$system(ls filter/*.cpp) $$system(ls xml-export/*.cpp) \
+    mail/smtp.cpp
+SOURCES += $$system(ls utils/*.cpp) $$system(ls actions/*.cpp) $$system(ls docstore/*.cpp) $$system(ls mail/*.cpp)
 
 #HEADERS += \
 #    *.h \
@@ -18,8 +19,9 @@ SOURCES += $$system(ls utils/*.cpp) $$system(ls actions/*.cpp) $$system(ls docst
 #    docstore/docstore.h \
 #    filter/collectionpropertyfilter.h
 
-HEADERS += $$system(ls *.h)  $$system(ls reports/*.h) $$system(ls filter/*.h) $$system(ls xml-export/*.h)
-HEADERS += $$system(ls utils/*.h) $$system(ls actions/*.h) $$system(ls docstore/*.h)
+HEADERS += $$system(ls *.h)  $$system(ls reports/*.h) $$system(ls filter/*.h) $$system(ls xml-export/*.h) \
+    mail/smtp.h
+HEADERS += $$system(ls utils/*.h) $$system(ls actions/*.h) $$system(ls docstore/*.h) $$system(ls mail/*.h)
 
 message(The projects sources: $$SOURCES)
 

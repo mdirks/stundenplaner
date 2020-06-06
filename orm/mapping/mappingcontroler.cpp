@@ -54,18 +54,21 @@ MappingControler* MappingControler::getInstance()
 }
 
 
-void MappingControler::registerPersistentClass(AbstractMapper *mapper)
+bool MappingControler::registerPersistentClass(AbstractMapper *mapper)
 {
     listRegisteredMappers->push_back(mapper);
     if(Database::getInstance()->isOpen()){		
-	    registerPersistentClassWithDatabase(mapper);
+        if(registerPersistentClassWithDatabase(mapper)){
+            return true;
+        }
     } else {
         qDebug() << QString("MappingControler::registerPersistentClass : database closed, failed for %1").arg(mapper->getClassName().c_str());
     }
+    return false;
 
 }
 
-void MappingControler::registerPersistentClassWithDatabase(AbstractMapper *mapper)
+bool MappingControler::registerPersistentClassWithDatabase(AbstractMapper *mapper)
 {
     Database *db = Database::getInstance();
     
@@ -78,25 +81,31 @@ void MappingControler::registerPersistentClassWithDatabase(AbstractMapper *mappe
 
     
     if( version != isVersion){
-	bool doversionchange=true;    
-	for(list<MappingEventListener*>::iterator it = list_listener->begin(); it!= list_listener->end(); it++){
-		doversionchange = doversionchange & (*it)->versionChangeRequested(className);
-	}
+        bool doversionchange=true;
+        VersionChangeRequest me(qClassName);
+        for(list<MappingEventListener*>::iterator it = list_listener->begin(); it!= list_listener->end(); it++){
+            doversionchange = doversionchange & (*it)->consider(me);
+        }
         if(doversionchange){
-        qDebug() << QString("Going to (re)create table for class : %1").arg(qClassName);
+            qDebug() << QString("Going to adjust table for class : %1").arg(qClassName);
 	
-	    	mapper->createTable();
-		db->registerPersistentClass(mapper, mapper->getVersion());
-		db->registerVersion(mapper, mapper->getVersion());
-	} else {
-        qDebug() << QString("!!! --- Versionchange denied");
-	}
+            if(mapper->checkAndAdjustTable()){
+                db->registerPersistentClass(mapper, mapper->getVersion());
+                db->registerVersion(mapper, mapper->getVersion());
+            } else {
+                qDebug() << QString("!!! --- Versionchange failed");
+                return false;
+            }
+        } else {
+            qDebug() << QString("!!! --- Versionchange denied");
+            return false;
+        }
     } else {
 		db->registerPersistentClass(mapper,mapper->getVersion());
     }
 
     
-    
+    return true;
     
     
     

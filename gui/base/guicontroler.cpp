@@ -51,7 +51,7 @@ void GuiControler::stopEdit()
     if(activeEditors){
         for(list<PropertyEditor*>::iterator it = activeEditors->begin(); it != activeEditors->end(); it++){
                 qDebug() << "Trying to remove editor";
-                //(*it)->stopEdit();
+                (*it)->stopEdit();
         }
         activeEditors->clear();
 

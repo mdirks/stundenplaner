@@ -29,6 +29,7 @@
 
 #include <iostream>
 #include <QApplication>
+#include <QSplashScreen>
 
 using namespace std;
 
@@ -129,31 +130,48 @@ static KCmdLineOptions options[] =
 
 int main(int argc, char *argv[])
 {
-
-        cout << "TEST";
-
-
     QApplication app(argc,argv);
     QCoreApplication::setApplicationName("Stundenplaner");
     QCoreApplication::setOrganizationName("MD");
     Q_INIT_RESOURCE(icons);
 
+    QPixmap pm(":/icons/splash.jpg");
+    QSplashScreen splash( pm );
+    splash.showNormal();
+    app.processEvents();
 
-    GuiRepository::showSplashScreen();
+
 
     QLocale::setDefault(QLocale::German);
     //setenv("LC_ALL","de_DE.UTF-8");
 
+
     QString dbName=app.arguments().at(1);
     MappingControler::setDatabaseName(dbName);
+    splash.showMessage(QString("setting database to %1").arg(dbName),Qt::AlignBottom|Qt::AlignLeft);
+    for(int i=1;i<10000000; i++){
+        app.processEvents();
+    }
+
     MappingControler::getInstance();
+    splash.showMessage(QString("Loading MappingControler").arg(dbName),Qt::AlignBottom|Qt::AlignLeft);
+    for(int i=1;i<10000000; i++){
+        app.processEvents();
+    }
+
+    app.processEvents();
 
     GuiConfig::getInstance()->setDatabaseName(dbName);
 
    
     DataModelRepository::getInstance();
+    app.processEvents();
+
+
     GuiRepository *rp=GuiRepository::getInstance();
     rp->initGui();
+    splash.close();
+    app.processEvents();
 
    
     /*

@@ -38,7 +38,7 @@ public:
     ~AbstractMapper();
     //string getVersion();
     void createTable();
-    void checkTable();
+    bool checkAndAdjustTable();
 
     
     static MappedObject*  create(AbstractMapper *mapper);
@@ -68,6 +68,7 @@ protected:
 	//list<Association*> *getAssociations();
 
 	void createMainTable();
+    void dropMainTable();
 	
 protected:
 	map<string,AbstractAssociation*> mapAssociations;

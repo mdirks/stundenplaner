@@ -72,8 +72,13 @@ void TextPropertyEditor::startEdit()
         if(property && parent){
             Transactions::getCurrentTransaction()->add(property->getTrueParent(parent));
         }
-	}
+    } else {
+        property->fromString(toPlainText().toStdString(), parent);
+        qDebug() << "propagating to object";
+    }
 }
+
+
 
 
 void TextPropertyEditor::stopEdit()

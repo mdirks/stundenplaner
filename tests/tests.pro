@@ -10,7 +10,7 @@ INCLUDEPATH += ..
 
 
 CONFIG += qt
-QT+=sql core xml widgets printsupport
+QT+=sql core xml widgets printsupport network
 
 
 # Input

@@ -30,7 +30,7 @@ using namespace std;
 class MappingControler{
 public:
     static MappingControler* getInstance();
-    void registerPersistentClass(AbstractMapper *mapper);
+    bool registerPersistentClass(AbstractMapper *mapper);
     AbstractMapper* getMapperByName(string className);
     PObject* create(string className);
     bool initNewDatabase(string dbName);
@@ -47,7 +47,7 @@ private:
     QString getCurrentVersion(QString className);
     //void writeVersions();
     void createAdministrativTables();
-    void registerPersistentClassWithDatabase(AbstractMapper *mapper);
+    bool registerPersistentClassWithDatabase(AbstractMapper *mapper);
 
  private:
      static MappingControler *instance;

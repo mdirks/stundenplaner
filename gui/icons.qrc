@@ -128,5 +128,6 @@
         <file>icons/Hobbies-C/048-kite.png</file>
         <file>icons/Hobbies-C/049-party.png</file>
         <file>icons/Hobbies-C/050-ping-pong.png</file>
+        <file>icons/splash.jpg</file>
     </qresource>
 </RCC>
