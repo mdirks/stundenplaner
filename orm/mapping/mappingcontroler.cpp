@@ -25,17 +25,7 @@ MappingControler::MappingControler(){
 		} else {
             qDebug() << "MappingControler(): Database is closed()";
 		}	
-		/*
-		QString qs2("select * from versions");
-		QSqlQuery q2(qs2);
-		if(q2.isActive()){
-			while(q2.next()){
-				mapVersions[q2.value(0).toString()] = q2.value(1).toString();
-			}
-		} else {
-			qWarning("Critical ! : Failed to read Version information from database !");
-		}
-		*/
+
 
 		listRegisteredMappers = new list<AbstractMapper*>();
 		list_listener = new list<MappingEventListener*>();
@@ -148,6 +138,24 @@ QString MappingControler::getCurrentVersion(QString className)
 void MappingControler::createAdministrativTables()
 {
     
+    QString tableName("versions");
+    QStringList columns;
+    columns << "class char(50)" << "version char(10)";
+
+    Database::getInstance()->createTable(tableName,columns);
+
+    tableName="admin";
+    columns.clear();
+    columns << "current_id int";
+    Database::getInstance()->createTable(tableName,columns);
+
+    tableName="idtoname";
+    columns.clear();
+    columns << "id int, name char(30)";
+    Database::getInstance()->createTable(tableName,columns);
+
+
+    /*
 	QString qs1("create table versions (class char(50), version char(10));");
     QSqlQuery q1(qs1);
     if(!q1.isActive()) qDebug() << "appingControler::createAdministrativTables : Could not create table versions";
@@ -165,8 +173,11 @@ void MappingControler::createAdministrativTables()
     QString qs3("create table idtoname (id int, name char(30));");
     QSqlQuery q3(qs3);
     if(!q3.isActive()) qDebug() << "Could not create table idtoname";
+    */
 
 }
+
+
 
 
 /*!

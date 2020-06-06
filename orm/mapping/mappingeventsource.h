@@ -9,6 +9,17 @@ using namespace std;
 
 class MappingEventListener;
 
+
+
+class MappingEvent
+{
+public:
+    MappingEvent();
+};
+
+
+
+
 class MappingEventSource
 {
 public:
@@ -17,14 +28,13 @@ public:
     void registerListener(MappingEventListener *listener);
 
 private:
+    void publish(MappingEvent *me);
+
+private:
     list<MappingEventListener*> *list_listener;
 };
 
 
-class MappingEvent
-{
-
-};
 
 class VersionChangeRequest : public MappingEvent
 {

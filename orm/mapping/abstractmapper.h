@@ -31,7 +31,8 @@ using namespace std;
 /**
 @author Marcus Dirks
 */
-class AbstractMapper : public PersistenceClass {
+class AbstractMapper : public PersistenceClass
+{
 public:
     AbstractMapper();
 

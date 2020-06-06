@@ -27,7 +27,8 @@ using namespace std;
 /**
 @author Marcus Dirks
 */
-class MappingControler{
+class MappingControler : public MappingEventSource
+{
 public:
     static MappingControler* getInstance();
     bool registerPersistentClass(AbstractMapper *mapper);

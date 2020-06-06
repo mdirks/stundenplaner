@@ -17,6 +17,8 @@
 
 #include "database.h"
 #include "databaseimpl_q.h"
+#include "sqlite.h"
+
 #include "pcollectionpersistence.h"
 #include "ptreepersistence.h"
 
@@ -29,7 +31,8 @@ QString Database::databasename=QString("");
 Database* Database::getInstance(){
  	if(!instance)
 	{
-		instance = new DatabaseImpl_Q();
+        //instance = new DatabaseImpl_Q();
+        instance = new SQLite();
         instance->registerBasicTypes();
 	}
 	return instance;
