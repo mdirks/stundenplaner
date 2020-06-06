@@ -6,6 +6,7 @@ SUBDIRS += \
     datamodel \
     gui \
     orm/generator \
+    orm/ormgui \
     services \
     main \
     tests

@@ -32,13 +32,13 @@ public:
     void save(PTree *tr);
     void deleteObject(PObject *object);
 
-     PObject* create(string className);
-     PObject* create(PersistenceClass *persObj);
+    PObject* create(string className);
+    PObject* create(PersistenceClass *persObj);
 
-     void createTable(QString tableName, QStringList columns);
-     //virtual PCollection* createCollection();
+    void createTable(QString tableName, QStringList columns);
+    QStringList describeTable(QString tableName) override;
+    bool addColumn(QString tableName, QString columnDescription) override;
 
-    //list<PObject*>* getAll(string className);
     list<PObject*>* getAll(PersistenceClass *persObj);
     PObject* load(string className, int id);
     bool isOpen();
@@ -60,8 +60,8 @@ private:
 
     int getNewId();
     bool tableExists(string tname);
-        bool tableExists(PersistenceClass *persObj);
-        void close();
+    bool tableExists(PersistenceClass *persObj);
+    void close();
     QString mask(QString qs);
     QString unmask(QString qs);
 

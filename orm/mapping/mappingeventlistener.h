@@ -34,7 +34,7 @@ public:
 	MappingEventListener();
 	~MappingEventListener();
 
-    virtual bool consider(MappingEvent &me){return true;};
+    virtual bool consider(MappingEvent *me){return true;};
 
 };
 

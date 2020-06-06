@@ -46,9 +46,9 @@ MappingControler* MappingControler::getInstance()
 
 bool MappingControler::registerPersistentClass(AbstractMapper *mapper)
 {
-    listRegisteredMappers->push_back(mapper);
-    if(Database::getInstance()->isOpen()){		
+    if(Database::getInstance()->isOpen()){
         if(registerPersistentClassWithDatabase(mapper)){
+            listRegisteredMappers->push_back(mapper);
             return true;
         }
     } else {
@@ -71,8 +71,9 @@ bool MappingControler::registerPersistentClassWithDatabase(AbstractMapper *mappe
 
     
     if( version != isVersion){
+
         bool doversionchange=true;
-        VersionChangeRequest me(qClassName);
+        VersionChangeRequest *me=new VersionChangeRequest(qClassName);
         for(list<MappingEventListener*>::iterator it = list_listener->begin(); it!= list_listener->end(); it++){
             doversionchange = doversionchange & (*it)->consider(me);
         }

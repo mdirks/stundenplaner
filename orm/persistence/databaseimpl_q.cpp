@@ -715,6 +715,37 @@ void DatabaseImpl_Q::executeSql(string sql)
 }
 
 
+// should return a QStringList of column descriptions, i.e. colnames and possibly types
+QStringList DatabaseImpl_Q::describeTable(QString tableName)
+{
+    QStringList columns;
+    QString qs1 = QString("describe %1").arg(tableName);
+    QSqlQuery q(qs1);
+    if(q.isActive()){
+        while(q.next()){
+            if(q.isValid()){
+                if(q.value(1).isValid()){
+                    columns << q.value(0).toString();
+                }
+            }
+        }
+    }
+    return columns;
+}
+
+bool DatabaseImpl_Q::addColumn(QString tableName, QString columnDescription)
+{
+    QString qs2 = QString("alter table %1 add %2").arg(tableName).arg(columnDescription);
+    qDebug() << QString("Adding column %1").arg(qs2);
+    QSqlQuery q2(qs2);
+    if(! q2.isActive()){
+        qWarning() << QString("Query failed: %1").arg(qs2);
+        return false;
+    } else {
+        return true;
+    }
+
+}
 
 
 

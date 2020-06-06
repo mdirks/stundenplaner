@@ -88,6 +88,21 @@ bool AbstractMapper::checkAndAdjustTable(){
 			column_map[c] = t;
 	}
 
+
+
+    QStringList columns = Database::getInstance()->describeTable(getTableName().c_str());
+    if(!columns.isEmpty()){
+        for(QStringList::Iterator it=columns.begin(); it!=columns.end(); it++){
+            map<string,string>::iterator mit = column_map.find((*it).toStdString());
+            if(mit != column_map.end()){
+                column_map.erase(mit);
+                qDebug() << "Erase done: " << (*it);
+            } else {
+                qDebug() << QString("Strange column %1 not in list").arg((*it));
+            }
+        }
+
+    /*
     QString qs1 = QString("describe %1").arg(getTableName().c_str());
 	QSqlQuery q(qs1);
 	if(q.isActive()){
@@ -106,21 +121,30 @@ bool AbstractMapper::checkAndAdjustTable(){
 				}
 			}
 		}
+     */
 		if(!column_map.empty()){
             qDebug() << QString("Found %1 non-exiting columns: creating").arg(column_map.size());
 
 			for(map<string, string>::iterator it = column_map.begin(); it != column_map.end(); it++){
+                QString columnDescription=QString("%1 %2").arg((it->first).c_str()).arg((it->second).c_str());
+                if(! Database::getInstance()->addColumn(getTableName().c_str(), columnDescription )){
+                    qWarning() << QString("FAILED to adjust table");
+                }
+
+                /*
                 QString qs2 = QString("alter table %1 add %2 %3").arg(getTableName().c_str()).arg((it->first).c_str()).arg((it->second).c_str());
                 qDebug() << QString("Adding column %1").arg(qs2);
 				QSqlQuery q2(qs2);
-				if(! q.isActive()){
+                if(! q2.isActive()){
                     qWarning() << QString("Query failed: %1").arg(qs2);
                     return false;
 				}
+                */
 			}
 		}
 	} else {
-        qDebug() << QString("WARNING: CHECK FAILED FOR TABLE: %2 \n (%1)\n NOT IDEE WHAT IS SAVE TO DO???").arg(qs1).arg(getTableName().c_str());
+        //qDebug() << QString("WARNING: CHECK FAILED FOR TABLE: %2 \n (%1)\n NOT IDEE WHAT IS SAVE TO DO???").arg(qs1).arg(getTableName().c_str());
+        qDebug() << QString("WARNING: CHECK FAILED FOR TABLE: %1 - no info from database \n NOT IDEE WHAT IS SAVE TO DO???").arg(getTableName().c_str());
         return false;
         /*
         dropMainTable();

@@ -543,6 +543,39 @@ int SQLite::getNewId(){
      return result;
 }
 
+// should return a QStringList of column descriptions, i.e. colnames and possibly types
+QStringList SQLite::describeTable(QString tableName)
+{
+    QStringList columns;
+    QString qs1 = QString("pragma table_info('%1')").arg(tableName);
+    QSqlQuery q(qs1);
+    if(q.isActive()){
+        while(q.next()){
+            if(q.isValid()){
+                if(q.value(1).isValid()){ //value(1)=name, value(2)=type
+                    columns << q.value(1).toString();
+                }
+            }
+        }
+    }
+    return columns;
+}
+
+bool SQLite::addColumn(QString tableName, QString columnDescription)
+{
+    QString qs2 = QString("alter table %1 add %2").arg(tableName).arg(columnDescription);
+    qDebug() << QString("Adding column %1").arg(qs2);
+    QSqlQuery q2(qs2);
+    if(! q2.isActive()){
+        qWarning() << QString("Query failed: %1").arg(qs2);
+        return false;
+    } else {
+        return true;
+    }
+
+}
+
+
 
 void SQLite::createTable(QString tableName, QStringList columns)
 {

@@ -26,6 +26,7 @@
 #include "gui/base/guiconfig.h"
 #include "gui/guirepository.h"
 #include "datamodel/datamodelrepository.h"
+#include "orm/ormgui/ormdialog.h"
 
 #include <iostream>
 #include <QApplication>
@@ -135,9 +136,14 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("MD");
     Q_INIT_RESOURCE(icons);
 
+
     QPixmap pm(":/icons/splash.jpg");
+    /*
     QSplashScreen splash( pm );
     splash.showNormal();
+    */
+    OrmDialog *ormDialog = new OrmDialog(pm);
+    ormDialog->show();
     app.processEvents();
 
 
@@ -148,16 +154,22 @@ int main(int argc, char *argv[])
 
     QString dbName=app.arguments().at(1);
     MappingControler::setDatabaseName(dbName);
+
+    /*
     splash.showMessage(QString("setting database to %1").arg(dbName),Qt::AlignBottom|Qt::AlignLeft);
     for(int i=1;i<10000000; i++){
         app.processEvents();
     }
+    */
 
-    MappingControler::getInstance();
-    splash.showMessage(QString("Loading MappingControler").arg(dbName),Qt::AlignBottom|Qt::AlignLeft);
+
+    MappingControler::getInstance()->addMappingEventListener(ormDialog);
+    /*
+    splash.showMessage(QString("Loading MappingControler").arg(dbName),Qt::AlignBottom|Qt::AlignLeft);    
     for(int i=1;i<10000000; i++){
         app.processEvents();
     }
+    */
 
     app.processEvents();
 
@@ -165,13 +177,21 @@ int main(int argc, char *argv[])
 
    
     DataModelRepository::getInstance();
-    app.processEvents();
+    for(int i=1;i<10000000; i++){
+        app.processEvents();
+    }
 
 
     GuiRepository *rp=GuiRepository::getInstance();
-    rp->initGui();
-    splash.close();
+    for(int i=1;i<10000000; i++){
+        app.processEvents();
+    }
+
+    ormDialog->close();
     app.processEvents();
+    rp->initGui();
+    //splash.close();
+
 
    
     /*

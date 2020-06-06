@@ -52,10 +52,10 @@ public:
   	 PObject* create(string className);
 	 PObject* create(PersistenceClass *persObj);
 
-     void createTable(QString tableName, QStringList columns);
-     //virtual PCollection* createCollection();
-   
-   	//list<PObject*>* getAll(string className);
+    void createTable(QString tableName, QStringList columns);
+    QStringList describeTable(QString tableName) override;
+    bool addColumn(QString tableName, QString columnDescription) override;
+
 	list<PObject*>* getAll(PersistenceClass *persObj);
 	PObject* load(string className, int id);
 	bool isOpen();

@@ -14,7 +14,10 @@ class MappingEventListener;
 class MappingEvent
 {
 public:
-    MappingEvent();
+    MappingEvent(QString m){msg=m;};
+    QString getMessage(){return msg;};
+private:
+    QString msg;
 };
 
 
@@ -39,7 +42,7 @@ private:
 class VersionChangeRequest : public MappingEvent
 {
    public:
-    VersionChangeRequest(QString className);
+    VersionChangeRequest(QString cName);
 
 private:
     QString cName;

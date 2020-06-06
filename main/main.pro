@@ -32,7 +32,7 @@ INCLUDEPATH += gui
 LIBS     += -lpoppler-qt5
 #LIBS     += -lpdfview
 
-LIBS     +=  -lgui -lorm -ldatamodel -lservices -lklfbackend
+LIBS     +=  -lgui -lorm -ldatamodel -lservices -lklfbackend -lormgui
 
 message($$OUT_PWD)
 
@@ -42,6 +42,8 @@ QMAKE_LIBDIR += $$OUT_PWD/../orm
 QMAKE_LIBDIR += $$OUT_PWD/../datamodel
 QMAKE_LIBDIR += $$OUT_PWD/../services
 QMAKE_LIBDIR += $$OUT_PWD/../klfbackend
+QMAKE_LIBDIR += $$OUT_PWD/../orm/ormgui
+
 
 #CONFIG( debug,debug|release){
 #     QMAKE_LIBDIR += /home/mopp/dev/stundenplaner-build-desktop-Qt_4_8_1_in_PATH__System__Debug/gui
