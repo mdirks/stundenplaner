@@ -21,6 +21,7 @@ SOURCES += \
     dialogs/iconchooser.cpp \
     dialogs/iconchooser2.cpp \
     dialogs/scanner.cpp \
+    forms/mtreewidget.cpp \
     forms/testform.cpp \
     dialogs/collectionselectiondialog.cpp \
     forms/pobjectform.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     dialogs/iconchooser.h \
     dialogs/iconchooser2.h \
     dialogs/scanner.h \
+    forms/mtreewidget.h \
     forms/textpropertyviewer2.h \
     forms/textviewer.h \
     data/reihemap.h \

@@ -96,6 +96,8 @@ void MTreemapper::save(PObject *realSubject)
    Database *db = Database::getInstance();
    db->save(realSubject);
    asc_Children -> save(realSubject, o->getChildren() );
+
+   mapReferences[ "Contents" ] -> save(realSubject, (PObject*) o->getContents());
 }
 
 

@@ -183,9 +183,11 @@ int main(int argc, char *argv[])
 
 
     GuiRepository *rp=GuiRepository::getInstance();
+    /*
     for(int i=1;i<10000000; i++){
         app.processEvents();
     }
+    */
 
     ormDialog->close();
     app.processEvents();

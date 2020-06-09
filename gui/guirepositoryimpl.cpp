@@ -61,6 +61,7 @@
 #include "gui/forms/pobjecttable.h"
 #include "gui/actions/pobjecttablecontrolerimpl.h"
 #include "gui/forms/lernkarteviewer.h"
+#include "gui/forms/mtreewidget.h"
 #include "datamodel/lernkarte.h"
 #include "gui/data/sitzplanmapmapper.h"
 #include "gui/actions/kalenderviewcontroler.h"
@@ -270,7 +271,11 @@ QWidget* GuiRepositoryImpl::getFormForObject(PObject *o, QWidget *parent, list<R
 		//lkv->setLernkartensatz(ls);
 		form=lkv;
 	
-	} else {
+    } else if (className == "MTree"){
+        MTree *tr = dynamic_cast<MTree*>(o);
+        MTreeWidget *trw = new MTreeWidget(tr,parent);
+        form=trw;
+    } else {
         PObjectEditor3 *editor = new PObjectEditor3(o,parent, properties);
 		/*
 		connect(editor->editRequestor,SIGNAL(editRequested(PObject*)),this,SLOT(showFormForObject(PObject*)));

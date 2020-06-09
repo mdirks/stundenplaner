@@ -302,29 +302,6 @@ void PObjectIconView::dragLeaveEvent(QDragLeaveEvent *e)
     	qDebug("Drag Leave");
 }
 
-void PObjectIconView::dragEnterEvent(QDragEnterEvent *e)
-{
-
-    if(e->mimeData()->hasFormat("application/pobject"))
-    {
-        e->accept();
-    } else {
-        e->ignore();
-    }
-	
-}
-
-void PObjectIconView::dragMoveEvent(QDragMoveEvent *e)
-{
-
-    if(e->mimeData()->hasFormat("application/pobject"))
-    {
-        e->accept();
-    } else {
-        e->ignore();
-    }
-
-}
 
 
 void PObjectIconView::setDisplayProperty(RepositoryProperty *p)
@@ -424,6 +401,31 @@ void PObjectIconView::dropEvent(QDropEvent *e)
     }
 
 }
+
+void PObjectIconView::dragEnterEvent(QDragEnterEvent *e)
+{
+
+    if(e->mimeData()->hasFormat("application/pobject"))
+    {
+        e->accept();
+    } else {
+        e->ignore();
+    }
+
+}
+
+void PObjectIconView::dragMoveEvent(QDragMoveEvent *e)
+{
+
+    if(e->mimeData()->hasFormat("application/pobject"))
+    {
+        e->accept();
+    } else {
+        e->ignore();
+    }
+
+}
+
 
 
 

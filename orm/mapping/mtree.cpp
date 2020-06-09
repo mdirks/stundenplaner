@@ -49,11 +49,11 @@ list<MTree*>* MTree::getChildren()
 
 void MTree::addToChildren(MTree *tr)
 {
-
+    getChildren()->push_back(tr);
 }
 
 void MTree::deleteFromChildren(MTree *tr)
 {
-
+    getChildren()->remove(tr);
 }
 
