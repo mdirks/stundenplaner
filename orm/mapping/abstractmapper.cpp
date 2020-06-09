@@ -144,8 +144,8 @@ bool AbstractMapper::checkAndAdjustTable(){
 		}
 	} else {
         //qDebug() << QString("WARNING: CHECK FAILED FOR TABLE: %2 \n (%1)\n NOT IDEE WHAT IS SAVE TO DO???").arg(qs1).arg(getTableName().c_str());
-        qDebug() << QString("WARNING: CHECK FAILED FOR TABLE: %1 - no info from database \n NOT IDEE WHAT IS SAVE TO DO???").arg(getTableName().c_str());
-        return false;
+        qDebug() << QString("WARNING: CHECK FAILED FOR TABLE: %1 - no info from database - ASSUMING NEW CLASS - TRYING TO CREATE TABLE").arg(getTableName().c_str());
+        return createTable();
         /*
         dropMainTable();
 		createMainTable();
@@ -164,7 +164,7 @@ void AbstractMapper::dropMainTable(){
 }
 
 
-void AbstractMapper::createMainTable(){
+bool AbstractMapper::createMainTable(){
 	Database::getInstance();
 
 	//string tname = persOb->getTableName();	
@@ -191,15 +191,18 @@ void AbstractMapper::createMainTable(){
 	QSqlQuery query(qs2);
     if(query.isActive()){
         qDebug() << QString("Done create");
+        return true;
     } else {
         qDebug() << QString("WARNING: FAILED TO CREATE MAINTABLE");
+        return false;
     }
 
 
 }
-void AbstractMapper::createTable(){
-    checkAndAdjustTable();
-	
+
+bool AbstractMapper::createTable(){
+    //checkAndAdjustTable();
+
 	map<string,AbstractAssociation*>::iterator it;
 	for(it=mapAssociations.begin(); it!=mapAssociations.end(); it++){
 		it->second->createTable();
@@ -209,6 +212,9 @@ void AbstractMapper::createTable(){
 	for(ref_it=mapReferences.begin();ref_it!=mapReferences.end(); ref_it++){
 		ref_it->second->createTable();
 	}
+
+    return createMainTable();
+
 }
 
 /*!
@@ -254,7 +260,12 @@ MappedObject*  AbstractMapper::create()
     \fn AbstractMapper::find_gen()
  */
 list<PObject*>* AbstractMapper::find_gen()
-{
+{   /*ToDo:
+    maybe not a good idea to cache the result, because new objects might be added!? At
+    present this is taken care of by having create add to the list
+
+    conrete mappers implement find() which rereads from database anyway !?
+    */
     if(list_all==0){
 	list_all = Database::getInstance()->getAll(this);
     }

@@ -33,6 +33,10 @@
 #include "stdlib.h"
 #include <QDebug>
 
+#include "testrunner.h"
+#include <QTimeZone>
+
+
 using namespace std;
 
 TestQDateTime::TestQDateTime()
@@ -87,9 +91,9 @@ void TestQDateTime::run()
 	int se_id = se->getID();
 	
 	Transactions::getCurrentTransaction()->commit();
-	Database::getInstance()->close();
-	qDebug("DB closed");
-	
+
+    TestRunner::restartDatabase();
+
 	PObject *o =Database::getInstance()->loadObjectById(se_id);
 	if(!o){ fail("Could not even recover object form db");return;}
 	stundenplaneintrag *see = dynamic_cast<stundenplaneintrag*>(o);
@@ -104,13 +108,26 @@ void TestQDateTime::run()
 	int fz_id = fz->getID();
 	
 	Transactions::getCurrentTransaction()->commit();
-	Database::getInstance()->close();
-	
+
+    TestRunner::restartDatabase();
 	
 	o =Database::getInstance()->loadObjectById(fz_id);
 	fehlzeit *fzz = dynamic_cast<fehlzeit*>(o);
 	if(!fzz){fail("Could not recover fehlzeit form db");return;}
-	if(fzz->getVon() != current){fail("von time not saved");return;}
+
+    // QDateTime comparison without database
+    QDateTime dt1=QDateTime::currentDateTime();
+    QDateTime dt11=dt1;
+    if(dt1 != dt11){fail(QString("Problem with QDateTime-Operators")); return;}
+
+    // QDateTime comparison after persistence
+    QDateTime von=fzz->getVon();
+    if(von != current){
+        if(von.date() != current.date()){fail(QString("von time not saved: %1 vs %2 (D)").arg(von.toString()).arg(current.toString()));return;}
+        if(von.timeZone() != current.timeZone()){fail(QString("von time not saved: %1 vs %2 (TZ)").arg(von.toString()).arg(current.toString()));return;}
+        if(von.time() != current.time()){fail(QString("von time not saved: %1 vs %2 (T)").arg(von.toString()).arg(current.toString()));return;}
+
+    }
 
 	publish("Erfolg");
 }

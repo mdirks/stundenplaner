@@ -40,7 +40,8 @@ public:
     static void setDatabaseName(QString databaseName);
     void addMappingEventListener(MappingEventListener *listener);
     
-    
+    void close();
+
 private:
     MappingControler();
     ~MappingControler();

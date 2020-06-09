@@ -38,7 +38,7 @@ public:
 
     ~AbstractMapper();
     //string getVersion();
-    void createTable();
+    bool createTable();
     bool checkAndAdjustTable();
 
     
@@ -68,7 +68,7 @@ protected:
     list<Property*> getProperties();
 	//list<Association*> *getAssociations();
 
-	void createMainTable();
+    bool createMainTable();
     void dropMainTable();
 	
 protected:

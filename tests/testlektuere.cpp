@@ -5,6 +5,8 @@
 #include "orm/transactions/transactions.h"
 #include "orm/persistence/database.h"
 
+#include "testrunner.h"
+
 TestLektuere::TestLektuere(): TestCase()
 {
 }
@@ -23,7 +25,9 @@ void TestLektuere::run()
     int id_lkn = lkn->getID();
 
     Transactions::getCurrentTransaction()->commit();
-    Database::getInstance()->close();
+    //Database::getInstance()->close();
+
+    TestRunner::restartDatabase();
 
     PObject *o = Database::getInstance()->loadObjectById(id_lk);
     lk = dynamic_cast<lektuere*>(o);

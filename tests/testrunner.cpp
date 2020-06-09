@@ -12,6 +12,7 @@
 #include "testreadcsvlistaction.h"
 #include "testindirectrepositoryproperty.h"
 #include "testpcollection.h"
+#include "testmtree.h"
 
 #include "orm/persistence/database.h"
 #include "orm/mapping/mappingcontroler.h"
@@ -78,6 +79,9 @@ TestRunner::TestRunner(QString dbName) : QWidget()
 void TestRunner::restartDatabase()
 {
     Database::getInstance()->close();
+    MappingControler::getInstance()->close();
+
+    MappingControler::getInstance();
     DataModelRepository::getInstance()->registerTypesWithDatabase();
 }
 
@@ -90,6 +94,7 @@ void TestRunner::init_tests()
     listTests->push_back( new TestLektuere() );
     listTests->push_back( new TestQDateTime() );
     listTests->push_back( new TestPCollection() );
+    listTests->push_back( new TestMTree() );
 
     /*
     listTests->push_back( new TestSStundenplan() );

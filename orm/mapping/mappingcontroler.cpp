@@ -14,6 +14,7 @@
 
 #include "mappingcontroler.h"
 #include "../persistence/database.h"
+#include "mtreemapper.h"
 
 
 
@@ -29,6 +30,16 @@ MappingControler::MappingControler(){
 
 		listRegisteredMappers = new list<AbstractMapper*>();
 		list_listener = new list<MappingEventListener*>();
+
+        registerPersistentClass(MTreemapper::getInstance());
+}
+
+void MappingControler::close()
+{
+    delete listRegisteredMappers;
+    delete list_listener;
+    delete instance;
+    instance=0;
 }
 MappingControler::~MappingControler(){qDebug() << "Mapping Controler destroyed";}
 
