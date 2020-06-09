@@ -102,26 +102,7 @@ bool AbstractMapper::checkAndAdjustTable(){
             }
         }
 
-    /*
-    QString qs1 = QString("describe %1").arg(getTableName().c_str());
-	QSqlQuery q(qs1);
-	if(q.isActive()){
-		while(q.next()){
-			if(q.isValid()){
-				if(q.value(1).isValid()){
-                    string cn = q.value(0).toString().toStdString();
-                    //qDebug() << QString("Erasing column %1").arg(cn.c_str());
-                    map<string,string>::iterator it = column_map.find(cn);
-					if(it != column_map.end()){
-						column_map.erase(it);
-                        //qDebug() << "Erase done";
-					} else {
-                        //qDebug() << QString("Strange column %1 not in list").arg(cn.c_str());
-					}
-				}
-			}
-		}
-     */
+
 		if(!column_map.empty()){
             qDebug() << QString("Found %1 non-exiting columns: creating").arg(column_map.size());
 
@@ -142,6 +123,17 @@ bool AbstractMapper::checkAndAdjustTable(){
                 */
 			}
 		}
+
+        map<string,AbstractAssociation*>::iterator it;
+        for(it=mapAssociations.begin(); it!=mapAssociations.end(); it++){
+            it->second->checkTable();
+        }
+
+        map<string,Reference*>::iterator ref_it;
+        for(ref_it=mapReferences.begin();ref_it!=mapReferences.end(); ref_it++){
+            ref_it->second->checkTable();
+        }
+
 	} else {
         //qDebug() << QString("WARNING: CHECK FAILED FOR TABLE: %2 \n (%1)\n NOT IDEE WHAT IS SAVE TO DO???").arg(qs1).arg(getTableName().c_str());
         qDebug() << QString("WARNING: CHECK FAILED FOR TABLE: %1 - no info from database - ASSUMING NEW CLASS - TRYING TO CREATE TABLE").arg(getTableName().c_str());

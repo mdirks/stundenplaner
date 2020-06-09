@@ -105,6 +105,17 @@ void Reference::createTable()
 
 }
 
+void Reference::checkTable()
+{
+    Database *db = Database::getInstance();
+
+
+    QString qs2 = QString("create table %1 (%2 int, %3 int);").arg(table.c_str()).arg(pri_col.c_str()).arg(ref_col.c_str());
+    QSqlQuery q2(qs2);
+    if(!q2.isActive()) qDebug() << QString("Failed to create reference table : PROBABLY OK - already there").append(qs2);
+
+}
+
 
 void Reference::save(PObject *realSubject, PObject *refObject)
 {

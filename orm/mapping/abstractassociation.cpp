@@ -51,3 +51,11 @@ void AbstractAssociation::createTable(){
 	QSqlQuery q2(qs2);
     if(!q2.isActive()) qDebug() << QString("Failed to create association table : ").append(qs2);
 }
+
+void AbstractAssociation::checkTable()
+{
+    // brute force
+    QString qs2 = QString("create table %1 (%2 int, %3 int);").arg(table.c_str()).arg(pri_col.c_str()).arg(asc_col.c_str());
+    QSqlQuery q2(qs2);
+    if(!q2.isActive()) qDebug() << QString("Failed to create association table : PROBABLY OK, already there. ").append(qs2);
+}

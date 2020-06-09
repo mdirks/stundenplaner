@@ -9,6 +9,7 @@
 #include "orm/repository/dateproperty.h"
 #include "orm/repository/booleanproperty.h"
 #include "orm/repository/datetimeproperty.h"
+#include "transactions/transactionobject.h"
 
 
 MTreemapper* MTreemapper::instance=0;
@@ -24,13 +25,14 @@ MTreemapper* MTreemapper::getInstance()
 
 MTreemapper::MTreemapper()
  {
-   version = "0.2";
+   version = "0.3";
    columns = new string[0];
    columnTypes = new string[0];
    asc_Children = new Association<MTree, MTree>("mtree_mtree","mtree_p_id","mtree_ch_id","MTree", &MTree::addToChildren, &MTree::deleteFromChildren);
     mapAssociations["Children"] = asc_Children;
     registerAssociation( asc_Children);
     mapReferences["Parent"] = new Reference("MTree","MTree");
+    mapReferences["Contents"] = new Reference("MTree","TransactionObject");
 }
 
 
@@ -129,6 +131,7 @@ RepositoryEntry* MTreemapper::getRepositoryEntry()
    entry->addProperty( new StringProperty<MTree>("Name", "string", &MTree::getName, &MTree::setName, false) );
    entry->addProperty( new CollectionPropertyImpl<MTree,MTree>( "Children" , "MTree", &MTree::getChildren, &MTree::addToChildren, &MTree::deleteFromChildren  ) );
    entry->addProperty( new PObjectProperty<MTree,MTree>( "Parent" , "MTree", &MTree::getParent,&MTree::setParent ) );
+   entry->addProperty( new PObjectProperty<TransactionObject,MTree>( "Contents" , "TransactionObject", &MTree::getContents,&MTree::setContents ) );
 
    return entry;
 }

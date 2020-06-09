@@ -13,6 +13,9 @@ public:
     void setParent(MTree *tr);
     MTree* getParent();
 
+    void setContents(TransactionObject *o);
+    TransactionObject* getContents();
+
     void addToChildren(MTree *tr);
     void deleteFromChildren(MTree *tr);
     list<MTree*>* getChildren();
@@ -20,6 +23,7 @@ public:
 
 private:
     MTree *parent;
+    TransactionObject* contents;
     list<MTree*> *list_children;
 
 };

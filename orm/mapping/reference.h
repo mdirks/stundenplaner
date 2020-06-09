@@ -30,6 +30,8 @@ public:
     ~Reference();
     
     void createTable();
+    void checkTable();
+
     PObject *findReferee(int pri_id);
     void deleteReferee(int pri_id);
     void save(PObject *realSubject, PObject *refSubject);

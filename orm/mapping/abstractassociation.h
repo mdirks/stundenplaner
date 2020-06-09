@@ -29,6 +29,7 @@ public:
     AbstractAssociation(string table,  string pri_col, string asc_col, string asc_class);
 
     void createTable();
+    void checkTable();
     virtual void deleteObject(PObject *o) = 0;
     string getAscClassName(){return asc_class;};
     

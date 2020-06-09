@@ -5,6 +5,7 @@ MTree::MTree()
 {
     list_children=0;
     parent=0;
+    contents=0;
     setMapper(MTreemapper::getInstance());
 }
 
@@ -22,6 +23,21 @@ void MTree::setParent(MTree *tr)
 {
     parent=tr;
 }
+
+
+TransactionObject* MTree::getContents()
+{
+    if(contents==0){
+        contents= (TransactionObject*) MTreemapper::getInstance()->findReference("Contents",getID());
+    }
+    return contents;
+}
+
+void MTree::setContents(TransactionObject *c)
+{
+    contents=c;
+}
+
 list<MTree*>* MTree::getChildren()
 {
     if(list_children == 0){
