@@ -24,7 +24,8 @@ MappingControler::MappingControler(){
 		if(Database::getInstance()->isOpen()){
 			createAdministrativTables();
 		} else {
-            qDebug() << "MappingControler(): Database is closed()";
+            publish(new MappingEvent("Database not available"));
+            //qDebug() << "MappingControler(): Database is closed()";
 		}	
 
 

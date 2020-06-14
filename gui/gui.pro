@@ -5,7 +5,7 @@ CONFIG += qt
 CONFIG += staticlib
 CONFIG += c++11
 
-unix {
+unix: {
         CONFIG += link_pkgconfig
         PKGCONFIG += poppler-qt5
 }

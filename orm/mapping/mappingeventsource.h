@@ -30,7 +30,7 @@ public:
 
     void registerListener(MappingEventListener *listener);
 
-private:
+protected:
     void publish(MappingEvent *me);
 
 private:

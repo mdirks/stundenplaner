@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>models/stunden.xml</file>
+        <file>models/appmodel.xml</file>
+    </qresource>
+</RCC>

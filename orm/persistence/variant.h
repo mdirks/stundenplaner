@@ -18,7 +18,7 @@
 #include <QDateTime>
 #include <QVariant>
 #include <QUrl>
-#include "orm/mapping/murl.h"
+#include "../mapping/murl.h"
 
 using namespace std;
 

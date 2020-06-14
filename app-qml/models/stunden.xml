@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <stundenplaneintrag Datum="Mo. Sep. 2 2019" NrStunde="6" ID="424" Tag="1" Name="Ma-E-9" Doppelstunde="0">
+  <property Name="Verlauf"></property>
+  <property Type="Collection" Name="Bewertungen"/>
+  <property Type="Collection" Name="Fehlzeiten"/>
+  <property Type="PObject" Name="Klasse">
+   <klasse ID="17" Fach="" Kursnummer="" Name="Ma-E-9" Jahrgangsstufe="0">
+    <property Type="Collection" Name="Stunden"/>
+    <property Type="Collection" Name="Schueler">
+     <schueler Nachname="Bader " ID="272" Tutor="9.12" Name="Bader ,Florian" Vorname="Florian">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Barik" ID="284" Tutor="9.13" Name="Barik,Baran" Vorname="Baran">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Ben-Amara" ID="273" Tutor="9.12" Name="Ben-Amara,Emilia" Vorname="Emilia">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Bock" ID="271" Tutor="9.11" Name="Bock,Lisa-Marie" Vorname="Lisa-Marie">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Brockamp" ID="274" Tutor="9.12" Name="Brockamp,Moritz" Vorname="Moritz">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Denzin" ID="275" Tutor="9.12" Name="Denzin,Fabius" Vorname="Fabius">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Ehlert" ID="276" Tutor="9.12" Name="Ehlert,Maike" Vorname="Maike">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Fenet" ID="291" Tutor="9.11" Name="Fenet,Max" Vorname="Max">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Hallak " ID="277" Tutor="9.12" Name="Hallak ,Emilio" Vorname="Emilio">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Jelen" ID="278" Tutor="9.12" Name="Jelen,Weronika" Vorname="Weronika">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Karaduman" ID="285" Tutor="9.13" Name="Karaduman,Berke" Vorname="Berke">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Katziev" ID="286" Tutor="9.13" Name="Katziev,Movsar" Vorname="Movsar">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Makiqi" ID="287" Tutor="9.13" Name="Makiqi,Drenusha" Vorname="Drenusha">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Mundt" ID="288" Tutor="9.13" Name="Mundt,Katja" Vorname="Katja">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Omarov" ID="280" Tutor="9.12" Name="Omarov,Alischer" Vorname="Alischer">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Patrick " ID="282" Tutor="9.12" Name="Patrick ,Roedel" Vorname="Roedel">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Pfitscher" ID="281" Tutor="9.12" Name="Pfitscher,Jolina" Vorname="Jolina">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Schulte" ID="289" Tutor="9.13" Name="Schulte,Lion" Vorname="Lion">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Sonnabend" ID="283" Tutor="9.12" Name="Sonnabend,Leonie" Vorname="Leonie">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="" ID="290" Tutor="9.13" Name="schueler(290)" Vorname="Antonia">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="Özkan " ID="279" Tutor="9.12" Name="Özkan ,Meryem" Vorname="Meryem">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+     <schueler Nachname="äßüö" ID="408" Tutor="" Name="äßüö,ÄÜÖ@" Vorname="ÄÜÖ@">
+      <property Type="Collection" Name="Noten"/>
+      <property Type="Collection" Name="Fehlzeiten"/>
+      <property Type="Collection" Name="Stundenbewertungen"/>
+      <property Type="Collection" Name="Notizen"/>
+      <property Type="Collection" Name="Materialien"/>
+     </schueler>
+    </property>
+    <property Type="Collection" Name="Teilleistungen"/>
+    <property Type="Collection" Name="StundenplanTemplates"/>
+    <property Type="Collection" Name="Reihen"/>
+    <property Type="PObject" Name="Sitzplan">
+     <sitzplan Reihen="4" ID="27" Spalten="8" Name="SP-Ma-E-9">
+      <property Type="Collection" Name="Plaetze">
+       <platz ID="292" Spalte="0" Name="r19919368, s0" Reihe="19919368">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="294" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="296" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="298" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="300" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="302" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="304" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="306" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="308" Spalte="0" Name="r19861512, s0" Reihe="19861512">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="310" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="312" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="314" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="316" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="318" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="320" Spalte="6357100" Name="r7340064, s6357100" Reihe="7340064">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="322" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="324" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="326" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="328" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="330" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="332" Spalte="7602281" Name="r7536672, s7602281" Reihe="7536672">
+        <property Type="Collection" Name="Noten"/>
+       </platz>
+       <platz ID="389" Spalte="32635" Name="r467569056, s32635" Reihe="467569056">
+        <property Type="Collection" Name="Noten"/>
+        <property Type="PObject" Name="Schueler">
+         <schueler ID="271" Name="Bock,Lisa-Marie"/>
+        </property>
+       </platz>
+       <platz ID="391" Spalte="0" Name="r0, s0" Reihe="0">
+        <property Type="Collection" Name="Noten"/>
+        <property Type="PObject" Name="Schueler">
+         <schueler ID="278" Name="Jelen,Weronika"/>
+        </property>
+       </platz>
+       <platz ID="393" Spalte="7077985" Name="r7733280, s7077985" Reihe="7733280">
+        <property Type="Collection" Name="Noten"/>
+        <property Type="PObject" Name="Schueler">
+         <schueler ID="277" Name="Hallak ,Emilio"/>
+        </property>
+       </platz>
+       <platz ID="398" Spalte="41" Name="r0, s41" Reihe="0">
+        <property Type="Collection" Name="Noten"/>
+        <property Type="PObject" Name="Schueler">
+         <schueler ID="276" Name="Ehlert,Maike"/>
+        </property>
+       </platz>
+       <platz ID="400" Spalte="0" Name="r0, s0" Reihe="0">
+        <property Type="Collection" Name="Noten"/>
+        <property Type="PObject" Name="Schueler">
+         <schueler ID="275" Name="Denzin,Fabius"/>
+        </property>
+       </platz>
+       <platz ID="402" Spalte="7077985" Name="r7733280, s7077985" Reihe="7733280">
+        <property Type="Collection" Name="Noten"/>
+        <property Type="PObject" Name="Schueler">
+         <schueler ID="273" Name="Ben-Amara,Emilia"/>
+        </property>
+       </platz>
+       <platz ID="404" Spalte="7077985" Name="r7733280, s7077985" Reihe="7733280">
+        <property Type="Collection" Name="Noten"/>
+        <property Type="PObject" Name="Schueler">
+         <schueler ID="272" Name="Bader ,Florian"/>
+        </property>
+       </platz>
+       <platz ID="406" Spalte="7077985" Name="r7733280, s7077985" Reihe="7733280">
+        <property Type="Collection" Name="Noten"/>
+        <property Type="PObject" Name="Schueler">
+         <schueler ID="274" Name="Brockamp,Moritz"/>
+        </property>
+       </platz>
+      </property>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+     </sitzplan>
+    </property>
+    <property Type="PObject" Name="Kursbuch">
+     <kursbuch ID="28" Name="Kursbuch Ma-E-9">
+      <property Type="Collection" Name="Eintraege">
+       <krusbucheintrag Stunde="" Datum="Mo. Aug. 5 2019" ID="61" Name="KE Ma-E-9">
+        <property Name="Eintrag"></property>
+        <property Name="Bemerkung"></property>
+        <property Name="Details"></property>
+        <property Type="PObject" Name="Kursbuch">
+         <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+        </property>
+        <property Type="PObject" Name="StundenplanEintrag">
+         <stundenplaneintrag Datum="Mo. Aug. 5 2019" NrStunde="6" ID="59" Tag="1" Name="Ma-E-9" Doppelstunde="0">
+          <property Name="Verlauf"></property>
+          <property Type="Collection" Name="Bewertungen"/>
+          <property Type="Collection" Name="Fehlzeiten"/>
+          <property Type="PObject" Name="Klasse">
+           <klasse ID="17" Name="Ma-E-9"/>
+          </property>
+          <property Type="PObject" Name="Template">
+           <stundenplantemplateeintrag NrStunde="6" ID="44" Tag="1" DatumBegin="" DatumEnde="" Name="Ma-E-9 / 1 / 6 " Doppelstunde="0">
+            <property Type="Collection" Name="Eintraege">
+             <stundenplaneintrag ID="59" Name="Ma-E-9"/>
+             <stundenplaneintrag Datum="Mo. Aug. 12 2019" NrStunde="6" ID="240" Tag="1" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="44" Name="Ma-E-9 / 1 / 6 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Mo. Aug. 12 2019" ID="242" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="240" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+             <stundenplaneintrag Datum="Mo. Aug. 26 2019" NrStunde="6" ID="337" Tag="1" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="44" Name="Ma-E-9 / 1 / 6 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Mo. Aug. 26 2019" ID="339" Name="KE Ma-E-9">
+                <property Name="Eintrag">BSL-9.1</property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="337" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+             <stundenplaneintrag ID="424" Name="Ma-E-9"/>
+            </property>
+            <property Type="Collection" Name="Reihen"/>
+            <property Type="PObject" Name="Klasse">
+             <klasse ID="17" Name="Ma-E-9"/>
+            </property>
+           </stundenplantemplateeintrag>
+          </property>
+          <property Type="PObject" Name="KursbuchEintrag">
+           <krusbucheintrag ID="61" Name="KE Ma-E-9"/>
+          </property>
+          <property Type="Collection" Name="Notizen"/>
+          <property Type="Collection" Name="Materialien"/>
+         </stundenplaneintrag>
+        </property>
+       </krusbucheintrag>
+       <krusbucheintrag Stunde="" Datum="Di. Aug. 6 2019" ID="70" Name="KE Ma-E-9">
+        <property Name="Eintrag"></property>
+        <property Name="Bemerkung"></property>
+        <property Name="Details"></property>
+        <property Type="PObject" Name="Kursbuch">
+         <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+        </property>
+        <property Type="PObject" Name="StundenplanEintrag">
+         <stundenplaneintrag Datum="Di. Aug. 6 2019" NrStunde="8" ID="66" Tag="2" Name="Ma-E-9" Doppelstunde="0">
+          <property Name="Verlauf"></property>
+          <property Type="Collection" Name="Bewertungen"/>
+          <property Type="Collection" Name="Fehlzeiten"/>
+          <property Type="PObject" Name="Klasse">
+           <klasse ID="17" Name="Ma-E-9"/>
+          </property>
+          <property Type="PObject" Name="Template">
+           <stundenplantemplateeintrag NrStunde="8" ID="48" Tag="2" DatumBegin="" DatumEnde="" Name="Ma-E-9 / 2 / 8 " Doppelstunde="0">
+            <property Type="Collection" Name="Eintraege">
+             <stundenplaneintrag ID="66" Name="Ma-E-9"/>
+             <stundenplaneintrag Datum="Di. Aug. 13 2019" NrStunde="8" ID="244" Tag="2" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="48" Name="Ma-E-9 / 2 / 8 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Di. Aug. 13 2019" ID="248" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="244" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+             <stundenplaneintrag Datum="Di. Aug. 27 2019" NrStunde="8" ID="343" Tag="2" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="48" Name="Ma-E-9 / 2 / 8 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Di. Aug. 27 2019" ID="347" Name="KE Ma-E-9">
+                <property Name="Eintrag">Rückgabe BSL, Besprechung</property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="343" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+             <stundenplaneintrag Datum="Di. Sep. 3 2019" NrStunde="8" ID="429" Tag="2" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="48" Name="Ma-E-9 / 2 / 8 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Di. Sep. 3 2019" ID="439" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="429" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+            </property>
+            <property Type="Collection" Name="Reihen"/>
+            <property Type="PObject" Name="Klasse">
+             <klasse ID="17" Name="Ma-E-9"/>
+            </property>
+           </stundenplantemplateeintrag>
+          </property>
+          <property Type="PObject" Name="KursbuchEintrag">
+           <krusbucheintrag ID="70" Name="KE Ma-E-9"/>
+          </property>
+          <property Type="Collection" Name="Notizen"/>
+          <property Type="Collection" Name="Materialien"/>
+         </stundenplaneintrag>
+        </property>
+       </krusbucheintrag>
+       <krusbucheintrag Stunde="" Datum="Do. Aug. 8 2019" ID="79" Name="KE Ma-E-9">
+        <property Name="Eintrag"></property>
+        <property Name="Bemerkung"></property>
+        <property Name="Details"></property>
+        <property Type="PObject" Name="Kursbuch">
+         <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+        </property>
+        <property Type="PObject" Name="StundenplanEintrag">
+         <stundenplaneintrag Datum="Do. Aug. 8 2019" NrStunde="1" ID="76" Tag="4" Name="Ma-E-9" Doppelstunde="0">
+          <property Name="Verlauf"></property>
+          <property Type="Collection" Name="Bewertungen"/>
+          <property Type="Collection" Name="Fehlzeiten"/>
+          <property Type="PObject" Name="Klasse">
+           <klasse ID="17" Name="Ma-E-9"/>
+          </property>
+          <property Type="PObject" Name="Template">
+           <stundenplantemplateeintrag NrStunde="1" ID="51" Tag="4" DatumBegin="" DatumEnde="" Name="Ma-E-9 / 4 / 1 " Doppelstunde="0">
+            <property Type="Collection" Name="Eintraege">
+             <stundenplaneintrag ID="76" Name="Ma-E-9"/>
+             <stundenplaneintrag Datum="Do. Aug. 15 2019" NrStunde="1" ID="256" Tag="4" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="51" Name="Ma-E-9 / 4 / 1 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Do. Aug. 15 2019" ID="259" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="256" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+             <stundenplaneintrag Datum="Do. Aug. 29 2019" NrStunde="1" ID="353" Tag="4" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="51" Name="Ma-E-9 / 4 / 1 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Do. Aug. 29 2019" ID="356" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="353" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+             <stundenplaneintrag Datum="Do. Sep. 5 2019" NrStunde="1" ID="433" Tag="4" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="51" Name="Ma-E-9 / 4 / 1 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Do. Sep. 5 2019" ID="440" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="433" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+            </property>
+            <property Type="Collection" Name="Reihen"/>
+            <property Type="PObject" Name="Klasse">
+             <klasse ID="17" Name="Ma-E-9"/>
+            </property>
+           </stundenplantemplateeintrag>
+          </property>
+          <property Type="PObject" Name="KursbuchEintrag">
+           <krusbucheintrag ID="79" Name="KE Ma-E-9"/>
+          </property>
+          <property Type="Collection" Name="Notizen"/>
+          <property Type="Collection" Name="Materialien"/>
+         </stundenplaneintrag>
+        </property>
+       </krusbucheintrag>
+       <krusbucheintrag Stunde="" Datum="Fr. Aug. 9 2019" ID="88" Name="KE Ma-E-9">
+        <property Name="Eintrag"></property>
+        <property Name="Bemerkung"></property>
+        <property Name="Details"></property>
+        <property Type="PObject" Name="Kursbuch">
+         <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+        </property>
+        <property Type="PObject" Name="StundenplanEintrag">
+         <stundenplaneintrag Datum="Fr. Aug. 9 2019" NrStunde="1" ID="84" Tag="5" Name="Ma-E-9" Doppelstunde="0">
+          <property Name="Verlauf"></property>
+          <property Type="Collection" Name="Bewertungen"/>
+          <property Type="Collection" Name="Fehlzeiten"/>
+          <property Type="PObject" Name="Klasse">
+           <klasse ID="17" Name="Ma-E-9"/>
+          </property>
+          <property Type="PObject" Name="Template">
+           <stundenplantemplateeintrag NrStunde="1" ID="54" Tag="5" DatumBegin="" DatumEnde="" Name="Ma-E-9 / 5 / 1 " Doppelstunde="0">
+            <property Type="Collection" Name="Eintraege">
+             <stundenplaneintrag ID="84" Name="Ma-E-9"/>
+             <stundenplaneintrag Datum="Fr. Aug. 16 2019" NrStunde="1" ID="262" Tag="5" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="54" Name="Ma-E-9 / 5 / 1 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Fr. Aug. 16 2019" ID="266" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="262" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+             <stundenplaneintrag Datum="Fr. Aug. 30 2019" NrStunde="1" ID="360" Tag="5" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="54" Name="Ma-E-9 / 5 / 1 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Fr. Aug. 30 2019" ID="364" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="360" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+             <stundenplaneintrag Datum="Fr. Sep. 6 2019" NrStunde="1" ID="436" Tag="5" Name="Ma-E-9" Doppelstunde="0">
+              <property Name="Verlauf"></property>
+              <property Type="Collection" Name="Bewertungen"/>
+              <property Type="Collection" Name="Fehlzeiten"/>
+              <property Type="PObject" Name="Klasse">
+               <klasse ID="17" Name="Ma-E-9"/>
+              </property>
+              <property Type="PObject" Name="Template">
+               <stundenplantemplateeintrag ID="54" Name="Ma-E-9 / 5 / 1 "/>
+              </property>
+              <property Type="PObject" Name="KursbuchEintrag">
+               <krusbucheintrag Stunde="" Datum="Fr. Sep. 6 2019" ID="441" Name="KE Ma-E-9">
+                <property Name="Eintrag"></property>
+                <property Name="Bemerkung"></property>
+                <property Name="Details"></property>
+                <property Type="PObject" Name="Kursbuch">
+                 <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+                </property>
+                <property Type="PObject" Name="StundenplanEintrag">
+                 <stundenplaneintrag ID="436" Name="Ma-E-9"/>
+                </property>
+               </krusbucheintrag>
+              </property>
+              <property Type="Collection" Name="Notizen"/>
+              <property Type="Collection" Name="Materialien"/>
+             </stundenplaneintrag>
+            </property>
+            <property Type="Collection" Name="Reihen"/>
+            <property Type="PObject" Name="Klasse">
+             <klasse ID="17" Name="Ma-E-9"/>
+            </property>
+           </stundenplantemplateeintrag>
+          </property>
+          <property Type="PObject" Name="KursbuchEintrag">
+           <krusbucheintrag ID="88" Name="KE Ma-E-9"/>
+          </property>
+          <property Type="Collection" Name="Notizen"/>
+          <property Type="Collection" Name="Materialien"/>
+         </stundenplaneintrag>
+        </property>
+       </krusbucheintrag>
+       <krusbucheintrag ID="242" Name="KE Ma-E-9"/>
+       <krusbucheintrag ID="248" Name="KE Ma-E-9"/>
+       <krusbucheintrag ID="259" Name="KE Ma-E-9"/>
+       <krusbucheintrag ID="266" Name="KE Ma-E-9"/>
+       <krusbucheintrag ID="339" Name="KE Ma-E-9"/>
+       <krusbucheintrag ID="347" Name="KE Ma-E-9"/>
+       <krusbucheintrag ID="356" Name="KE Ma-E-9"/>
+       <krusbucheintrag ID="364" Name="KE Ma-E-9"/>
+      </property>
+      <property Type="PObject" Name="Klasse">
+       <klasse ID="17" Name="Ma-E-9"/>
+      </property>
+     </kursbuch>
+    </property>
+    <property Type="Collection" Name="Notizen"/>
+    <property Type="Collection" Name="Materialien"/>
+   </klasse>
+  </property>
+  <property Type="PObject" Name="Template">
+   <stundenplantemplateeintrag ID="44" Name="Ma-E-9 / 1 / 6 "/>
+  </property>
+  <property Type="PObject" Name="KursbuchEintrag">
+   <krusbucheintrag Stunde="" Datum="Mo. Sep. 2 2019" ID="442" Name="KE Ma-E-9">
+    <property Name="Eintrag"></property>
+    <property Name="Bemerkung"></property>
+    <property Name="Details"></property>
+    <property Type="PObject" Name="Kursbuch">
+     <kursbuch ID="28" Name="Kursbuch Ma-E-9"/>
+    </property>
+    <property Type="PObject" Name="StundenplanEintrag">
+     <stundenplaneintrag ID="424" Name="Ma-E-9"/>
+    </property>
+   </krusbucheintrag>
+  </property>
+  <property Type="Collection" Name="Notizen"/>
+  <property Type="Collection" Name="Materialien"/>
+ </stundenplaneintrag>

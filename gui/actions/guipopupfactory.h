@@ -25,6 +25,7 @@
 #include "gui/mapviews/mapviewspopupfactory.h"
 #include "gui/mapviews/genericmapview.h"
 #include "gui/mapviews/weekmapview.h"
+#include "gui/forms/mtreewidget.h"
 #include "orm/persistence/pobject.h"
 
 #include "actionpopup.h"
@@ -42,6 +43,7 @@ public:
     QMenu* getPopupFor(PObjectIconView *iconView);
     QMenu* getPopupFor(PObjectMultiView *multiView);
     QMenu* getPopupFor(PObjectTable *table);
+    QMenu* getPopupFor(MTreeWidgetItem *treeWidgetItem);
     QMenu* getPopupForGenericMapView(GenericMapView *mapView, QPoint pos);
     QMenu* getPopupForWeekMapView(WeekMapView *mapView, QPoint pos);
     QMenu* getActionPopupForObject(PObject *o);

@@ -1,5 +1,6 @@
 #include "mtreewidget.h"
 #include "gui/base/guiconfig.h"
+#include "gui/actions/guipopupfactory.h"
 #include "gui/actions/guicreateaction.h"
 #include "orm/transactions/transactions.h"
 
@@ -12,6 +13,10 @@ MTreeWidget::MTreeWidget(MTree *tr, QWidget *parent)
     addTopLevelItem(tr);
     setAcceptDrops(true);
 
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+
+
 }
 
 
@@ -20,6 +25,14 @@ void MTreeWidget::addTopLevelItem(MTree *tr)
     topLevelItems->push_back(new MTreeWidgetItem(tr,this));
 }
 
+void MTreeWidget::onCustomContextMenu(const QPoint &p)
+{
+        MTreeWidgetItem *item = dynamic_cast<MTreeWidgetItem*>(itemAt(p));
+        if (item) {
+            QMenu *popup = GuiPopupFactory::getInstance()->getPopupFor(item);
+            popup->exec(viewport()->mapToGlobal(p));
+        }
+}
 
 
 void MTreeWidget::dropEvent(QDropEvent *e)
@@ -155,4 +168,52 @@ void MTreeWidgetItem::setContents(TransactionObject *to)
 TransactionObject* MTreeWidgetItem::getContents()
 {
     return node->getContents();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MTreeWidgetItemAction::MTreeWidgetItemAction(MTreeWidgetItem *treeWidgetItem)
+{
+
+}
+
+MTreeWidgetItemAction::~MTreeWidgetItemAction()
+{
+
+}
+
+void MTreeWidgetItemAction::addChild()
+{
+
+}
+void MTreeWidgetItemAction::removeFromParent()
+{
+
+}
+void MTreeWidgetItemAction::newContentsObject()
+{
+
 }

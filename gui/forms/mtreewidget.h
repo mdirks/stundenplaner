@@ -12,9 +12,14 @@ class MTreeWidgetItem;
 
 class MTreeWidget : public QTreeWidget, public PObjectDropTarget
 {
+    Q_OBJECT
+
 public:
     MTreeWidget(MTree *tr=0, QWidget *parent=0);
     void addTopLevelItem(MTree *tr);
+
+public slots:
+    void onCustomContextMenu(const QPoint &);
 
 protected:
     //void mousePressEvent(QMouseEvent *e);
@@ -31,6 +36,9 @@ private:
     list<MTreeWidgetItem*> *topLevelItems;
 };
 
+
+
+
 class MTreeWidgetItem : public QTreeWidgetItem
 {
 public:
@@ -45,4 +53,19 @@ private:
     MTree *node;
 };
 
+
+class MTreeWidgetItemAction : public QObject
+{
+
+Q_OBJECT
+
+public:
+    MTreeWidgetItemAction(MTreeWidgetItem *treeWidgetItem);
+    ~MTreeWidgetItemAction();
+
+public slots:
+    void addChild();
+    void removeFromParent();
+    void newContentsObject();
+};
 #endif // MTREEWIDGET_H

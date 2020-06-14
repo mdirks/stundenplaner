@@ -15,7 +15,7 @@
 #include <QListWidget>
 #include <QPixmap>
 #include <QMenu>
-#include "orm/mapping/abstractmapper.h"
+#include "../orm/mapping/abstractmapper.h"
 #include "gui/draganddrop/pobjectdata.h"
 #include "pobjecticonviewitem.h"
 #include "gui/base/propertyeditor.h"

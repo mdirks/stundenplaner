@@ -134,7 +134,9 @@ void TextPropertyViewer2::updatePreview()
     input.preamble = QString("\\usepackage{amssymb,amsmath} "
                              "\\usepackage[whole]{bxcjkjatype}"
                              "\\usepackage{hyperref}");
-    input.latex = QString("{\\bf ").append(parent->getName().c_str()).append("}\\\\[.3cm]\\hrule ").toUtf8();
+    if(parent){
+        input.latex = QString("{\\bf ").append(parent->getName().c_str()).append("}\\\\[.3cm]\\hrule ").toUtf8();
+    }
     input.latex = input.latex.append(editor->toPlainText().toUtf8());
     if(mPreviewBuilderThread->inputChanged(input)) {
         qDebug() << "input changed. Render...";
