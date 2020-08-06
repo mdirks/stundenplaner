@@ -123,7 +123,7 @@ private:
     list<AbstractMapper*>* getPersistentClasses();
 
     
-	list<PropertyEditor*> *activeEditors;
+    //list<PropertyEditor*> *activeEditors;
     list<GuiMode*> *modelist;
 
     

@@ -127,7 +127,7 @@ GuiRepositoryImpl::GuiRepositoryImpl()
     activeMode = 0;
 
 	
-	activeEditors = new list<PropertyEditor*>();
+    //activeEditors = new list<PropertyEditor*>();
 	activeIconViews = new list<PObjectIconView*>();
     modelist = new list<GuiMode*>();
 

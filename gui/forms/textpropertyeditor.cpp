@@ -19,8 +19,7 @@ TextPropertyEditor::TextPropertyEditor(QWidget *parent)
  : QTextEdit(parent) , property(0)
 {
     editing=false;
-
-    connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
+    setText("");
     setLineWrapMode(QTextEdit::NoWrap);
 }
 
@@ -62,6 +61,7 @@ void TextPropertyEditor::startEdit(RepositoryProperty *prop, PObject *parent)
     this->parent = parent;
     setLineWrapMode(QTextEdit::NoWrap);
     setText(property->asString( parent ).c_str());
+    connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
 }
 
 void TextPropertyEditor::startEdit()
@@ -83,11 +83,11 @@ void TextPropertyEditor::startEdit()
 
 void TextPropertyEditor::stopEdit()
 {
-    if(property && parent){
+    if(editing && property && parent){
         QString text = toPlainText();
         QTextStream str(&text);
         property->fromString(str.readAll().toStdString(), parent);
-		parent->save();
+        //parent->save();   Should not be required, anyone still using this hack?
 	}
 	editing = false;
 	

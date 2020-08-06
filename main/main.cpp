@@ -177,9 +177,11 @@ int main(int argc, char *argv[])
 
    
     DataModelRepository::getInstance();
+    /*
     for(int i=1;i<10000000; i++){
         app.processEvents();
     }
+    */
 
 
     GuiRepository *rp=GuiRepository::getInstance();
