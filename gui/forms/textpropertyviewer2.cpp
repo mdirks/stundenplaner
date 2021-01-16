@@ -80,6 +80,8 @@ void TextPropertyViewer2::doCommonSetup()
     label = new PdfViewer(this);
     label->setMinimumWidth(200);
     label->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    label->addContextMenuAction(label->action(PdfView::Zoom));
+    label->addContextMenuAction(label->action(PdfView::MouseToolBrowse));
 
     if(prop){
         editor = new TextPropertyEditor(parent,prop,this);
@@ -101,7 +103,7 @@ void TextPropertyViewer2::doCommonSetup()
     l->addWidget(splitter);
     setLayout(l);
 
-
+    //-------------- KLF setup ----------------------------------
     input.mathmode = " ... ";
     input.dpi = 150;
     KLFBackend::klfSettings settings;

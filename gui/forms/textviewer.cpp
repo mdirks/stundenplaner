@@ -76,6 +76,11 @@ void TextViewer::setPage(int i)
     viewer->setPage(i);
 }
 
+int TextViewer::getPage()
+{
+    return viewer->pageNumber();
+}
+
 void TextViewer::selectionChanged(int i){
     PObject *o=combo->getObject(i);
     if(lektuere *l = dynamic_cast<lektuere*>(o) ){
@@ -86,4 +91,18 @@ void TextViewer::selectionChanged(int i){
     }
 }
 
+void TextViewer::addSelectionAction(PdfViewSelectionAction *a)
+{
+    viewer->addSelectionAction(a);
+}
+
+void TextViewer::addKeyAction(Qt::Key key, PdfView::PdfViewAction a)
+{
+    viewer->addKeyAction(key, viewer->action(a));
+}
+
+void TextViewer::addContextMenuAction(PdfView::PdfViewAction a)
+{
+    viewer->addContextMenuAction(viewer->action(a));
+}
 

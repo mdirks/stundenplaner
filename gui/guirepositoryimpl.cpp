@@ -479,7 +479,9 @@ void GuiRepositoryImpl::initGui()
 
     (new ReadCsvlistAction())->reg();
 
-	if(GuiConfig::getInstance()->getActiveSchuljahr() == 0){
+
+    /* move to ModePlanung
+    if(GuiConfig::getInstance()->getActiveSchuljahr() == 0){
 		schuljahr *sj = (schuljahr*) PObjectDialog::choosePObject(schuljahrmapper::getInstance());
 		if(sj){
 			GuiConfig::getInstance()->setActiveSchuljahr(sj);
@@ -490,6 +492,7 @@ void GuiRepositoryImpl::initGui()
 		qDebug("StundePlanerApp::slotChangeSchuljahr() : selection of schuljahr failed");
 		}
 	}
+    */
 
 
     /*
@@ -531,7 +534,7 @@ void GuiRepositoryImpl::initGui()
 	MapviewsPopupFactory::setInstance(GuiPopupFactory::getInstance());
 	PObjectTableControlerFactory::setInstance(new PObjectTableControlerFactoryImpl());
 
-    addMode(ModePlanung::getInstance());
+    //addMode(ModePlanung::getInstance());
     addMode(ModeLesen::getInstance());
     addMode(ModeMaterial::getInstance());
     addMode(new ModeLernen());

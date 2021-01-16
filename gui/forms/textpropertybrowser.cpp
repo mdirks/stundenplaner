@@ -5,6 +5,7 @@
 #include "datamodel/lektuerenotiz.h"
 
 #include <QVBoxLayout>
+#define TB_HEIGHT 17
 
 TextPropertyBrowser::TextPropertyBrowser(PObject *po, RepositoryProperty *cP, RepositoryProperty *dispProp, QWidget *parent) :
     QWidget(parent)
@@ -30,9 +31,15 @@ TextPropertyBrowser::TextPropertyBrowser(PObject *po, RepositoryProperty *cP, Re
     spinBox = new QSpinBox(this);
     spinBox->setMaximum(999);
     connect(spinBox,SIGNAL(valueChanged(int)),this,SLOT(numberChanged(int)));
+    gotoButton =new QToolButton(this);
+    connect(gotoButton,SIGNAL(clicked()),this,SLOT(gotoPage()));
     //toolBar->addAction("New",this,SLOT(newObject()));
+    spinBox->setFixedHeight(TB_HEIGHT);
+    combo->setFixedHeight(TB_HEIGHT);
+    gotoButton->setFixedHeight(TB_HEIGHT);
     toolBar->addWidget(combo);
     toolBar->addWidget(spinBox);
+    toolBar->addWidget(gotoButton);
 
 
 
@@ -56,7 +63,7 @@ void TextPropertyBrowser::numberChanged(int i)
         Transactions::getCurrentTransaction()->add(ln);
         ln->setSeite(i);
     }
-    if(i!=0) ModeLesen::getInstance()->setActivePage(i);
+    //if(i!=0) ModeLesen::getInstance()->setActivePage(i);
 
 }
 
@@ -70,13 +77,14 @@ void TextPropertyBrowser::nameChanged(QString newName)
     }
 }
 
-void TextPropertyBrowser::newObject()
+PObject* TextPropertyBrowser::newObject()
 {
 
     PObject *o = GuiCreateAction::getInstance()->create(colProp->getType());
     Transactions::getCurrentTransaction()->add(parentObject);
     colProp->add(o,parentObject);
     setParentObject(parentObject);
+    return o;
 }
 
 void TextPropertyBrowser::setParentObject(PObject *po)
@@ -114,9 +122,20 @@ void TextPropertyBrowser::indexChanged(int i)
         {
             int npage=ln->getSeite();
             spinBox->setValue(npage);
-            ModeLesen::getInstance()->setActivePage(npage);
+            //ModeLesen::getInstance()->setActivePage(npage);
         }
 
+}
+
+void TextPropertyBrowser::gotoPage()
+{
+        int pn=spinBox->value();
+        ModeLesen::getInstance()->setActivePage(pn);
+}
+
+void TextPropertyBrowser::setActiveObject(PObject *o)
+{
+    combo->setActiveObject(o);
 }
 
 /*

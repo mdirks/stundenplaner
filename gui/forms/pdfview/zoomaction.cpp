@@ -97,9 +97,11 @@ void ZoomAction::setCurrentZoomFactor(qreal newZoomFactor)
 {
 	const qreal zoomFactorArray[] = {12.50, 25, 50, 75, 100, 125, 150, 200, 250, 300};
 	const int zoomFactorNumber = 10;
-	QStringList zoomFactorList;
+    QStringList zoomFactorList;
 	int newZoomFactorPosition = -1;
 	bool addNewZoomFactor = true;
+
+    zoomFactorList << "fit"; //MD
 
 	if (newZoomFactor < m_minZoomFactor || newZoomFactor > m_maxZoomFactor)
 		addNewZoomFactor = false;
@@ -152,5 +154,24 @@ void ZoomAction::setZoomFactor(qreal zoomFactor)
 
 void ZoomAction::setZoomFactor(const QString &zoomFactorText)
 {
-	setZoomFactor(GlobalLocale::readNumber(QString(zoomFactorText).remove(QRegExp(QString(QLatin1String("[^\\d\\%1]*")).arg(GlobalLocale::decimalSymbol())))) / 100.0);
+    if(zoomFactorText == "fit"){
+        m_fit=true;
+        //QSize s=m_view->size();
+        //m_view->resize(s);
+
+        //m_view->setZoomFactor(.74*widht/pwidht);
+    } else {
+        m_fit=false;
+        setZoomFactor(GlobalLocale::readNumber(QString(zoomFactorText).remove(QRegExp(QString(QLatin1String("[^\\d\\%1]*")).arg(GlobalLocale::decimalSymbol())))) / 100.0);
+    }
+}
+
+void ZoomAction::setView(PdfView *v)
+{
+    m_view=v;
+}
+
+PdfView* ZoomAction::getView()
+{
+    return m_view;
 }

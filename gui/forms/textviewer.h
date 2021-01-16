@@ -21,9 +21,13 @@ public:
     TextViewer(PObjectListProvider *provider, QWidget *pw=0);
     
     void setPage(int i);
+    int getPage();
     void load();
     void setResizePolicy(bool res);
     void setProvider(PObjectListProvider *prov);
+    void addSelectionAction(PdfViewSelectionAction *a);
+    void addKeyAction(Qt::Key key, PdfView::PdfViewAction a);
+    void addContextMenuAction(PdfView::PdfViewAction a);
 
 private:
     void doCommonSetup();

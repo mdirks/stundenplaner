@@ -19,9 +19,41 @@
 #define PDFVIEWER_PDFVIEW_H
 
 #include <QGraphicsView>
+#include <QAction>
 #include <poppler-qt5.h>
 
 class PdfViewPrivate;
+
+class PdfViewSelectionAction : public QAction
+{
+    Q_OBJECT
+public:
+    PdfViewSelectionAction(const QString &text, QObject *parent=nullptr);
+    virtual void setDataText(QString t);
+    QString getDataText();
+    virtual void setDataImage(QImage image);
+    QImage getDataImage();
+
+private:
+    QString m_t;
+    QImage m_i;
+
+};
+
+class PdfViewKeyAction : public QAction
+{
+    Q_OBJECT
+public:
+    PdfViewKeyAction(const Qt::Key key, QObject *parent=nullptr);
+    PdfViewKeyAction(const Qt::Key key, QAction *action, QObject *parent=nullptr);
+    Qt::Key key();
+
+private:
+    Qt::Key m_k;
+    QAction *m_a;
+};
+
+
 
 class PdfView : public QGraphicsView
 {
@@ -31,7 +63,7 @@ class PdfView : public QGraphicsView
 	Q_PROPERTY(qreal zoomFactor READ zoomFactor WRITE setZoomFactor NOTIFY zoomFactorChanged)
 	Q_PROPERTY(double pageNumber READ pageNumberWithPosition WRITE setPage)
 	Q_PROPERTY(QStringList pageLabels READ popplerPageLabels)
-	Q_ENUMS(MouseTool PdfViewAction)
+    Q_ENUMS(MouseTool PdfViewAction)
 
 public:
 	/**
@@ -211,7 +243,7 @@ public:
 	 * currently visible area is located.
 	 */
 	double pageNumberWithPosition() const;
-
+    int pageNumber() const;
 	/**
 	 * This function searches for <em>text</em> in the view, starting in
 	 * the currently visible area of the text, taking into consideration
@@ -258,6 +290,22 @@ public:
 	 * \param action the action to be added to the view's context menu
 	 */
 	void addContextMenuAction(QAction *action);
+
+    /**
+     * Add external action to be offered when some text has been selected. Selected text is
+     * passed via setText().
+     * @param action to be added
+     */
+    void addSelectionAction(PdfViewSelectionAction *action);
+
+    /**
+     * Add external action to be offered when some text has been selected. Selected text is
+     * passed via setText().
+     * @param action to be added
+     */
+    void addKeyAction(PdfViewKeyAction *action);
+    void addKeyAction(Qt::Key key, QAction *action);
+
 	/**
 	 * This function removes <em>action</em> from the list of actions that
 	 * are available in the context menu of the view.
@@ -265,6 +313,8 @@ public:
 	 */
 	void removeContextMenuAction(QAction *action);
     void amkhlvJumpToPosition(double pos);
+
+     void setResize(bool res){m_resize=res;};
 
 public Q_SLOTS:
 	/**
@@ -359,13 +409,21 @@ protected:
 	virtual void wheelEvent(QWheelEvent *event);
 #endif // QT_NO_WHEELEVENT
 
+    virtual void resizeEvent(QResizeEvent *event);
+
+
 private:
 //	QSharedDataPointer<PdfViewPrivate> d;
 	PdfViewPrivate *d;
 	friend class PdfViewPrivate;
+    bool m_resize;
 
 };
 
 Q_DECLARE_METATYPE(PdfView::MouseTool)
+
+
+
+
 
 #endif // PDFVIEWER_PDFVIEW_H

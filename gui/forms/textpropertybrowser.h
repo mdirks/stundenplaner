@@ -12,6 +12,7 @@
 #include <QToolBar>
 #include <QComboBox>
 #include <QSpinBox>
+#include <QToolButton>
 #include <QString>
 
 #include <list>
@@ -23,6 +24,8 @@ public:
     explicit TextPropertyBrowser(PObject *po, RepositoryProperty *colProp, RepositoryProperty *dispProp, QWidget *parent = 0);
     void setParentObject(PObject *po);
 
+    void setActiveObject(PObject *o);
+
 protected:
     //PObject* getObject(int i);
     //void load(list<PObject*> *ol);
@@ -32,7 +35,8 @@ signals:
     
 public slots:
     void indexChanged(int i);
-    void newObject();
+    void gotoPage();
+    PObject* newObject();
     void numberChanged(int i);
     void nameChanged(QString newName);
 
@@ -44,6 +48,7 @@ private:
     PObject *parentObject;
     RepositoryProperty *colProp;
     QSpinBox *spinBox;
+    QToolButton *gotoButton;
 };
 
 #endif // TEXTPROPERTYBROWSER_H

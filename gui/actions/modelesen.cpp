@@ -27,10 +27,7 @@ ModeLesen::ModeLesen()
     splitter = 0;
 
     QPixmap pm = GuiConfig::getInstance()->getIcon("ModeLesen");
-    if(pm.isNull()){
-        GuiConfig::getInstance()->selectIcon("ModeLesen");
-        pm = GuiConfig::getInstance()->getIcon("ModeLesen");
-    }
+
     setIcon(pm);
     setToolTip("Lesen");
 
@@ -45,14 +42,7 @@ ModeLesen* ModeLesen::getInstance()
     if(instance==0)
     {
         instance = dynamic_cast<ModeLesen*>(ModeLesenmapper::getInstance()->getSingletonInstance());
-        /*
-        list<PObject*> *li=ModeLesenmapper::getInstance()->find_gen();
-        if(li && li->size()>0){
-            instance=dynamic_cast<ModeLesen*>((*(--(li->end()))));
-        } else {
-            instance=ModeLesenmapper::getInstance()->create();
-        }
-        */
+
     }
     return instance;
 }
@@ -142,6 +132,14 @@ void ModeLesen::setupMode()
     connect(viewer, SIGNAL(textChanged(lektuere*)), this, SLOT(setActiveText(lektuere*)));
     viewer->selectionChanged(0);
 
+    viewer->addSelectionAction(new TakeNoteAction(this));
+    viewer->addContextMenuAction(PdfView::Zoom);
+    viewer->addContextMenuAction(PdfView::Bookmarks);
+    viewer->addContextMenuAction(PdfView::MouseToolSelection);
+    viewer->addContextMenuAction(PdfView::MouseToolBrowse);
+    viewer->addKeyAction(Qt::Key_Plus, PdfView::ZoomIn);
+
+
     //viewer->setResizePolicy(true);
     //guirep->setActiveMode(this);
 
@@ -174,6 +172,8 @@ void ModeLesen::setActivePage(int i)
 {
     viewer->setPage(i);
 }
+
+
 
 void ModeLesen::showNotizeditor()
 {
@@ -265,4 +265,40 @@ void AdaptingSplitter::resizeEvent(QResizeEvent *e)
     QList<int> sizeList = QList<int>();
     sizeList << totalSize.height()-w2Size.height() << w2Size.height();
     setSizes(sizeList);
+}
+
+void ModeLesen::takeNote(QString note)
+{
+    lektuerenotiz* ln = dynamic_cast<lektuerenotiz*>(browser->newObject());
+    if(ln){
+        int i=viewer->getPage();
+        ln->setSeite(i);
+        QString n(activeText->getName().c_str());
+        n.append("-").append(i);
+        ln->setName(n.toStdString());
+        ln->setBody(note.toStdString());
+        browser->setActiveObject(ln);
+    } else {
+        qDebug() << "ModeLesen::takeNote() : failed to create Lektuerenotiz";
+    }
+}
+
+
+TakeNoteAction::TakeNoteAction(ModeLesen *parent)
+    : PdfViewSelectionAction(QString("TakeNote"), parent)
+{
+    connect(this,SIGNAL(triggered()),this,SLOT(createLektuereNotiz()),Qt::UniqueConnection);
+    mode=parent;
+}
+
+void TakeNoteAction::createLektuereNotiz()
+{
+    QString t= getDataText();
+    mode->takeNote(t);
+}
+
+void TakeNoteAction::setDataText(QString t)
+{
+    if(t.isEmpty()) setEnabled(false);
+    PdfViewSelectionAction::setDataText(t);
 }

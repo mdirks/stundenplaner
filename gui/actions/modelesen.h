@@ -47,6 +47,7 @@ public slots:
     void showLernkarten();
     void showLernkartenDisplay();
     void setActiveText(lektuere *l);
+    void takeNote(QString note);
 
 
 private:
@@ -76,6 +77,23 @@ protected:
 private:
     QWidget *widget1, *widget2;
 
+};
+
+
+class TakeNoteAction : public PdfViewSelectionAction
+{
+    Q_OBJECT
+
+public:
+    TakeNoteAction(ModeLesen *parent);
+    void setDataText(QString t);
+
+public slots:
+    void createLektuereNotiz();
+
+
+private:
+    ModeLesen *mode;
 };
 
 #endif // MODELESEN_H

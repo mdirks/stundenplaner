@@ -20,6 +20,7 @@
 #define ZOOMACTION_H
 
 #include "selectaction.h"
+#include "pdfview.h"
 
 class QIcon;
 
@@ -39,6 +40,9 @@ public:
 	qreal maxZoomFactor() const;
 	void setZoomFactor(qreal zoomFactor);
 
+    void setView(PdfView *v);
+    PdfView* getView();
+
 Q_SIGNALS:
 	void zoomFactorAdded(qreal zoomFactor);
 
@@ -51,6 +55,11 @@ private:
 
 	qreal m_minZoomFactor;
 	qreal m_maxZoomFactor;
+
+    PdfView *m_view;
+
+public:
+    bool m_fit;
 };
 
 #endif // ZOOMACTION_H

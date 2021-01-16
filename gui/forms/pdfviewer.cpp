@@ -13,6 +13,13 @@ PdfViewer::PdfViewer(QWidget *parent)
     : PdfView(parent)
 {
     slotToggleShowForms(true);
+
+    /* to be done by clients - MD
+    addContextMenuAction(action(Bookmarks));
+    addContextMenuAction(action(MouseToolSelection));
+    addContextMenuAction(action(MouseToolBrowse));
+    */
+
 }
 
 
@@ -132,14 +139,3 @@ void PdfViewer::setResizePolicy(bool res)
     resize=res;
 }
 
-void PdfViewer::resizeEvent(QResizeEvent *event)
-{
-     QSize s=event->size();
-     int widht= s.width();
-     int pwidht = psize.width();
-
-     //setZoomFactor(.81*widht/pwidht);
-     if(resize){
-         setZoomFactor(.75*widht/pwidht);
-     }
-}

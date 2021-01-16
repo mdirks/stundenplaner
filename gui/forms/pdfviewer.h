@@ -18,7 +18,7 @@ protected:
     virtual void dropEvent(QDropEvent *e);
     virtual void dragMoveEvent(QDragMoveEvent* e);
 
-    virtual void resizeEvent(QResizeEvent *event);
+
 
 private:
     void doInitialSetup();

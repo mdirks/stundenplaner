@@ -289,17 +289,15 @@ QStringList GuiConfig::getDisplayProperties(QString guiObjectIdentifier)
 schuljahr* GuiConfig::getActiveSchuljahr()
 {
     if(activesj==0){
-	QString id_str = readEntry("GUI","AktiverStundenplan");
-	int id = id_str.toInt();
-	activesj = dynamic_cast<schuljahr*>(Database::getInstance()->loadObjectById(id));
-	if(activesj){
-        SKalender::getInstance()->setActiveSchuljahr(activesj);
-		SStundenplan::setActiveStundenplan(activesj->getStundenplana());
-    } else { qDebug() << "WARNING !!: uiConfig::getActiveSchuljahr : FAILED TO LOAD";}
-	
+        QString id_str = readEntry("GUI","AktiverStundenplan");
+        int id = id_str.toInt();
+        activesj = dynamic_cast<schuljahr*>(Database::getInstance()->loadObjectById(id));
     }
+
     return activesj;
 }
+
+
 
 tutorium* GuiConfig::getActiveTutorium()
 {

@@ -916,6 +916,11 @@ void PdfViewPrivate::slotSetPage(double pageNumber)
     q->setPage(pageNumber,PdfView::DontKeepPosition);
 }
 
+int PdfView::pageNumber() const
+{
+    return d->m_pageNumber;
+}
+
 double PdfView::pageNumberWithPosition() const
 {
 	// we return the inverse of the calculation done in setPage() for const int newValue in the case that keepPosition == DocumentObserver::DontKeepPosition
@@ -1222,9 +1227,22 @@ int PdfViewPrivate::pageNumberAtPosition(const QPointF &scenePos)
 	return pageNumber;
 }
 
+
+void PdfViewPrivate::addSelectionAction(PdfViewSelectionAction *selAct)
+{
+    m_selActions.append(selAct);
+}
+
+
+
 void PdfViewPrivate::handleSelection(const QPoint &popupMenuPos)
 {
 	QRectF selectionRect = m_selectionRect->rect();
+    double selw = selectionRect.width();
+    double selh = selectionRect.height();
+    QPointF cen=selectionRect.center();
+
+
 	if (selectionRect.width() < 1 || selectionRect.height() < 1)
 	{
 		removeSelectionRect();
@@ -1245,18 +1263,29 @@ void PdfViewPrivate::handleSelection(const QPoint &popupMenuPos)
 	QAction *copyImageAction = menu.addAction(tr("Copy &Image to Clipboard"));
 	QAction *saveImageAction = menu.addAction(tr("&Save Image to File..."));
 	QAction *copyTextAction = menu.addAction(tr("Copy &Text to Clipboard"));
+    QAction *zoomAction = menu.addAction(tr("Zoom to Sel"));
 	menu.addSeparator();
 //	menu.addAction(Icon("dialog-cancel"), tr("&Cancel"));
 	menu.addAction(tr("&Cancel"));
+    const QString text = m_pageItems.at(pageNumber)->text(selectionRect);
+    const double resX = m_dpiX * m_zoomFactor;
+    const double resY = m_dpiY * m_zoomFactor;
+    const QImage image = m_pageItems.at(pageNumber)->renderToImage(resX, resY, selectionRect.left() * scaleFactorX(), selectionRect.top() * scaleFactorY(), selectionRect.width() * scaleFactorX(), selectionRect.height() * scaleFactorY());
+    for(QList<PdfViewSelectionAction*>::Iterator it=m_selActions.begin(); it !=m_selActions.end(); it++){
+        (*it)->setDataText(text);
+        (*it)->setDataImage(image);
+        menu.addAction(*it);
+    }
 	QAction *choice = menu.exec(popupMenuPos);
 
 	if (choice)
 	{
 		if (choice == copyImageAction || choice == saveImageAction)
 		{
-			const double resX = m_dpiX * m_zoomFactor;
-			const double resY = m_dpiY * m_zoomFactor;
-			const QImage image = m_pageItems.at(pageNumber)->renderToImage(resX, resY, selectionRect.left() * scaleFactorX(), selectionRect.top() * scaleFactorY(), selectionRect.width() * scaleFactorX(), selectionRect.height() * scaleFactorY());
+            // moved outside to init additional actions, see above - MD
+            //const double resX = m_dpiX * m_zoomFactor;
+            //const double resY = m_dpiY * m_zoomFactor;
+            //const QImage image = m_pageItems.at(pageNumber)->renderToImage(resX, resY, selectionRect.left() * scaleFactorX(), selectionRect.top() * scaleFactorY(), selectionRect.width() * scaleFactorX(), selectionRect.height() * scaleFactorY());
 			if (choice == copyImageAction)
 			{
 				QClipboard *clipboard = QApplication::clipboard();
@@ -1286,14 +1315,36 @@ void PdfViewPrivate::handleSelection(const QPoint &popupMenuPos)
 			}
 #endif // QT_NO_FILEDIALOG
 		}
-		else if (choice == copyTextAction)
-		{
-			const QString text = m_pageItems.at(pageNumber)->text(selectionRect);
+        else if (choice == copyTextAction)
+        {
+            //moved outside to init additional actions, see above - MD
+            //const QString text = m_pageItems.at(pageNumber)->text(selectionRect);
 			QClipboard *clipboard = QApplication::clipboard();
 			clipboard->setText(text, QClipboard::Clipboard);
 			if (clipboard->supportsSelection())
 				clipboard->setText(text, QClipboard::Selection);
-		}
+        }
+        else if (choice == zoomAction)
+        {
+            int ww = q->width();
+            int wh = q->height();
+            double zf = q->zoomFactor();
+            //double selw = selectionRect.width();
+            //double selh = selectionRect.height();
+            if(ww/selw < wh/selh)
+                q->setZoomFactor(ww/selw*zf);
+            else
+                q->setZoomFactor(wh/selh*zf);
+            q->centerOn(q->mapFromPage(pageNumber,selectionRect.center()));
+        }
+        else
+        {
+            /* this ist not required since actions are triggered via the menu above
+            const QString text = m_pageItems.at(pageNumber)->text(selectionRect);
+            choice->setData(text);
+            choice->trigger();
+            */
+        }
 	}
 }
 
@@ -1555,6 +1606,21 @@ void PdfView::addContextMenuAction(QAction *action)
 	d->m_contextMenuActions << action;
 }
 
+void PdfView::addSelectionAction(PdfViewSelectionAction *action)
+{
+    d->m_selActions << action;
+}
+
+void PdfView::addKeyAction(PdfViewKeyAction *action)
+{
+    d->m_keyActions << action;
+}
+
+void PdfView::addKeyAction(Qt::Key key, QAction *action)
+{
+    d->m_keyActions << new PdfViewKeyAction(key,action,this);
+}
+
 void PdfView::removeContextMenuAction(QAction *action)
 {
 	for (int i = 0; i < d->m_contextMenuActions.size(); ++i)
@@ -1575,11 +1641,12 @@ void PdfView::contextMenuEvent(QContextMenuEvent *event)
 		menu.addSeparator();
 	}
 #endif // USE_SYNCTEX
-	if (d->m_zoomInAction)
+	/* Do not include Zoom Actions by default - MD
+    if (d->m_zoomInAction)
 		menu.addAction(d->m_zoomInAction);
 	if (d->m_zoomOutAction)
 		menu.addAction(d->m_zoomOutAction);
-
+    */
 	if (d->m_contextMenuActions.size() > 0)
 		menu.addSeparator();
 	for (int i = 0; i < d->m_contextMenuActions.size(); ++i)
@@ -1607,6 +1674,13 @@ void PdfView::keyPressEvent(QKeyEvent *event)
 		d->removeFindHighlight();
 		d->removeTextSelection(); // dirty hack: use m_textSelectionRects in syncFromSource()
 	}
+
+    for(QList<PdfViewKeyAction*>::Iterator it=d->m_keyActions.begin(); it!=d->m_keyActions.end(); it++)
+    {
+        if(event->key() == (*it)->key()){
+            (*it)->trigger();
+        }
+    }
 
 	QGraphicsView::keyPressEvent(event);
 }
@@ -1819,3 +1893,69 @@ void PdfView::wheelEvent(QWheelEvent *event)
 		d->scroll(event->delta());
 }
 #endif // QT_NO_WHEELEVENT
+
+void PdfView::resizeEvent(QResizeEvent *event)
+{
+     if(d->m_zoomAction && d->m_zoomAction->m_fit){
+         QSize s=event->size();
+         int widht= s.width();
+         if(int s=d->m_pageItems.size()>0){
+             QSizeF psize = d->m_pageItems.at(s/2)->pageSizeF();
+             int pwidht = psize.width();
+
+     //setZoomFactor(.81*widht/pwidht);
+            setZoomFactor(.74*widht/pwidht);
+          }
+     }
+}
+
+
+PdfViewSelectionAction::PdfViewSelectionAction(const QString &text, QObject *parent)
+    :QAction(text,parent)
+{
+
+}
+
+void PdfViewSelectionAction::setDataText(QString t)
+{
+    m_t=t;
+}
+
+QString PdfViewSelectionAction::getDataText()
+{
+    return m_t;
+}
+
+void PdfViewSelectionAction::setDataImage(QImage image)
+{
+    m_i=image;
+}
+
+QImage PdfViewSelectionAction::getDataImage()
+{
+    return m_i;
+}
+
+
+PdfViewKeyAction::PdfViewKeyAction(const Qt::Key key, QObject *parent)
+    : QAction(parent),
+      m_k(key),
+      m_a(0)
+{
+
+}
+
+
+PdfViewKeyAction::PdfViewKeyAction(const Qt::Key key, QAction *a, QObject *parent)
+    : QAction(parent),
+      m_k(key),
+      m_a(a)
+{
+    connect(this,SIGNAL(triggered()),a,SLOT(trigger()));
+}
+
+
+Qt::Key PdfViewKeyAction::key()
+{
+    return m_k;
+}

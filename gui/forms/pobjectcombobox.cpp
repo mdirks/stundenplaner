@@ -139,14 +139,17 @@ void PObjectComboBox::indexChanged(QString text)
 
 PObject* PObjectComboBox::addNewObject()
 {
+    PObject *o=0;
     if(provider){
-        PObject *o = provider->addNewObject();
+        o = provider->addNewObject();
         if(o){
             reload();
             setCurrentIndex(getIndex(o));
+
         }
     }
 
+    return o;
     /*
     PObject *o=0;
     if(prop && parent){
@@ -198,6 +201,12 @@ int PObjectComboBox::getIndex(PObject *o)
     return i;
 }
 
+void PObjectComboBox::setActiveObject(PObject *o)
+{
+    int i = getIndex(o);
+    if(i>0) setCurrentIndex(i);
+
+}
 
 void PObjectComboBox::nameChanged(QString newName)
 {

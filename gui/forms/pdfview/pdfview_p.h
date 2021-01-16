@@ -74,6 +74,7 @@ public:
 	void synctexClick(const QPointF &scenePos);
 #endif // USE_SYNCTEX
 	void scroll(int delta);
+    void addSelectionAction(PdfViewSelectionAction *selAct);
 
 public Q_SLOTS:
 	void slotSelectMouseTool();
@@ -104,6 +105,8 @@ public:
 	int m_maxFileSettingsCacheSize;
 	BookmarksHandler *m_bookmarksHandler;
 	QList<QAction*> m_contextMenuActions;
+    QList<PdfViewSelectionAction*> m_selActions;
+    QList<PdfViewKeyAction*> m_keyActions;
 
 	QString m_fileName;
 	Poppler::Document *m_popplerDocument;

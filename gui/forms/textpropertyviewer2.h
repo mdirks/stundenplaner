@@ -85,9 +85,7 @@ private:
     RepositoryProperty *prop;
     QDir tmpDir;
     TextPropertyEditor *editor;
-    //TextPropertyLabel *label;
     QScrollArea *scroll;
-    //QLabel *label;
     PdfViewer *label;
     QString displayString;
     bool editing;
@@ -96,7 +94,6 @@ private:
     QProcess *p;
     QString header,footer;
     QPixmap displayPm;
-    //QStackedWidget *stack;
     QSplitter *splitter;
 
        QSize displaySize;

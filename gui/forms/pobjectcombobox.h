@@ -25,11 +25,14 @@ public:
     void setParentObject(PObject *po);
     PObject* getCurrentObject();
     PObject* getObject(int i);
+    PObject* addNewObject();
+    void setActiveObject(PObject *o);
+
 
 private:
     void doCommonSetup();
     int getIndex(PObject *o);
-    PObject* addNewObject();
+
 
     void reload();
     void load(list<PObject*> *ol);

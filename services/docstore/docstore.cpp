@@ -2,7 +2,7 @@
 #include "annexdocstore.h"
 #include <QDir>
 
-#define DIR "/data3/mopp/stundenplaner"
+#define DIR "/home/mopp/stundenplaner/docstore"
 #define NAME "Docstore"
 
 DocStore* DocStore::instance=0;

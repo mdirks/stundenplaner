@@ -3,9 +3,12 @@
 #include "gui/base/doublepane.h"
 #include "gui/guirepository.h"
 #include "services/skalender.h"
+#include "services/sstundenplan.h"
 #include "datamodel/stundenplaneintrag.h"
+#include "datamodel/schuljahrmapper.h"
 #include "gui/forms/pobjecteditor3.h"
 #include "gui/forms/kalenderview.h"
+#include "gui/forms/pobjectdialog.h"
 #include "kalenderviewcontroler.h"
 #include "orm/repository/repository.h"
 #include "sitzplanmapviewcontroler.h"
@@ -24,10 +27,12 @@ ModePlanung::ModePlanung() :
     ui(new Ui::ModePlanung)
 {
     QPixmap pm = GuiConfig::getInstance()->getIcon("ModePlanung");
+    /*
     if(pm.isNull()){
         GuiConfig::getInstance()->selectIcon("ModePlanung");
         pm = GuiConfig::getInstance()->getIcon("ModePlanung");
     }
+    */
     setIcon(pm);
 
     sePropertyList = new list<RepositoryProperty*>();
@@ -68,6 +73,8 @@ void ModePlanung::setupMode()
 {
     GuiRepository *rep=GuiRepository::getInstance();
     QStackedWidget *sw=rep->getCentralWidget();
+
+
 
     //rep->setActiveMode(this);
     if(displayWidget==0){
@@ -136,6 +143,22 @@ void ModePlanung::setupMode()
         */
 
         //rep->getMainFrame()->addToolBar(Qt::RightToolBarArea,toolBar);
+
+        schuljahr *activesj=GuiConfig::getInstance()->getActiveSchuljahr();
+        if(activesj==0){
+            activesj = (schuljahr*) PObjectDialog::choosePObject(schuljahrmapper::getInstance());
+            if(activesj){
+                GuiConfig::getInstance()->setActiveSchuljahr(activesj);
+                qDebug() << QString("Schuljahr set to %1").arg(activesj->getName().c_str());
+            } else {
+                qDebug("StundePlanerApp::slotChangeSchuljahr() : selection of schuljahr failed");
+            }
+        }
+
+        SKalender::getInstance()->setActiveSchuljahr(activesj);
+        SStundenplan::setActiveStundenplan(activesj->getStundenplana());
+
+
 
     kw->readStundenplan();
 
