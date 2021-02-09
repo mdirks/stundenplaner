@@ -22,6 +22,7 @@
 
 #include "gui/mapviews/genericmapview.h"
 #include "gui/mapviews/weekmapview.h"
+#include "gui/mapviews/themamapview.h"
 #include <QMenu>
 
 /**
@@ -36,7 +37,7 @@ public:
 
     virtual QMenu* getPopupForGenericMapView(GenericMapView *mapView, QPoint pos)=0;
     virtual QMenu* getPopupForWeekMapView(WeekMapView *mapView, QPoint pos)=0;
-
+    virtual QMenu* getPopupForThemaMapView(ThemaMapView *mapView, QPoint pos)=0;
 private:
 	static MapviewsPopupFactory* instance;
 };

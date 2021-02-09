@@ -33,6 +33,8 @@ public:
 	~MappingEventListener();
 
 	virtual bool versionChangeRequested(string className){return true;};
+    virtual bool confirm(string req){return false;};
+    virtual void message(string mes){};
 
 };
 

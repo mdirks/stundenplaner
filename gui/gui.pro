@@ -1,6 +1,9 @@
 TEMPLATE = lib
 TARGET = gui
 
+
+#include(/home/mopp/dev/qtmathjax/qtmathjax.pri)
+
 CONFIG += qt
 CONFIG += staticlib
 CONFIG += c++11
@@ -14,11 +17,16 @@ SOURCES += \
     *.cpp \
     actions/actionpopup.cpp \
     actions/importtodocstoreaction.cpp \
+    actions/modemaps.cpp \
     actions/modenotes.cpp \
     actions/pobjectaction.cpp \
     base/myactionlist.cpp \
+    data/themamapsatz.cpp \
     dialogs/iconchooser.cpp \
     dialogs/scanner.cpp \
+    forms/bildlistviewer.cpp \
+    forms/collectiondisplay.cpp \
+    forms/collectionpropertyviewer.cpp \
     forms/testform.cpp \
     dialogs/collectionselectiondialog.cpp \
     forms/pobjectform.cpp \
@@ -50,10 +58,15 @@ HEADERS += \
     *.h \
     actions/actionpopup.h \
     actions/importtodocstoreaction.h \
+    actions/modemaps.h \
     actions/pobjectaction.h \
     base/myactionlist.h \
+    data/themamapsatz.h \
     dialogs/iconchooser.h \
     dialogs/scanner.h \
+    forms/bildlistviewer.h \
+    forms/collectiondisplay.h \
+    forms/collectionpropertyviewer.h \
     forms/textpropertyviewer2.h \
     forms/textviewer.h \
     data/reihemap.h \
@@ -140,9 +153,14 @@ QT+=sql xml widgets printsupport
 
 OTHER_FILES += \
     actions/persistence.xml\
+    data/persistence.xml\
+    mapviews/persistence\
+    persistence.xml
     stundenplanerui.rc
 
 FORMS += \
+    actions/modemaps.ui \
+    forms/collectiondisplay.ui \
     forms/testform.ui \
     actions/modematerial.ui \
     forms/reihebrowser.ui \

@@ -20,11 +20,14 @@
 MappingControler *MappingControler::instance = 0;
 
 MappingControler::MappingControler(){
-		if(Database::getInstance()->isOpen()){
+
+        /* don't do this every time !? MappingControler should be valid without an active DB
+        if(Database::getInstance()->isOpen()){
 			createAdministrativTables();
 		} else {
             qDebug() << "MappingControler(): Database is closed()";
 		}	
+        */
 		/*
 		QString qs2("select * from versions");
 		QSqlQuery q2(qs2);
@@ -38,7 +41,7 @@ MappingControler::MappingControler(){
 		*/
 
 		listRegisteredMappers = new list<AbstractMapper*>();
-		list_listener = new list<MappingEventListener*>();
+        //list_listener = new list<MappingEventListener*>();
 }
 MappingControler::~MappingControler(){qDebug() << "Mapping Controler destroyed";}
 
@@ -57,10 +60,11 @@ MappingControler* MappingControler::getInstance()
 void MappingControler::registerPersistentClass(AbstractMapper *mapper)
 {
     listRegisteredMappers->push_back(mapper);
+    mapper->addMappingEventListener(this);
     if(Database::getInstance()->isOpen()){		
 	    registerPersistentClassWithDatabase(mapper);
     } else {
-        qDebug() << QString("MappingControler::registerPersistentClass : database closed, failed for %1").arg(mapper->getClassName().c_str());
+        report(QString("MappingControler::registerPersistentClass : database closed, failed for %1").arg(mapper->getClassName().c_str()).toStdString());
     }
 
 }
@@ -76,21 +80,44 @@ void MappingControler::registerPersistentClassWithDatabase(AbstractMapper *mappe
     QString version = mapper->getVersion().c_str();
     QString isVersion = getCurrentVersion(qClassName);
 
-    
-    if( version != isVersion){
-	bool doversionchange=true;    
-	for(list<MappingEventListener*>::iterator it = list_listener->begin(); it!= list_listener->end(); it++){
-		doversionchange = doversionchange & (*it)->versionChangeRequested(className);
-	}
+    if( isVersion.isEmpty()){
+        bool docreate = ask(QString("Could not find version for %1 - probably new!?\n Create table? ").arg(qClassName).toStdString());
+        if(docreate){
+            if(mapper->createTable()){
+                db->registerPersistentClass(mapper, mapper->getVersion());
+
+            } else {
+                bool dodrop = ask(QString("Could not find version for %1 - probably new!?\n Create table? ").arg(qClassName).toStdString());
+                if(dodrop){
+                    mapper->dropMainTable();
+                    mapper->createTable();
+                }
+            }
+            db->registerVersion(mapper, mapper->getVersion());
+
+
+
+
+
+        }
+    } else if( version != isVersion){
+        /*
+        bool doversionchange=true;
+        for(list<MappingEventListener*>::iterator it = list_listener->begin(); it!= list_listener->end(); it++){
+            doversionchange = doversionchange & (*it)->versionChangeRequested(className);
+        }
+        */
+        bool doversionchange=requestVersionChange(className);
         if(doversionchange){
-        qDebug() << QString("Going to (re)create table for class : %1").arg(qClassName);
-	
-	    	mapper->createTable();
-		db->registerPersistentClass(mapper, mapper->getVersion());
-		db->registerVersion(mapper, mapper->getVersion());
-	} else {
-        qDebug() << QString("!!! --- Versionchange denied");
-	}
+            if(mapper->doVersionChange()){
+                db->registerPersistentClass(mapper, mapper->getVersion());
+                db->registerVersion(mapper, mapper->getVersion());
+            } else {
+                report(QString("Version changed failed for %1").arg(className.c_str()).toStdString());
+            }
+         } else {
+                report(QString("Version change denied for %1").arg(className.c_str()).toStdString());
+         }
     } else {
 		db->registerPersistentClass(mapper,mapper->getVersion());
     }
@@ -126,8 +153,7 @@ QString MappingControler::getCurrentVersion(QString className)
     string version = Database::getInstance()->getCurrentVersion(className.toStdString());
 	if(version != string()){
         return QString::fromStdString(version);
-	} else { // older database layout
-        qDebug() << "MappingControler::getCurrentVersion : WARNING : database cannot provide version";
+    } else { // new class or older database layout
 		return QString();
 		//return mapVersions[className];
 	}
@@ -159,6 +185,54 @@ void MappingControler::createAdministrativTables()
 
 }
 
+bool MappingControler::checkAdministrativTables()
+{
+    bool res=true;
+
+    QSqlQuery q1("select * from versions");
+    res = res & q1.isActive();
+
+    QSqlQuery q2("select * from admin");
+    res = res & q2.isActive();
+
+    QSqlQuery q3("select * from idtoname");
+    res = res & q3.isActive();
+
+    return res;
+}
+
+void MappingControler::checkForOldstyleDb()
+{
+    QSqlQuery q("select * from idtoname where name LIKE 'PlatzCanvasItem'");
+    if(q.isActive() && q.isValid()) qDebug() << "Found old style DB -- correcting";
+    {
+        QSqlQuery q1("update idtoname set name='PlatzGraphicsItem' where name LIKE 'PlatzCanvasItem'");
+        if(!q1.isActive()) qDebug() << "WARNING: Failed to correct PlatzCanvasItem";
+
+        QSqlQuery q2("update idtoname set name='PObjectGraphicsItem' where name LIKE 'PObjectCanvasItem'");
+        if(!q2.isActive()) qDebug() << "WARNING: Failed to correct PObjectCanvasItem";
+
+        QSqlQuery q3("rename table pobjectcanvasitem to pobjectgraphicsitem");
+        if(!q3.isActive()) qDebug() << "WARNING: Failed to rename table pobjectcanvasitem";
+
+        QSqlQuery q4("rename table platzcanvasitem to platzgraphicsitem");
+        if(!q4.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
+
+        QSqlQuery q5("rename table PObjectCanvasItem_PObject to PObjectGraphicsItem_PObject");
+        if(!q5.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
+
+        QSqlQuery q6("rename table PlatzCanvasItem_platz to PlatGraphicsItem_platz");
+        if(!q6.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
+
+        QSqlQuery q7("rename table schultagcanvasitem to schultaggraphicsitem");
+        if(!q7.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
+
+        QSqlQuery q8("ALTER TABLE PObjectGraphicsItem_PObject CHANGE PObjectCanvasItem_id PObjectGraphicsItem_id int(11)");
+        if(!q8.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
+
+    }
+
+}
 
 /*!
     \fn MappingControler::getMapperByName(string className)
@@ -214,16 +288,33 @@ bool MappingControler::isOpen()
 /*!
     \fn MappingControler::setDatabaseName(QString databaseName)
  */
-void MappingControler::setDatabaseName(QString databaseName)
+void MappingControler::setActiveDatabase(QString databaseName)
 {
     Database::setDatabaseName(databaseName);
+    if(checkDatabase()){
+        //createAdministrativTables(); Should not be necessary - lets assume database is valid
+        qDebug() << "MappingControler(): check OK";
+    } else {
+        if(ask("Database invalid - init new ?")){
+            initNewDatabase(databaseName.toStdString());
+            if(checkDatabase()){
+                qDebug() << "MappingControler(): init new ok";
+            } else {
+                qDebug() << "MappingControler(): init new FAILED";
+            }
+        } else {
+            qDebug() << "MappingControler(): Database is closed()";
+        }
+    }
 }
 
-
-/*!
-    \fn MappingControler::addMappingEventListener(MappingEventListener *listener)
- */
-void MappingControler::addMappingEventListener(MappingEventListener *listener)
+bool MappingControler::checkDatabase()
 {
-    list_listener->push_back(listener);
+    bool res=true;
+    res=res & Database::getInstance()->isOpen();
+
+    res = res & checkAdministrativTables();
+
+    return res;
 }
+

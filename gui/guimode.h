@@ -14,7 +14,7 @@ Q_OBJECT
 public:
     GuiMode(QString title);
 
-    virtual void setupMode(){qDebug() << "GuiMode: calling empty setupMode()";}
+    virtual void setupMode()=0;
 
     virtual void tearDownMode(){}
     virtual void close();

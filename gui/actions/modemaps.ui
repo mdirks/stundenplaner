@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ModeMapsCentral</class>
+ <widget class="QWidget" name="ModeMapsCentral">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>683</width>
+    <height>490</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="CollectionDisplay" name="collDisp" native="true"/>
+     <widget class="ThemaMapView" name="mapView" native="true"/>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ThemaMapView</class>
+   <extends>QWidget</extends>
+   <header>gui/mapviews/themamapview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CollectionDisplay</class>
+   <extends>QWidget</extends>
+   <header>gui/forms/collectiondisplay.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

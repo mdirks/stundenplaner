@@ -38,5 +38,5 @@ unix:!symbian {
     } else {
         target.path = /usr/lib
     }
-    INSTALLS += target
+#    INSTALLS += target
 }

@@ -9,6 +9,8 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
+
+
 #include "guirepositoryimpl.h"
 //#include "form_stunde_rt_impl.h"
 //#include "form_opo.h"
@@ -80,6 +82,8 @@
 #include "gui/actions/servicexml.h"
 #include "gui/actions/modenotes.h"
 #include "gui/actions/servicepdf.h"
+#include "gui/actions/modemaps.h"
+#include "gui/data/themamapsatzmapper.h"
 
 #include <QPixmap>
 //#include <qscrollview.h>
@@ -137,6 +141,7 @@ GuiRepositoryImpl::GuiRepositoryImpl()
 	listMappers = new list<AbstractMapper*>();
 	listMappers->push_back(ThemaItemmapper::getInstance());
 	listMappers->push_back(ThemaMapmapper::getInstance());
+    listMappers->push_back(ThemaMapSatzmapper::getInstance());
 	listMappers->push_back(PObjectGraphicsItemmapper::getInstance());
 	listMappers->push_back(PlatzGraphicsItemmapper::getInstance());
 	listMappers->push_back(SchultagGraphicsItemmapper::getInstance());
@@ -146,6 +151,9 @@ GuiRepositoryImpl::GuiRepositoryImpl()
 	listMappers->push_back(GuiObjectmapper::getInstance());
     listMappers->push_back(ModeLesenmapper::getInstance());
 	
+
+    // Listener does not work here since Gui not yet available
+    //MappingControler::getInstance()->addMappingEventListener(this);
 	for(list<AbstractMapper*>::iterator it = listMappers->begin();
 		it!=listMappers->end(); ++it)
 	{
@@ -479,55 +487,6 @@ void GuiRepositoryImpl::initGui()
 
     (new ReadCsvlistAction())->reg();
 
-
-    /* move to ModePlanung
-    if(GuiConfig::getInstance()->getActiveSchuljahr() == 0){
-		schuljahr *sj = (schuljahr*) PObjectDialog::choosePObject(schuljahrmapper::getInstance());
-		if(sj){
-			GuiConfig::getInstance()->setActiveSchuljahr(sj);
-            SKalender::getInstance()->setActiveSchuljahr(sj);
-			SStundenplan::setActiveStundenplan(sj->getStundenplana());
-            qDebug() << QString("Schuljahr set to %1").arg(sj->getName().c_str());
-		} else {
-		qDebug("StundePlanerApp::slotChangeSchuljahr() : selection of schuljahr failed");
-		}
-	}
-    */
-
-
-    /*
-	if(MappingControler::getInstance()->isOpen()){
-		AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName("klasse");
-		if(mapper){
-			PObjectIconView *iconView = new PObjectIconView(mapper);
-            iconView->load();
-            addTool(iconView,
-                    QString::fromStdString(mapper->getClassName()),
-                    QString::fromStdString(mapper->getClassName()));
-			//iconView->load(); //laizy load on show
-			activeIconViews->push_back(iconView);
-		}
-		mapper = MappingControler::getInstance()->getMapperByName("ThemaMap");
-		if(mapper){
-			PObjectIconView *iconView = new PObjectIconView(mapper);
-			
-            addTool(iconView,
-                    QString::fromStdString(mapper->getClassName()),
-                    QString::fromStdString(mapper->getClassName()),
-                    Qt::LeftDockWidgetArea);
-			//iconView->load(); //laizy load on show
-			activeIconViews->push_back(iconView);
-		}
-
-        //showFormForObject(SKalender::getInstance()->getDay(QDate::currentDate()));
-        //showFormForObject(GuiObject::getInstance()->getDashBoard());
-        //showFormForObject(SKalender::getInstance(),true);
-		
-	} 
-    */
-
-
-
 	GuiControler::setInstance(this);
 	GuiObjectFactory::setInstance(new GuiObjectFactoryImpl());
 	FormsPopupFactory::setInstance(GuiPopupFactory::getInstance());
@@ -539,6 +498,7 @@ void GuiRepositoryImpl::initGui()
     addMode(ModeMaterial::getInstance());
     addMode(new ModeLernen());
     addMode(new ModeNotes());
+    addMode(new ModeMaps());
     addService(ServiceLatex::getInstance());
     addService(new ServiceXml());
     addService(ServicePdf::getInstance());

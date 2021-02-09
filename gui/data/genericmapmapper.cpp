@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "genericmap.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  GenericMapmapper* GenericMapmapper::instance=0;

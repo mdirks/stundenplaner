@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on So. Jul 5 14:38:39 2015
+ // Written on Mi. Jan. 27 10:46:20 2021
 // 
  #ifndef lektuereMAPPER_H 
  #define lektuereMAPPER_H 
@@ -21,6 +21,7 @@
  #include "lektuere.h" 
 #include "lektuerenotiz.h" 
 #include "datamodel/lernkartensatz.h" 
+#include "datamodel/materialsatz.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -61,6 +62,7 @@
   list<lektuerenotiz*> * findNotizen(int pri_id);
   list<lektuerenotiz*> * findNotizen(int pri_id,string prop,string value);
 lernkartensatz * findLernkartensatz(int pri_id);
+materialsatz * findKopien(int pri_id);
 
 protected:
      lektueremapper();

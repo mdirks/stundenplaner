@@ -125,7 +125,7 @@ QSqlDatabase DatabaseImpl_Q::getConnection(){
         }
 		
 		//registerPersistentClass(PCollectionPersistence::getInstance());
-        checkForOldstyleDb();
+
       }
 
 
@@ -133,38 +133,7 @@ QSqlDatabase DatabaseImpl_Q::getConnection(){
 	
 }
 
-void DatabaseImpl_Q::checkForOldstyleDb()
-{
-    QSqlQuery q("select * from idtoname where name LIKE 'PlatzCanvasItem'");
-    if(q.isActive() && q.isValid()) qDebug() << "Found old style DB -- correcting";
-    {
-        QSqlQuery q1("update idtoname set name='PlatzGraphicsItem' where name LIKE 'PlatzCanvasItem'");
-        if(!q1.isActive()) qDebug() << "WARNING: Failed to correct PlatzCanvasItem";
 
-        QSqlQuery q2("update idtoname set name='PObjectGraphicsItem' where name LIKE 'PObjectCanvasItem'");
-        if(!q2.isActive()) qDebug() << "WARNING: Failed to correct PObjectCanvasItem";
-
-        QSqlQuery q3("rename table pobjectcanvasitem to pobjectgraphicsitem");
-        if(!q3.isActive()) qDebug() << "WARNING: Failed to rename table pobjectcanvasitem";
-
-        QSqlQuery q4("rename table platzcanvasitem to platzgraphicsitem");
-        if(!q4.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
-
-        QSqlQuery q5("rename table PObjectCanvasItem_PObject to PObjectGraphicsItem_PObject");
-        if(!q5.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
-
-        QSqlQuery q6("rename table PlatzCanvasItem_platz to PlatGraphicsItem_platz");
-        if(!q6.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
-
-        QSqlQuery q7("rename table schultagcanvasitem to schultaggraphicsitem");
-        if(!q7.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
-
-        QSqlQuery q8("ALTER TABLE PObjectGraphicsItem_PObject CHANGE PObjectCanvasItem_id PObjectGraphicsItem_id int(11)");
-        if(!q8.isActive()) qDebug() << "WARNING: Failed to rename table platzcanvasitem";
-
-    }
-
-}
 
 bool DatabaseImpl_Q::isOpen()
 {

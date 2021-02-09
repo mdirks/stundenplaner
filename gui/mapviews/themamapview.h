@@ -15,6 +15,8 @@
 
 #include "genericmapview.h"
 
+#include <QMenu>
+
 /**
 @author Marcus Dirks
 */
@@ -24,6 +26,9 @@ public:
     ThemaMapView(QWidget * parent = 0, const char * name = 0);
     ~ThemaMapView();
     
+    QMenu* getPopupMenu();
+    void setMap(ThemaMap *map);
+
    
 
 };

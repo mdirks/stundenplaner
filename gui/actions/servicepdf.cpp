@@ -23,6 +23,11 @@ ServicePdf::~ServicePdf()
 
 }
 
+void ServicePdf::setupMode()
+{
+   //nothing to be done
+}
+
 ServicePdf* ServicePdf::getInstance()
 {
     if(!instance){

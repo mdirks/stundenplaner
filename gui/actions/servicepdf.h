@@ -9,6 +9,7 @@ public:
     ServicePdf();
     ~ServicePdf();
     void handleObject(PObject *o);
+    void setupMode();
 
     static ServicePdf* getInstance();
 

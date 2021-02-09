@@ -8,6 +8,7 @@ lektuere::lektuere()
     setMapper(lektueremapper::getInstance());
     list_notizen=0;
     lks=0;
+    kop=0;
 }
 
 
@@ -41,4 +42,17 @@ lernkartensatz* lektuere::getLernkartensatz()
         lks= (lernkartensatz*) lektueremapper::getInstance()->findReference("Lernkartensatz",getID());
     }
     return lks;
+}
+
+void lektuere::setKopien(materialsatz *ms)
+{
+    this->kop=ms;
+}
+
+materialsatz* lektuere::getKopien()
+{
+    if(kop==0){
+        kop = (materialsatz*) lektueremapper::getInstance()->findReference("Kopien",getID());
+    }
+    return kop;
 }

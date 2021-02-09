@@ -23,7 +23,7 @@
 #include "reference.h"
 #include "property.h"
 #include "abstractassociation.h"
-
+#include "mappingeventsource.h"
 
 using namespace std;
 
@@ -31,14 +31,16 @@ using namespace std;
 /**
 @author Marcus Dirks
 */
-class AbstractMapper : public PersistenceClass {
+class AbstractMapper : public PersistenceClass, public MappingEventSource {
+
+friend class MappingControler;
+
 public:
     AbstractMapper();
 
     ~AbstractMapper();
     //string getVersion();
-    void createTable();
-    void checkTable();
+
 
     
     static MappedObject*  create(AbstractMapper *mapper);
@@ -67,7 +69,14 @@ protected:
     list<Property*> getProperties();
 	//list<Association*> *getAssociations();
 
-	void createMainTable();
+
+private:
+    bool createTable();
+    bool createMainTable();
+    bool adjustMainTable(); //will read columns in db and attempt to create non-existing columns
+    void dropMainTable();
+
+    bool doVersionChange(); //will adjustMainTable + handle Ass and Ref
 	
 protected:
 	map<string,AbstractAssociation*> mapAssociations;

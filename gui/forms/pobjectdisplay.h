@@ -2,6 +2,7 @@
 #define POBJECTDISPLAY_H
 
 #include "datamodel/lernkarte.h"
+#include "datamodel/material.h"
 #include "orm/persistence/pobject.h"
 #include "lernkarteviewer.h"
 
@@ -12,10 +13,23 @@
 #include <list>
 
 
-class PObjectDisplayItem : public QWidget
+class PObjectDisplayItem
 {
 public:
-    virtual PObjectDisplayItem* createInstance(PObject *o)=0;
+    PObjectDisplayItem(PObject *o){m_o=o;};
+
+    virtual QGraphicsItem* createInstance(PObject *o,QGraphicsScene *s, int px, int py)=0;
+    QSizeF getIdealSize(){return idealSize;};
+    void setIdealSize(QSizeF iS){idealSize=iS;};
+    QSizeF getActualSize(){return actualSize;};
+    void setActualSize(QSizeF aS){actualSize=aS;};
+
+    PObject* getObject(){return m_o;};
+
+
+private:
+    QSizeF idealSize, actualSize;
+    PObject *m_o;
 };
 
 
@@ -23,6 +37,7 @@ public:
 
 class PObjectDisplayScene : public QGraphicsScene
 {
+    Q_OBJECT
 public:
     PObjectDisplayScene(list<PObject*> *olist=0,int numRow=-1, int numCol=-1);
     ~PObjectDisplayScene();
@@ -30,6 +45,9 @@ public:
     void setPrototype(PObjectDisplayItem *protoItem);
     void load(list<PObject*> *olist);
     void setLayout(int ncol,int nrow);
+
+    void deleteItem(PObjectDisplayItem *item);
+
 
 
 private:
@@ -64,6 +82,10 @@ public:
 
 public slots:
     void addElement();
+    void removeClickedItem();
+
+protected:
+    void contextMenuEvent(QContextMenuEvent *ev);
 
 private:
     list<PObject*> *olist;
@@ -73,21 +95,33 @@ private:
     string typeName;
 
     PObjectDisplayScene *scene;
+    PObjectDisplayItem *clickedItem;
 };
 
 
 
-class LernkarteDisplayItem : public PObjectDisplayItem
+class LernkarteDisplayItem : public PObjectDisplayItem, public QWidget
 {
 public:
     LernkarteDisplayItem(lernkarte *lk=0);
-    PObjectDisplayItem* createInstance(PObject *o);
+    QGraphicsItem* createInstance(PObject *o, QGraphicsScene *s, int px, int py);
 
 private:
     lernkarte *lk;
     LernkarteViewer *viewer;
 };
 
+class MaterialDisplayItem : public PObjectDisplayItem, public QGraphicsPixmapItem
+{
 
+public:
+    MaterialDisplayItem(material *m=0);
+    QGraphicsItem* createInstance(PObject *o, QGraphicsScene *s, int px, int py);
+
+
+private:
+    material *m;
+
+};
 
 #endif // POBJECTDISPLAY_H

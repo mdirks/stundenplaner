@@ -21,13 +21,14 @@
 
 #include "abstractmapper.h"
 #include "mappingeventlistener.h"
+#include "mappingeventsource.h"
 
 using namespace std;
 
 /**
 @author Marcus Dirks
 */
-class MappingControler{
+class MappingControler : public MappingEventSource, public MappingEventListener {
 public:
     static MappingControler* getInstance();
     void registerPersistentClass(AbstractMapper *mapper);
@@ -36,10 +37,13 @@ public:
     bool initNewDatabase(string dbName);
     list<AbstractMapper*> *getRegisteredClasses();
     bool isOpen();
-    static void setDatabaseName(QString databaseName);
-    void addMappingEventListener(MappingEventListener *listener);
-    
-    
+    void setActiveDatabase(QString databaseName);
+
+    //Events are just relayed
+    bool versionChangeRequested(string className){return requestVersionChange(className);};
+    virtual bool confirm(string req){return ask(req);};
+    virtual void message(string mes){report(mes);};
+
 private:
     MappingControler();
     ~MappingControler();
@@ -47,13 +51,16 @@ private:
     QString getCurrentVersion(QString className);
     //void writeVersions();
     void createAdministrativTables();
+    bool checkAdministrativTables();
+    void checkForOldstyleDb();
     void registerPersistentClassWithDatabase(AbstractMapper *mapper);
+    bool checkDatabase();
 
  private:
      static MappingControler *instance;
      //map<QString,QString> mapVersions;
      list<AbstractMapper*> *listRegisteredMappers;
-     list<MappingEventListener*> *list_listener;
+     //list<MappingEventListener*> *list_listener;
 };
 
 #endif

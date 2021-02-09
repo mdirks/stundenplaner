@@ -26,20 +26,37 @@ TextViewer::TextViewer(PObjectListProvider *prov,QWidget *pw)
 
 void TextViewer::doCommonSetup()
 {
-    viewer = new PdfViewer(this);
-    toolBar = new QToolBar(this);
-    combo = new PObjectComboBox(provider,this);
+    colSplitter = new QSplitter(Qt::Horizontal,this);
+    viewer = new PdfViewer(colSplitter);
+    //toolBar = new QToolBar(this);
+    //combo = new PObjectComboBox(provider,this);
+    //selectButton = new QToolButton(toolBar);
 
     viewer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
 
-    toolBar->addWidget(combo);
+    //toolBar->addWidget(selectButton);
+    //toolBar->addWidget(combo);
+    //connect(selectButton,SIGNAL(clicked()),this,SLOT(showSelectionMenu()));
 
     QVBoxLayout *l=new QVBoxLayout(this);
     l->setContentsMargins(0,0,0,0);
-    l->addWidget(toolBar);
-    l->addWidget(viewer);
+    //l->addWidget(toolBar);
 
-    connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(selectionChanged(int)));
+    colDisplay = new CollectionDisplay("lektueresatz","Lektueren",colSplitter);
+    //colDisplay->hide();
+    connect(colDisplay,SIGNAL(itemChanged()),this,SLOT(loadNewLektuere()));
+
+
+    colSplitter->addWidget(colDisplay);
+    colSplitter->addWidget(viewer);
+    QList<int> sizes;
+    sizes << 200 << 300 << 10;
+    colSplitter->setSizes(sizes);
+
+    l->addWidget(colSplitter);
+    //l->addWidget(viewer);
+
+    //connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(selectionChanged(int)));
     // load initial entry
 }
 
@@ -81,6 +98,7 @@ int TextViewer::getPage()
     return viewer->pageNumber();
 }
 
+/*
 void TextViewer::selectionChanged(int i){
     PObject *o=combo->getObject(i);
     if(lektuere *l = dynamic_cast<lektuere*>(o) ){
@@ -88,6 +106,23 @@ void TextViewer::selectionChanged(int i){
         activeText=l;
         emit textChanged(l);
         //ModeLesen::getInstance()->setActiveText(l);
+    }
+}
+*/
+void TextViewer::showSelectionMenu()
+{
+    colDisplay->show();
+}
+
+
+void TextViewer::loadNewLektuere()
+{
+    //colDisplay->hide();
+    lektuere *l=dynamic_cast<lektuere*>(colDisplay->getCurrentItem());
+    if(l){
+        viewer->loadNewFile(l->getFileName().c_str());
+        activeText=l;
+        emit textChanged(l);
     }
 }
 

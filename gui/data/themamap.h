@@ -35,11 +35,15 @@ public:
     ThemaMap();
     ~ThemaMap();
     
+    void setThema(thema *t);
+    thema* getThema();
+
     void addItem(PObject *o, const QPoint &pos){qDebug("ThemaMap: Adding Object"); GenericMap::addItem(o,pos);}; // why is this required ?
     void addItem(thema *th, const QPoint &pos);
     
     //void init();
-    
+private:
+    thema *m_thema;
 };
 
 #endif

@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on So. Jul 5 14:38:39 2015
+ // Written on Mi. Jan. 27 10:46:20 2021
 // 
  #ifndef lernkarteMAPPER_H 
  #define lernkarteMAPPER_H 

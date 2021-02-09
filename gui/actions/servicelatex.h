@@ -9,6 +9,7 @@ public:
     ServiceLatex();
     void handleObject(PObject *o);
     static ServiceLatex* getInstance();
+    void setupMode();
 
 private:
     static ServiceLatex* instance;

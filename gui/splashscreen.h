@@ -12,10 +12,12 @@
 #ifndef SPLASHSCREEN_H
 #define SPLASHSCREEN_H
 
+#include "orm/mapping/mappingeventlistener.h"
+
 /**
 @author Marcus Dirks
 */
-class SplashScreen{
+class SplashScreen : public MappingEventListener{
 public:
     SplashScreen();
 

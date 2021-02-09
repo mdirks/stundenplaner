@@ -174,8 +174,9 @@ void AbstractMapper::saveReference(int pri_id, string table,  string pri_col, st
 }
 */
 
-void AbstractMapper::checkTable(){
-	Database::getInstance();
+bool AbstractMapper::adjustMainTable(){ //will read columns in db and attempt to create non-existing columns
+    bool suc=true;
+    Database::getInstance();
 
 	map<string,string> column_map;
 	string *cols = getColumns();
@@ -205,33 +206,49 @@ void AbstractMapper::checkTable(){
 					}
 				}
 			}
-		}
-		if(!column_map.empty()){
-            qDebug() << QString("Found %1 non-exiting columns: creating").arg(column_map.size());
+
+        }
+
+        if(!column_map.empty()){
+            report(QString("Found %1 non-exiting columns: creating").arg(column_map.size()).toStdString());
 
 			for(map<string, string>::iterator it = column_map.begin(); it != column_map.end(); it++){
                 QString qs2 = QString("alter table %1 add %2 %3").arg(getTableName().c_str()).arg((it->first).c_str()).arg((it->second).c_str());
-                qDebug() << QString("Adding column %1").arg(qs2);
+                report(QString("Adding column %1").arg(qs2).toStdString());
 				QSqlQuery q2(qs2);
 				if(! q.isActive()){
-                    qWarning() << QString("Query failed: %1").arg(qs2);
+                    report(QString("Query failed: %1").arg(qs2).toStdString());
+                    suc=false;
 				}
 			}
-		}
+        }
 	} else {
-        qDebug() << QString("WARNING: Check failed: %1 \n Recreating table %2").arg(qs1).arg(getTableName().c_str());
-		createMainTable();
+        report(QString("WARNING: Adjust failed for table %2: \n %1").arg(qs1).arg(getTableName().c_str()).toStdString());
+        //createMainTable();
+        suc=false;
 	}
-
+    return suc;
 }
 
-void AbstractMapper::createMainTable(){
+
+void AbstractMapper::dropMainTable()
+{
+    QString qs = QString("drop table %1").arg(getTableName().c_str());
+    QSqlQuery q(qs);
+    if(!q.isActive()) qDebug("Could not drop table");
+}
+
+
+bool AbstractMapper::createMainTable(){
+    bool suc=true;
 	Database::getInstance();
 
 	//string tname = persOb->getTableName();	
+    /*
     QString qs = QString("drop table %1").arg(getTableName().c_str());
 	QSqlQuery q(qs);
 	if(!q.isActive()) qDebug("Could not drop table");
+    */
 	
     QString qs2 = QString("create table %1 ( id int, name varchar(30) ").arg(getTableName().c_str());
 
@@ -247,24 +264,53 @@ void AbstractMapper::createMainTable(){
 
     qDebug() << QString("Creating table with > ").append(qs2);
 	QSqlQuery query(qs2);
-	
+    if(!query.isActive()){
+        report(QString("Failed to createMainTable %1").arg(getTableName().c_str()).toStdString());
+        suc=false;
+    }
 	//tables.push_back(tname);
     qDebug() << QString("Done create");
-
+    return suc;
 
 }
-void AbstractMapper::createTable(){
-	checkTable();
-	
-	map<string,AbstractAssociation*>::iterator it;
-	for(it=mapAssociations.begin(); it!=mapAssociations.end(); it++){
-		it->second->createTable();
-	}
-	
-	map<string,Reference*>::iterator ref_it;
-	for(ref_it=mapReferences.begin();ref_it!=mapReferences.end(); ref_it++){
-		ref_it->second->createTable();
-	}
+
+bool AbstractMapper::doVersionChange()
+{
+    if(adjustMainTable()){
+
+        map<string,AbstractAssociation*>::iterator it;
+        for(it=mapAssociations.begin(); it!=mapAssociations.end(); it++){
+            it->second->createTable();
+        }
+
+        map<string,Reference*>::iterator ref_it;
+        for(ref_it=mapReferences.begin();ref_it!=mapReferences.end(); ref_it++){
+            ref_it->second->createTable();
+        }
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool AbstractMapper::createTable(){
+    //checkTable();
+    if(createMainTable()){
+        map<string,AbstractAssociation*>::iterator it;
+        for(it=mapAssociations.begin(); it!=mapAssociations.end(); it++){
+            it->second->createTable();
+        }
+
+        map<string,Reference*>::iterator ref_it;
+        for(ref_it=mapReferences.begin();ref_it!=mapReferences.end(); ref_it++){
+            ref_it->second->createTable();
+        }
+
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /*!

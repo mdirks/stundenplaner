@@ -4,6 +4,7 @@
 #include "material.h"
 #include "lektuerenotiz.h"
 #include "lernkartensatz.h"
+#include "materialsatz.h"
 
 #include <list>
 
@@ -19,9 +20,14 @@ public:
     void setLernkartensatz(lernkartensatz *ls);
     lernkartensatz* getLernkartensatz();
 
+    void setKopien(materialsatz *ms);
+    materialsatz* getKopien();
+
 private:
     list<lektuerenotiz*> *list_notizen;
+
     lernkartensatz *lks;
+    materialsatz *kop;
 };
 
 #endif // LEKTUERE_H

@@ -12,7 +12,7 @@
 #include "guirepository.h"
 #include "guirepositoryimpl.h"
 #include "splashscreenimpl.h"
-
+#include "orm/mapping/mappingcontroler.h"
 
 GuiRepository* GuiRepository::instance = 0;
 SplashScreen* GuiRepository::splash = 0;
@@ -38,7 +38,8 @@ SplashScreen* GuiRepository::showSplashScreen()
 {
      if(splash == 0){ 
         QPixmap pm("gui/splash.png");
-	splash = new SplashScreenImpl( pm );
+        splash = new SplashScreenImpl( pm );
+        MappingControler::getInstance()->addMappingEventListener(splash);
      }
      splash->show();
      return splash;

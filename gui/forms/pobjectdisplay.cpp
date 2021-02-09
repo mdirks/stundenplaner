@@ -10,6 +10,7 @@
 
 #include "gui/actions/guicreateaction.h"
 
+#include <QGraphicsSceneContextMenuEvent>
 //Jup funktioniert auch mobil
 
 
@@ -21,6 +22,7 @@ PObjectDisplay::PObjectDisplay(QWidget *parent,  int ncol, int nrow,bool addable
     prop=0;
     parentObject=0;
     mapper=0;
+    clickedItem=0;
 
     this->scene = new PObjectDisplayScene(olist,ncol,nrow);
     if(addable){
@@ -41,6 +43,8 @@ PObjectDisplay::PObjectDisplay(list<PObject*> *ol, QWidget *parent, int ncol, in
     prop=0;
     parentObject=0;
     mapper=0;
+    clickedItem=0;
+
 
     this->scene = new PObjectDisplayScene(olist,ncol,nrow);
 
@@ -54,6 +58,8 @@ PObjectDisplay::PObjectDisplay(string className, QWidget *parent,int ncol,int nr
     olist=0;
     prop=0;
     parentObject=0;
+    clickedItem=0;
+
     mapper = MappingControler::getInstance()->getMapperByName(className);
     if(mapper){
         typeName=mapper->getClassName();
@@ -73,6 +79,8 @@ PObjectDisplay::PObjectDisplay(AbstractMapper *mapper, QWidget *parent,int ncol,
     olist=0;
     prop=0;
     parentObject=0;
+    clickedItem=0;
+
     if(mapper){
         typeName=mapper->getClassName();
         olist=mapper->find_gen();
@@ -87,6 +95,8 @@ PObjectDisplay::PObjectDisplay(RepositoryProperty *pr, PObject *po, QWidget *par
 {
     olist=0;
     mapper=0;
+    clickedItem=0;
+
     prop=pr;
     parentObject=po;
     if(prop && parentObject){
@@ -147,6 +157,36 @@ void PObjectDisplay::addElement()
     }
 }
 
+void PObjectDisplay::contextMenuEvent(QContextMenuEvent *ev)
+{
+    QGraphicsItem *item=itemAt(ev->pos());
+    if(clickedItem = dynamic_cast<PObjectDisplayItem*>(item)){
+        QMenu *menu=new QMenu();
+        QAction *removeAction = menu->addAction("Remove",this,SLOT(removeClickedItem()));
+
+        menu->popup(mapToGlobal(ev->pos()));
+    }
+}
+
+void PObjectDisplay::removeClickedItem()
+{
+    PObject *o;
+    if(clickedItem && (o=clickedItem->getObject())){
+
+        Transaction *t=Transactions::getCurrentTransaction();
+        if(prop && parentObject){
+            t->add(parentObject);
+        }
+        if(CollectionProperty *cp = dynamic_cast<CollectionProperty*>(prop)){
+            //table->startEdit();
+            cp->remove(o,parentObject);
+
+        }
+        setParentObject(parentObject);
+    }
+}
+
+
 
 PObjectDisplayScene::PObjectDisplayScene(list<PObject*> *olist,int nr, int nc)
     : numRow(nr), numCol(nc), QGraphicsScene(0,0,1200,800)
@@ -165,13 +205,13 @@ PObjectDisplayScene::~PObjectDisplayScene()
 void PObjectDisplayScene::setPrototype(PObjectDisplayItem *protoItem)
 {
     this->protoItem = protoItem;
-    QGraphicsProxyWidget *pitem= addWidget(protoItem);
-    itemWidth=pitem->size().width();
-    itemHeight = pitem->size().height();
-    if(numRow<0) numRow = this->height()/itemHeight;
-    if(numCol<0) numCol = this->width()/itemWidth;
-    removeItem(pitem);
+
+    //calculate layout if not set
+    if(numRow<0) numRow = this->height()/protoItem->getIdealSize().width();
+    if(numCol<0) numCol = this->width()/protoItem->getIdealSize().height();
 }
+
+
 
 void PObjectDisplayScene::setLayout(int ncol, int nrow)
 {
@@ -187,36 +227,57 @@ void PObjectDisplayScene::reload()
     }
 
 }
+
+void PObjectDisplayScene::deleteItem(PObjectDisplayItem *item)
+{
+    PObject *o = item->getObject();
+    if(o && olist){
+        olist->remove(o);
+    }
+    delete item;
+    reload();
+}
+
 void PObjectDisplayScene::load(list<PObject*> *olist)
 {
-    int r=0;
-    int c=0;
+    int c=0, r=0, pw_max=0, ph_max=0;
+
+    int pw=0, ph=0;
 
     for(list<PObject*>::iterator it = olist->begin(); it!=olist->end(); it++){
             PObject *o=*it;
             if(o){
-                PObjectDisplayItem *item = protoItem->createInstance(o);
+
+                QGraphicsItem *item = protoItem->createInstance(o,this, pw, ph);
+
+
                 if(item){
-                    item->setContentsMargins(0,0,0,0);
-                    QGraphicsProxyWidget *pitem= addWidget(item);
+                    //QGraphicsProxyWidget *pitem= addWidget(item);
                     //pitem->prepareGeometryChange();
-                    pitem->setPos(c*(itemWidth),r*(itemHeight));
+
+                    pw += item->boundingRect().width();
+                    if(pw>pw_max) pw_max=pw;
                     c+=1;
                     if(c>=numCol){
                         r+=1;
+                        ph+=item->boundingRect().height();
+                        if(ph>ph_max) ph_max=ph;
                         c=0;
+                        pw=0;
                     }
                 }
             }
 
     }
 
-    setSceneRect(QRectF(itemWidth/2,0,c*itemWidth,r*itemHeight));
+    setSceneRect(QRectF(0,0,pw_max,ph_max));
 }
 
 
+
 LernkarteDisplayItem::LernkarteDisplayItem(lernkarte *lk)
-    : PObjectDisplayItem()
+    : PObjectDisplayItem(lk),
+      QWidget()
 {
     this->lk = lk;
     viewer = new LernkarteViewer(this,LernkarteViewer::Stacked);
@@ -231,15 +292,51 @@ LernkarteDisplayItem::LernkarteDisplayItem(lernkarte *lk)
 
     this->setLayout(l);
     this->setFixedSize(400,250);
-
+    setIdealSize(size());
 }
 
-PObjectDisplayItem* LernkarteDisplayItem::createInstance(PObject *o)
+QGraphicsItem* LernkarteDisplayItem::createInstance(PObject *o, QGraphicsScene *s,int px,int py)
 {
-    PObjectDisplayItem *item=0;
+    QGraphicsItem *item=0;
     lernkarte *lk = dynamic_cast<lernkarte*>(o);
     if(lk){
-        item = new LernkarteDisplayItem(lk);
+        item = s->addWidget(new LernkarteDisplayItem(lk));
+    } else {
+        item = s->addText("Unknown\\Itemtype");
     }
+    item->setPos(px,py);
     return item;
 }
+
+
+MaterialDisplayItem::MaterialDisplayItem(material *m)
+    : PObjectDisplayItem(m),
+      QGraphicsPixmapItem()
+{
+    this->m = m;
+    setIdealSize(QSizeF(200,100));
+}
+
+QGraphicsItem* MaterialDisplayItem::createInstance(PObject *o, QGraphicsScene *s,int px, int py)
+{
+    QGraphicsItem *item=0;
+    material *m = dynamic_cast<material*>(o);
+    if(m){
+        QPixmap pm;
+        if(pm.load(m->getFileName().c_str())){
+            //item = s->addPixmap(pm);
+            MaterialDisplayItem *mitem = new MaterialDisplayItem(m);
+            mitem -> setPixmap(pm);
+            item=mitem;
+            s->addItem(item);
+        } else {
+            item = s->addText("Image \\ failed to load");
+        }
+    } else {
+        item = s->addText("Unknown\\Itemtype");
+    }
+    item->setPos(px,py);
+    return item;
+}
+
+

@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Mo. Jun 22 20:25:28 2015
+ // Written on Do. Jan. 28 15:05:59 2021
 // 
  #ifndef ThemaMapMAPPER_H 
  #define ThemaMapMAPPER_H 
@@ -16,6 +16,7 @@
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
+#include "orm/mapping/murl.h" 
 #include "orm/persistence/persistenceclass.h" 
  #include "themamap.h" 
 #include "pobjectgraphicsitem.h" 

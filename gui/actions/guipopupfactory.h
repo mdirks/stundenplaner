@@ -25,6 +25,7 @@
 #include "gui/mapviews/mapviewspopupfactory.h"
 #include "gui/mapviews/genericmapview.h"
 #include "gui/mapviews/weekmapview.h"
+#include "gui/mapviews/themamapview.h"
 #include "orm/persistence/pobject.h"
 
 #include "actionpopup.h"
@@ -44,6 +45,7 @@ public:
     QMenu* getPopupFor(PObjectTable *table);
     QMenu* getPopupForGenericMapView(GenericMapView *mapView, QPoint pos);
     QMenu* getPopupForWeekMapView(WeekMapView *mapView, QPoint pos);
+    QMenu* getPopupForThemaMapView(ThemaMapView *mapView, QPoint pos);
     QMenu* getActionPopupForObject(PObject *o);
 
 private:

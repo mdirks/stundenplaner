@@ -30,6 +30,12 @@ ServiceLatex* ServiceLatex::getInstance()
     return instance;
 }
 
+void ServiceLatex::setupMode()
+{
+    //nothing to be done
+}
+
+
 void ServiceLatex::handleObject(PObject *o)
 {
     qDebug() << "ServiceLatex : handling object ...";

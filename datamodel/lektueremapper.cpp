@@ -29,7 +29,7 @@
 
  lektueremapper::lektueremapper()
   {
- 	version = "0.3-0.6";
+ 	version = "0.5-0.6";
 	columns = new string[2];
  	columnTypes = new string[2];
  	columns[0] = "title";
@@ -42,6 +42,7 @@ asc_Notizen = new Association<lektuere, lektuerenotiz>("lektuere_notizen","lektu
 mapAssociations["Notizen"] = asc_Notizen;
 registerAssociation( asc_Notizen);
 mapReferences["Lernkartensatz"] = new Reference("lektuere","datamodel/lernkartensatz");
+mapReferences["Kopien"] = new Reference("lektuere","datamodel/materialsatz");
 }
 
 
@@ -109,6 +110,7 @@ void lektueremapper::save(PObject *realSubject)
 	asc_Notizen -> save(realSubject, o->getNotizen() );
 
 	mapReferences[ "Lernkartensatz" ] -> save(realSubject, (PObject*) o->getLernkartensatz());
+	mapReferences[ "Kopien" ] -> save(realSubject, (PObject*) o->getKopien());
 	materialmapper::save(realSubject);
 }
 
@@ -148,6 +150,7 @@ RepositoryEntry* lektueremapper::getRepositoryEntry()
 	entry->addProperty( new StringProperty< lektuere >( "FileName" , "string", &lektuere::getFileName, &lektuere::setFileName, false ) );
 	entry->addProperty( new CollectionPropertyImpl<lektuerenotiz,lektuere>( "Notizen" , "lektuerenotiz", &lektuere::getNotizen, &lektuere::addToNotizen, &lektuere::deleteFromNotizen  ) ); 
 	entry->addProperty( new PObjectProperty<lernkartensatz,lektuere>( "Lernkartensatz" , "lernkartensatz", &lektuere::getLernkartensatz,&lektuere::setLernkartensatz ) ); 
+	entry->addProperty( new PObjectProperty<materialsatz,lektuere>( "Kopien" , "materialsatz", &lektuere::getKopien,&lektuere::setKopien ) ); 
 	entry->registerBase( "material" );
 	return entry;
  }

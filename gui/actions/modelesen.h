@@ -46,8 +46,10 @@ public slots:
     void showNotizeditor();
     void showLernkarten();
     void showLernkartenDisplay();
+    void showMaterialDisplay();
     void setActiveText(lektuere *l);
     void takeNote(QString note);
+    void takeCopy(QImage i);
 
 
 private:
@@ -56,6 +58,7 @@ private:
     TextPropertyBrowser *browser;
     LernkartensatzViewer *lkViewer;
     PObjectDisplay *lkDisplay;
+    PObjectDisplay *mDisplay;
 
     list<lektuere*> *list_texte;
     lektuere *activeText;
@@ -90,6 +93,23 @@ public:
 
 public slots:
     void createLektuereNotiz();
+
+
+private:
+    ModeLesen *mode;
+};
+
+
+class TakeCopyAction : public PdfViewSelectionAction
+{
+    Q_OBJECT
+
+public:
+    TakeCopyAction(ModeLesen *parent);
+    void setDataImage(QImage i);
+
+public slots:
+    void createLektuereCopy();
 
 
 private:

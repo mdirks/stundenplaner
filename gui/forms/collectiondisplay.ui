@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CollectionDisplay</class>
+ <widget class="QWidget" name="CollectionDisplay">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>643</width>
+    <height>566</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="handleWidth">
+      <number>1</number>
+     </property>
+     <widget class="PObjectIconView" name="viewCollections"/>
+     <widget class="PObjectIconView" name="viewItems"/>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PObjectIconView</class>
+   <extends>QListWidget</extends>
+   <header>gui/forms/pobjecticonview.h</header>
+   <slots>
+    <signal>itemChanged()</signal>
+    <signal>currentChanged()</signal>
+    <slot>changeCollection()</slot>
+    <slot>changeItem()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>viewCollections</sender>
+   <signal>currentItemChanged(QListWidgetItem*,QListWidgetItem*)</signal>
+   <receiver>CollectionDisplay</receiver>
+   <slot>changeCollection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>284</x>
+     <y>538</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>301</x>
+     <y>560</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewItems</sender>
+   <signal>itemActivated(QListWidgetItem*)</signal>
+   <receiver>CollectionDisplay</receiver>
+   <slot>changeItem()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>532</x>
+     <y>528</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>531</x>
+     <y>559</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>changeCollection()</slot>
+  <slot>changeItem()</slot>
+ </slots>
+</ui>

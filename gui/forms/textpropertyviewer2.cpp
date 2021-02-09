@@ -21,6 +21,7 @@
 #include <QMenu>
 
 
+
 QString TextPropertyViewer2::StandardHeader = QString("\\documentclass[12pt]{article} \\pagestyle{empty}"
                                                         "\\usepackage{ngerman} "
                                                        "\\oddsidemargin -1cm \n \\topmargin -3.0cm"

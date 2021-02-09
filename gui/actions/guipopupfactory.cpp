@@ -52,6 +52,20 @@ GuiPopupFactory::GuiPopupFactory()
     mapActions[QString("lektuere")]=la;
 }
 
+QMenu* GuiPopupFactory::getPopupForThemaMapView(ThemaMapView *mapView, QPoint pos)
+{
+    //WeekMapViewControler *controler = new WeekMapViewControler(mapView);
+
+    QMenu *pmenu = getPopupForGenericMapView(mapView,pos);
+
+    //pmenu->addAction("Stundenplan",  controler, SLOT(readStundenplan()));
+    //(new QAction("Stundenplan", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(readStundenplan()), mapView, "zoomout"))->plug(pmenu);
+
+    return pmenu;
+}
+
+
+
 QMenu* GuiPopupFactory::getPopupForWeekMapView(WeekMapView *mapView, QPoint pos)
 {
 	WeekMapViewControler *controler = new WeekMapViewControler(mapView);

@@ -143,14 +143,12 @@ int main(int argc, char *argv[])
     //setenv("LC_ALL","de_DE.UTF-8");
 
     QString dbName=app.arguments().at(1);
-    MappingControler::setDatabaseName(dbName);
-    MappingControler::getInstance();
+    MappingControler::getInstance()->setActiveDatabase(dbName);
 
     GuiConfig::getInstance()->setDatabaseName(dbName);
 
-   
-    DataModelRepository::getInstance();
     GuiRepository *rp=GuiRepository::getInstance();
+    DataModelRepository::getInstance();
     rp->initGui();
 
    

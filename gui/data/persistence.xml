@@ -39,8 +39,9 @@
                 <association name="GraphicsItems" table="map_item" priCol="map_id" ascCol="item_id" ascClass="PObjectGraphicsItem" getter="getGraphicsItems"></association>
 	</class>
 	
-	<class name="ThemaMap" tname="themamap" version="0.3">
+        <class name="ThemaMap" tname="themamap" version="0.4">
                 <association name="GraphicsItems" table="map_item" priCol="map_id" ascCol="item_id" ascClass="PObjectGraphicsItem" getter="getGraphicsItems"></association>
+                <reference name="Thema" refClass="datamodel/thema" getter="getThema"></reference>
 	</class>
 	
 	
@@ -63,4 +64,9 @@
 	<class name="GuiObject" tname="guiobject"  version="0.1">
 		<reference name="DashBoard" refClass="ThemaMap"></reference>
 	</class>
+        <class name="ThemaMapSatz" tname="themamapsatz" version="0.1">
+            <association name="ThemaMaps" table="themamapsatz_themamap" priCol="satz_id" ascCol="themamap_id" ascClass="ThemaMap"></association>
+            <association name="Children" table="themamapsatz_children" priCol="satz_id" ascCol="child_id" ascClass="ThemaMapSatz"></association>
+        </class>
+
 </persistence>

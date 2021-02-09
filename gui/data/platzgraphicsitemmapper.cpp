@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "platzgraphicsitem.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  PlatzGraphicsItemmapper* PlatzGraphicsItemmapper::instance=0;
@@ -26,10 +27,9 @@
  }
 
 
-
  PlatzGraphicsItemmapper::PlatzGraphicsItemmapper()
   {
- 	version = "0.4";
+ 	version = "0.4-0.6";
 	columns = new string[12];
  	columnTypes = new string[12];
  	columns[0] = "xpos";

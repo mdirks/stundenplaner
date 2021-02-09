@@ -40,7 +40,8 @@ AbstractAssociation::AbstractAssociation(string table,  string pri_col, string a
 
 
 void AbstractAssociation::createTable(){
-	Database *db = Database::getInstance();
+    bool suc;
+    Database *db = Database::getInstance();
 	
 	/*QString qs = QString("drop table %1;").arg(table);
 	QSqlQuery q(qs);
@@ -49,5 +50,8 @@ void AbstractAssociation::createTable(){
 	
     QString qs2 = QString("create table %1 (%2 int, %3 int);").arg(table.c_str()).arg(pri_col.c_str()).arg(asc_col.c_str());
 	QSqlQuery q2(qs2);
-    if(!q2.isActive()) qDebug() << QString("Failed to create association table : ").append(qs2);
+    if(!q2.isActive()){
+        suc=false;
+        qDebug() << QString("Failed to create association table : ").append(qs2);
+    }
 }

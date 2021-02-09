@@ -28,6 +28,10 @@ public:
     void show(){QSplashScreen::show();}
     void hide(){QSplashScreen::hide();}
 
+    bool versionChangeRequested(string className);
+    bool confirm(string req);
+    void message(string mes);
+
 };
 
 #endif

@@ -264,9 +264,10 @@
 <class name="krankmeldung" tname="krankmeldung" base="meldung" version="0.3">
 </class>
 
-<class name="lektuere" tname="lektuere" base="material" version="0.3">
+<class name="lektuere" tname="lektuere" base="material" version="0.5">
       <association name="Notizen" table="lektuere_notizen" priCol="lektuere_id" ascCol="notiz_id" ascClass="lektuerenotiz"></association>
       <reference name="Lernkartensatz" refClass="datamodel/lernkartensatz"></reference>
+      <reference name="Kopien" refClass="datamodel/materialsatz"></reference>
 </class>
 
 <class name="lektuerenotiz" tname="lektuerenotiz" base="notiz" version="0.3">
@@ -279,5 +280,14 @@
 
 <class name="materialsatz" tname="materialsatz" version="0.1">
 <association name="Materialien" table="materialsatz_material" priCol="satz_id" ascCol="material_id" ascClass="material"></association>
+</class>
+
+<class name="lektueresatz" tname="lektueresatz" version="0.1">
+<association name="Lektueren" table="lektueresatz_lektuere" priCol="satz_id" ascCol="lektuere_id" ascClass="lektuere"></association>
+<association name="Children" table="lektueresatz_children" priCol="satz_id" ascCol="child_id" ascClass="lektueresatz"></association>
+</class>
+
+<class name="kopie" tname="kopie" base="material" version="0.1">
+    <reference name="Lektuere" refClass="datamodel/lektuere"></reference>
 </class>
 </persistence>

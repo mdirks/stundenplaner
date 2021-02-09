@@ -1,4 +1,4 @@
- //
+// 
  // C++ Implementation: ferienmapper
  //
  // Description: 

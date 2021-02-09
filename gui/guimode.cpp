@@ -14,10 +14,12 @@ GuiMode::GuiMode(QString title)
 
     modeToolBar = new QToolBar(guirep->getMainFrame());
     guirep->getMainFrame()->addToolBar(Qt::RightToolBarArea,modeToolBar);
+    setupDone=false;
 }
 
 void GuiMode::doSetupMode()
 {
+    qWarning() << "GuiMode::doSetupMode " << text();
     GuiRepository::getInstance()->setActiveMode(this);
 }
 

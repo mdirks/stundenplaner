@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "themamap.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  ThemaMapmapper* ThemaMapmapper::instance=0;

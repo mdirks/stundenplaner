@@ -5,10 +5,11 @@
 #include "gui/forms/pobjectcombobox.h"
 #include "datamodel/lektuere.h"
 #include "pobjectlistprovider.h"
-
+#include "gui/forms/collectiondisplay.h"
 #include <QWidget>
 #include <QToolBar>
 #include <QResizeEvent>
+#include <QSplitter>
 
 #include <list>
 
@@ -39,7 +40,10 @@ signals:
     void textChanged(lektuere *l);
     
 public slots:
-    void selectionChanged(int i);
+    //void selectionChanged(int i);
+    void showSelectionMenu();
+    void loadNewLektuere();
+
 
 
 
@@ -50,6 +54,11 @@ private:
     list<lektuere*> *tlist;
     lektuere *activeText;
     PObjectListProvider *provider;
+
+    QSplitter *splitter;
+    CollectionDisplay *colDisplay;
+    QToolButton *selectButton;
+    QSplitter *colSplitter;
 };
 
 #endif // TEXTVIEWER_H

@@ -1,7 +1,7 @@
 #include "actionpopup.h"
 
 ActionPopup::ActionPopup()
-    : QMenu()
+    : QMenu("Aktionen")
 {
     list_oa=new list<PObjectAction*>();
 }

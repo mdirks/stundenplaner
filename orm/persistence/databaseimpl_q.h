@@ -78,7 +78,6 @@ private:
 	QString mask(QString qs);
     QString unmask(QString qs);
 
-    void checkForOldstyleDb();
      // void writeVersions();
 
 private:

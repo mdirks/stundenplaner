@@ -20,8 +20,10 @@
 ThemaMap::ThemaMap() : GenericMap(1400,1000)
 {
 	
-	
 	setMapper(ThemaMapmapper::getInstance());
+
+    m_thema=0;
+
 }
 
 
@@ -30,7 +32,18 @@ ThemaMap::~ThemaMap()
 }
 
 
+void ThemaMap::setThema(thema *t)
+{
+    m_thema=t;
+}
 
+thema* ThemaMap::getThema()
+{
+    if(m_thema==0){
+        m_thema = (thema*) ThemaMapmapper::getInstance()->findReference("Thema",getID());
+    }
+    return m_thema;
+}
 
 
 

@@ -12,4 +12,4 @@ HEADERS += mappinggenerator.h
 SOURCES += mappinggenerator.cpp
 
 
-QT +=xml
+QT +=xml widgets

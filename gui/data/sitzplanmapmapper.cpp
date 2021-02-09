@@ -13,6 +13,7 @@
  #include "services/utils/utils.h"
  #include "sitzplanmap.h"
 #include "orm/persistence/database.h"
+ #include "orm/repository/urlproperty.h"
  //#include "orm/mappingproperty.h"
 
  SitzplanMapmapper* SitzplanMapmapper::instance=0;
@@ -28,7 +29,7 @@
 
  SitzplanMapmapper::SitzplanMapmapper()
   {
- 	version = "0.5";
+ 	version = "0.5-0.3";
 	columns = new string[0];
  	columnTypes = new string[0];
  asc_GraphicsItems = new Association<SitzplanMap, PObjectGraphicsItem>("map_item","map_id","item_id","PObjectGraphicsItem", &SitzplanMap::addToGraphicsItems, &SitzplanMap::deleteFromGraphicsItems);
