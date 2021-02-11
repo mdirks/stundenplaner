@@ -22,6 +22,9 @@ TextPropertyEditor::TextPropertyEditor(QWidget *parent)
 
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
     setLineWrapMode(QTextEdit::NoWrap);
+
+    lEdit=new QLabel("hallo",this);
+    lEdit->hide();
 }
 
 TextPropertyEditor::TextPropertyEditor(PObject *o, RepositoryProperty *prop, QWidget *p)
@@ -32,6 +35,10 @@ TextPropertyEditor::TextPropertyEditor(PObject *o, RepositoryProperty *prop, QWi
     setLineWrapMode(QTextEdit::NoWrap);
     setText(property->asString( parent ).c_str());
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
+
+    lEdit=new QLabel("hallo",this);
+    lEdit->hide();
+
 }
 
 
@@ -42,6 +49,10 @@ TextPropertyEditor::TextPropertyEditor(PObject *o, QString displayString, QWidge
     setLineWrapMode(QTextEdit::NoWrap);
     setText(displayString);
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
+
+    lEdit=new QLabel("hallo",this);
+    lEdit->hide();
+
 }
 
 
@@ -68,25 +79,51 @@ void TextPropertyEditor::startEdit()
 {
     if(!editing){
         GuiControler::getInstance()->addActiveEditor(this);
-		editing = true;
+        setEditing(true);
+        //editing = true;
         if(property && parent){
             Transactions::getCurrentTransaction()->add(property->getTrueParent(parent));
         }
 	}
 }
 
+QString TextPropertyEditor::getText()
+{
+    setTextToParent();
+    return toPlainText().toUtf8();
+}
+
+void TextPropertyEditor::setEditing(bool edit)
+{
+    if(edit){
+        lEdit->show();
+    } else {
+        lEdit->hide();
+    }
+    editing=edit;
+}
 
 void TextPropertyEditor::stopEdit()
 {
     if(property && parent){
-        QString text = toPlainText();
-        QTextStream str(&text);
-        property->fromString(str.readAll().toStdString(), parent);
-		parent->save();
+        setTextToParent();
 	}
-	editing = false;
+    setEditing(false);
+    //editing = false;
 	
 	//clear();
+}
+
+void TextPropertyEditor::setTextToParent()
+{
+    QString text = toPlainText();
+    property->fromString(text.toStdString(),parent);
+    /*
+    QString text = toPlainText();
+    QTextStream str(&text);
+    property->fromString(str.readAll().toStdString(), parent);
+    parent->save();
+    */
 }
 
 

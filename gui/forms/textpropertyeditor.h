@@ -13,6 +13,7 @@
 #define TEXTPROPERTYEDITOR_H
 
 #include <qtextedit.h>
+#include <qlabel.h>
 
 #include "gui/base/propertyeditor.h"
 
@@ -33,16 +34,21 @@ public:
     void startEdit(RepositoryProperty *prop, PObject *o);
     void setParentObject(PObject *po);
     void setProperty(RepositoryProperty *rp);
+    QString getText();
 
 public slots:
     void startEdit();
     void stopEdit();
     
+private:
+    void setTextToParent();
+    void setEditing(bool edit);
     
 private:
      PObject *parent;
      RepositoryProperty *property;
      bool editing;
+     QLabel *lEdit;
 
 protected:
     void focusOutEvent(QFocusEvent *e);

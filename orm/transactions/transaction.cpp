@@ -15,7 +15,7 @@
 
 Transaction::Transaction()
 {
-	list_modified = new list<PObject*>();
+    set_modified = new set<PObject*>();
 }
 
 
@@ -31,7 +31,7 @@ Transaction::~Transaction()
  */
 void Transaction::commit()
 {
-    for(list<PObject*>::iterator it = list_modified -> begin(); it != list_modified->end(); it++)
+    for(set<PObject*>::iterator it = set_modified -> begin(); it != set_modified->end(); it++)
     {
 		if(*it){
             qDebug() << QString("Transaction::commit(): saving %1").arg(((*it)->getName()).c_str());
@@ -40,7 +40,7 @@ void Transaction::commit()
             qDebug() << "Transaction::commit() :  Warning: Invalid object in list_modified";
 		}
     }	
-    list_modified -> clear();
+    set_modified -> clear();
     
 }
 
@@ -48,14 +48,14 @@ void Transaction::commit()
 /*!
     \fn Transaction::getModified()
  */
-list<PObject*>  *Transaction::getModified()
+set<PObject*>  *Transaction::getModified()
 {
-    return list_modified;
+    return set_modified;
 }
 
 void Transaction::add(PObject *o)
 {
-	list_modified->push_back(o);
+    set_modified->insert(o);
 	/*
 	qDebug("In transaction now:\n");
 	for(list<PObject*>::iterator it = list_modified->begin(); it != list_modified->end(); it++){

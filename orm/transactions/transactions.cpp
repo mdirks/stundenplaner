@@ -46,8 +46,8 @@ void Transactions::commit(Transaction *t)
     	qWarning("Transactions::commit : Got invalid  transaction");
     }
     
-    list<PObject *>  *list_modified = t->getModified();
-    for(list<PObject*>::iterator it = list_modified->begin(); it != list_modified->end(); it++){
+    set<PObject *>  *set_modified = t->getModified();
+    for(set<PObject*>::iterator it = set_modified->begin(); it != set_modified->end(); it++){
     	PObject *o = *it;
 	o->save();
     }

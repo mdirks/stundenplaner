@@ -12,28 +12,36 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-#include <list>
+//#include <list>
+#include <set>
 
 #include "transactionobject.h"
 #include "../persistence/pobject.h"
 using namespace std;
 
+
 /**
 @author Marcus Dirks
 */
 class Transaction{
+
+friend class Transactions;
+
 public:
     Transaction();
     ~Transaction();
     
     void commit();
     void add(PObject* o);
-    list<PObject*> * getModified();
     PObject* create(string className);
+
+
+private:
+    set<PObject*> * getModified();
 
     
 private: 
-    list<PObject*> *list_modified;
+    set<PObject*> *set_modified;
 };
 
 #endif

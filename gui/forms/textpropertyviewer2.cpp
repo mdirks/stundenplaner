@@ -130,7 +130,7 @@ void TextPropertyViewer2::updatePreview()
     input.preamble = QString("\\usepackage{amssymb,amsmath} "
                              "\\usepackage[whole]{bxcjkjatype}"
                              "\\usepackage{hyperref}");
-    input.latex = editor->toPlainText().toUtf8();
+    input.latex = editor->getText();//editor->toPlainText().toUtf8();
     if(mPreviewBuilderThread->inputChanged(input)) {
         qDebug() << "input changed. Render...";
         //ui->statusBar->showMessage("Input changed. Render...");
@@ -154,7 +154,9 @@ void TextPropertyViewer2::showPreview(const QByteArray& pdfData, bool latexerror
 void TextPropertyViewer2::setParentObject(PObject *o)
 {
    this->parent = o;
+   Transactions::getCurrentTransaction()->add(o);
    editor->setParentObject(o);
+
    //compileVorn(true);
 }
 
