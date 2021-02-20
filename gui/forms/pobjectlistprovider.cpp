@@ -61,6 +61,8 @@ list<PObject*> *RpListProvider::objectList()
     return olist;
 }
 
+
+
 void RpListProvider::addObject(PObject *o)
 {
     if(rp && parentObject)

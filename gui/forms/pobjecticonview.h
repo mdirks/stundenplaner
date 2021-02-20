@@ -88,7 +88,8 @@ public:
     void setTableView(PObjectTable *table);
     PObjectTable* getTableView();
 
-
+    void setParentObject(PObject *po);
+    PObject *getObject(int index);
 
     void setDisplayProperty(RepositoryProperty *p);
     void setDisplayProperties(list<RepositoryProperty*> *listRp);

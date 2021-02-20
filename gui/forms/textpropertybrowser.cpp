@@ -13,21 +13,11 @@ TextPropertyBrowser::TextPropertyBrowser(PObject *po, RepositoryProperty *cP, Re
     this->colProp=cP;
     parentObject=0;
 
-    viewer = new TextPropertyViewer2(0,dispProp,this);
-    toolBar = new QToolBar(this);
-
-    combo = new PObjectComboBox(colProp,po,this);
-    connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(indexChanged(int)));
-    connect(combo,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
-
     /*
-    QString String = "border: 0px solid black;";
-    combo->setStyleSheet(String );
-    combo->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-    combo->setEditable(true);
-    combo->setInsertPolicy(QComboBox::InsertAtCurrent);
-    */
+    viewer = new TextPropertyViewer2(0,dispProp,this);
 
+    toolBar = new QToolBar(this);
+    combo = new PObjectComboBox(colProp,po,this);
     spinBox = new QSpinBox(this);
     spinBox->setMaximum(999);
     connect(spinBox,SIGNAL(valueChanged(int)),this,SLOT(numberChanged(int)));
@@ -41,13 +31,33 @@ TextPropertyBrowser::TextPropertyBrowser(PObject *po, RepositoryProperty *cP, Re
     toolBar->addWidget(spinBox);
     toolBar->addWidget(gotoButton);
 
+    connect(combo,SIGNAL(currentIndexChanged(int)),this,SLOT(indexChanged(int)));
+    connect(combo,SIGNAL(editTextChanged(QString)),this,SLOT(nameChanged(QString)));
+    */
+
+    splitter = new QSplitter(Qt::Horizontal,this);
+    viewer = new TextPropertyViewer2(0,dispProp,splitter);
+    iconView = new PObjectIconView(colProp,po,splitter);
+
+    connect(iconView,SIGNAL(currentRowChanged(int)),this,SLOT(indexChanged(int)));
+
+    /*
+    QString String = "border: 0px solid black;";
+    combo->setStyleSheet(String );
+    combo->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    combo->setEditable(true);
+    combo->setInsertPolicy(QComboBox::InsertAtCurrent);
+    */
+
+
 
 
 
     QVBoxLayout *l= new QVBoxLayout(this);
     l->setContentsMargins(0,0,0,0);
-    l->addWidget(toolBar);
-    l->addWidget(viewer);
+    //l->addWidget(toolBar);
+    //l->addWidget(viewer);
+    l->addWidget(splitter);
 
     if(po){
         setParentObject(po);
@@ -57,7 +67,8 @@ TextPropertyBrowser::TextPropertyBrowser(PObject *po, RepositoryProperty *cP, Re
 
 void TextPropertyBrowser::numberChanged(int i)
 {
-    PObject *o=combo->getObject(combo->currentIndex());
+    //PObject *o=combo->getObject(combo->currentIndex());
+    PObject *o=iconView->getCurrent();
     if(lektuerenotiz* ln=dynamic_cast<lektuerenotiz*>(o))
     {
         Transactions::getCurrentTransaction()->add(ln);
@@ -69,7 +80,8 @@ void TextPropertyBrowser::numberChanged(int i)
 
 void TextPropertyBrowser::nameChanged(QString newName)
 {
-    PObject *o=combo->getObject(combo->currentIndex());
+    //PObject *o=combo->getObject(combo->currentIndex());
+    PObject *o=iconView->getCurrent();
     if(lektuerenotiz* ln=dynamic_cast<lektuerenotiz*>(o))
     {
         Transactions::getCurrentTransaction()->add(ln);
@@ -90,7 +102,8 @@ PObject* TextPropertyBrowser::newObject()
 void TextPropertyBrowser::setParentObject(PObject *po)
 {
     this->parentObject=po;
-    combo->setParentObject(po);
+    //combo->setParentObject(po);
+    iconView->setParentObject(po);
 
     /*
     if(colProp){
@@ -116,12 +129,13 @@ void TextPropertyBrowser::load(list<PObject*> *ol)
 
 void TextPropertyBrowser::indexChanged(int i)
 {
-        PObject *o = combo->getObject(i);
+        //PObject *o = combo->getObject(i);
+        PObject *o=iconView->getObject(i);
         viewer->setParentObject(o);
         if(lektuerenotiz *ln = dynamic_cast<lektuerenotiz*>(o))
         {
             int npage=ln->getSeite();
-            spinBox->setValue(npage);
+            //spinBox->setValue(npage);
             //ModeLesen::getInstance()->setActivePage(npage);
         }
 
@@ -129,13 +143,14 @@ void TextPropertyBrowser::indexChanged(int i)
 
 void TextPropertyBrowser::gotoPage()
 {
-        int pn=spinBox->value();
-        ModeLesen::getInstance()->setActivePage(pn);
+        //int pn=spinBox->value();
+        //ModeLesen::getInstance()->setActivePage(pn);
 }
 
 void TextPropertyBrowser::setActiveObject(PObject *o)
 {
-    combo->setActiveObject(o);
+    //combo->setActiveObject(o);
+    qDebug("WARNING: TextPropertyBrowser::setActiveObject - do nothing implementation");
 }
 
 /*

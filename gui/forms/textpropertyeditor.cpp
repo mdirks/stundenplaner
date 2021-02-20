@@ -23,7 +23,7 @@ TextPropertyEditor::TextPropertyEditor(QWidget *parent)
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
     setLineWrapMode(QTextEdit::NoWrap);
 
-    lEdit=new QLabel("hallo",this);
+    lEdit=new QLabel("editing",this);
     lEdit->hide();
 }
 
@@ -36,7 +36,7 @@ TextPropertyEditor::TextPropertyEditor(PObject *o, RepositoryProperty *prop, QWi
     setText(property->asString( parent ).c_str());
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
 
-    lEdit=new QLabel("hallo",this);
+    lEdit=new QLabel("editing",this);
     lEdit->hide();
 
 }
@@ -50,7 +50,7 @@ TextPropertyEditor::TextPropertyEditor(PObject *o, QString displayString, QWidge
     setText(displayString);
     connect(this,SIGNAL(textChanged()),this,SLOT(startEdit()));
 
-    lEdit=new QLabel("hallo",this);
+    lEdit=new QLabel("editing",this);
     lEdit->hide();
 
 }

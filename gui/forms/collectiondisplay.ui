@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>643</width>
+    <width>225</width>
     <height>566</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
       <number>1</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="handleWidth">
       <number>1</number>

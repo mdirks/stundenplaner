@@ -122,6 +122,11 @@ PObjectIconView::PObjectIconView(RepositoryProperty *prop, PObject *parentObject
     doCommonSetup();
 }
 
+void PObjectIconView::setParentObject(PObject *o)
+{
+    if(provider) provider->setParentObject(o);
+    reload();
+}
 
 void PObjectIconView::doCommonSetup()
 {
@@ -196,17 +201,20 @@ void PObjectIconView::reload()
 }
 
 void PObjectIconView::load(list<PObject*>* olist){
-	for( list<PObject*>::iterator it = olist->begin(); it != olist->end(); it++){
-        if(filter){
-            if(filter->apply(*it)){
+    if(olist){
+        for( list<PObject*>::iterator it = olist->begin(); it != olist->end(); it++){
+            if(filter){
+                if(filter->apply(*it)){
+                    createItem(*it);
+                } else {
+                    qDebug() << "PObjectIconView::load : Item dropped by filter";
+                }
+            } else { //no filter set
                 createItem(*it);
-            } else {
-                qDebug() << "PObjectIconView::load : Item dropped by filter";
             }
-        } else { //no filter set
-            createItem(*it);
-		}
-	}
+        }
+    }
+    update();
 }
 
 void PObjectIconView::setTableView(PObjectTable *table)
@@ -252,6 +260,18 @@ PObject* PObjectIconView::getSelected()
         }
     }
 	return o;
+}
+
+PObject* PObjectIconView::getObject(int index)
+{
+    PObjectIconViewItem *it = dynamic_cast<PObjectIconViewItem*>(this->item(index));
+    if(it){
+        return it->getObject();
+    } else {
+        return 0;
+    }
+
+
 }
 
 PObject* PObjectIconView::getCurrent()
