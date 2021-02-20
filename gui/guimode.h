@@ -17,14 +17,14 @@ public:
     virtual void setupMode()=0;
 
     virtual void tearDownMode(){}
-    virtual void close();
+    virtual void close();  //called when GUI is closing e.g. for shutdown
     virtual void load(){}
-    virtual void reload();
-    virtual void activate();
-    virtual void deactivate();
+    virtual void reload(); //called when GUI is reloaded e.g. for database change
+    virtual void activate();   //called by the GuiRep when activated
+    virtual void deactivate();  //called by the GuiRep whenever other mode gets activated.
     virtual void activateObject(PObject *o){}
-    virtual void showForm(QWidget *w){}
-    virtual QList<QAction*>* getModeActions(){}
+    virtual void showForm(QWidget *w){}  //when active called by the GuiRep relating request from someohne
+    virtual QList<QAction*>* getModeActions(){return 0;}
     virtual void setModeWidget(QWidget *w);
 
 

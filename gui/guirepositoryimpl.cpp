@@ -338,33 +338,9 @@ void GuiRepositoryImpl::showFormForObject(PObject *o, list<RepositoryProperty*> 
 
 void GuiRepositoryImpl::showFormForObject(PObject *o, QWidget *form, bool top){
     if(form !=0){
-		/*	
-		if(! form->icon()){
-			qDebug("GuiRepositoryImpl::showFromForObject(): Found form  without icon: Resetting empty one");
-			form->setIcon(std_icon_pixmap);
-		}
-		*/
-		
-		//wrappWidgetAndAdd(form);
-		string objectName = o-> getName();
+        string objectName = o-> getName();
 		string className = o->getPersistenceObject()->getClassName();
-		
-        /*
-        KMdiChildView *childView =0;
-		qDebug(QString("Creating wrapper for %1, %2").arg(className).arg(objectName));
-        childView = stundeplaner->createWrapper(form, objectName, objectName);
-		childView->setIcon(GuiConfig::getInstance()->getIcon(className));
-		if( ! childView->icon()){
-		 qDebug("Warning child view has no icon !!");
-		}
-		if(childView != 0){
-			qDebug("Adding childView ...");
-			stundeplaner->addWindow(childView);
-			qDebug("..done");
-		} else {
-			qWarning("Failed to create child window");
-		}
-        */
+
         if(activeMode){
             activeMode->showForm(form);
         }
@@ -537,37 +513,7 @@ void GuiRepositoryImpl::addService(GuiService *serv)
 
 }
 
-/*
-KParts::Part* GuiRepositoryImpl::getPdfPart(QWidget* parent)
-{	
-	return getPart(parent, "application/pdf", "'KParts/ReadOnlyPart' in ServiceTypes");
-}
-*/
 
-/*
-KParts::Part* GuiRepositoryImpl::getPart(QWidget* parent, QString mimetype, QString qs2)
-{
-    KParts::Part* part=0;
-
-    part = KParts::ComponentFactory::createPartInstanceFromQuery<KParts::ReadOnlyPart>(
-                mimetype, QString(), parent);
-
-    QString message("Found %1");
-    if(part){
-        message=message.arg("part");
-    } else {
-        message=message.arg("nothing");
-    }
-
-
-	KMessageBox::error(getMainFrame(),message);
-	
-
-
-
-    return part;
-}
-*/
 
 void GuiRepositoryImpl::addIconView(PObjectIconView *iv, QString label, QString short_label)
 {
@@ -581,17 +527,11 @@ void GuiRepositoryImpl::addTool(QWidget *tool,
                                 QString short_label,
                                 Qt::DockWidgetArea area)
 {
-    //KMdiChildView *childView = stundeplaner->createWrapper(tool, label, short_label);
     stundeplaner->addDockWindow( tool, short_label,area);
 }
 
 void GuiRepositoryImpl::addTypeView(list<PObject*>* list, QString label, QString short_label){
     qDebug() << "Warning: GuiRepositoryImpl::addTypeView not implemented";
-    /*
-    PObjectListBox *listBox = new PObjectListBox();
-	listBox->addObjects(list);
-	addTool(listBox,label,short_label);
-    */
 }
 
 /*!
@@ -599,21 +539,6 @@ void GuiRepositoryImpl::addTypeView(list<PObject*>* list, QString label, QString
  */
 void GuiRepositoryImpl::wrappWidgetAndAdd(QWidget *pNewView)
 {
-    /*
-    KMdiChildView* pMDICover = new KMdiChildView( pNewView->caption());
-          QBoxLayout* pLayout = new QHBoxLayout( pMDICover, 0, -1, "layout");
-          pNewView->reparent( pMDICover, QPoint(0,0));
-          pLayout->addWidget( pNewView);
-          pMDICover->setName( pNewView->name());
-   	QString shortName = pNewView->caption();
-   	int length = shortName.length();
-  	 shortName = shortName.right(length - (shortName.findRev('/') +1));
-   	pMDICover->setTabCaption( shortName);
-   	pMDICover->setCaption(pNewView->caption());
-
-   	int flags = KMdi::StandardAdd;
-    */
-
    if(activeMode){
        activeMode->showForm( pNewView);
    }
@@ -628,99 +553,10 @@ list<AbstractMapper*>* GuiRepositoryImpl::getMapViews()
     return listMapViews;
 }
 
-/* TODO: Can icon-handling be completely removed ????? */
+
+
 
 /*
-
-QPixmap GuiRepositoryImpl::loadIcon(QString iconName, KIcon::Group group)
-{
-	KIconLoader *loader = KGlobal::iconLoader();
-	return loader->loadIcon(iconName, group);
-}
-
-
-QPixmap GuiRepositoryImpl::getIcon(QString name, KIcon::Group group)
-{
-	KIconLoader *loader = KGlobal::iconLoader();
-	map<QString,QString>::iterator it = mapIcons.find(name);
-	if(it != mapIcons.end()){
-		QString iconName = it->second;
-		return loader->loadIcon(iconName, group);
-		qDebug(QString("Map: Found icon %1 for %2").arg(iconName).arg(name));
-	} else {
-		//KConfig *config = KGlobal::config();
-		//config->setGroup("Gui");
-		//QString iconName = config->readEntry(name.append("_icon"),"unknown");
-		QString iconName = GuiConfig::getInstance()->readEntry("Gui",name.append("_icon"));
-		mapIcons[name]=iconName;
-		qDebug(QString("Config: Found icon %1 for %2").arg(iconName).arg(name));
-		
-		return loader->loadIcon(iconName,group);
-	}
-}
-
-QPixmap GuiRepositoryImpl::getIcon(PObject *o, KIcon::Group group)
-{
-    KIconLoader *loader = KGlobal::iconLoader();
-    if(o && o->getPersistenceObject()){
-	QString className(o->getPersistenceObject()->getClassName());
-	return getIcon(className,group);
-    } else {
-        qDebug("Warning: getPersistenceObject failed for object");
-    	return loader->loadIcon("kfind",group);
-    }
-    
-   
-}
-
-QPixmap GuiRepositoryImpl::getIcon(RepositoryProperty *rp, KIcon::Group group)
-{
-	if(rp->isCollection()){
-		return getIcon("Collection", group);
-	} else if (rp->isString()){
-		return getIcon("String", group);
-	} else if (rp->isText()){
-		return getIcon("Text", group);
-	} else {
-		return getIcon("Unknown", group);
-	}
-}
-
-
-void GuiRepositoryImpl::selectIcon(PObject *o)
-{
-	QString className(o->getPersistenceObject()->getClassName());
-	selectIcon(className);
-}
-
-void GuiRepositoryImpl::selectIcon(QString name)
-{
-	QString iconName = KIconDialog::getIcon();
-	mapIcons[name] = iconName;
-	
-	KConfig *config = KGlobal::config();
-	config->setGroup("Gui");
-	config->writeEntry(name.append("_icon"), iconName);
-}
-
-
-void GuiRepositoryImpl::selectIcon(RepositoryProperty *rp)
-{
-	QString type;
-	if(rp->isCollection()){
-		type = "Collection";
-	} else if (rp->isString()){
-		type = "String";
-	} else if (rp->isText()){
-		type = "Text";
-	} else {
-		type = "Unknown";
-	}
-	
-	selectIcon(type);
-}
-
-
 void GuiRepositoryImpl::addActiveEditor(PropertyEditor *editor)
 {
      	
@@ -757,12 +593,12 @@ void GuiRepositoryImpl::setCentralWidget(QStackedWidget *cW)
 /*!
     \fn GuiRepositoryImpl::getMainFrame()
  */
-/*KXmlGuiWindow**/ QMainWindow* GuiRepositoryImpl::getMainFrame()
+QMainWindow* GuiRepositoryImpl::getMainFrame()
 {
     return mainFrame;
 }
 
-void  GuiRepositoryImpl::setMainFrame(QMainWindow /*KXmlGuiWindow*/ *mf)
+void  GuiRepositoryImpl::setMainFrame(QMainWindow *mf)
 {
      this->mainFrame = mf;
 }
@@ -774,19 +610,7 @@ void  GuiRepositoryImpl::setMainFrame(QMainWindow /*KXmlGuiWindow*/ *mf)
 QMenu* GuiRepositoryImpl::getPopup(QString identifier)
 {
     QMenu *popup = new QMenu();
-    /*
-    QWidget *w =0;
-    if(getMainFrame()){
-        QWidget *w = getMainFrame()->guiFactory()->container(identifier, getMainFrame());
-        if(w){
-            popup= static_cast<QMenu*>(w);
-        }
-    }
 
-    if(!popup){
-        qDebug() << "Failed to get widget from xml";
-	}
-    */
 	return popup;
 }
 
