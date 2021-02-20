@@ -4,17 +4,21 @@ CONFIG += staticlib
 CONFIG += c++11
 SOURCES += \
     *.cpp \
+    bookmark.cpp \
     kopie.cpp \
     lektueresatz.cpp \
     notizsatz.cpp \
-    materialsatz.cpp
+    materialsatz.cpp \
+    tweet.cpp
 
 HEADERS += \
     *.h \
+    bookmark.h \
     kopie.h \
     lektueresatz.h \
     notizsatz.h \
-    materialsatz.h
+    materialsatz.h \
+    tweet.h
 
 OTHER_FILES += \
     persistence.xml
