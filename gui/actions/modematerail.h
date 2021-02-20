@@ -21,7 +21,6 @@ public:
 
     void setupMode();
     void tearDownMode();
-    static ModeMaterial* getInstance();
 
 public slots:
     void createNew();

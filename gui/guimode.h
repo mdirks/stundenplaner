@@ -24,12 +24,12 @@ public:
     virtual void deactivate();  //called by the GuiRep whenever other mode gets activated.
     virtual void activateObject(PObject *o){}
     virtual void showForm(QWidget *w){}  //when active called by the GuiRep relating request from someohne
-    virtual QList<QAction*>* getModeActions(){return 0;}
+    virtual QList<QAction*>* getModeActions(){return 0;} //not used at the moment
     virtual void setModeWidget(QWidget *w);
 
 
 public slots:
-    void doSetupMode();
+    void doSetupMode();  //called when mode (=action) is triggered, calls GuiRep::setActiveMode
 
 private:
     QWidget *modeWidget;

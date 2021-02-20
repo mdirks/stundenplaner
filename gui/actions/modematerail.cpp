@@ -9,7 +9,6 @@
 #include <QTextStream>
 #include <QVBoxLayout>
 
-ModeMaterial* ModeMaterial::instance=0;
 
 ModeMaterial::ModeMaterial()
     : GuiMode("Material"),
@@ -26,17 +25,6 @@ ModeMaterial::ModeMaterial()
     //splitter=0;
     displayWidget=0;
 
-
-
-
-}
-ModeMaterial* ModeMaterial::getInstance()
-{
-    if(instance==0)
-    {
-        instance=new ModeMaterial();
-    }
-    return instance;
 }
 
 void ModeMaterial::setupMode()

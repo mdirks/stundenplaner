@@ -14,11 +14,6 @@ PdfViewer::PdfViewer(QWidget *parent)
 {
     slotToggleShowForms(true);
 
-    /* to be done by clients - MD
-    addContextMenuAction(action(Bookmarks));
-    addContextMenuAction(action(MouseToolSelection));
-    addContextMenuAction(action(MouseToolBrowse));
-    */
 
 }
 
@@ -68,23 +63,7 @@ void PdfViewer::dragMoveEvent(QDragMoveEvent* e)
             e->ignore();
             qDebug() << "GenericMapView::contentsDropEvent: Strange, how to decode this data?";
         }
-    } /*else if(mdata->hasUrls()){
-        QList<QUrl> lurls=mdata->urls();
-        if(lurls.size()>0 && lurls.at(0).isLocalFile()){
-                QString file = lurls.at(0).toLocalFile();
-                material *m  = materialmapper::getInstance()->create();
-                m->setFileName(file.toStdString());
-                QString name = KInputDialog::getText("Name fuer Material", "Materialname","Unbekannt");
-                m->setName(name.toStdString());
-                if(m){
-                    qDebug("GenericMapView::contentsDropEvent : Adding to map from QUriDrag");
-                    o=m;
-                } else {
-                    qDebug("Strange GenericMapView::contentsDropEvent : object was null");
-                }
-        }
-        e->accept();
-    }*/ else {
+    } else {
         qDebug("GenericMapView::contenstDropEvent : Decode of event failed");
     }
 
@@ -95,8 +74,9 @@ void PdfViewer::dragMoveEvent(QDragMoveEvent* e)
             QString fileName = m->getFileName().c_str();
             if(fileName.contains(".pdf"))
             {
-                loadNewFile(fileName);
-                ModeLesen::getInstance()->setActiveText(m);
+                qDebug("WARNING: PdfViewer::dropEvent(QDropEvent *e) not finished - do nothing");
+                //loadNewFile(fileName);
+                //ModeLesen::getInstance()->setActiveText(m);
             }
         }
     }

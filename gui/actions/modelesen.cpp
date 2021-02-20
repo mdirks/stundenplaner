@@ -16,13 +16,12 @@
 #include <QList>
 
 
-ModeLesen* ModeLesen::instance=0;
+//ModeLesen* ModeLesen::instance=0;
 
 ModeLesen::ModeLesen()
     : GuiMode("Lesen")
 {
-    setMapper(ModeLesenmapper::getInstance());
-    list_texte=0;
+    //setMapper(ModeLesenmapper::getInstance());
     activeText=0;
     toolBar = 0;
     splitter = 0;
@@ -38,6 +37,7 @@ ModeLesen::ModeLesen()
 
 }
 
+/*
 ModeLesen* ModeLesen::getInstance()
 {
     if(instance==0)
@@ -46,6 +46,7 @@ ModeLesen* ModeLesen::getInstance()
     }
     return instance;
 }
+*/
 
 void ModeLesen::doCommonSetup()
 {
@@ -168,7 +169,6 @@ void ModeLesen::load()
 
 void ModeLesen::close()
 {
-    list_texte=0;
     activeText=0;
     splitter=0;
     GuiMode::close();
@@ -233,6 +233,7 @@ void ModeLesen::showForm(QWidget *w)
 
 }
 
+/*
 list<lektuere*>* ModeLesen::getTexte()
 {
     if(list_texte==0)
@@ -241,7 +242,9 @@ list<lektuere*>* ModeLesen::getTexte()
     }
     return list_texte;
 }
+*/
 
+/*
 void ModeLesen::addToTexte(lektuere *l)
 {
     getTexte()->push_back(l);
@@ -251,6 +254,7 @@ void ModeLesen::deleteFromTexte(lektuere *l)
 {
     getTexte()->remove(l);
 }
+*/
 
 
 

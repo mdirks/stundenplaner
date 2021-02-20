@@ -14,7 +14,7 @@
 #include <QToolBar>
 #include <QStackedWidget>
 
-class ModeLesen : public GuiMode, public notizholder
+class ModeLesen : public GuiMode //, public notizholder
 {
    Q_OBJECT
 
@@ -29,13 +29,14 @@ public:
     void activateObject(PObject *o);
     void showForm(QWidget *w);
 
+    /*
     list<lektuere*> *getTexte();
     void addToTexte(lektuere *l);
     void deleteFromTexte(lektuere *l);
+    */
 
 
-
-    static ModeLesen* getInstance();
+    //static ModeLesen* getInstance();
 
     void setActivePage(int i);
 

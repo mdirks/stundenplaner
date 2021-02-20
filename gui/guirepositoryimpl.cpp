@@ -75,7 +75,7 @@
 #include "services/sstundenplan.h"
 #include "gui/actions/modeplanung.h"
 #include "gui/actions/modelesen.h"
-#include "gui/actions/modelesenmapper.h"
+//#include "gui/actions/modelesenmapper.h"
 #include "gui/actions/modematerail.h"
 #include "gui/actions/servicelatex.h"
 #include "gui/actions/modelernen.h"
@@ -149,7 +149,7 @@ GuiRepositoryImpl::GuiRepositoryImpl()
         listMappers->push_back(WeekMapmapper::getInstance());
 	listMappers->push_back(SitzplanMapmapper::getInstance());
 	listMappers->push_back(GuiObjectmapper::getInstance());
-    listMappers->push_back(ModeLesenmapper::getInstance());
+    //listMappers->push_back(ModeLesenmapper::getInstance());
 	
 
     // Listener does not work here since Gui not yet available
@@ -470,8 +470,8 @@ void GuiRepositoryImpl::initGui()
 	PObjectTableControlerFactory::setInstance(new PObjectTableControlerFactoryImpl());
 
     //addMode(ModePlanung::getInstance());
-    addMode(ModeLesen::getInstance());
-    addMode(ModeMaterial::getInstance());
+    addMode(new ModeLesen());
+    addMode(new ModeMaterial());
     addMode(new ModeLernen());
     addMode(new ModeNotes());
     addMode(new ModeMaps());
