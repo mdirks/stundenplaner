@@ -1274,6 +1274,7 @@ void PdfViewPrivate::handleSelection(const QPoint &popupMenuPos)
     for(QList<PdfViewSelectionAction*>::Iterator it=m_selActions.begin(); it !=m_selActions.end(); it++){
         (*it)->setDataText(text);
         (*it)->setDataImage(image);
+        (*it)->setPosition(q->pageNumberWithPosition());
         menu.addAction(*it);
     }
 	QAction *choice = menu.exec(popupMenuPos);

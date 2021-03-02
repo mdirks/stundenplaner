@@ -33,10 +33,13 @@ public:
     QString getDataText();
     virtual void setDataImage(QImage image);
     QImage getDataImage();
+    virtual void setPosition(double pos){m_pos=pos;};
+    double getPosition(){return m_pos;};
 
 private:
     QString m_t;
     QImage m_i;
+    double m_pos;
 
 };
 

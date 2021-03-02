@@ -8,7 +8,7 @@
 #include "gui/forms/textviewer.h"
 #include "gui/forms/lernkarteviewer.h"
 #include "gui/forms/pobjectdisplay.h"
-
+#include "gui/forms/tweeteditor.h"
 #include <list>
 #include <QSplitter>
 #include <QToolBar>
@@ -35,7 +35,7 @@ public:
     void deleteFromTexte(lektuere *l);
     */
 
-
+    lektuere* getActiveText();
     //static ModeLesen* getInstance();
 
     void setActivePage(int i);
@@ -51,7 +51,9 @@ public slots:
     void setActiveText(lektuere *l);
     void takeNote(QString note);
     void takeCopy(QImage i);
-
+    void addBookmark(double pos);
+    void showBookmarks();
+    void showTweets();
 
 private:
     static ModeLesen *instance;
@@ -60,6 +62,8 @@ private:
     LernkartensatzViewer *lkViewer;
     PObjectDisplay *lkDisplay;
     PObjectDisplay *mDisplay;
+    PObjectIconView *bmView;
+    TweetEditor *tweetEdit;
 
     list<lektuere*> *list_texte;
     lektuere *activeText;
@@ -116,5 +120,23 @@ public slots:
 private:
     ModeLesen *mode;
 };
+
+class AddBookmarkAction : public PdfViewSelectionAction
+{
+    Q_OBJECT
+
+public:
+    AddBookmarkAction(ModeLesen *parent);
+    //void setDataImage(QImage i);
+    //void setPosition(double pos);
+
+public slots:
+    void addBookmark();
+
+
+private:
+    ModeLesen *mode;
+};
+
 
 #endif // MODELESEN_H

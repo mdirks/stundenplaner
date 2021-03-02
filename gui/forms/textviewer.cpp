@@ -1,6 +1,7 @@
 #include "textviewer.h"
 #include "gui/actions/modelesen.h"
-
+#include "orm/repository/repository.h"
+#include "orm/repository/repositoryproperty.h"
 #include <QVBoxLayout>
 
 TextViewer::TextViewer(QWidget *parent) :
@@ -27,6 +28,7 @@ TextViewer::TextViewer(PObjectListProvider *prov,QWidget *pw)
 void TextViewer::doCommonSetup()
 {
     colSplitter = new QSplitter(Qt::Horizontal,this);
+
     viewer = new PdfViewer(colSplitter);
     //toolBar = new QToolBar(this);
     //combo = new PObjectComboBox(provider,this);
@@ -46,9 +48,15 @@ void TextViewer::doCommonSetup()
     //colDisplay->hide();
     connect(colDisplay,SIGNAL(itemChanged()),this,SLOT(loadNewLektuere()));
 
+    /*
+    RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("lektuere")->getProperty("Bookmarks");
+    bmView = new PObjectIconView(rp,0,bookmarkSplitter);
+    bmView->setActivationHandler(new BookmarkActivationHandler(this));
+    */
 
     colSplitter->addWidget(colDisplay);
     colSplitter->addWidget(viewer);
+
     QList<int> sizes;
     sizes << 200 << 300 << 10;
     colSplitter->setSizes(sizes);
@@ -121,6 +129,7 @@ void TextViewer::loadNewLektuere()
     lektuere *l=dynamic_cast<lektuere*>(colDisplay->getCurrentItem());
     if(l){
         viewer->loadNewFile(l->getFileName().c_str());
+        //bmView->setParentObject(l);
         activeText=l;
         emit textChanged(l);
     }
@@ -141,3 +150,13 @@ void TextViewer::addContextMenuAction(PdfView::PdfViewAction a)
     viewer->addContextMenuAction(viewer->action(a));
 }
 
+BookmarkActivationHandler::BookmarkActivationHandler(TextViewer *tw)
+{
+    m_textView = tw;
+}
+void BookmarkActivationHandler::handleActivation(PObject *o)
+{
+    if(bookmark *bm = dynamic_cast<bookmark*>(o)){
+        m_textView->setPage(bm->getPosition());
+    }
+}

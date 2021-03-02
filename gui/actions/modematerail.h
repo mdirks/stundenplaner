@@ -26,7 +26,7 @@ public slots:
     void createNew();
     void save();
     void changeMaterial();
-    void changeSatz();
+    //void changeSatz();
 
 private:
     void setupLatex();

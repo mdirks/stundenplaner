@@ -29,7 +29,7 @@
 
  lektueremapper::lektueremapper()
   {
- 	version = "0.5-0.6";
+ 	version = "0.6-0.6";
 	columns = new string[2];
  	columnTypes = new string[2];
  	columns[0] = "title";
@@ -41,6 +41,9 @@
 asc_Notizen = new Association<lektuere, lektuerenotiz>("lektuere_notizen","lektuere_id","notiz_id","lektuerenotiz", &lektuere::addToNotizen, &lektuere::deleteFromNotizen);
 mapAssociations["Notizen"] = asc_Notizen;
 registerAssociation( asc_Notizen);
+asc_Bookmarks = new Association<lektuere, bookmark>("lektuere_bookmarks","lektuere_id","bookmark_id","bookmark", &lektuere::addToBookmarks, &lektuere::deleteFromBookmarks);
+mapAssociations["Bookmarks"] = asc_Bookmarks;
+registerAssociation( asc_Bookmarks);
 mapReferences["Lernkartensatz"] = new Reference("lektuere","datamodel/lernkartensatz");
 mapReferences["Kopien"] = new Reference("lektuere","datamodel/materialsatz");
 }
@@ -109,6 +112,8 @@ void lektueremapper::save(PObject *realSubject)
     db->save(realSubject);
 	asc_Notizen -> save(realSubject, o->getNotizen() );
 
+	asc_Bookmarks -> save(realSubject, o->getBookmarks() );
+
 	mapReferences[ "Lernkartensatz" ] -> save(realSubject, (PObject*) o->getLernkartensatz());
 	mapReferences[ "Kopien" ] -> save(realSubject, (PObject*) o->getKopien());
 	materialmapper::save(realSubject);
@@ -142,6 +147,18 @@ list<lektuerenotiz*> * lektueremapper::findNotizen(int pri_id,string prop,string
              }
 
 
+list<bookmark*> * lektueremapper::findBookmarks(int pri_id) 
+ { 
+ 	return asc_Bookmarks ->  findAssociates( pri_id );
+     }
+
+
+list<bookmark*> * lektueremapper::findBookmarks(int pri_id,string prop,string value) 
+         { 
+             return asc_Bookmarks ->  findAssociates( pri_id,prop,value);
+             }
+
+
 RepositoryEntry* lektueremapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "lektuere" ); 
@@ -149,6 +166,7 @@ RepositoryEntry* lektueremapper::getRepositoryEntry()
 	entry->addProperty( new StringProperty< lektuere >( "title" , "string", &lektuere::getTitle, &lektuere::setTitle, false ) );
 	entry->addProperty( new StringProperty< lektuere >( "FileName" , "string", &lektuere::getFileName, &lektuere::setFileName, false ) );
 	entry->addProperty( new CollectionPropertyImpl<lektuerenotiz,lektuere>( "Notizen" , "lektuerenotiz", &lektuere::getNotizen, &lektuere::addToNotizen, &lektuere::deleteFromNotizen  ) ); 
+	entry->addProperty( new CollectionPropertyImpl<bookmark,lektuere>( "Bookmarks" , "bookmark", &lektuere::getBookmarks, &lektuere::addToBookmarks, &lektuere::deleteFromBookmarks  ) ); 
 	entry->addProperty( new PObjectProperty<lernkartensatz,lektuere>( "Lernkartensatz" , "lernkartensatz", &lektuere::getLernkartensatz,&lektuere::setLernkartensatz ) ); 
 	entry->addProperty( new PObjectProperty<materialsatz,lektuere>( "Kopien" , "materialsatz", &lektuere::getKopien,&lektuere::setKopien ) ); 
 	entry->registerBase( "material" );

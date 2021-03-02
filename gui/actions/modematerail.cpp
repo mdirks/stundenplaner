@@ -38,15 +38,11 @@ void ModeMaterial::setupMode()
         ui->setupUi(displayWidget);
         //displayWidget->show();
         sw->addWidget(displayWidget);
-
-        ui->viewSaetze->setObjectListProvider(new MapperListProvider("materialsatz"));
-
-        connect(ui->viewSaetze,SIGNAL(currentChanged()),this,SLOT(changeSatz()));
-        connect(ui->viewMaterialien,SIGNAL(currentChanged()),this,SLOT(changeMaterial()));
+        ui->collDisp->setContents("materialsatz","Materialien");
+        connect(ui->collDisp,SIGNAL(itemChanged()),this,SLOT(changeMaterial()));
     }
 
     setModeWidget(displayWidget);
-    //sw->setCurrentWidget(displayWidget);
 
     RepositoryProperty *rp= Repository::getInstance()->getRepositoryEntry("materialsatz")->getProperty("Materialien");
     prov = new RpListProvider(rp);
@@ -65,12 +61,13 @@ void ModeMaterial::setupMode()
 
 void ModeMaterial::changeMaterial()
 {
-    PObject *o = ui->viewMaterialien->getCurrent();
+    PObject *o = ui->collDisp->getCurrentItem();
     if(material *m=dynamic_cast<material*>(o)){
         open(m);
     }
 }
 
+/*
 void ModeMaterial::changeSatz()
 {
     if(prov){
@@ -82,7 +79,7 @@ void ModeMaterial::changeSatz()
         }
     }
 }
-
+*/
 
 
 void ModeMaterial::setupLatex()

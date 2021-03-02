@@ -5,6 +5,7 @@
 #include "lektuerenotiz.h"
 #include "lernkartensatz.h"
 #include "materialsatz.h"
+#include "bookmark.h"
 
 #include <list>
 
@@ -23,11 +24,17 @@ public:
     void setKopien(materialsatz *ms);
     materialsatz* getKopien();
 
+    list<bookmark*> *getBookmarks();
+    void addToBookmarks(bookmark *bm);
+    void deleteFromBookmarks(bookmark *bm);
+
 private:
     list<lektuerenotiz*> *list_notizen;
+    list<bookmark*> *list_bookmarks;
 
     lernkartensatz *lks;
     materialsatz *kop;
+
 };
 
 #endif // LEKTUERE_H

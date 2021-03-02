@@ -264,8 +264,9 @@
 <class name="krankmeldung" tname="krankmeldung" base="meldung" version="0.3">
 </class>
 
-<class name="lektuere" tname="lektuere" base="material" version="0.5">
+<class name="lektuere" tname="lektuere" base="material" version="0.6">
       <association name="Notizen" table="lektuere_notizen" priCol="lektuere_id" ascCol="notiz_id" ascClass="lektuerenotiz"></association>
+      <association name="Bookmarks" table="lektuere_bookmarks" priCol="lektuere_id" ascCol="bookmark_id" ascClass="bookmark"></association>
       <reference name="Lernkartensatz" refClass="datamodel/lernkartensatz"></reference>
       <reference name="Kopien" refClass="datamodel/materialsatz"></reference>
 </class>
@@ -289,5 +290,15 @@
 
 <class name="kopie" tname="kopie" base="material" version="0.1">
     <reference name="Lektuere" refClass="datamodel/lektuere"></reference>
+</class>
+
+<class name="bookmark" tname="bookmark" version="0.1">
+    <property name="Beschreibung" type="string" cname="beschreibung" ctype="text"></property>
+    <property name="Position" type="int" cname="position" ctype="int"></property>
+    <reference name="Ziel" refClass="orm/transactions/TransactionObject"></reference>
+    <reference name="Verweis" refClass="orm/transactions/TransactionObject"></reference>
+</class>
+
+<class name="tweet" tname="tweet" version="0.1">
 </class>
 </persistence>

@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Mi. Jan. 27 10:46:20 2021
+ // Written on Di. Feb. 23 18:53:05 2021
 // 
  #ifndef lektuereMAPPER_H 
  #define lektuereMAPPER_H 
@@ -20,6 +20,7 @@
 #include "orm/persistence/persistenceclass.h" 
  #include "lektuere.h" 
 #include "lektuerenotiz.h" 
+#include "bookmark.h" 
 #include "datamodel/lernkartensatz.h" 
 #include "datamodel/materialsatz.h" 
 #include "orm/mapping/abstractmapper.h"
@@ -61,6 +62,8 @@
 
   list<lektuerenotiz*> * findNotizen(int pri_id);
   list<lektuerenotiz*> * findNotizen(int pri_id,string prop,string value);
+  list<bookmark*> * findBookmarks(int pri_id);
+  list<bookmark*> * findBookmarks(int pri_id,string prop,string value);
 lernkartensatz * findLernkartensatz(int pri_id);
 materialsatz * findKopien(int pri_id);
 
@@ -74,6 +77,7 @@ protected:
    string *columnTypes;
     string *columns;
   Association<lektuere, lektuerenotiz> *asc_Notizen;
+ Association<lektuere, bookmark> *asc_Bookmarks;
   
  
  };

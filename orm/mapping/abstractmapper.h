@@ -77,6 +77,7 @@ private:
     void dropMainTable();
 
     bool doVersionChange(); //will adjustMainTable + handle Ass and Ref
+    bool checkForExistingColumns(map<string,string> *column_map);
 	
 protected:
 	map<string,AbstractAssociation*> mapAssociations;

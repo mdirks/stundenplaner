@@ -13,6 +13,18 @@
 
 #include <list>
 
+class TextViewer;
+
+class BookmarkActivationHandler : public PObjectIconViewActivationHandler
+{
+public:
+    BookmarkActivationHandler(TextViewer *tw);
+    void handleActivation(PObject *o);
+
+private:
+    TextViewer *m_textView;
+};
+
 class TextViewer : public QWidget
 {
     Q_OBJECT
@@ -29,6 +41,7 @@ public:
     void addSelectionAction(PdfViewSelectionAction *a);
     void addKeyAction(Qt::Key key, PdfView::PdfViewAction a);
     void addContextMenuAction(PdfView::PdfViewAction a);
+
 
 private:
     void doCommonSetup();
@@ -58,7 +71,8 @@ private:
     QSplitter *splitter;
     CollectionDisplay *colDisplay;
     QToolButton *selectButton;
-    QSplitter *colSplitter;
+    QSplitter *colSplitter, *bookmarkSplitter;
+    //PObjectIconView *bmView;
 };
 
 #endif // TEXTVIEWER_H

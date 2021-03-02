@@ -31,6 +31,7 @@ SOURCES += \
     dialogs/collectionselectiondialog.cpp \
     forms/pobjectform.cpp \
     forms/textpropertyviewer2.cpp \
+    forms/tweeteditor.cpp \
     forms/urleditor.cpp \
     forms/formarea.cpp \
     actions/servicepdf.cpp \
@@ -71,6 +72,7 @@ HEADERS += \
     forms/textviewer.h \
     data/reihemap.h \
     actions/modematerail.h \
+    forms/tweeteditor.h \
     guiservice.h \
     draganddrop/pobjectdroptarget.h \
     actions/servicelatex.h \

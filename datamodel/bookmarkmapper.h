@@ -10,16 +10,17 @@
  // 
  // Written on Di. Feb. 23 18:53:05 2021
 // 
- #ifndef reiheMAPPER_H 
- #define reiheMAPPER_H 
+ #ifndef bookmarkMAPPER_H 
+ #define bookmarkMAPPER_H 
  
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
 #include "orm/mapping/murl.h" 
 #include "orm/persistence/persistenceclass.h" 
- #include "reihe.h" 
-#include "stunde.h" 
+ #include "bookmark.h" 
+#include "orm/transactions/transactionobject.h" 
+#include "orm/transactions/transactionobject.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -32,17 +33,16 @@
  #include "orm/repository/booleanproperty.h"
  #include "orm/repository/datetimeproperty.h"
  #include "orm/repository/repositoryenabled.h"
- #include "notizholdermapper.h"
-
+ 
  /** 
  @author Marcus Dirks 
  */ 
- class reihemapper : public notizholdermapper 
+ class bookmarkmapper : public AbstractMapper, public RepositoryEnabled
 {
  public:
-     static reihemapper* getInstance();
-     ~reihemapper();
-     static reihe* create();
+     static bookmarkmapper* getInstance();
+     ~bookmarkmapper();
+     static bookmark* create();
 
      string getTableName();
      string getClassName();
@@ -53,24 +53,23 @@
      void save();
      void save(PObject *realSubject);
      PObject* createNewObject();
-     list<reihe*>* find();
+     list<bookmark*>* find();
     void init(PObject* o, Variant* res);
     RepositoryEntry *getRepositoryEntry();
 
-  list<stunde*> * findStunden(int pri_id);
-  list<stunde*> * findStunden(int pri_id,string prop,string value);
+TransactionObject * findZiel(int pri_id);
+TransactionObject * findVerweis(int pri_id);
 
 protected:
-     reihemapper();
+     bookmarkmapper();
  
  private:
-    static reihemapper* instance;
+    static bookmarkmapper* instance;
  
 
    string *columnTypes;
     string *columns;
-  Association<reihe, stunde> *asc_Stunden;
-  
+   
  
  };
  

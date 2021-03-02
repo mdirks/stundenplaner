@@ -7,6 +7,7 @@ lektuere::lektuere()
 {
     setMapper(lektueremapper::getInstance());
     list_notizen=0;
+    list_bookmarks=0;
     lks=0;
     kop=0;
 }
@@ -30,6 +31,25 @@ void lektuere::deleteFromNotizen(lektuerenotiz *n)
 {
     getNotizen()->remove(n);
 }
+
+list<bookmark*>* lektuere::getBookmarks()
+{
+    if(list_bookmarks==0){
+        list_bookmarks=lektueremapper::getInstance()->findBookmarks(getID());
+    }
+    return list_bookmarks;
+}
+void lektuere::addToBookmarks(bookmark *bm)
+{
+    getBookmarks()->push_back(bm);
+}
+
+void lektuere::deleteFromBookmarks(bookmark *bm)
+{
+    getBookmarks()->remove(bm);
+}
+
+
 
 void lektuere::setLernkartensatz(lernkartensatz *ls)
 {

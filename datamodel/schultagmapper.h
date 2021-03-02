@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Mi. Jan. 27 10:46:20 2021
+ // Written on Di. Feb. 23 18:53:05 2021
 // 
  #ifndef schultagMAPPER_H 
  #define schultagMAPPER_H 

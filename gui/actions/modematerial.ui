@@ -14,48 +14,26 @@
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
-    <widget class="QSplitter" name="splitter_3">
+    <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="handleWidth">
-      <number>1</number>
-     </property>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+     <widget class="CollectionDisplay" name="collDisp" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>1</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-      <property name="handleWidth">
-       <number>1</number>
-      </property>
-      <widget class="PObjectIconView" name="viewSaetze">
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-      </widget>
-      <widget class="PObjectIconView" name="viewMaterialien">
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-      </widget>
      </widget>
      <widget class="QSplitter" name="splitter_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>6</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -63,11 +41,23 @@
        <number>1</number>
       </property>
       <widget class="QTextEdit" name="editor">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
        </property>
       </widget>
       <widget class="PdfViewer" name="viewer">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
        </property>
@@ -82,9 +72,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PObjectIconView</class>
-   <extends>QListWidget</extends>
-   <header>gui/forms/pobjecticonview.h</header>
+   <class>CollectionDisplay</class>
+   <extends>QWidget</extends>
+   <header>gui/forms/collectiondisplay.h</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>PdfViewer</class>

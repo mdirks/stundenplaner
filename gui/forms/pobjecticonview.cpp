@@ -122,11 +122,7 @@ PObjectIconView::PObjectIconView(RepositoryProperty *prop, PObject *parentObject
     doCommonSetup();
 }
 
-void PObjectIconView::setParentObject(PObject *o)
-{
-    if(provider) provider->setParentObject(o);
-    reload();
-}
+
 
 void PObjectIconView::doCommonSetup()
 {
@@ -153,6 +149,13 @@ PObjectIconView::~PObjectIconView()
 {
 }
 
+
+void PObjectIconView::setParentObject(PObject *o)
+{
+    if(provider) provider->setParentObject(o);
+    reload();
+}
+
 void PObjectIconView::changeCurrent(QListWidgetItem *current, QListWidgetItem *previous)
 {
     PObjectIconViewItemE *pitem = dynamic_cast<PObjectIconViewItemE*>(previous);
@@ -174,30 +177,14 @@ void PObjectIconView::load()
         load(provider->objectList());
         isLoaded=true;
     }
-    /*
-    if(mapper){
-		load( mapper->find_gen() );
-	} else if (prop && prop->isCollection() && parentObject){
-		load( prop->asCollection( parentObject ) );
-	} else if (olist){
-		load(olist);
-	}
 
-	isLoaded=true;
-    */
 }
 
 void PObjectIconView::reload()
 {
 	clear();
     load();
-    /*
-    if(mapper){
-		mapper->reset();
-	}
 
-	load();
-    */
 }
 
 void PObjectIconView::load(list<PObject*>* olist){
@@ -227,7 +214,7 @@ PObjectTable* PObjectIconView::getTableView()
     return this->tableView;
 }
 
-PObjectIconViewItemBase* PObjectIconView::createItem(PObject *o)
+PObjectIconViewItemBase* PObjectIconView::doCreateItem(PObject *o)
 {
     PObjectIconViewItemBase *item=0;
 
@@ -247,6 +234,11 @@ PObjectIconViewItemBase* PObjectIconView::createItem(PObject *o)
 	}
 
     return item;
+}
+
+PObjectIconViewItemBase* PObjectIconView::createItem(PObject *o)
+{
+    return this->doCreateItem(o);
 }
 
 PObject* PObjectIconView::getSelected()
@@ -287,6 +279,11 @@ PObject* PObjectIconView::getCurrent()
     return o;
 }
 
+void PObjectIconView::setActivationHandler(PObjectIconViewActivationHandler *h)
+{
+    m_activationHandler=h;
+}
+
 
 /*!
     \fn PObjectIconView::activateItem(PObjectIconViewItem *item)
@@ -295,22 +292,30 @@ void PObjectIconView::activateItem(QListWidgetItem *item)
 {
 	PObjectIconViewItem *pitem = dynamic_cast<PObjectIconViewItem*>(item);
 	if(pitem){
-		PObject *o = pitem->getObject();
-		material *m=0;
+        handleActivation(pitem->getObject());
+    }
+}
+void PObjectIconView::handleActivation(PObject *o)
+{
+        if(!o) return;
+
+        if(m_activationHandler){
+            m_activationHandler->handleActivation(o);
+        } else {
+            doStandardActivation(o);
+        }
+}
+
+void PObjectIconView::doStandardActivation(PObject *o)
+{
+        material *m=0;
 		if(o->getClassName() == "material" && (m = dynamic_cast<material*>(o))){
             QString fileName = m->getFile()->fileName();
             QDesktopServices::openUrl(fileName);
-            /*
-			if(fileName.contains(".tex")){ // hack to handel tex-files
-                KRun::runCommand(QString("kile %1").arg(fileName),this);
-			} else {	
-                new KRun(fileName,this);
-			}
-            */
 		} else {
 			GuiRepository::getInstance()->showFormForObject(o);
 		}
-	} else {qDebug("PObjectIconView: Activation failed - could not get valid item");}
+
 }
 
 
@@ -392,15 +397,7 @@ void PObjectIconView::mousePressEvent(QMouseEvent *e)
             qWarning("Failed to get Popupmenu");
         }
 
-     } /* else if (e->button() == Qt::LeftButton) {
-        PObject *o=getSelected();
-        QDrag *drag = new QDrag(this);
-        PObjectData *mimeData = new PObjectData(o,this);
-        drag->setMimeData(mimeData);
-        Qt::DropAction dropAction = drag->exec(Qt::CopyAction);
-        e->accept();
-
-    }*/
+     }
 
 
     //QListWidget::mousePressEvent(e);

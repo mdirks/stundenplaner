@@ -54,7 +54,17 @@ using namespace std;
 
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
-class PObjectIconView : public QListWidget, /*public KXMLGUIClient,*/ public PropertyEditor, public PObjectDropTarget
+
+class PObjectIconViewActivationHandler
+{
+
+public:
+    virtual void handleActivation(PObject *o)=0;
+};
+
+
+
+class PObjectIconView : public QListWidget, /*public KXMLGUIClient,*/ public PropertyEditor, public PObjectDropTarget, public PObjectIconViewActivationHandler
 {
 Q_OBJECT
 
@@ -75,6 +85,10 @@ public:
 	void stopEdit();
     void startEdit(RepositoryProperty *rp, PObject *parent);
     void startEdit();
+
+    void setActivationHandler(PObjectIconViewActivationHandler *h);
+    void handleActivation(PObject *o);
+    void doStandardActivation(PObject *o);
 
     QMenu* getPopupMenu();
     list<PObject*>* getObjectList();
@@ -101,13 +115,7 @@ public:
 
 protected:
 	//QPopupMenu*  getDatenPopupForSelected();
-private:
-	AbstractMapper *mapper;
-	QPixmap icon;
-	bool editing;
-	list<PObject*> *olist;
-    PObjectTable *tableView;
-    list<RepositoryProperty*> *displayPropList;
+
 
 public slots:
     void activateItem(QListWidgetItem *item);
@@ -137,6 +145,8 @@ protected:
     virtual void dragMoveEvent(QDragMoveEvent *e);
     virtual void dropEvent(QDropEvent *e);
 
+    virtual PObjectIconViewItemBase* doCreateItem(PObject *o);
+
 
 
 private:
@@ -144,7 +154,15 @@ private:
     //void handleDrop(QDropEvent *e);
     void doCommonSetup();
 
+protected:
+    QPixmap icon;
+    list<RepositoryProperty*> *displayPropList;
+
 private:
+    AbstractMapper *mapper;
+    bool editing;
+    list<PObject*> *olist;
+    PObjectTable *tableView;
 	bool typed, isLoaded;
 	QString clName, typedMimeType;
     //RepositoryProperty *prop;
@@ -153,31 +171,9 @@ private:
 	Filter *filter;
     QWidget *prevWidget;
     PObjectListProvider *provider;
+    PObjectIconViewActivationHandler *m_activationHandler;
 };
 
-
-/*
-class PObjectIconViewDrag : public QIconDrag
-{
-public:
-    PObjectIconViewDragU(PObject *o, QWidget *source) : QIconDrag(source){
-		this->o = o; className = o->getPersistenceObject()->getClassName(); typedMimeType=QString("application/pobject/").append(className);};
-	
-	
-	static bool canDecode(QMimeSource* source);
-	static  bool canDecode(QMimeSource* source, QString className);
-	virtual QByteArray encodedData(const char* mimetype) const;
-	virtual const char*  format(int i) const;
-	//static PObjectIconViewItem* decode(QMimeSource* source, PObjectIconView *parent);
-	static PObjectIconViewItem* decode(QMimeSource* source, PObjectIconView *parent);
-	//void dragCopy();
-	
-private:
-	PObject *o;
-	QString className;
-	QString typedMimeType;
-};
-*/
 
 
 

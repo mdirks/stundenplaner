@@ -107,7 +107,7 @@ void MappingControler::registerPersistentClassWithDatabase(AbstractMapper *mappe
             doversionchange = doversionchange & (*it)->versionChangeRequested(className);
         }
         */
-        bool doversionchange=requestVersionChange(className);
+       bool doversionchange=requestVersionChange(className);
         if(doversionchange){
             if(mapper->doVersionChange()){
                 db->registerPersistentClass(mapper, mapper->getVersion());

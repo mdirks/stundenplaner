@@ -8,7 +8,8 @@
 #include "gui/forms/pobjectlistprovider.h"
 #include "orm/transactions/transactions.h"
 #include "datamodel/lektuere.h"
-#include "modelesenmapper.h"
+#include "datamodel/tweetmapper.h"
+//#include "modelesenmapper.h"
 #include "services/docstore/docstore.h"
 
 #include <QPixmap>
@@ -21,7 +22,6 @@
 ModeLesen::ModeLesen()
     : GuiMode("Lesen")
 {
-    //setMapper(ModeLesenmapper::getInstance());
     activeText=0;
     toolBar = 0;
     splitter = 0;
@@ -30,23 +30,9 @@ ModeLesen::ModeLesen()
 
     setIcon(pm);
     setToolTip("Lesen");
-
-    //doCommonSetup();
-
-
-
 }
 
-/*
-ModeLesen* ModeLesen::getInstance()
-{
-    if(instance==0)
-    {
-        instance = dynamic_cast<ModeLesen*>(ModeLesenmapper::getInstance()->getSingletonInstance());
-    }
-    return instance;
-}
-*/
+
 
 void ModeLesen::doCommonSetup()
 {
@@ -63,6 +49,12 @@ void ModeLesen::doCommonSetup()
         splitter = new QSplitter(Qt::Horizontal,sw);
 
         viewer = new TextViewer(splitter);
+        viewer->setResizePolicy(true);
+
+        RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("lektuere")->getProperty("Bookmarks");
+        bmView = new PObjectIconView(rp,0,sw);
+        bmView->setActivationHandler(new BookmarkActivationHandler(viewer));
+
 
         browser = new TextPropertyBrowser(activeText,colProp,dispProp,sw);
 
@@ -78,10 +70,16 @@ void ModeLesen::doCommonSetup()
 
         lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Stacked);
 
+        AbstractMapper *m = tweetmapper::getInstance();
+        RepositoryProperty *rpBody=Repository::getInstance()->getRepositoryEntry("tweet")->getProperty("Body");
+        tweetEdit = new TweetEditor(m,sw);
+        tweetEdit->setDisplayProperty(rpBody);
 
         QWidget *notew = new QWidget(splitter);
         QVBoxLayout *l= new QVBoxLayout(notew);
         l->setContentsMargins(0,0,0,0);
+        l->addWidget(tweetEdit);
+        l->addWidget(bmView);
         l->addWidget(browser);
         l->addWidget(lkDisplay);
         l->addWidget(mDisplay);
@@ -96,6 +94,8 @@ void ModeLesen::doCommonSetup()
         splitter->setSizes(sizes);
         //sw->addWidget(splitter);
 
+        tweetEdit->hide();
+        bmView->hide();
         browser->hide();
         lkDisplay->hide();
         mDisplay->hide();
@@ -104,25 +104,28 @@ void ModeLesen::doCommonSetup()
 
     }
     setModeWidget(splitter);
-    //sw->setCurrentWidget(splitter);
 
-        QAction *a;
-        QPixmap pm = GuiConfig::getInstance()->getIcon("Notizeditor");
-        a=modeToolBar->addAction(pm,"",this,SLOT(showNotizeditor()));
-        a->setToolTip("Notizeditor");
-        pm = GuiConfig::getInstance()->getIcon("Lernkarten");
-        a=modeToolBar->addAction(pm,"",this,SLOT(showLernkarten()));
-        a->setToolTip("Lernkarten");
-        pm = GuiConfig::getInstance()->getIcon("LernkartenDisplay");
-        a=modeToolBar->addAction(pm,"",this,SLOT(showLernkartenDisplay()));
-        a->setToolTip("LK-Display");
-        pm = GuiConfig::getInstance()->getIcon("MaterialDisplay");
-        a=modeToolBar->addAction(pm,"",this,SLOT(showMaterialDisplay()));
-        a->setToolTip("M-Display");
+    QAction *a;
+    QPixmap pm = GuiConfig::getInstance()->getIcon("Tweets");
+    a=modeToolBar->addAction(pm,"",this,SLOT(showTweets()));
+    a->setToolTip("Tweets");
+    pm = GuiConfig::getInstance()->getIcon("Bookmarks");
+    a=modeToolBar->addAction(pm,"",this,SLOT(showBookmarks()));
+    a->setToolTip("Bookmarks");
+    pm = GuiConfig::getInstance()->getIcon("Notizeditor");
+    a=modeToolBar->addAction(pm,"",this,SLOT(showNotizeditor()));
+    a->setToolTip("Notizeditor");
+    pm = GuiConfig::getInstance()->getIcon("Lernkarten");
+    a=modeToolBar->addAction(pm,"",this,SLOT(showLernkarten()));
+    a->setToolTip("Lernkarten");
+    pm = GuiConfig::getInstance()->getIcon("LernkartenDisplay");
+    a=modeToolBar->addAction(pm,"",this,SLOT(showLernkartenDisplay()));
+    a->setToolTip("LK-Display");
+    pm = GuiConfig::getInstance()->getIcon("MaterialDisplay");
+    a=modeToolBar->addAction(pm,"",this,SLOT(showMaterialDisplay()));
+    a->setToolTip("M-Display");
 
 
-
-    viewer->setResizePolicy(true);
 }
 
 void ModeLesen::setupMode()
@@ -134,36 +137,23 @@ void ModeLesen::setupMode()
     QStackedWidget *sw=guirep->getCentralWidget();
 
 
-
-    //PObjectListProvider *prov = new MapperListProvider("lektuere");
-    //viewer->setProvider(prov);
-
-    browser->setParentObject(activeText);
+    //browser->setParentObject(activeText);
 
     connect(viewer, SIGNAL(textChanged(lektuere*)), this, SLOT(setActiveText(lektuere*)));
-    //viewer->selectionChanged(0);
 
     viewer->addSelectionAction(new TakeNoteAction(this));
     viewer->addSelectionAction(new TakeCopyAction(this));
+    viewer->addSelectionAction(new AddBookmarkAction(this));
     viewer->addContextMenuAction(PdfView::Zoom);
     viewer->addContextMenuAction(PdfView::Bookmarks);
     viewer->addContextMenuAction(PdfView::MouseToolSelection);
     viewer->addContextMenuAction(PdfView::MouseToolBrowse);
     viewer->addKeyAction(Qt::Key_Plus, PdfView::ZoomIn);
-
-
-    //viewer->setResizePolicy(true);
-    //guirep->setActiveMode(this);
-
-
 }
 
 void ModeLesen::load()
 {
-    //PObjectListProvider *prov = new MapperListProvider("lektuere");
-    //viewer->setProvider(prov);
-    //load initial item if present
-    //viewer->selectionChanged(0);
+    qDebug() << "ModeLesen::load() -- do noting";
 
 }
 
@@ -184,6 +174,23 @@ void ModeLesen::setActivePage(int i)
     viewer->setPage(i);
 }
 
+void ModeLesen::showBookmarks()
+{
+    if(bmView->isVisible()){
+        bmView->hide();
+    } else {
+        bmView->show();
+    }
+}
+
+void ModeLesen::showTweets()
+{
+    if(tweetEdit->isVisible()){
+        tweetEdit->hide();
+    } else {
+        tweetEdit->show();
+    }
+}
 
 
 void ModeLesen::showNotizeditor()
@@ -257,12 +264,17 @@ void ModeLesen::deleteFromTexte(lektuere *l)
 */
 
 
+lektuere* ModeLesen::getActiveText()
+{
+    return activeText;
+}
 
 
 
 void ModeLesen::setActiveText(lektuere *l)
 {
     activeText = l;
+    bmView->setParentObject(activeText);
     browser->setParentObject(activeText);
     lernkartensatz *lks = l->getLernkartensatz();
     if(lks==0){
@@ -284,6 +296,7 @@ void ModeLesen::setActiveText(lektuere *l)
     lkDisplay->setParentObject(l->getLernkartensatz());
     mDisplay->setParentObject(l->getKopien());
 }
+
 
 AdaptingSplitter::AdaptingSplitter(QWidget *w1, QWidget *w2, QWidget *parent)
     : QSplitter(Qt::Vertical,parent), widget1(w1), widget2(w2)
@@ -315,6 +328,11 @@ void ModeLesen::takeNote(QString note)
     } else {
         qDebug() << "ModeLesen::takeNote() : failed to create Lektuerenotiz";
     }
+}
+
+void ModeLesen::addBookmark(double pos)
+{
+
 }
 
 void ModeLesen::takeCopy(QImage im)
@@ -387,4 +405,26 @@ void TakeCopyAction::setDataImage(QImage i)
 {
     if(i.isNull()) setEnabled(false);
     PdfViewSelectionAction::setDataImage(i);
+}
+
+AddBookmarkAction::AddBookmarkAction(ModeLesen *parent)
+    : PdfViewSelectionAction(QString("Bookmark"), parent)
+{
+    connect(this,SIGNAL(triggered()),this,SLOT(addBookmark()),Qt::UniqueConnection);
+    mode=parent;
+}
+
+
+void AddBookmarkAction::addBookmark()
+{
+    bookmark *bm = (bookmark*) GuiCreateAction::getInstance()->create("bookmark");
+    lektuere *l = mode->getActiveText();
+    if(l){
+        bm->setName(std::to_string(getPosition()));
+        bm->setZiel(mode->getActiveText());
+        bm->setPosition(getPosition());
+        Transactions::getCurrentTransaction()->add(l);
+        l->addToBookmarks(bm);
+    }
+
 }

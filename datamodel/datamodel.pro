@@ -27,3 +27,6 @@ INCLUDEPATH += ../ /usr/include/KDE
 
 CONFIG += qt
 QT+=sql widgets
+
+DISTFILES += \
+    persistence-new.xml

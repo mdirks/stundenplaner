@@ -27,6 +27,7 @@ bool MappingEventSource::requestVersionChange(string className)
     for(set<MappingEventListener*>::iterator it = m_listListener->begin(); it!= m_listListener->end(); it++){
                 doversionchange = doversionchange & (*it)->versionChangeRequested(className);
     }
+    return doversionchange;
 }
 
 

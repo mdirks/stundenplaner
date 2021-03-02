@@ -54,6 +54,8 @@
 #include "materialsatzmapper.h"
 #include "lektueresatzmapper.h"
 #include "kopiemapper.h"
+#include "bookmarkmapper.h"
+#include "tweetmapper.h"
 
 #include "orm/persistence/database.h"
 #include "orm/repository/repository.h"
@@ -109,6 +111,8 @@ DataModelRepository::DataModelRepository()
     listMappers->push_back(materialsatzmapper::getInstance());
     listMappers->push_back(lektueresatzmapper::getInstance());
     listMappers->push_back(kopiemapper::getInstance());
+    listMappers->push_back(bookmarkmapper::getInstance());
+    listMappers->push_back(tweetmapper::getInstance());
 
 	
 	
