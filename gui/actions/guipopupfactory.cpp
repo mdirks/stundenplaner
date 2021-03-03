@@ -47,9 +47,24 @@ GuiPopupFactory* GuiPopupFactory::getInstance()
 
 GuiPopupFactory::GuiPopupFactory()
 {
-    list<PObjectAction*> *la = new list<PObjectAction*>();
-    la->push_back(new ImportToDocStoreAction());
-    mapActions[QString("lektuere")]=la;
+    addToActionMenu("lektuere",new ImportToDocStoreAction());
+
+    PObjectAction *a = new AddToThemaAction("To Thema");
+    addToActionMenu("notiz", a);
+    addToActionMenu("tweet", a);
+    addToActionMenu("kopie", a);
+    addToActionMenu("material",a);
+
+}
+
+void GuiPopupFactory::addToActionMenu(const QString className, PObjectAction *a )
+{
+    list<PObjectAction*> *la = mapActions[className];
+    if(la ==0){
+        la = new list<PObjectAction*>();
+        mapActions[className] = la;
+    }
+    la->push_back(a);
 }
 
 QMenu* GuiPopupFactory::getPopupForThemaMapView(ThemaMapView *mapView, QPoint pos)
@@ -198,6 +213,8 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
                 if(am){
                     pmenu->addMenu(am);
                 }
+
+
 			}
 		}
 

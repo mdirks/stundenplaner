@@ -7,14 +7,29 @@
 
 class PObjectAction : public QAction
 {
+    Q_OBJECT
 public:
     PObjectAction(const QString &text);
+    virtual ~PObjectAction(){};
     void setPObject(PObject *o);
+
+protected:
     PObject* getPObject();
 
 
 private:
     PObject *po;
+};
+
+
+class AddToThemaAction : public PObjectAction
+{
+    Q_OBJECT
+public:
+    AddToThemaAction(const QString &text);
+
+public slots:
+    void addToThema();
 };
 
 #endif // POBJECTACTION_H

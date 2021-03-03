@@ -48,9 +48,10 @@ public:
     QMenu* getPopupForThemaMapView(ThemaMapView *mapView, QPoint pos);
     QMenu* getActionPopupForObject(PObject *o);
 
+
 private:
     list<PObjectAction*>* getActionsForObject(PObject *o);
-
+    void addToActionMenu(const QString className, PObjectAction *a );
 
 private:
 	static GuiPopupFactory* instance;
