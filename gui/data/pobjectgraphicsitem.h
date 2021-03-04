@@ -34,38 +34,13 @@ public:
     virtual void setObject(PObject *o){PObjectGraphicsItemNP::setObject(o);};
     virtual PObject* getObject();
     virtual void update();
-    /*
-    int rtti() const;
-    void init();
-    double x();
-    double y();
-    int width();
-    int height();
-    int getColor();
-    void setColor(int i);
-    void  setWidth(int w);
-    void setHeight(int h);
-    
-    const int RTTI;
-    */
+
     virtual void paint ( QPainter  *painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget *w )
     {PObjectGraphicsItemNP::paint(painter,option,w);}
 
-protected:
 
-	/*
-	void draw ( QPainter & painter );
-	virtual void resetSize();
-	virtual QColor getFirstColor();
-	virtual QColor getSecondColor();
-	*/
-
-protected:
-    //PObject *o;
-    //QPixmap icon;
-    //int n_color;
 
 public:
     virtual void resetSize();

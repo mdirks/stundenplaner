@@ -31,12 +31,15 @@ void PoLListProvider::addObject(PObject *o)
 
 QString PoLListProvider::getClassName()
 {
+    /* className = empty should indicate mixed collection
+    /*
     if(className.isEmpty() && !olist->empty()){
         PObject *o = olist->front();
         if(o){
             className = QString::fromStdString(o->getClassName());
         }
     }
+    */
     return className;
 }
 

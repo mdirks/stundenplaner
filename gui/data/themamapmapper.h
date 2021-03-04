@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Do. Jan. 28 15:05:59 2021
+ // Written on Mi. März 3 12:31:08 2021
 // 
  #ifndef ThemaMapMAPPER_H 
  #define ThemaMapMAPPER_H 
@@ -20,6 +20,7 @@
 #include "orm/persistence/persistenceclass.h" 
  #include "themamap.h" 
 #include "pobjectgraphicsitem.h" 
+#include "datamodel/thema.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -32,11 +33,12 @@
  #include "orm/repository/booleanproperty.h"
  #include "orm/repository/datetimeproperty.h"
  #include "orm/repository/repositoryenabled.h"
- 
+ #include "genericmapmapper.h"
+
  /** 
  @author Marcus Dirks 
  */ 
- class ThemaMapmapper : public AbstractMapper, public RepositoryEnabled
+ class ThemaMapmapper : public GenericMapmapper 
 {
  public:
      static ThemaMapmapper* getInstance();
@@ -58,6 +60,7 @@
 
   list<PObjectGraphicsItem*> * findGraphicsItems(int pri_id);
   list<PObjectGraphicsItem*> * findGraphicsItems(int pri_id,string prop,string value);
+thema * findThema(int pri_id);
 
 protected:
      ThemaMapmapper();

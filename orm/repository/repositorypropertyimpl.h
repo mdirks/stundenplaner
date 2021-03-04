@@ -49,6 +49,7 @@ public:
     virtual bool isBoolean(){return false;};
     virtual bool asBoolean(PObject *o){qDebug() << "Warning: failed to getproperty, asBoolean() not implemented"; return false;}
     virtual bool isUrl(){return false;};
+
     virtual MUrl asUrl(PObject *o){qDebug() << "Warning: failed to getproperty, asUrl() not implemented"; return MUrl("");}
 
     virtual list<PObject*>* asCollection(PObject *po){return 0;};

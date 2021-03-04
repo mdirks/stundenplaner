@@ -23,6 +23,7 @@
 #include "pobjectgraphicsitemmapper.h"
 #include "themamap.h"
 #include "gui/base/guiconfig.h"
+#include "datamodel/kopie.h"
 
 #include <qpainter.h>
 #include <qbrush.h>
@@ -31,7 +32,7 @@
 #define WIDTH 140
 
 PObjectGraphicsItemNP::PObjectGraphicsItemNP()
- : QGraphicsRectItem(), RTTI(1002)
+ : QGraphicsRectItem(), RTTI(1002), m_dispProp(0), m_dispItem(0)
 {
 	setObject(0);//o=0;
     //setColor(Qt::black);
@@ -40,7 +41,7 @@ PObjectGraphicsItemNP::PObjectGraphicsItemNP()
 }
 
 PObjectGraphicsItemNP::PObjectGraphicsItemNP(QGraphicsScene *sc)
- : QGraphicsRectItem(), RTTI(1002)
+ : QGraphicsRectItem(), RTTI(1002), m_dispProp(0), m_dispItem(0)
 {
 	setObject(0);//o=0;
 	//setColor(Qt::black);
@@ -48,8 +49,8 @@ PObjectGraphicsItemNP::PObjectGraphicsItemNP(QGraphicsScene *sc)
 
 }
 
-PObjectGraphicsItemNP::PObjectGraphicsItemNP(PObject *o, QGraphicsScene *sc)
- : QGraphicsRectItem(), RTTI(1002)
+PObjectGraphicsItemNP::PObjectGraphicsItemNP(PObject *o, QGraphicsScene *sc, RepositoryProperty *dispProp)
+ : QGraphicsRectItem(), RTTI(1002), m_dispProp(dispProp), m_dispItem(0)
 {
 	setObject(o);
     setFlag(QGraphicsItem::ItemIsSelectable,true);
@@ -62,11 +63,44 @@ PObjectGraphicsItemNP::~PObjectGraphicsItemNP(){}
 
 void PObjectGraphicsItemNP::setObject(PObject *o)
 {
-	if(!o) qDebug("PObjectGraphicsItemNP::setObject : WARNING : setting null object");
-	this->o = o;
+    this->o=o;
+    if(!o){
+        qDebug("PObjectGraphicsItemNP::setObject : WARNING : setting null object");
+        return;
+    }
+
+    string clName=o->getClassName();
+    if(clName=="material"){ // why is kopie reported as material?
+           material *k = dynamic_cast<material*>(o);
+           string fn=k->getFileName();
+           QPixmap pm = QPixmap(fn.c_str());
+           if(!pm.isNull()){
+               QGraphicsPixmapItem *pitem= new QGraphicsPixmapItem(pm,this);
+               m_dispItem = pitem;
+           }
+    } else {
+        if(!m_dispProp){
+            string clName = o->getClassName();
+
+            RepositoryEntry *re=Repository::getInstance()->getRepositoryEntry(clName);
+            m_dispProp=re->getMainProperty();
+        }
+        if(m_dispProp && !m_dispItem){
+                string dispString = m_dispProp->asString(o);
+                QGraphicsTextItem *titem =  new QGraphicsTextItem(dispString.c_str(),this);
+                titem->setTextWidth(WIDTH >200 ? WIDTH : 200);
+                m_dispItem = titem;
+        }
+    }
+
+
 	update();
 	//this->setSize(icon.width()+4+150,icon.height()+4);
 }
+
+
+
+
 
 PObject* PObjectGraphicsItemNP::getObject()
 {
@@ -78,7 +112,15 @@ void PObjectGraphicsItemNP::resetSize()
     //qDebug() << "WARNIGN: PObjectGraphicsItemNP::resetSize() : NOT IMPLEMENTED";
     prepareGeometryChange();
     //this->setRect(x(),y(),icon.width()+4+250,icon.height()+50);
-    this->setRect(0,0,WIDTH,HEIGHT);
+
+
+    if(m_dispItem){
+        m_dispItem->setX(0);
+        m_dispItem->setY(0+HEIGHT);
+        this->setRect(0,0,m_dispItem->boundingRect().width(),HEIGHT+m_dispItem->boundingRect().height());
+    } else {
+        this->setRect(0,0,WIDTH,HEIGHT);
+    }
 }
 
 
@@ -232,7 +274,7 @@ double PObjectGraphicsItemNP::z()
  */
 void PObjectGraphicsItemNP::update()
 {
-    	this->icon = GuiConfig::getInstance()->getIcon( o);
-	this->resetSize();
+    this->icon = GuiConfig::getInstance()->getIcon( o);
+    this->resetSize();
 
 }

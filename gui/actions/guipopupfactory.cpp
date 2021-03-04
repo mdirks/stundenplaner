@@ -54,6 +54,7 @@ GuiPopupFactory::GuiPopupFactory()
     addToActionMenu("tweet", a);
     addToActionMenu("kopie", a);
     addToActionMenu("material",a);
+    addToActionMenu("lektuerenotiz",a);
 
 }
 
@@ -175,9 +176,26 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectTable *table)
     return table->getControler()->getContextMenu(QPoint(0,0));
 }
 
-/*!
-    \fn GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
- */
+QMenu* GuiPopupFactory::getPopupFor(PObjectDisplay *objectDisplay)
+{
+    QMenu* pmenu = new QMenu(objectDisplay);
+    pmenu->addAction("Neu laden",objectDisplay,SLOT(removeClickedItem()));
+    PObjectDisplayItem *item = dynamic_cast<PObjectDisplayItem*>(objectDisplay->currentItem());
+    if(item){
+        PObject *o = item->getObject();
+        if(o){
+            pmenu->addMenu(new DatenPopup(o,objectDisplay));
+            QMenu *am = getActionPopupForObject(o);
+            if(am){
+                pmenu->addMenu(am);
+            }
+
+
+        }
+    }
+    return pmenu;
+}
+
 QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
 {
 		ConfigurePObjectIconViewAction *confAction = new ConfigurePObjectIconViewAction(iconView);

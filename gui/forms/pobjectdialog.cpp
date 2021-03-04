@@ -13,80 +13,11 @@
 #include "gui/base/guiconfig.h"
 #include "datamodel/datamodelrepository.h"
 //#include "gui/draganddrop/pobjectdrag.h"
+#include "orm/mapping/mappingcontroler.h"
 
 #include <QDragEnterEvent>
 
-/*
-PObjectView::PObjectView( list<PObject*> *listPObjects, QWidget *parent)
- : QListWidget(parent)
-{
-	for(list<PObject*>::iterator it = listPObjects->begin(); it != listPObjects->end(); it++)
-	{
-		new PObjectViewItem((*it),this);
-	}
-    setViewMode(QListView::IconMode);
-}
-*/
 
-/*
-PObjectViewx::~PObjectView()
-{
-}
-*/
-
-/*
-void PObjectViewx::contentsDragEnterEvent(QDragEnterEvent *e)
-{
-    if(e->mimeData()->hasFormat("application/pobject")){
-       e->acceptProposedAction();
-    }
-
-}
-*/
-/*
-QDragObject* PObjectView::dragObject()
-{
-	PObjectDrag *drag=0;
-
-	PObjectViewItem *item = static_cast<PObjectViewItem*>(currentItem());
-	if(item){
-		PObject *o = item->getPObject();
-		if(o){
-			drag = new PObjectDrag(o,this);
-			
-			if(item->pixmap()){
-				drag->setPixmap(QPixmap(*item->pixmap()),QPoint(item->pixmapRect().width()/2, item->pixmapRect().height()/2) );
-			}
-												
-		
-			//drag->dragCopy();
-		} else {
-			qDebug("PObjectView::dragObject() : drag failed, could not get selected objecct");
-		}
-	} else {
-		qDebug("No item selected");
-		return 0;
-	}
-	
-
-	return drag;
-}
-*/
-	
-/*
-PObjectViewItem::PObjectViewItem(PObject *obj, PObjectView *parent) : QListWidgetItem(parent)
-{
-	this->obj = obj;
-    setIcon(GuiConfig::getInstance()->getIcon(obj->getPersistenceObject()->getClassName().c_str()));
-    setText(obj->getName().c_str());
-};
-*/
-/*
-PObject* PObjectViewItem::getPObject()
-{
-	return this->obj;
-}
-*/
 PObjectDialog::PObjectDialog(PObjectListProvider *prov, QWidget *parent) : QDialog(parent)
 {
 
@@ -143,6 +74,16 @@ void PObjectDialog::showPObjects(PObjectListProvider *prov, RepositoryProperty *
     }
     instance->exec();
 }
+
+
+PObject* PObjectDialog::choosePObject(string className)
+{
+    AbstractMapper *m = MappingControler::getInstance()->getMapperByName(className);
+    PObjectDialog *instance = new PObjectDialog(m);
+    instance->exec();
+    return instance->getSelectedPObject();
+}
+
 
 PObject* PObjectDialog::choosePObject(AbstractMapper *mapper)
 {

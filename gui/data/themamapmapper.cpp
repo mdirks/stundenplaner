@@ -29,12 +29,13 @@
 
  ThemaMapmapper::ThemaMapmapper()
   {
- 	version = "0.3";
+ 	version = "0.5-0.3";
 	columns = new string[0];
  	columnTypes = new string[0];
  asc_GraphicsItems = new Association<ThemaMap, PObjectGraphicsItem>("map_item","map_id","item_id","PObjectGraphicsItem", &ThemaMap::addToGraphicsItems, &ThemaMap::deleteFromGraphicsItems);
 mapAssociations["GraphicsItems"] = asc_GraphicsItems;
 registerAssociation( asc_GraphicsItems);
+mapReferences["Thema"] = new Reference("ThemaMap","datamodel/thema");
 }
 
 
@@ -99,6 +100,8 @@ void ThemaMapmapper::save(PObject *realSubject)
     db->save(realSubject);
 	asc_GraphicsItems -> save(realSubject, o->getGraphicsItems() );
 
+	mapReferences[ "Thema" ] -> save(realSubject, (PObject*) o->getThema());
+	GenericMapmapper::save(realSubject);
 }
 
 
@@ -132,5 +135,7 @@ RepositoryEntry* ThemaMapmapper::getRepositoryEntry()
  	RepositoryEntry* entry = new RepositoryEntryImpl( "ThemaMap" ); 
 	entry->addProperty( new StringProperty<ThemaMap>("Name", "string", &ThemaMap::getName, &ThemaMap::setName, false) );
 	entry->addProperty( new CollectionPropertyImpl<PObjectGraphicsItem,ThemaMap>( "GraphicsItems" , "PObjectGraphicsItem", &ThemaMap::getGraphicsItems, &ThemaMap::addToGraphicsItems, &ThemaMap::deleteFromGraphicsItems  ) ); 
+	entry->addProperty( new PObjectProperty<thema,ThemaMap>( "Thema" , "thema", &ThemaMap::getThema,&ThemaMap::setThema ) ); 
+	entry->registerBase( "GenericMap" );
 	return entry;
  }

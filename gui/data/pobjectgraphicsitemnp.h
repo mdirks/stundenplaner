@@ -22,9 +22,11 @@
 
 
 #include <QGraphicsRectItem>
+#include <QGraphicsTextItem>
 #include <QPixmap>
 #include <QColor>
 
+#include "orm/repository/repositoryproperty.h"
 #include "orm/persistence/pobject.h"
 #include "orm/transactions/transactionobject.h"
 
@@ -36,7 +38,7 @@ class PObjectGraphicsItemNP : public QGraphicsRectItem /*public QGraphicsText*/
 public:
     PObjectGraphicsItemNP();
     PObjectGraphicsItemNP(QGraphicsScene *scene);
-    PObjectGraphicsItemNP(PObject *o, QGraphicsScene *scene);
+    PObjectGraphicsItemNP(PObject *o, QGraphicsScene *scene, RepositoryProperty *dispProp=0);
     ~PObjectGraphicsItemNP();
     
     virtual void setObject(PObject *o);
@@ -71,7 +73,8 @@ protected:
     PObject *o;
     QPixmap icon;
     int n_color;
-
+    RepositoryProperty *m_dispProp;
+    QGraphicsItem *m_dispItem;
 };
 
 

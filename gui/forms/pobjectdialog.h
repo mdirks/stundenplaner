@@ -62,6 +62,7 @@ public:
 	PObject* getSelectedPObject();
     void setDisplayProperty(RepositoryProperty *rp);
 
+    static PObject* choosePObject(string clName);
 	static PObject* choosePObject(AbstractMapper *mapper);
 	static PObject* choosePObject(list<PObject*> *list_objects);
     static void showPObjects(PObjectListProvider *prov, RepositoryProperty *displayProperty=0);

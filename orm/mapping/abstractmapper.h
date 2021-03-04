@@ -47,27 +47,21 @@ public:
     MappedObject* create();
     MappedObject* getSingletonInstance();
 
-    //list<PObject*> *findAssociates(string asc_name, int pri_id);
     PObject* findReference(string ref_name, int pri_id);
     void deleteReference(string ref_name, int pri_id);
     list<PObject*>* find_gen();
     string getName();
     void remove(PObject *mo);
     void reset();
-    list<AbstractAssociation*>* getAssociations();
-    
-    
-    //void save(MappedObject *realSubject);
+
     
 protected:
 	
-	//list<PObject*> *findAssociation(int pri_id, string table,  string pri_col, string asc_col, string asc_class);
-	void saveAssociation(int pri_id, string table,  string pri_col, string asc_col, list<PObject*> *list_asc);
-        void saveReference(int pri_id, string table,  string pri_col, string asc_col, PObject *obj_asc);
-      //list<Association*> getAssociations();
+    void saveAssociation(int pri_id, string table,  string pri_col, string asc_col, list<PObject*> *list_asc);
+    void saveReference(int pri_id, string table,  string pri_col, string asc_col, PObject *obj_asc);
+    list<AbstractAssociation*>* getAssociations();
     list<Reference*> getReferences();
     list<Property*> getProperties();
-	//list<Association*> *getAssociations();
 
 
 private:

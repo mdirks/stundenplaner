@@ -24,6 +24,7 @@
 #include "gui/forms/pobjecticonview.h"
 #include "gui/forms/pobjecttable.h"
 #include "gui/forms/pobjectmultiview.h"
+#include "gui/forms/pobjectdisplay.h"
 
 /**
 	@author Marcus Dirks <m-dirks@web.de>
@@ -31,6 +32,8 @@
 class FormsPopupFactory{
 public:
     
+
+    virtual QMenu* getPopupFor(PObjectDisplay  *objectDisplay) = 0;
     virtual QMenu* getPopupFor(PObjectIconView  *iconView) = 0;
     virtual QMenu* getPopupFor(PObjectTable  *iconView) = 0;
     virtual QMenu* getPopupFor(PObjectMultiView  *iconView) = 0;

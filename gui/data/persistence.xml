@@ -39,7 +39,7 @@
                 <association name="GraphicsItems" table="map_item" priCol="map_id" ascCol="item_id" ascClass="PObjectGraphicsItem" getter="getGraphicsItems"></association>
 	</class>
 	
-        <class name="ThemaMap" tname="themamap" version="0.4">
+        <class name="ThemaMap" tname="themamap" base="GenericMap" version="0.5">
                 <association name="GraphicsItems" table="map_item" priCol="map_id" ascCol="item_id" ascClass="PObjectGraphicsItem" getter="getGraphicsItems"></association>
                 <reference name="Thema" refClass="datamodel/thema" getter="getThema"></reference>
 	</class>

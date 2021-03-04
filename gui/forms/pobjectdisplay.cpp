@@ -9,7 +9,7 @@
 #include "orm/repository/collectionproperty.h"
 
 #include "gui/actions/guicreateaction.h"
-
+#include "gui/forms/formspopupfactory.h"
 #include <QGraphicsSceneContextMenuEvent>
 //Jup funktioniert auch mobil
 
@@ -161,10 +161,34 @@ void PObjectDisplay::contextMenuEvent(QContextMenuEvent *ev)
 {
     QGraphicsItem *item=itemAt(ev->pos());
     if(clickedItem = dynamic_cast<PObjectDisplayItem*>(item)){
+        QMenu *popup = getPopupMenu();
+        if(popup){
+            popup->popup(ev->globalPos());
+        } else {
+            qWarning("Failed to get Popupmenu");
+        }
+
+        /*
         QMenu *menu=new QMenu();
         QAction *removeAction = menu->addAction("Remove",this,SLOT(removeClickedItem()));
 
         menu->popup(mapToGlobal(ev->pos()));
+        */
+    }
+}
+
+PObjectDisplayItem* PObjectDisplay::currentItem()
+{
+    return clickedItem;
+}
+
+QMenu* PObjectDisplay::getPopupMenu()
+{
+    FormsPopupFactory *factory = FormsPopupFactory::getInstance();
+    if(factory){
+        return factory->getPopupFor(this);
+    } else {
+        return 0;
     }
 }
 

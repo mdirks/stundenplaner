@@ -65,6 +65,7 @@ public:
     virtual bool isBoolean() = 0;
     virtual bool asBoolean(PObject *o) = 0;
     virtual bool isUrl() =0;
+
     virtual MUrl asUrl(PObject *o) = 0;
 
     virtual Filter *getFilter() = 0;

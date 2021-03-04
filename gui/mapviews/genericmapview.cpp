@@ -16,6 +16,7 @@
 //#include <qwmatrix.h>
 #include <qmessagebox.h>
 #include <QMouseEvent>
+#include <QScrollBar>
 
 #include <QFileDialog>
 //#include <kaction.h>
@@ -53,12 +54,14 @@ GenericMapView::GenericMapView(QWidget * parent, const char * name) : QGraphicsV
 	pmenu = 0;
 	map=0;
 	selectedItem = 0;
+    movingItem = 0;
+    m_moving=false;
 	
     setFocusPolicy(Qt::StrongFocus);
     setAcceptDrops(true);
     viewport()->setAcceptDrops(true);
 
-	
+    m_currentScale=1.0;
 
 }
 
@@ -71,95 +74,114 @@ GenericMapView::~GenericMapView()
 
 void GenericMapView::resizeEvent ( QResizeEvent * event )
 {
+    /*
     if(scene()){
         fitInView(scene()->sceneRect(),Qt::KeepAspectRatio);
     }
+    */
     QGraphicsView::resizeEvent(event);
 
 }
 
 void GenericMapView::mousePressEvent( QMouseEvent* e )
 {
-     if(selectedItem){
-		selectedItem->setSelected(false);
-		selectedItem =0;
-     }
-     QPoint pos = e->pos();
-
-    PObjectGraphicsItemNP *preselectItem =
-            dynamic_cast<PObjectGraphicsItemNP*>(
-                itemAt(pos));
-    if(preselectItem){
-        preselectItem->setSelected(true);
-    } else {
-        movingItem=0;
+    QPoint pos = e->pos();
+    PObjectGraphicsItemNP *preselectItem = dynamic_cast<PObjectGraphicsItemNP*>(itemAt(pos));
+    if(selectedItem && selectedItem != preselectItem){
+        selectedItem->setSelected(false);
+    }
+    selectedItem=preselectItem;
+    if(selectedItem){
+            selectedItem->setSelected(true);
     }
 
 
-     	
      
     if(e->button()==Qt::RightButton){
-            selectedItem = preselectItem;
+            movingItem=0;
             currentPos =e->globalPos();
             emit(popupRequested(currentPos));
-            movingItem=0;
     } else if (e->button() == Qt::LeftButton){
-        movingItem = preselectItem;
-        selectedItem=preselectItem;
-        if(selectedItem){
+        movingItem = selectedItem;
+        if(movingItem){
             if(PObjectGraphicsItem *citem = dynamic_cast<PObjectGraphicsItem*>(movingItem)){
                 Transactions::getCurrentTransaction()->add(citem);
             }
             GuiRepository::getInstance()->setSelectedObject(selectedItem->getObject());
-    	}
+        } else {
+             m_origx = e->x();
+             m_origy = e->y();
+             m_moving=true;
+        }
 
      }
      getMap()->update();
+
+     QGraphicsView::mousePressEvent(e);
 }
 
+void GenericMapView::mouseMoveEvent ( QMouseEvent * e )
+{
+    if(movingItem){
+        QPointF p = mapToScene(e->pos());
+        movingItem->setX(p.x());
+        movingItem->setY(p.y());
+    } else if(m_moving){
+        QPointF oldp = mapToScene(m_origx, m_origy);
+        QPointF newp = mapToScene(e->pos());
+        QPointF translation = newp - oldp;
+
+        horizontalScrollBar()->setValue(horizontalScrollBar()->value() - (translation.x()));
+        verticalScrollBar()->setValue(verticalScrollBar()->value() - (translation.y()));
+        /*
+        qDebug() << QString("Translatin: %1, %2").arg(translation.x()).arg(translation.y());
+        translate(translation.x(), translation.y());
+        */
+        m_origx = e->x();
+        m_origy = e->y();
+    }
+    QGraphicsView::mouseMoveEvent(e);
+}
+
+void GenericMapView::mouseReleaseEvent( QMouseEvent* e)
+{
+    movingItem = 0;
+    m_moving=false;
+
+
+    QGraphicsView::mouseReleaseEvent(e);
+}
 
 void GenericMapView::mouseDoubleClickEvent(QMouseEvent *e)
 {
     if(selectedItem){
-	selectedItem->setSelected(false);
+        selectedItem->setSelected(false);
     }
 
      QPoint pos = e->pos();
      QList<QGraphicsItem*>  itemList=items(pos);
-     QGraphicsItem *preselectItem =0;
      if(! itemList.empty()){
      	selectedItem = dynamic_cast<PObjectGraphicsItemNP*>(*(itemList.begin()));
-	if(selectedItem){
-		selectedItem->setSelected(true);
-		emit activateSelectedRequested(selectedItem);
-		//activateSelected();
-	}
+        if(selectedItem){
+            selectedItem->setSelected(true);
+            emit activateSelectedRequested(selectedItem);
+            //activateSelected();
+        }
     }
 }
 
 void GenericMapView::wheelEvent ( QWheelEvent * event )
 {
-    /*
-    double factor = 1.41*(-event->delta() /240.0);
-    scale(factor,factor);
-    */
+    qDebug() << "GenericMapView::wheelEvent";
+    double corr = event->angleDelta().y() /3600.0;
+    qDebug() << QString("%1 / %2").arg(m_currentScale).arg(corr);
+    m_currentScale = m_currentScale *( 1+ corr);
+    qDebug() << QString("=%1").arg(m_currentScale);
+    scale(1+corr,1+corr);
+
 }
 
-void GenericMapView::mouseMoveEvent ( QMouseEvent * e )
-{
- 	if(movingItem){
 
-        //QPointF p = mapFromGlobal(e->globalPos());
-        QPointF p = mapToScene(e->pos());
-        movingItem->setX(p.x());
-        movingItem->setY(p.y());
-        //movingItem->moveBy(p.x()-movingItem->x(),p.y()-movingItem->y());
-        /*
-        movingItem->moveBy(e->pos().x()-movingItem->x(),e->pos().y()-movingItem->y());
-		getMap()->update();
-        */
-	}
-}
 
 /*!
     \fn GenericMapView::getGenericMap()

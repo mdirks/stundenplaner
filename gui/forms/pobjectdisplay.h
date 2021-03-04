@@ -80,12 +80,15 @@ public:
     void setPrototype(PObjectDisplayItem *protoItem);
     void setLayout(int ncol,int nrow);
 
+    PObjectDisplayItem* currentItem();
+
 public slots:
     void addElement();
     void removeClickedItem();
 
 protected:
     void contextMenuEvent(QContextMenuEvent *ev);
+    QMenu* getPopupMenu();
 
 private:
     list<PObject*> *olist;

@@ -74,13 +74,18 @@ private:
      GenericMap *map;
      //ThemaMapPopup *popupMenu;
      PObjectGraphicsItemNP *movingItem, *selectedItem;
+     double m_currentScale;
+     float m_origx, m_origy;
+     bool m_moving;
 
 protected:     
      QPoint currentPos;
      
 protected:
     virtual void mousePressEvent( QMouseEvent* e );
+    virtual void mouseReleaseEvent( QMouseEvent* e);
     virtual void mouseMoveEvent ( QMouseEvent * e );
+    virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
     virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragEnterEvent(QDragEnterEvent *e);
@@ -90,7 +95,6 @@ protected:
     //QPopupMenu *getDatenPopupForSelected();
 
 protected:
-    virtual void mouseDoubleClickEvent(QMouseEvent *e);
     virtual void wheelEvent ( QWheelEvent * event );
 
 };

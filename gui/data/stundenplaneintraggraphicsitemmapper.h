@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Do. Jan. 28 15:05:59 2021
+ // Written on Mi. März 3 12:31:08 2021
 // 
  #ifndef StundenplaneintragGraphicsItemMAPPER_H 
  #define StundenplaneintragGraphicsItemMAPPER_H 

@@ -42,7 +42,9 @@ void RepositoryEntryImpl::addProperty(RepositoryProperty *p)
     allProperties->push_back(p);
     if(p->isText()){
 	mprop = p;
-   }
+   } else if(!mprop && p->isUrl()){
+        mprop = p;
+    }
 }
 
 

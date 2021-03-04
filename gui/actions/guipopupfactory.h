@@ -22,6 +22,7 @@
 
 #include "gui/forms/formspopupfactory.h"
 #include "gui/forms/pobjectmultiview.h"
+#include "gui/forms/pobjectdisplay.h"
 #include "gui/mapviews/mapviewspopupfactory.h"
 #include "gui/mapviews/genericmapview.h"
 #include "gui/mapviews/weekmapview.h"
@@ -40,6 +41,7 @@ public:
 
     static GuiPopupFactory* getInstance();
 	
+    QMenu* getPopupFor(PObjectDisplay *objectDisplay);
     QMenu* getPopupFor(PObjectIconView *iconView);
     QMenu* getPopupFor(PObjectMultiView *multiView);
     QMenu* getPopupFor(PObjectTable *table);

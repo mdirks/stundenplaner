@@ -13,6 +13,7 @@ public:
     ~MUrl();
 
     string toStdString() const;
+    bool isImage();
 
 private:
     string fpath;

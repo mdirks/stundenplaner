@@ -2,7 +2,7 @@
 #define MODEMAPS_H
 
 #include "gui/guimode.h"
-
+#include "gui/data/themamap.h"
 namespace Ui{
  class ModeMapsCentral;
 };
@@ -25,9 +25,14 @@ public slots:
     void activateNewMap();
 
 private:
+    void loadContentsList();
+
+
+private:
     Ui::ModeMapsCentral *ui;
     QWidget *displayWidget;
     //QToolBar *toolBar;
+    ThemaMap *m_map;
 };
 
 

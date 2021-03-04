@@ -619,21 +619,6 @@ QMenu* PObjectIconView::getPopupMenu()
 	} else {
 		return 0;
 	}
-
-	/*
-		pmenu = new QPopupMenu(this);
-		list<QAction*> *actionList = initActions();
-		for(list<QAction*>::iterator it = actionList->begin(); it != actionList->end(); it++){
-			(*it)->plug(pmenu);
-		}
-
-		if(QPopupMenu *sub = getDatenPopupForSelected()){
-			pmenu->insertItem("Daten",sub);
-		}
-
-
-	return pmenu;
-	*/
 }
 
 
