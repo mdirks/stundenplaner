@@ -66,6 +66,7 @@ PObjectEditor3::PObjectEditor3(PObject *o, QWidget *parent, list<RepositoryPrope
 
 void PObjectEditor3::doCommonSetup()
 {
+
     QSplitter *splitter = new QSplitter(this);
     mainTab = new QTabWidget(this);
     mainTab->setContentsMargins(0,0,0,0);
@@ -150,7 +151,8 @@ void PObjectEditor3::doCommonSetup()
         splitter->addWidget(colTab);
         splitter->setStretchFactor(0,10);
 
-        QGridLayout *l=new QGridLayout(this);
+        QVBoxLayout *l = new QVBoxLayout(this);
+        //QGridLayout *l=new QGridLayout(this);
         l->addWidget(splitter,0,0);
         //setWidget(splitter);
 

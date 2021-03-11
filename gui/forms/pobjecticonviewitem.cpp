@@ -69,7 +69,7 @@ PObjectIconViewItemE::PObjectIconViewItemE(PObject *o, list<RepositoryProperty*>
         RepositoryProperty *rp = (*it);
         QWidget *editor=0;
         if(rp->isText()){
-            TextPropertyViewer *v = new TextPropertyViewer(o,rp,widget,6.0,28.0);
+            TextPropertyViewer *v = new TextPropertyViewer(o,rp,widget,6.0,28.0,TextPropertyViewer::MdLabel);
             v->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
             editor=v;
@@ -143,10 +143,11 @@ void PObjectIconViewItemE::editRequested()
 }
 
 ActiveLabel::ActiveLabel(PObject *po,  QWidget *parent)
-    : QStackedWidget(parent)
+    : QStackedWidget(parent), editing(false)
 {
     nameEditor = 0;
     this->po=po;
+    setFocusPolicy(Qt::ClickFocus);
 
     if(po){
         RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry(po->getClassName());
@@ -169,14 +170,26 @@ void ActiveLabel::stopEdit()
         nameEditor->stopEdit();
         nameLabel->setText(po->getName().c_str());
         setCurrentWidget(nameLabel);
+        editing=false;
     }
 }
 
-void ActiveLabel::mouseDoubleClickEvent( QMouseEvent * e ) {
-    if(e->button() == Qt::LeftButton)
-        setCurrentWidget(nameEditor);
-        Transactions::getCurrentTransaction()->add(po);
-    QStackedWidget::mouseDoubleClickEvent(e);
+
+
+
+void ActiveLabel::keyPressEvent(QKeyEvent *e)
+{
+    if (e->key() == Qt::Key_F2){
+        qDebug() << "ActiveLabel::keyPressEvent : F2 -> applyRequested";
+
+        if(editing){
+            stopEdit();
+        } else {
+            setCurrentWidget(nameEditor);
+            Transactions::getCurrentTransaction()->add(po);
+            editing = true;
+        }
+    }
 }
 
 PropertyButton :: PropertyButton(RepositoryProperty *rp, int i, QWidget *editor, QStackedWidget *editorStack, QWidget *parent)

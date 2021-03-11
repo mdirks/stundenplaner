@@ -7,6 +7,7 @@
 #include "gui/actions/guicreateaction.h"
 #include "gui/forms/pobjectlistprovider.h"
 #include "orm/transactions/transactions.h"
+#include "orm/mapping/mappingcontroler.h"
 #include "datamodel/lektuere.h"
 #include "datamodel/tweetmapper.h"
 //#include "modelesenmapper.h"
@@ -50,9 +51,14 @@ void ModeLesen::doCommonSetup()
 
         viewer = new TextViewer(splitter);
         viewer->setResizePolicy(true);
+        viewer->collectionDisplay()->addDropHandler_items(new LektuereDropHandler());
 
         RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("lektuere")->getProperty("Bookmarks");
         bmView = new PObjectIconView(rp,0,sw);
+        list<RepositoryProperty*> *listDisplayProp = new list<RepositoryProperty*>();
+        listDisplayProp->push_back(Repository::getInstance()->getRepositoryEntry("bookmark")->getProperty("Name"));
+        listDisplayProp->push_back(Repository::getInstance()->getRepositoryEntry("bookmark")->getProperty("Beschreibung"));
+        bmView->setDisplayProperties(listDisplayProp);
         bmView->setActivationHandler(new BookmarkActivationHandler(viewer));
 
 
@@ -426,5 +432,54 @@ void AddBookmarkAction::addBookmark()
         Transactions::getCurrentTransaction()->add(l);
         l->addToBookmarks(bm);
     }
+    mode->bmView->reload();
 
 }
+
+
+bool LektuereDropHandler::canHandle(QDragEnterEvent *e)
+{
+    if(e->mimeData()->hasFormat("text/uri-list")){
+        QUrl qu = e->mimeData()->urls().at(0);
+        if(qu.isLocalFile()) return true;
+    }
+    return false;
+}
+
+bool LektuereDropHandler::canHandle(QDragMoveEvent *e)
+{
+    if(e->mimeData()->hasFormat("text/uri-list")){
+        QUrl qu = e->mimeData()->urls().at(0);
+        if(qu.isLocalFile()) return true;
+    }
+    return false;
+}
+
+bool LektuereDropHandler::dropEvent(QDropEvent *e)
+{
+    if(e->mimeData()->hasFormat("text/uri-list")){
+        QUrl qu = e->mimeData()->urls().at(0);
+        if(qu.isLocalFile()){
+            qDebug() << QString("Import: %1").arg(qu.toString());
+
+            QString fileName=qu.path();
+            QString pureName=qu.fileName();
+
+
+            AbstractMapper *mapper = MappingControler::getInstance()->getMapperByName("lektuere");
+            lektuere *l=(lektuere*) mapper->create();
+            Transactions::getCurrentTransaction()->add(l);
+            l->setFileName(fileName.toStdString());
+            l->setName(pureName.toStdString());
+            DocStore::getInstance()->addDocument(l);
+            m_view->addObject(l);
+
+            return true;
+        }
+
+    }
+    qDebug() << QString("PANIC - not a local file ??");
+    return false;
+}
+
+

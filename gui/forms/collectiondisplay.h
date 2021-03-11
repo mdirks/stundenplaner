@@ -18,6 +18,8 @@ public:
 
     PObject* getCurrentItem();
     void setContents(QString clName, QString propName);
+    void addDropHandler_collection(PObjectIconViewDropHandler *dh);
+    void addDropHandler_items(PObjectIconViewDropHandler *dh);
 
 public slots:
     void changeCollection();

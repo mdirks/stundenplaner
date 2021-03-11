@@ -55,3 +55,13 @@ PObject* CollectionDisplay::getCurrentItem()
 {
     return ui->viewItems->getCurrent();
 }
+
+void CollectionDisplay::addDropHandler_collection(PObjectIconViewDropHandler *dh)
+{
+    ui->viewCollections->addDropHandler(dh);
+}
+
+void CollectionDisplay::addDropHandler_items(PObjectIconViewDropHandler *dh)
+{
+    ui->viewItems->addDropHandler(dh);
+}

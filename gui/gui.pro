@@ -17,6 +17,7 @@ SOURCES += \
     *.cpp \
     actions/actionpopup.cpp \
     actions/importtodocstoreaction.cpp \
+    actions/modehome.cpp \
     actions/modemaps.cpp \
     actions/modenotes.cpp \
     actions/pobjectaction.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     *.h \
     actions/actionpopup.h \
     actions/importtodocstoreaction.h \
+    actions/modehome.h \
     actions/modemaps.h \
     actions/pobjectaction.h \
     base/myactionlist.h \
@@ -161,6 +163,7 @@ OTHER_FILES += \
     stundenplanerui.rc
 
 FORMS += \
+    actions/modehome.ui \
     actions/modemaps.ui \
     forms/collectiondisplay.ui \
     forms/testform.ui \

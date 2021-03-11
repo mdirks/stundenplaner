@@ -47,6 +47,7 @@ public slots:
     void createFilter();
     void clearFilter();
     void switchView();
+    void showForm();
 
 private:
 	PObjectIconView *iconView;

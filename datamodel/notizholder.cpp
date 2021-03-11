@@ -17,6 +17,7 @@ notizholder::notizholder()
 	setMapper( notizholdermapper::getInstance() );
 	list_notizen = 0;
         list_materialien = 0;
+        list_bookmarks = 0;
 }
 
 
@@ -25,11 +26,6 @@ notizholder::~notizholder()
 }
 
 
-
-
-/*!
-    \fn notizholder::getNotizen()
- */
 list<notiz*>* notizholder::getNotizen()
 {
     if(list_notizen == 0){
@@ -40,23 +36,37 @@ list<notiz*>* notizholder::getNotizen()
 }
 
 
-/*!
-    \fn notizholder::addToNotizen(notiz *n)
- */
 void notizholder::addToNotizen(notiz *n)
 {
     getNotizen()->push_back(n);
 }
 
 
-/*!
-    \fn notizholder::deleteFromNotizen(notiz *n)
- */
 void notizholder::deleteFromNotizen(notiz *n)
 {
     getNotizen()->remove(n);
 }
 
+list<bookmark*>* notizholder::getBookmarks()
+{
+    if(list_bookmarks == 0){
+    list_bookmarks = notizholdermapper::getInstance()->findBookmarks( getID() );
+   }
+
+   return list_bookmarks;
+}
+
+
+void notizholder::addToBookmarks(bookmark *b)
+{
+    getBookmarks()->push_back(b);
+}
+
+
+void notizholder::deleteFromBookmarks(bookmark *b)
+{
+    getBookmarks()->remove(b);
+}
 
 /*!
     \fn notizholder::getMaterialien()

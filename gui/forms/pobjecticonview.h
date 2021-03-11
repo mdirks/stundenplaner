@@ -55,6 +55,8 @@ using namespace std;
 	@author Marcus Dirks <marcus.dirks@web.de>
 */
 
+class PObjectIconView;
+
 class PObjectIconViewActivationHandler
 {
 
@@ -62,6 +64,18 @@ public:
     virtual void handleActivation(PObject *o)=0;
 };
 
+class PObjectIconViewDropHandler
+{
+public:
+    virtual bool canHandle(QDragEnterEvent *e)=0;
+    virtual bool canHandle(QDragMoveEvent *e)=0;
+    virtual bool dropEvent(QDropEvent *e)=0;
+
+    void setIconView(PObjectIconView *view){m_view=view;}
+
+protected:
+    PObjectIconView *m_view;
+};
 
 
 class PObjectIconView : public QListWidget, /*public KXMLGUIClient,*/ public PropertyEditor, public PObjectDropTarget, public PObjectIconViewActivationHandler
@@ -112,6 +126,8 @@ public:
 
     void setFilter(Filter *f);
     void clearFilter();
+
+    void addDropHandler(PObjectIconViewDropHandler *dh);
 
 protected:
 	//QPopupMenu*  getDatenPopupForSelected();
@@ -172,6 +188,7 @@ private:
     QWidget *prevWidget;
     PObjectListProvider *provider;
     PObjectIconViewActivationHandler *m_activationHandler;
+    list<PObjectIconViewDropHandler*> *m_listDropHandler;
 };
 
 

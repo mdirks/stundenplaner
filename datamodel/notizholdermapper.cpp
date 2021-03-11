@@ -29,15 +29,18 @@
 
  notizholdermapper::notizholdermapper()
   {
- 	version = "0.4";
+ 	version = "0.5";
 	columns = new string[0];
  	columnTypes = new string[0];
- asc_Notizen = new Association<notizholder, notiz>("klasse_notiz","klasse_id","notiz_id","notiz", &notizholder::addToNotizen, &notizholder::deleteFromNotizen);
+ asc_Notizen = new Association<notizholder, notiz>("notizholder_notiz","nh_id","notiz_id","notiz", &notizholder::addToNotizen, &notizholder::deleteFromNotizen);
 mapAssociations["Notizen"] = asc_Notizen;
 registerAssociation( asc_Notizen);
-asc_Materialien = new Association<notizholder, material>("klasse_material","klasse_id","material_id","material", &notizholder::addToMaterialien, &notizholder::deleteFromMaterialien);
+asc_Materialien = new Association<notizholder, material>("notizholder_material","nh_id","material_id","material", &notizholder::addToMaterialien, &notizholder::deleteFromMaterialien);
 mapAssociations["Materialien"] = asc_Materialien;
 registerAssociation( asc_Materialien);
+asc_Bookmarks = new Association<notizholder, bookmark>("notizholder_bookmark","nh_id","bookmark_id","bookmark", &notizholder::addToBookmarks, &notizholder::deleteFromBookmarks);
+mapAssociations["Bookmarks"] = asc_Bookmarks;
+registerAssociation( asc_Bookmarks);
 }
 
 
@@ -104,6 +107,8 @@ void notizholdermapper::save(PObject *realSubject)
 
 	asc_Materialien -> save(realSubject, o->getMaterialien() );
 
+	asc_Bookmarks -> save(realSubject, o->getBookmarks() );
+
 }
 
 
@@ -144,11 +149,24 @@ list<material*> * notizholdermapper::findMaterialien(int pri_id,string prop,stri
              }
 
 
+list<bookmark*> * notizholdermapper::findBookmarks(int pri_id) 
+ { 
+ 	return asc_Bookmarks ->  findAssociates( pri_id );
+     }
+
+
+list<bookmark*> * notizholdermapper::findBookmarks(int pri_id,string prop,string value) 
+         { 
+             return asc_Bookmarks ->  findAssociates( pri_id,prop,value);
+             }
+
+
 RepositoryEntry* notizholdermapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "notizholder" ); 
 	entry->addProperty( new StringProperty<notizholder>("Name", "string", &notizholder::getName, &notizholder::setName, false) );
 	entry->addProperty( new CollectionPropertyImpl<notiz,notizholder>( "Notizen" , "notiz", &notizholder::getNotizen, &notizholder::addToNotizen, &notizholder::deleteFromNotizen  ) ); 
 	entry->addProperty( new CollectionPropertyImpl<material,notizholder>( "Materialien" , "material", &notizholder::getMaterialien, &notizholder::addToMaterialien, &notizholder::deleteFromMaterialien  ) ); 
+	entry->addProperty( new CollectionPropertyImpl<bookmark,notizholder>( "Bookmarks" , "bookmark", &notizholder::getBookmarks, &notizholder::addToBookmarks, &notizholder::deleteFromBookmarks  ) ); 
 	return entry;
  }

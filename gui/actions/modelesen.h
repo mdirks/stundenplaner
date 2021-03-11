@@ -17,6 +17,7 @@
 class ModeLesen : public GuiMode //, public notizholder
 {
    Q_OBJECT
+friend class AddBookmarkAction;
 
 public:
     ModeLesen();
@@ -124,6 +125,7 @@ private:
 class AddBookmarkAction : public PdfViewSelectionAction
 {
     Q_OBJECT
+//friend class PdfView;
 
 public:
     AddBookmarkAction(ModeLesen *parent);
@@ -136,6 +138,16 @@ public slots:
 
 private:
     ModeLesen *mode;
+};
+
+class LektuereDropHandler : public PObjectIconViewDropHandler
+{
+public:
+    bool canHandle(QDragEnterEvent *e);
+    bool canHandle(QDragMoveEvent *e);
+    bool dropEvent(QDropEvent *e);
+
+
 };
 
 

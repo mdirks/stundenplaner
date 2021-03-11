@@ -7,9 +7,10 @@
 </class>
   
  
-<class name="notizholder" tname="notizholder" version="0.4">
-	<association name="Notizen" table="klasse_notiz" priCol="klasse_id" ascCol="notiz_id" ascClass="notiz"></association>
-	<association name="Materialien" table="klasse_material" priCol="klasse_id" ascCol="material_id" ascClass="material"></association>
+<class name="notizholder" tname="notizholder" version="0.5">
+        <association name="Notizen" table="notizholder_notiz" priCol="nh_id" ascCol="notiz_id" ascClass="notiz"></association>
+        <association name="Materialien" table="notizholder_material" priCol="nh_id" ascCol="material_id" ascClass="material"></association>
+        <association name="Bookmarks" table="notizholder_bookmark" priCol="nh_id" ascCol="bookmark_id" ascClass="bookmark"></association>
 </class>
 
 
@@ -299,6 +300,23 @@
     <reference name="Verweis" refClass="orm/transactions/TransactionObject"></reference>
 </class>
 
-<class name="tweet" tname="tweet" version="0.1">
+<class name="tweet" tname="tweet" base="notiz" version="0.2">
 </class>
+
+<class name="notizholder" tname="notizholder" version="0.5">
+        <association name="Notizen" table="notizholder_notiz" priCol="nh_id" ascCol="notiz_id" ascClass="notiz"></association>
+        <association name="Materialien" table="notizholder_material" priCol="nh_id" ascCol="material_id" ascClass="material"></association>
+        <association name="Bookmarks" table="notizholder_bookmark" priCol="nh_id" ascCol="bookmark_id" ascClass="bookmark"></association>
+</class>
+<class name="vokabel" tname="vokabel" version="0.2">
+    <property name="Kanji" type="string" cname="kanji" ctype="varchar(50)"></property>
+    <property name="Reading" type="string" cname="reading" ctype="varchar(50)"></property>
+    <property name="Translation" type="string" cname="translation" ctype="varchar(50)"></property>
+    <association name="Beispiele" table="vokabel_bsp" priCol="vok_id" ascCol="bsp_id" ascClass="bspsatz"></association>
+</class>
+
+<class name="vokabelliste" tname="vokabelliste" version="0.1">
+    <association name="Vokabeln" table="vokabelliste_vokabel" priCol="list_id" ascCol="vok_id" ascClass="vokabel"></association>
+</class>
+
 </persistence>

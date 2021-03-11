@@ -69,3 +69,8 @@ void GuiMode::deactivate()
         modeToolBar->hide();
 
 }
+
+void GuiMode::showForm(QWidget *w)
+{
+    GuiRepository::getInstance()->showDialog(w);
+}

@@ -40,22 +40,6 @@ void AbstractMapper::reset()
 	list_all =0;
 }
 
-/*
-list<PObject*> *AbstractMapper::findAssociates(string asc_name, int pri_id)
-{
-	list<PObject*> *result = 0;
-
-	Association *asc=mapAssociations[asc_name];
-	if(asc){
-		result =  asc->findAssociates(pri_id);
-	} else {
-	        result = new list<PObject*>();
-		qWarning(QString("Could not find associates : ").append(asc_name));
-	}
-	
-	return result;
-}
-*/
 /*!
     \fn AbstractMapper::findReference(string ref_name, int pri_id)
  */
@@ -88,92 +72,8 @@ void AbstractMapper::deleteReference(string ref_name, int pri_id)
  
 }
 
-/*
-list<Association*> *AbstractMapper::getAssociations()
-{
-	list<Association*> *result = new list<Association*>();
-	
-	map<string,Association*>::iterator it;
-	for(it=mapAssociations.begin(); it!=mapAssociations.end(); it++){
-		result->push_back(it->second);
-	}
-	
-	return result;
-}
-*/
 
 
-/*
-list<PObject*> *AbstractMapper::findAssociation(int pri_id, string table,  string pri_col, string asc_col, string asc_class)
-{      
-       list<PObject*> *result = new list<PObject*>();
-       
-       Database *db = Database::getInstance();
-       QString qs = QString("select %1 from %2 where %3=%4").arg(asc_col).arg(table).arg(pri_col).arg(pri_id);
-       QSqlQuery q(qs);
-       while(q.next()){
-             int asc_id = q.value(0).asInt();
-	     result->push_back(  db->load(asc_class, asc_id) );
-       }
-       return result;
-}
-*/
-
-/*
-void ThemaMapmapper::save(MappedObject *realSubject)
-{
-	Database *db = Database::getInstance();
-	db->save(realSubject);
-	
-	for(map<string,Association*>::iterator it = mapAssociations.begin(); it != mapAssociations.end(); i++){
-		*it->save(realSubject->getID());
-	}
-	
-	for(map<string,Reference*>::iterator it = mapReferences.begin(); it != mapReferences.end(); i++){
-		*it->save(realSubject->getID());
-	}
-	
-}
-*/
-
-/*
-void AbstractMapper::saveAssociation(int pri_id, string table,  string pri_col, string asc_col, list<PObject*> *list_asc){
-	Database::getInstance();
-	
-	QString qs1 = QString("delete from %1 where %2 = %3;").arg(table).arg(pri_col).arg(pri_id);
-	QSqlQuery q1(qs1);
-	if(! q1.isActive() ) qDebug("stundepersistence::saveAssociation: Failed to delete old associations");
-	
-	QString qs2 = QString("insert into  %1 (%2,%3) values (%4,%5);").arg(table).arg(pri_col).arg(asc_col).arg(pri_id);
-	//list<opo*>  *list_opos = st->getOpos();
-	for(list<PObject*>::iterator it = list_asc->begin(); it != list_asc->end(); it++){
-		int asc_id = (*it)->getID();
-		QSqlQuery q2(qs2.arg(asc_id));
-		if( !q2.isActive() ) qDebug("stundepersistence::saveAssociation : Failed to insert new association");
-	}
-	
-	
-
-}
-
-void AbstractMapper::saveReference(int pri_id, string table,  string pri_col, string asc_col, PObject *obj_asc){
-	if(obj_asc != 0){
-		Database::getInstance();
-		
-		QString qs1 = QString("delete from %1 where %2 = %3;").arg(table).arg(pri_col).arg(pri_id);
-		QSqlQuery q1(qs1);
-		if(! q1.isActive() ) qDebug("stundepersistence::saveAssociation: Failed to delete old associations");
-		
-		QString qs2 = QString("insert into  %1 (%2,%3) values (%4,%5);").arg(table).arg(pri_col).arg(asc_col).arg(pri_id);
-		//list<opo*>  *list_opos = st->getOpos();
-		int asc_id = obj_asc->getID();
-		QSqlQuery q2(qs2.arg(asc_id));
-		if( !q2.isActive() ) qDebug("stundepersistence::saveAssociation : Failed to insert new association");
-	} else {
-		qDebug("AbstractMapper::saveReference : Object ref was null, did not save !");
-	}
-}
-*/
 
 bool AbstractMapper::adjustMainTable(){ //will read columns in db and attempt to create non-existing columns
     bool suc=true;
@@ -191,28 +91,7 @@ bool AbstractMapper::adjustMainTable(){ //will read columns in db and attempt to
 	}
 
 
-    /*
-    Database::getInstance();
-    QString qs1 = QString("describe %1").arg(getTableName().c_str());
-	QSqlQuery q(qs1);
-    if(q.isActive()){
-        qs1 = QString(""select * from sqlite_master where name="lektuere")
-		while(q.next()){
-			if(q.isValid()){
-				if(q.value(1).isValid()){
-                    string cn = q.value(0).toString().toStdString();
-                    //qDebug() << QString("Erasing column %1").arg(cn.c_str());
-                    map<string,string>::iterator it = column_map.find(cn);
-					if(it != column_map.end()){
-						column_map.erase(it);
-                        //qDebug() << "Erase done";
-					} else {
-                        //qDebug() << QString("Strange column %1 not in list").arg(cn.c_str());
-					}
-				}
-			}
 
-        }*/
 
     if(checkForExistingColumns(&column_map)){
         if(!column_map.empty()){
@@ -229,8 +108,6 @@ bool AbstractMapper::adjustMainTable(){ //will read columns in db and attempt to
 			}
         }
 	} else {
-        //report(QString("WARNING: Adjust failed for table %2: \n %1").arg(qs1).arg(getTableName().c_str()).toStdString());
-        //createMainTable();
         suc=false;
 	}
     return suc;
@@ -313,13 +190,6 @@ bool AbstractMapper::createMainTable(){
     bool suc=true;
 	Database::getInstance();
 
-	//string tname = persOb->getTableName();	
-    /*
-    QString qs = QString("drop table %1").arg(getTableName().c_str());
-	QSqlQuery q(qs);
-	if(!q.isActive()) qDebug("Could not drop table");
-    */
-	
     QString qs2 = QString("create table %1 ( id int, name varchar(30) ").arg(getTableName().c_str());
 
 	string *cols = getColumns();
@@ -384,15 +254,7 @@ bool AbstractMapper::createTable(){
     }
 }
 
-/*!
-    \fn AbstractMapper::getVersion()
- */
-/*
-string AbstractMapper::getVersion()
-{
-    return this->version;
-}
-*/
+
 
 
 /*!
@@ -409,8 +271,10 @@ MappedObject*  AbstractMapper::create(AbstractMapper *mapper)
 
 void AbstractMapper::remove(PObject *mo)
 {
-	find_gen()->remove(mo);
-	mo->setRemoved(true);
+    if(ask("Going to mark object as removed - globally! - OK?")){
+        find_gen()->remove(mo);
+        mo->setRemoved(true);
+    }
 }
 
 

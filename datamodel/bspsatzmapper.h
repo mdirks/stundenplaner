@@ -8,17 +8,17 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Fr. März 5 14:14:42 2021
+ // Written on Fr. März 5 14:03:13 2021
 // 
- #ifndef tweetMAPPER_H 
- #define tweetMAPPER_H 
+ #ifndef bspsatzMAPPER_H 
+ #define bspsatzMAPPER_H 
  
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
 #include "orm/mapping/murl.h" 
 #include "orm/persistence/persistenceclass.h" 
- #include "tweet.h" 
+ #include "bspsatz.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -31,17 +31,17 @@
  #include "orm/repository/booleanproperty.h"
  #include "orm/repository/datetimeproperty.h"
  #include "orm/repository/repositoryenabled.h"
- #include "notizmapper.h"
+ #include "vokabelmapper.h"
 
  /** 
  @author Marcus Dirks 
  */ 
- class tweetmapper : public notizmapper 
+ class bspsatzmapper : public vokabelmapper 
 {
  public:
-     static tweetmapper* getInstance();
-     ~tweetmapper();
-     static tweet* create();
+     static bspsatzmapper* getInstance();
+     ~bspsatzmapper();
+     static bspsatz* create();
 
      string getTableName();
      string getClassName();
@@ -52,16 +52,16 @@
      void save();
      void save(PObject *realSubject);
      PObject* createNewObject();
-     list<tweet*>* find();
+     list<bspsatz*>* find();
     void init(PObject* o, Variant* res);
     RepositoryEntry *getRepositoryEntry();
 
 
 protected:
-     tweetmapper();
+     bspsatzmapper();
  
  private:
-    static tweetmapper* instance;
+    static bspsatzmapper* instance;
  
 
    string *columnTypes;

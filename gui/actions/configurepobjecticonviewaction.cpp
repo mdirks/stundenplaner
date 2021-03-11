@@ -78,7 +78,7 @@ void ConfigurePObjectIconViewAction::addNewObject()
     PObjectListProvider *prov = iconView->getProvider();
     if(prov){
         PObject *o = prov->addNewObject();
-        if(o) iconView->addObject(o);
+        if(o) iconView->reload();
     }
 }
 
@@ -92,6 +92,16 @@ void ConfigurePObjectIconViewAction::deleteSelected()
         delete item;
 
 	}
+}
+
+void ConfigurePObjectIconViewAction::showForm()
+{
+    PObjectIconViewItem *item = static_cast<PObjectIconViewItem*>(iconView->currentItem());
+    if(item){
+        PObject *o = item->getObject();
+        GuiRepository::getInstance()->showFormForObject(o);
+
+    }
 }
 
 void ConfigurePObjectIconViewAction::switchView()

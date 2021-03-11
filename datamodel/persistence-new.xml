@@ -1,4 +1,3 @@
 <persistence>
-<class name="tweet" tname="tweet" base="notiz" version="0.2">
-</class>
+
 </persistence>

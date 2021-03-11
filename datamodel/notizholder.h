@@ -15,6 +15,7 @@
 #include <list>
 #include "notiz.h"
 #include "material.h"
+#include "bookmark.h"
 #include "orm/transactions/transactionobject.h"
 
 using namespace std;
@@ -36,9 +37,14 @@ public:
     void addToMaterialien(material *n);
     void deleteFromMaterialien(material *n);
 
+    list<bookmark*>* getBookmarks();
+    void addToBookmarks(bookmark *b);
+    void deleteFromBookmarks(bookmark *b);
+
 private:
     list<notiz*> *list_notizen;
     list<material*> *list_materialien;
+    list<bookmark*> *list_bookmarks;
 };
 
 #endif

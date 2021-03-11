@@ -56,6 +56,8 @@
 #include "kopiemapper.h"
 #include "bookmarkmapper.h"
 #include "tweetmapper.h"
+#include "vokabelmapper.h"
+#include "vokabellistemapper.h"
 
 #include "orm/persistence/database.h"
 #include "orm/repository/repository.h"
@@ -113,7 +115,8 @@ DataModelRepository::DataModelRepository()
     listMappers->push_back(kopiemapper::getInstance());
     listMappers->push_back(bookmarkmapper::getInstance());
     listMappers->push_back(tweetmapper::getInstance());
-
+    listMappers->push_back(vokabelmapper::getInstance());
+    listMappers->push_back(vokabellistemapper::getInstance());
 	
 	
 	for(list<AbstractMapper*>::iterator it = listMappers->begin();

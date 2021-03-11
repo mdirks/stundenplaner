@@ -131,6 +131,7 @@ void PObjectIconView::doCommonSetup()
     this->tableView=0;
     this->prevWidget=0;
     this->displayPropList=0;
+    this->m_listDropHandler = new list<PObjectIconViewDropHandler*>();
 
     isLoaded=false;
 
@@ -290,7 +291,7 @@ void PObjectIconView::setActivationHandler(PObjectIconViewActivationHandler *h)
  */
 void PObjectIconView::activateItem(QListWidgetItem *item)
 {
-	PObjectIconViewItem *pitem = dynamic_cast<PObjectIconViewItem*>(item);
+    PObjectIconViewItemBase *pitem = dynamic_cast<PObjectIconViewItemBase*>(item);
 	if(pitem){
         handleActivation(pitem->getObject());
     }
@@ -329,24 +330,57 @@ void PObjectIconView::dragLeaveEvent(QDragLeaveEvent *e)
 
 void PObjectIconView::dragEnterEvent(QDragEnterEvent *e)
 {
-
+    qDebug() << e->mimeData()->formats();
     if(e->mimeData()->hasFormat("application/pobject"))
     {
         e->accept();
     } else {
-        e->ignore();
+        list<PObjectIconViewDropHandler*>::iterator it=m_listDropHandler->begin();
+        bool acc = false;
+        while(!acc && it != m_listDropHandler->end())
+        {
+            if( (*it)->canHandle(e) )
+            {
+                e->accept();
+                acc=true;
+            }
+
+        }
+        if(! acc) e->ignore();
     }
 	
 }
 
+void PObjectIconView::addDropHandler(PObjectIconViewDropHandler *dh)
+{
+    m_listDropHandler->push_back(dh);
+    dh->setIconView(this);
+}
+
+
+
+
+
+
 void PObjectIconView::dragMoveEvent(QDragMoveEvent *e)
 {
-
+    qDebug() << e->mimeData()->formats();
     if(e->mimeData()->hasFormat("application/pobject"))
     {
         e->accept();
     } else {
-        e->ignore();
+        list<PObjectIconViewDropHandler*>::iterator it=m_listDropHandler->begin();
+        bool acc = false;
+        while(!acc && it != m_listDropHandler->end())
+        {
+            if( (*it)->canHandle(e) )
+            {
+                e->accept();
+                acc=true;
+            }
+
+        }
+        if(! acc) e->ignore();
     }
 
 }
@@ -405,6 +439,7 @@ void PObjectIconView::mousePressEvent(QMouseEvent *e)
 
 void PObjectIconView::keyPressEvent(QKeyEvent *e)
 {
+    qDebug() << "PObjectIconView::keyPressEvent";
     if( e == QKeySequence::Copy) {
         PObject *o=getSelected();
 
@@ -420,8 +455,18 @@ void PObjectIconView::keyPressEvent(QKeyEvent *e)
 
     } else if (e==QKeySequence::Paste){
         paste();
-    } else {
+    }
+    /* else if(e->key() == Qt::Key_F2) {
+        PObjectIconViewItemE *pitem = dynamic_cast<PObjectIconViewItemE*>(getSelected());
+        if(pitem){
+            pitem->editRequested();
+        } else {
+            QListWidget::keyPressEvent(e);
+        }
+    }*/
+    else {
         QListWidget::keyPressEvent(e);
+
     }
 }
 
@@ -430,15 +475,29 @@ void PObjectIconView::keyPressEvent(QKeyEvent *e)
 
 void PObjectIconView::dropEvent(QDropEvent *e)
 {
-    PObject *o=handlePObjectDrop(e);
-    if(o){
-        if(provider){
-            provider->addObject(o);
+    if(e->mimeData()->hasFormat("application/pobject"))
+    {
+        PObject *o=handlePObjectDrop(e);
+        if(o){
+            addObject(o);
+        } else {
+            qDebug() << "Drop: Cannot handle object";
         }
-        addObject(o);
+        e->accept();
     } else {
-        qDebug() << "Drop: Cannot handle object";
-    }
+        list<PObjectIconViewDropHandler*>::iterator it=m_listDropHandler->begin();
+        bool acc = false;
+        while(!acc && it != m_listDropHandler->end())
+        {
+            if( (*it)->dropEvent(e) )
+            {
+                e->accept();
+                acc=true;
+            }
+
+        }
+        if(! acc) e->ignore();
+}
 
 }
 
@@ -451,9 +510,7 @@ void PObjectIconView::paste()
 
     PObject *o=recoverPObject(md);
     if(o){
-        if(provider){
-            provider->addObject(o);
-        }
+
         addObject(o);
     } else {
         qDebug() << "Paste: Cannot handle object";
@@ -468,35 +525,19 @@ void PObjectIconView::addObject(PObject *o)
 {
     if(!o) return;
     startEdit();
+    if(provider){
+        provider->addObject(o);
+    }
     createItem(o);
 
 
-    /*
-	if(prop && parentObject)
-	{
-		if(CollectionProperty *cp = dynamic_cast<CollectionProperty*>(prop)){
-			startEdit();
-			cp->add(o,parentObject);
-            qDebug() << QString("Added object %1").arg(o->getID());
-			
-		} else {
-            qDebug() << "PObjectIconView::addObject : Strange - non-collection property!??";
-		}
-	}
 
-	
-	createItem(o);
-    */
-	/*
-	QPixmap pixm = GuiRepository::getInstance()->getIcon(o);
-	new PObjectIconViewItem(o,this,o->getName(),pixm);
-	*/
 }
 
 
 void PObjectIconView::deleteObject(PObjectIconViewItem *item)
 {
-	
+    qDebug() << "WARNING: Do-Nothing-Impl - PObjectIconView::deleteObject() ";
 }
 
 
@@ -521,90 +562,13 @@ void PObjectIconView::startEdit()
 
 
 
-/*!
-    \fn PObjectIconView::deleteSelected()
-	
-	Removes the selected Item from the collection. This is delegated to  the RepositoryProperty (CollectionProperty).
-
- */
-/*
-void PObjectIconView::deleteSelected()
-{
-	if(prop && parentObject && prop->isCollection()){
-		PObjectIconViewItem *item = static_cast<PObjectIconViewItem*>(currentItem());
-		if(item){
-			PObject *o = item->getObject();
-			CollectionProperty *colProp = dynamic_cast<CollectionProperty*>(prop);
-			if(colProp){
-				colProp->remove( o,parentObject);
-			}
-			delete item;
-		}
-	}
-}
-*/
-/*
-QPopupMenu*  PObjectIconView::getDatenPopupForSelected()
-{
-	PObjectIconViewItem *item = static_cast<PObjectIconViewItem*>(currentItem());
-	if(item){
-		PObject *o = item->getObject();
-		if(o){
-			return new DatenPopup(o,this);
-		}
-	}
-	return 0;
-}
-*/
-
-/*
-void PObjectIconView::insertNew()
-{
-	PObject *o;
-	if(prop && parentObject){
-		//string className = prop->getType();
-		o = CreateAction::getInstance()->create(prop->getType());
-		
-	} else if(mapper) {
-		 o = CreateAction::getInstance()->create(mapper->getClassName());
-	}
-	addObject(o);
-}
-*/
 
 
-/*!  Defines the Actions available via the Popup
- 
-    \fn PObjectIconView::initActions()
- */
-/*
-list<QAction*>* PObjectIconView::initActions(QActionCollection *actionCollection)
-{
-	list<QAction*> *actionList = new list<QAction*>();
-	
-	actionList->push_back( new QAction("Neu laden", KStdAccel::shortcut(KStdAccel::New), this, SLOT(reload()), actionCollection,"reload"));
-	
-	actionList->push_back( new QAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), this, SLOT(insertNew()), actionCollection,"new"));
 
-	actionList->push_back( new QAction("Filter setzen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(chooseFilter()), actionCollection,"new browser"));
 
-	actionList->push_back( new QAction("Neuer Objectbrowser", KStdAccel::shortcut(KStdAccel::New), this, SLOT(newIconView()), actionCollection,"new browser"));
-	
-	actionList->push_back( new QAction("Konfigurieren", KStdAccel::shortcut(KStdAccel::New), this, SLOT(configureView()), actionCollection,"configure"));
-	
-	actionList->push_back( new QAction("Icon wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectIcon()), actionCollection,"icon"));
 
-	QAction *a = new QAction("Delete Item", KStdAccel::shortcut(KStdAccel::New), this,SLOT(deleteSelected()), actionCollection, "del");
-	actionList->push_back(a);
 
-	if(mapper && mapper->getClassName() == "material"){
-		actionList->push_back( new QAction("File wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectFile()), actionCollection,"icon"));
-	} else if (prop &&  prop->getType() == "material"){
-		actionList->push_back( new QAction("File wählen", KStdAccel::shortcut(KStdAccel::New), this, SLOT(selectFile()), actionCollection,"icon"));
-	}
-	
-	return actionList;
-}*/
+
 
 /**
  * Creates the Popup for this IconView (lazy)
@@ -622,51 +586,6 @@ QMenu* PObjectIconView::getPopupMenu()
 }
 
 
-/*!
-    \fn PObjectIconView::newIconView()
- */
-/*
-void PObjectIconView::newIconView()
-{
-	PObjectIconView *iconView = new PObjectIconView();
-	GuiRepository::getInstance()->addTool(iconView, "Unbekannt", "Unbekannt");
-}
-*/
-
-
-/*!
-    \fn PObjectIconView::configureView()
- */
-/*
-void PObjectIconView::configureView()
-{
-		
-
-	setMapper(CreateAction::chooseMapper());
-	
-}
-*/
-
-/*
-void PObjectIconView::setMapper(AbstractMapper *mapper)
-{
-	if(mapper){
-		prop=0;
-		parentObject=0;
-
-		clear();
-		this->mapper = mapper;
-        this->icon = GuiConfig::getInstance()->getIcon( mapper->getClassName().c_str() );
-        //setIcon(icon);
-		typed = true;
-        clName = mapper->getClassName().c_str();
-		typedMimeType = QString("application/pobject/").append(clName);
-
-		load();
-	}
-
-}
-*/
 
 /*!
     \fn PObjectIconView::renameObject(QIconViewItem* item, QString & name)
@@ -683,18 +602,6 @@ void PObjectIconView::renameObject(QListWidgetItem* item)
 }
 
 
-/*!
-    \fn PObjectIconView::selectIcon()
- */
-/*
-void PObjectIconView::selectIcon()
-{
-	PObjectIconViewItem *item = dynamic_cast<PObjectIconViewItem*>(currentItem());
-	if(item){
-		GuiConfig::getInstance()->selectIcon(item->getObject());
-	}
-}
-*/
 
 void PObjectIconView::selectFile()
 {

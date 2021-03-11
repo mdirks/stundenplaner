@@ -10,15 +10,16 @@
  // 
  // Written on Fr. März 5 14:14:42 2021
 // 
- #ifndef tweetMAPPER_H 
- #define tweetMAPPER_H 
+ #ifndef vokabelMAPPER_H 
+ #define vokabelMAPPER_H 
  
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
 #include "orm/mapping/murl.h" 
 #include "orm/persistence/persistenceclass.h" 
- #include "tweet.h" 
+ #include "vokabel.h" 
+#include "bspsatz.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -31,17 +32,16 @@
  #include "orm/repository/booleanproperty.h"
  #include "orm/repository/datetimeproperty.h"
  #include "orm/repository/repositoryenabled.h"
- #include "notizmapper.h"
-
+ 
  /** 
  @author Marcus Dirks 
  */ 
- class tweetmapper : public notizmapper 
+ class vokabelmapper : public AbstractMapper, public RepositoryEnabled
 {
  public:
-     static tweetmapper* getInstance();
-     ~tweetmapper();
-     static tweet* create();
+     static vokabelmapper* getInstance();
+     ~vokabelmapper();
+     static vokabel* create();
 
      string getTableName();
      string getClassName();
@@ -52,21 +52,24 @@
      void save();
      void save(PObject *realSubject);
      PObject* createNewObject();
-     list<tweet*>* find();
+     list<vokabel*>* find();
     void init(PObject* o, Variant* res);
     RepositoryEntry *getRepositoryEntry();
 
+  list<bspsatz*> * findBeispiele(int pri_id);
+  list<bspsatz*> * findBeispiele(int pri_id,string prop,string value);
 
 protected:
-     tweetmapper();
+     vokabelmapper();
  
  private:
-    static tweetmapper* instance;
+    static vokabelmapper* instance;
  
 
    string *columnTypes;
     string *columns;
-   
+  Association<vokabel, bspsatz> *asc_Beispiele;
+  
  
  };
  

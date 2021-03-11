@@ -22,6 +22,7 @@
 #include "gui/data/pobjectgraphicsitemnp.h"
 #include "gui/data/pobjectgraphicsitem.h"
 #include "gui/forms/textpropertyviewer.h"
+#include "gui/forms/pobjecttable.h"
 #include "gui/guirepository.h"
 #include "orm/repository/repository.h"
 #include "orm/repository/repositoryentry.h"
@@ -30,6 +31,7 @@
 #include "services/reports/latexoutput.h"
 #include "datamodel/stundenplaneintrag.h"
 #include "datamodel/schueler.h"
+#include "datamodel/vokabelliste.h"
 #include "datenpopup.h"
 #include "showhistoryaction.h"
 
@@ -143,16 +145,22 @@ void GenericMapViewControler::activateSelected(PObjectGraphicsItemNP *selectedIt
 						qDebug("GenericMapViewControler::activateSelected : strange : could not get kursbucheintrag");
 					}
 				} else if (teilleistung *tl= dynamic_cast<teilleistung*>(o)){
+                    qDebug() << QString("WARNING - GenericMapViewControler::activateSelected - NOT IMPLEMENTED for teilleistung");
+                    /*
 					QString displayString=GuiRepository::getInstance()->getDisplayString(tl);
                     qDebug() << displayString;
 					TextPropertyEditorDialog::display(displayString, tl);
-					
+                    */
 				} else if (platz *pl = dynamic_cast<platz*>(o) ){
 					if(schueler *s=pl->getSchueler()){
 						GuiRepository::getInstance()->showFormForObject(s);				
 					} else {
 						GuiRepository::getInstance()->showFormForObject(s);
 					}
+                } else if(vokabelliste *vl = dynamic_cast<vokabelliste*>(o)){
+                    RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("vokabelliste")->getProperty("Vokabeln");
+                    PObjectTable *pt = new PObjectTable(rp,vl);
+                    GuiRepository::getInstance()->showDialog(pt);
 				} else { 
 					RepositoryEntry *re = Repository::getInstance()->getRepositoryEntry(o);
 					RepositoryProperty *rp = 0;

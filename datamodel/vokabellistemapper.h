@@ -8,17 +8,18 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Fr. März 5 14:14:42 2021
+ // Written on Fr. März 5 14:34:59 2021
 // 
- #ifndef tweetMAPPER_H 
- #define tweetMAPPER_H 
+ #ifndef vokabellisteMAPPER_H 
+ #define vokabellisteMAPPER_H 
  
  #include "orm/persistence/pobject.h" 
  #include "orm/mapping/mappedobject.h" 
 #include "orm/mapping/association.h" 
 #include "orm/mapping/murl.h" 
 #include "orm/persistence/persistenceclass.h" 
- #include "tweet.h" 
+ #include "vokabelliste.h" 
+#include "vokabel.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -31,17 +32,16 @@
  #include "orm/repository/booleanproperty.h"
  #include "orm/repository/datetimeproperty.h"
  #include "orm/repository/repositoryenabled.h"
- #include "notizmapper.h"
-
+ 
  /** 
  @author Marcus Dirks 
  */ 
- class tweetmapper : public notizmapper 
+ class vokabellistemapper : public AbstractMapper, public RepositoryEnabled
 {
  public:
-     static tweetmapper* getInstance();
-     ~tweetmapper();
-     static tweet* create();
+     static vokabellistemapper* getInstance();
+     ~vokabellistemapper();
+     static vokabelliste* create();
 
      string getTableName();
      string getClassName();
@@ -52,21 +52,24 @@
      void save();
      void save(PObject *realSubject);
      PObject* createNewObject();
-     list<tweet*>* find();
+     list<vokabelliste*>* find();
     void init(PObject* o, Variant* res);
     RepositoryEntry *getRepositoryEntry();
 
+  list<vokabel*> * findVokabeln(int pri_id);
+  list<vokabel*> * findVokabeln(int pri_id,string prop,string value);
 
 protected:
-     tweetmapper();
+     vokabellistemapper();
  
  private:
-    static tweetmapper* instance;
+    static vokabellistemapper* instance;
  
 
    string *columnTypes;
     string *columns;
-   
+  Association<vokabelliste, vokabel> *asc_Vokabeln;
+  
  
  };
  

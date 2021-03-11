@@ -32,4 +32,16 @@ public slots:
     void addToThema();
 };
 
+class VocImportAction : public PObjectAction
+{
+    Q_OBJECT
+public:
+    VocImportAction(const QString &text);
+
+public slots:
+    void importFromFile();
+};
+
+
+
 #endif // POBJECTACTION_H

@@ -55,6 +55,11 @@ GuiPopupFactory::GuiPopupFactory()
     addToActionMenu("kopie", a);
     addToActionMenu("material",a);
     addToActionMenu("lektuerenotiz",a);
+    addToActionMenu("bookmark",a);
+
+    a=new VocImportAction("Import");
+    addToActionMenu("vokabelliste",a);
+
 
 }
 
@@ -97,61 +102,6 @@ QMenu* GuiPopupFactory::getPopupForWeekMapView(WeekMapView *mapView, QPoint pos)
 QMenu* GuiPopupFactory::getPopupForGenericMapView(GenericMapView *mapView, QPoint pos)
 {
     qDebug() << "Warning : GuiPopupFactory::getPopupForGenericMapView : do nothing implementation";
-    /*
-	GenericMapViewControler *controler = new GenericMapViewControler(mapView,pos);
-	
-	QPopupMenu *pmenu = new QPopupMenu(mapView);
-
-
-	PObjectGraphicsItemNP *selectedItem =mapView->getSelected();
-	if(selectedItem){
-		if(PObject *o = selectedItem->getObject()){
-			if(stundenplaneintrag *se = dynamic_cast<stundenplaneintrag*>(o)){
-				(new ShowSitzplanAction(se,mapView))->plug(pmenu);
-				krusbucheintrag *ke = se->getKursbuchEintrag();
-				if(ke){
-					RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("krusbucheintrag")->getProperty("Eintrag");
-					(new ShowPropertyAction(ke,rp,mapView))->addTo(pmenu);
-				}
-
-				klasse *kl = se->getKlasse();
-				if(kl){
-					RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("klasse")->getProperty("Kursbuch");
-					(new ShowPropertyAction(kl,rp,mapView))->addTo(pmenu);
-				}
-			}
-		}
-		
-		
-		(new QAction("Rauf", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(itemUp()), mapView, "activate"))->plug(pmenu);
-		
-		( new QAction("Runter", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(itemDown()), mapView, "activate") )->plug(pmenu);
-
-		( new QAction("Anzeigen", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(activateSelected()), mapView, "activate") )->plug(pmenu);
-
-		( new QAction("Formular", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(showFormForSelected()), mapView, "activate") )->plug(pmenu);
-
-		( new QAction("Löschen", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(deleteSelected()), mapView, "activate") )->plug(pmenu);
-	
-		( new QAction("Latex", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(writeLatex()), mapView, "activate") )->plug(pmenu);
-
-		if(PObject *o = selectedItem->getObject()){
-			pmenu->insertItem("Daten",new DatenPopup(o,mapView));
-		}
-
-	} else {
-		( new QAction("Vergrößern", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(zoomIn()), mapView, "zoomin") )->plug(pmenu);
-	
-		
-		( new QAction("Verkleinern", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(zoomOut()), mapView, "zoomout") )->plug(pmenu);
-
-	
-		( new QAction("Neues Element", KStdAccel::shortcut(KStdAccel::New), controler,SLOT(createNewItem()), mapView, "create_new") )->plug(pmenu);
-		
-	}
-
-	return pmenu;
-	*/
 
 }
 QMenu* GuiPopupFactory::getPopupFor(PObjectMultiView *multiView)
@@ -204,6 +154,8 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
 		
         pmenu->addAction("Neu laden",iconView,SLOT(reload()));
         pmenu->addAction("Neues Element",  confAction, SLOT(addNewObject()));
+        pmenu->addAction("Formular", confAction, SLOT(showForm()));
+        pmenu->addAction("Löschen",  confAction,SLOT(deleteSelected()));
 
         pmenu->addAction("Filter setzen",  confAction, SLOT(createFilter()));
         pmenu->addAction("Filter loeschen",  confAction, SLOT(clearFilter()));
@@ -212,7 +164,6 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
         pmenu->addAction("Icon wählen", confAction, SLOT(selectIcon()));
 
 
-        pmenu->addAction("Löschen",  confAction,SLOT(deleteSelected()));
 	
         /*
 		action = new QAction("Choose Property", KStdAccel::shortcut(KStdAccel::New), confAction,SLOT(chooseProperty()), iconView, "del");

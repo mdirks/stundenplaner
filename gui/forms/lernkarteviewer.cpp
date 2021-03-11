@@ -76,24 +76,24 @@ LernkarteViewer::LernkarteViewer(QWidget *parent, LernkarteViewer::Orientation o
     RepositoryProperty *rp= 0;
     rp=Repository::getInstance()->getRepositoryEntry("lernkarte")->getProperty("SourceVorn");
     viewerVorn = new TextPropertyViewer(0,rp,this);
-    viewerVorn->setResizePolicy(false);
-    viewerVorn->setZoomFactor(1.0);
+    //viewerVorn->setResizePolicy(false);
+    //viewerVorn->setZoomFactor(1.0);
     //viewerVorn->setFitToView(true);
     //viewerVorn->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //viewerVorn->setMinimumSize(300,200);
     viewerVorn->setHeader(header);
     viewerVorn->setFooter(footer);
-    viewerVorn->setBackgroundColor(QColor(255, 255, 255, 127));
+    //viewerVorn->setBackgroundColor(QColor(255, 255, 255, 127));
     rp= Repository::getInstance()->getRepositoryEntry("lernkarte")->getProperty("SourceHinten");
     viewerHinten= new TextPropertyViewer(0,rp,this);
-    viewerHinten->setResizePolicy(false);
-    viewerHinten->setZoomFactor(1.0);
+    //viewerHinten->setResizePolicy(false);
+    //viewerHinten->setZoomFactor(1.0);
 
     //viewerHinten->setFitToView(true);
     //viewerHinten->setScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     viewerHinten->setHeader(header);
     viewerHinten->setFooter(footer);
-    viewerHinten->setBackgroundColor(QColor(255, 0, 0, 27));
+    //viewerHinten->setBackgroundColor(QColor(255, 0, 0, 27));
 
 
     /*

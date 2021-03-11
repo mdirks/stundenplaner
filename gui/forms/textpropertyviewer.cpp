@@ -29,7 +29,7 @@
 #include <QPrintDialog>
 #include <QMenu>
 
-QString TextPropertyViewer::StandardHeader = QString("\\documentclass[12pt]{article} \\pagestyle{empty}"
+QString TextPropertyLabel_pdf::StandardHeader = QString("\\documentclass[12pt]{article} \\pagestyle{empty}"
                                                         "\\usepackage{ngerman} "
                                                         "\\usepackage[utf8]{inputenc}"
                                                        "\\oddsidemargin -1cm \n \\topmargin -3.0cm"
@@ -37,22 +37,21 @@ QString TextPropertyViewer::StandardHeader = QString("\\documentclass[12pt]{arti
                                                         "\\parindent=0pt \\parskip=0.15 true in"
                                                        "\\begin{document}\\sffamily\n");
 
-QString TextPropertyViewer::StandardFooter = QString("\n\\end{document}");
+QString TextPropertyLabel_pdf::StandardFooter = QString("\n\\end{document}");
 
-TextPropertyViewer::TextPropertyViewer(QWidget *pw) :
-    QWidget(pw), header(StandardHeader), footer(StandardFooter),
-    tmpDir(QDir::current().path() + QDir::separator() + "tmp"), bgColor(Qt::lightGray)
+TextPropertyViewer::TextPropertyViewer(QWidget *pw, TextPropertyViewer::Type t) :
+    QWidget(pw)
 {
     this->parent=0;
     this->prop=0;
-    this->displayString="";
 
-    doCommonSetup();
+
+    doCommonSetup(t);
 }
 
+/*
 TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw) :
-    QWidget(pw), header(StandardHeader), footer(StandardFooter),
-    tmpDir(QDir::current().path() + QDir::separator() + "tmp"), bgColor(Qt::lightGray)
+    QWidget(pw)
 {
 	this->parent = parent;
 	this->prop=0;
@@ -61,32 +60,44 @@ TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw)
     doCommonSetup();
 
 }
+*/
 
-TextPropertyViewer::TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw, double w, double h) :
-    QWidget(pw), header(StandardHeader), footer(StandardFooter),
-    tmpDir(QDir::current().path() + QDir::separator() + "tmp"),bgColor(Qt::lightGray),width(w), height(h)
+
+TextPropertyViewer::TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw, double w, double h,
+                                       TextPropertyViewer::Type t)
+    : QWidget(pw)
 {
 	this->parent = parent;
 	this->prop = prop;
-	displayString=QString("Shouldnt be used");
 
 
-    doCommonSetup();
+
+    doCommonSetup(t);
 
 }
 
-void TextPropertyViewer::doCommonSetup()
+
+void TextPropertyViewer::doCommonSetup(TextPropertyViewer::Type t)
 {
-    label = new TextPropertyLabel(this);
-    label->setFrameStyle(QFrame::NoFrame);
+
+    //label->setFrameStyle(QFrame::NoFrame);
 
     if(prop){
+        if(t == PdfLabel){
+            label = new TextPropertyLabel_pdf(parent,prop,this);
+        } else {
+            label = new TextPropertyLabel_md(parent,prop,this);
+        }
         editor = new TextPropertyEditor(parent,prop,this);
     } else {
+        if(t == PdfLabel){
+            label = new TextPropertyLabel_pdf(this);
+        } else {
+            label = new TextPropertyLabel_md(this);
+        }
         editor = new TextPropertyEditor(this);
     }
     editor->setFrameStyle(QFrame::NoFrame);
-    label->setMinimumHeight(10);
     hidden=false;
     fit=false;
 
@@ -104,27 +115,102 @@ void TextPropertyViewer::doCommonSetup()
     connect(label, SIGNAL(editRequested()), this, SLOT(editVorn()));
     connect(this, SIGNAL(applyRequested()), this, SLOT(stopEdit()));
 
-    if (!tmpDir.exists())
-                if (!tmpDir.mkdir(tmpDir.path()))
-                {
-                    QMessageBox::warning(this, "Cannot make directory", "Could not create directory ");
-                }
+
     stack->setCurrentWidget(label);
     editing=false;
     label->setFocus();
+    label->read();
 
-    if(parent){
-        compileVorn(true);
-    }
 
 
 }
+
+
+
+TextPropertyLabel_md::TextPropertyLabel_md(QWidget *parent, const char *name)
+    : TextPropertyLabel(parent,name), m_viewer(new QLabel /*QTextEdit(parent)*/)
+{
+    QVBoxLayout *l = new QVBoxLayout(this);
+    m_viewer->setFrameStyle(QFrame::NoFrame);
+    m_viewer->setAlignment(Qt::AlignTop);
+    l->addWidget(m_viewer);
+
+}
+
+TextPropertyLabel_md::TextPropertyLabel_md(PObject *o, RepositoryProperty *prop, QWidget *parent, const char *name)
+    : TextPropertyLabel(o,prop,parent,name), m_viewer(new QLabel /*new QTextEdit(parent)*/)
+{
+    QVBoxLayout *l = new QVBoxLayout(this);
+    m_viewer->setFrameStyle(QFrame::NoFrame);
+    m_viewer->setAlignment(Qt::AlignTop);
+    l->addWidget(m_viewer);
+}
+
+
+void TextPropertyLabel_md::compileVorn(bool reload)
+{
+    read();
+}
+
+
+void TextPropertyLabel_md::read()
+{
+    QString text=prop->asString(parent).c_str();
+    m_viewer->setText(text);
+}
+
+
+TextPropertyLabel_pdf::TextPropertyLabel_pdf(QWidget *parent, const char *name)
+    : TextPropertyLabel(parent,name),twidth(-1.0), theight(-1.0),
+       tmpDir(QDir::current().path() + QDir::separator() + "tmp"), m_viewer(new PdfViewer(this)),
+      displayString("Shouldnt be used")
+{
+    header=StandardHeader;
+    footer=StandardFooter;
+
+    QVBoxLayout *l = new QVBoxLayout(this);
+    m_viewer->setFrameStyle(QFrame::NoFrame);
+    l->addWidget(m_viewer);
+
+     if (!tmpDir.exists() && !tmpDir.mkdir(tmpDir.path()))
+     {
+          QMessageBox::warning(this, "Cannot make directory", "Could not create directory ");
+     }
+
+
+
+}
+
+TextPropertyLabel_pdf::TextPropertyLabel_pdf(PObject *o, RepositoryProperty *prop, QWidget *parent, const char *name)
+    : TextPropertyLabel(o,prop,parent,name),theight(-1.0), twidth(-1.0),
+      tmpDir(QDir::current().path() + QDir::separator() + "tmp"), m_viewer(new PdfViewer(this)),
+      displayString("Shouldnt be used")
+{
+    header=StandardHeader;
+    footer=StandardFooter;
+
+     QVBoxLayout *l = new QVBoxLayout(this);
+     m_viewer->setFrameStyle(QFrame::NoFrame);
+     l->addWidget(m_viewer);
+
+     //setMinimumHeight(10);
+
+     if (!tmpDir.exists() && !tmpDir.mkdir(tmpDir.path()))
+     {
+          QMessageBox::warning(this, "Cannot make directory", "Could not create directory ");
+     }
+
+
+
+}
+
 
 void TextPropertyViewer::setParentObject(PObject *o)
 {
    this->parent = o;
    editor->setParentObject(o);
-   compileVorn(true);
+   label->setParentObject(o);
+   label->compileVorn(true);
 
 }
 
@@ -134,21 +220,18 @@ void TextPropertyViewer::setProperty(RepositoryProperty *p)
     editor->setProperty(p);
 }
 
-void TextPropertyViewer::setHeader(QString h)
+void TextPropertyLabel::setHeader(QString h)
 {
     this->header=h;
 }
 
-void TextPropertyViewer::setFooter(QString f)
+void TextPropertyLabel::setFooter(QString f)
 {
     this->footer=f;
 }
 
-void TextPropertyViewer::setBackgroundColor(QColor c)
-{
-    bgColor=c;
-}
 
+/*
 TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, QString displayString, QWidget *pw) :
     QDialog(pw)
 {
@@ -168,6 +251,7 @@ TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, QString disp
     //setMainWidget(displayWidget);
 	displayWidget->show();
 }
+*/
 
 
 TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, RepositoryProperty *prop, QWidget *pw) :
@@ -206,7 +290,7 @@ TextPropertyEditorDialog::~TextPropertyEditorDialog()
 {
 }
 
-QString TextPropertyViewer::getTexFileName()
+QString TextPropertyLabel_pdf::getTexFileName()
 {
     if(prop && parent){
         return tmpDir.filePath(QString("%1%2.tex").arg(parent->getID()).arg(prop->getName().c_str()));
@@ -217,7 +301,7 @@ QString TextPropertyViewer::getTexFileName()
     }
 }
 
-QString TextPropertyViewer::getFileName()
+QString TextPropertyLabel_pdf::getFileName()
 {
     if(prop && parent){
         return tmpDir.filePath(QString("%1%2.pdf").arg(parent->getID()).arg(prop->getName().c_str()));
@@ -233,15 +317,19 @@ void TextPropertyViewer::setHidden(bool h)
     hidden=h;
 }
 
+/*
 void TextPropertyViewer::setZoomFactor(double f)
 {
     label->setZoomFactor(f);
 }
+*/
 
+/*
 void TextPropertyViewer::setResizePolicy(bool res)
 {
     label->setResizePolicy(res);
 }
+*/
 
 void TextPropertyViewer::setFitToView(bool f)
 {
@@ -253,45 +341,10 @@ void TextPropertyViewer::setFitToView(bool f)
     setSizePolicy(policy);
 }
 
-void TextPropertyViewer::readVorn()
+void TextPropertyLabel_pdf::read()
 {	
-    if(hidden || !parent){
-        //displayPm = QPixmap();
-        //label->setPixmap(QPixmap());
-    } else {
-        QString fileName = getFileName();
-        label->loadNewFile(fileName);
-        /*
-		Poppler::Document *doc = Poppler::Document::load(fileName);
-        if(doc && doc->page(0)){
-            doc->setRenderHint(Poppler::Document::TextAntialiasing);
-            doc->setRenderHint(Poppler::Document::Antialiasing);
-            Poppler::Page *pa = doc->page(0);
-            if(pa){
-                double sf=1.0;
-                if(fit){
-                    int w=pa->pageSize().width();
-                    sf = label->width()*1.1/w;
-                }
-                QImage image = pa->renderToImage(sf*physicalDpiX(),
-                                                 sf*physicalDpiY());
-
-                if(!image.isNull()){
-                    displayPm=QPixmap::fromImage(image);
-                    setDisplayPixmapToLabel(displayPm);
-                } else {
-                    label->setText("Failed to read image");
-                }
-            } else {
-                label->setText(QString("Failed to load  %1 !").arg(fileName));
-            }
-        } else {
-            label->setText(QString("Failed to load  %1 !").arg(fileName));
-
-        }
-        */
-    }
-
+    QString fileName = getFileName();
+    m_viewer->loadNewFile(fileName);
 }
 
 void TextPropertyViewer::print()
@@ -320,57 +373,25 @@ void TextPropertyViewer::contextMenuEvent(QContextMenuEvent *e)
 
 }
 
-/*
-void TextPropertyViewer::setDisplayPixmapToLabel(QPixmap dpm)
-{
-    if(label->size().width() > dpm.size().width())
-    {
-        if(fit){
-            QPixmap pm=dpm.scaledToWidth(label->size().width());
-            label->setPixmap(pm);
-        } else {
-            QPixmap pm(label->size());
-            pm.fill(bgColor);
-
-            QPainter *painter= new QPainter(&pm);
-            int x = pm.size().width()/2 - dpm.size().width()/2;
-            int y = pm.size().height()/2- dpm.size().height()/2;
-
-            painter->drawPixmap(x,y,dpm);
-            painter->end();
-            label->setPixmap(pm);
-
-        }
-    } else {
-        label->setPixmap(dpm);
-    }
-}
-*/
 
 
 void TextPropertyViewer::setScrollBarPolicy(Qt::ScrollBarPolicy policy){
-    label->setVerticalScrollBarPolicy(policy);
-    label->setHorizontalScrollBarPolicy(policy);
+    //label->setVerticalScrollBarPolicy(policy);
+    //label->setHorizontalScrollBarPolicy(policy);
 }
 
 void TextPropertyViewer::editVorn()
 {
-        /*
-        label->hide();
-        editor->startEdit();
-        editor->show();
-		editor->setFocus();
-        */
     stack->setCurrentWidget(editor);
-		editing = true;
+    editing = true;
 }
 
 void TextPropertyViewer::stopEdit()
 {
 	editor->stopEdit();
-	compileVorn(true);
+    label->compileVorn(true);
     //editor->hide();
-    readVorn();
+    label->read();
     stack->setCurrentWidget(label);
 	editing = false;
 }
@@ -380,35 +401,36 @@ void TextPropertyEditorDialog::stopEdit()
 	viewer->stopEdit();
 }
 
-void TextPropertyViewer::compileFinished(int code, QProcess::ExitStatus exitStatus)
+void TextPropertyLabel::compileFinished(int code, QProcess::ExitStatus exitStatus)
 {
     qDebug() << QString("Compile finished with code %1").arg(code);
-    readVorn();
+    read();
 }
 
-void TextPropertyViewer::compileError( QProcess::ProcessError error)
+void TextPropertyLabel::compileError( QProcess::ProcessError error)
 {
     qDebug() << QString("Compile Error %1").arg(error);
 }
 
- QString TextPropertyViewer::getCompileStringVorn()
+QString TextPropertyLabel_pdf::getCompileStringVorn()
 {
-     QString fileName = getTexFileName();
+    double cheight, cwidth;
+    if(theight<0 || twidth<0){
+     cheight=this->size().width()/50*5;
+     cwidth=this->size().width()/50-.5;
+   } else {
+        cheight=theight;
+        cwidth=twidth;
+    }
+   QString fileName = getTexFileName();
 
    QFile texFile(fileName);
     if(!texFile.open(QIODevice::WriteOnly|QIODevice::Text)){
         return "Failed to open file";
     }
     QTextStream stream(&texFile);
-    stream << header.arg(height).arg(width);
-    /*
-    stream << "\\documentclass[12pt]{article} \\pagestyle{empty}";
-    stream << "\\usepackage{ngerman} ";
-    stream <<  "\\oddsidemargin -1cm \n \\topmargin -3.0cm";
-    stream << "\\textheight 28cm \\textwidth 18.0cm";
-    stream << "\\parindent=0pt \\parskip=0.15 true in";
-    stream << "\\begin{document}\\sffamily\n";
-    */
+    stream << header.arg(cheight).arg(cwidth);
+
     if(prop && parent){
         stream << prop->asString(parent).c_str();
     } else {
@@ -424,7 +446,7 @@ void TextPropertyViewer::compileError( QProcess::ProcessError error)
 
 
 
-void TextPropertyViewer::compileVorn(bool reload)
+void TextPropertyLabel_pdf::compileVorn(bool reload)
 {
     if(!parent) return;
 
@@ -462,12 +484,13 @@ void TextPropertyViewer::compileVorn(bool reload)
 
 
 
-
+/*
 void TextPropertyEditorDialog::display(QString displayText, PObject *parent)
 {
 	TextPropertyEditorDialog *instance = new TextPropertyEditorDialog(parent, displayText);
 	instance->exec();
 }
+*/
 
 
 
@@ -490,43 +513,26 @@ void TextPropertyViewer::keyPressEvent ( QKeyEvent * e )
 				emit applyRequested();
 		} else {
             qDebug() << QString("TextPropertyEditorDialog::keyPressEvent unknown key %1,%2").arg(e->text()).arg(e->key());
-			//emit applyRequested();
 		}
     } else if(e->key()<128){
         label->emitEditRequested();
-        //QWidget::keyPressEvent(e);
     } else {
-        //label->emitEditRequested();
-        //QWidget::keyPressEvent(e);
         e->ignore();
     }
 }
-// void TextPropertyEditorDialog::stopEdit()
-// {
-// 	if(editor){
-// 		editor->stopEdit();
-// 	}
-// }
+
+void TextPropertyLabel::keyPressEvent ( QKeyEvent * e )
+{
+    qDebug() << "TextPropertyLabel::keyPressEvent ";
+}
+
 
 void TextPropertyViewer::resizeEvent(QResizeEvent *e)
 {
 
     if(fit){
         QSize eventSize=e->size();
-        //QPixmap copy = displayPm.scaledToWidth(eventSize.width());
-        //QSize originalSize=displayPm.size();
-        //displaySize = copy.size();
-        //label->setPixmap(copy);
-
-
-        //if(this->size().height()!=displaySize.height()){
-        //    if(displaySize.width()>0){
-                //label->resize(eventSize);
-                editor->resize(eventSize);
-                //resize(displaySize);
-        //    }
-        //}
-
+        editor->resize(eventSize);
     }
 }
 
@@ -540,14 +546,18 @@ QSize TextPropertyViewer::sizeHint()
 }
 
 
-TextPropertyLabel::TextPropertyLabel(QWidget *parent, const char *name)
-    : /*QScrollArea(parent)*/ PdfViewer(parent)
+TextPropertyLabel::TextPropertyLabel(QWidget *pw, const char *name)
+    : QWidget(pw), header(""), footer("")
 {
-    //label = new QLabel(this);
-    //setWidget(label);
 
 }
 
+TextPropertyLabel::TextPropertyLabel(PObject *po, RepositoryProperty *p, QWidget *pw, const char *name)
+    : QWidget(pw),
+      parent(po), prop(p), header(""), footer("")
+{
+
+}
 
 
 void TextPropertyLabel::mouseDoubleClickEvent ( QMouseEvent * e )
@@ -557,46 +567,8 @@ void TextPropertyLabel::mouseDoubleClickEvent ( QMouseEvent * e )
 }
 
 
-/*
-void TextPropertyLabel::setText(QString s)
-{
-    label->setText(s);
-}
-*/
-
-/*
-void TextPropertyLabel::setPixmap(QPixmap pm)
-{
-    label->resize(pm.size());
-    label->setPixmap(pm);
-}
-*/
 
 
-// void TextPropertyLabel::mousePressEvent ( QMouseEvent * e )
-// {
-// 	
-// 	if(e->button() == Qt::LeftButton){
-// 		//emit(nextRequested());
-// 	} else if (e->button() == Qt::RightButton){
-// 		emit(switchRequested());
-// 	} else {
-// 		e->ignore();
-// 	}
-// 	
-// }
-// 
-// void TextPropertyLabel::keyPressEvent ( QKeyEvent * e )
-// {
-// 	qDebug("TextPropertyLabel::keyPressEvent ");
-// 	if(e->key() == Qt::Key_Space || e->key() == Qt::Key_Down){
-// 		emit nextRequested();
-// 	} else if( e->key() == Qt::Key_Right || e->key() == Qt::Key_Left){
-// 		emit switchRequested();
-// 	} else if( e->key() == Qt::Key_Return) {
-// 		emit editRequested();
-// 	}
-// }
 
 /*!
     \fn TextPropertyLabel::emitEditRequested()

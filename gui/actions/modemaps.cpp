@@ -51,6 +51,8 @@ void ModeMaps::loadContentsList()
             ol->insert(ol->end(), nl->begin(), nl->end());
             list<material*> *ml=t->getMaterialien();
             ol->insert(ol->end(), ml->begin(), ml->end());
+            list<bookmark*> *bl=t->getBookmarks();
+            ol->insert(ol->end(), bl->begin(), bl->end());
             ui->contentsList->setObjectListProvider(new PoLListProvider(ol));
 
 
@@ -66,17 +68,17 @@ void ModeMaps::tearDownMode()
 }
 void ModeMaps::activateObject(PObject *o)
 {
-    qDebug() << QString("TODO: ModeMaps::activateObject");
+    GuiMode::activateObject(o);
 }
 
 void ModeMaps::showForm(QWidget *w)
 {
-    qDebug() << QString("TODO: ModeMaps::activateObject");
+    GuiMode::showForm(w);
 }
 
 QList<QAction*>* ModeMaps::getModeActions()
 {
-    qDebug() << QString("TODO: ModeMaps::activateObject");
+    return GuiMode::getModeActions();
 }
 
 

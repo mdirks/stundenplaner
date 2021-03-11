@@ -41,7 +41,7 @@ public:
     void addSelectionAction(PdfViewSelectionAction *a);
     void addKeyAction(Qt::Key key, PdfView::PdfViewAction a);
     void addContextMenuAction(PdfView::PdfViewAction a);
-
+    CollectionDisplay* collectionDisplay(){return colDisplay;};
 
 private:
     void doCommonSetup();

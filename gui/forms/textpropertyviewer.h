@@ -25,34 +25,110 @@
 #include <QStackedWidget>
 #include <QColor>
 
-class TextPropertyLabel : /*public QScrollArea*/ public PdfViewer
+class TextPropertyLabel : public QWidget
 {
 Q_OBJECT
 
 public:
-	TextPropertyLabel(QWidget *parent=0, const char *name=0);
-	
+    TextPropertyLabel(QWidget *parent=0, const char *name=0);
+    TextPropertyLabel(PObject *o, RepositoryProperty *prop, QWidget *parent=0, const char *name=0);
+
+
+    virtual void compileVorn(bool reload)=0;
+
+public slots:
+    virtual void read()=0;
+
+
+public:
     //void setText(QString s);
     //void setPixmap(QPixmap pm);
     void emitEditRequested();
+    void setParentObject(PObject *o){parent=o;};
+    void setProperty(RepositoryProperty *p){prop=p;};
 
+    void setFooter(QString f);
+    void setHeader(QString f);
 
 protected:
-	void mouseDoubleClickEvent ( QMouseEvent * e );
-	//void mousePressEvent ( QMouseEvent * e );
-	//void keyPressEvent ( QKeyEvent * e );
+    void mouseDoubleClickEvent ( QMouseEvent * e );
+    //void mousePressEvent ( QMouseEvent * e );
+    void keyPressEvent ( QKeyEvent * e );
+
+
+    void compileFinished(int code, QProcess::ExitStatus exitStatus);
+    void compileError( QProcess::ProcessError error);
 
 signals:
-	void editRequested();
+    void editRequested();
     void labelClicked();
 
-	//void switchRequested();
-	//void nextRequested();
-	
-private:
+    //void switchRequested();
+    //void nextRequested();
+
+protected:
     //QLabel *label;
+    PObject *parent;
+    RepositoryProperty *prop;
+    QString header,footer;
 
 };
+
+
+class TextPropertyLabel_md : public TextPropertyLabel
+{
+    Q_OBJECT
+
+public:
+    TextPropertyLabel_md(QWidget *p=0, const char *name=0);
+    TextPropertyLabel_md(PObject *o, RepositoryProperty *prop, QWidget *p=0, const char *name=0);
+
+    void compileVorn(bool reload);
+
+public slots:
+    void read();
+
+private:
+    //QTextEdit *m_viewer;
+    QLabel *m_viewer;
+};
+
+class TextPropertyLabel_pdf : public TextPropertyLabel
+{
+    Q_OBJECT
+public:
+    TextPropertyLabel_pdf(QWidget *p=0, const char *name=0);
+    TextPropertyLabel_pdf(PObject *o, RepositoryProperty *prop, QWidget *p=0, const char *name=0);
+
+    void compileVorn(bool reload);
+
+
+
+    QString getCompileStringVorn();
+
+public slots:
+    void read();
+
+public:
+    static QString StandardHeader, StandardFooter;
+
+private:
+    QString getFileName();
+    QString getTexFileName();
+
+private:
+
+    QDir tmpDir;
+    PdfViewer *m_viewer;
+    double twidth,theight;
+    QString displayString;
+    QProcess *p;
+
+
+};
+
+
+
 
 
 class TextPropertyViewer : public QWidget
@@ -60,34 +136,37 @@ class TextPropertyViewer : public QWidget
 Q_OBJECT
 
 public:
-    TextPropertyViewer(QWidget *pw=0L);
-    TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw=0L, double w=18.0, double h=28.0);
-    TextPropertyViewer(PObject *parent, QString displayString, QWidget *pw=0L);
+    enum Type {PdfLabel, MdLabel};
+
+public:
+    TextPropertyViewer(QWidget *pw=0L, TextPropertyViewer::Type = PdfLabel);
+    TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw=0L, double w=18.0, double h=28.0, TextPropertyViewer::Type = PdfLabel);
+    //TextPropertyViewer(PObject *parent, QString displayString, QWidget *pw=0L);
 	~TextPropertyViewer();
 
     void setParentObject(PObject *o);
     void setProperty(RepositoryProperty *p);
 
-	QString getCompileStringVorn();
-	void compileVorn(bool reload);
+    //QString getCompileStringVorn();
+    //void compileVorn(bool reload);
     void setHidden(bool h);
     void setFitToView(bool f);
     void setScrollBarPolicy(Qt::ScrollBarPolicy policy);
 
-    void setFooter(QString f);
-    void setHeader(QString f);
-    void setBackgroundColor(QColor c);
-    void setZoomFactor(double f);
-    void setResizePolicy(bool res);
+    void setFooter(QString f){label->setFooter(f);};
+    void setHeader(QString f){label->setFooter(f);};
+    //void setBackgroundColor(QColor c);
+    //void setZoomFactor(double f);
+    //void setResizePolicy(bool res);
 
     QSize sizeHint();
 
 public slots:
 	void editVorn();
-	void readVorn();
+    //void readVorn();
 	void stopEdit();
-    void compileFinished(int code, QProcess::ExitStatus exitStatus);
-    void compileError( QProcess::ProcessError error);
+    //void compileFinished(int code, QProcess::ExitStatus exitStatus);
+    //void compileError( QProcess::ProcessError error);
 
     void print();
 
@@ -100,35 +179,32 @@ protected:
     void contextMenuEvent(QContextMenuEvent *e);
 
 private:
-    QString getFileName();
-    QString getTexFileName();
+    //QString getFileName();
+    //QString getTexFileName();
     //void setDisplayPixmapToLabel(QPixmap dpm);
-    void doCommonSetup();
+    void doCommonSetup(TextPropertyViewer::Type t);
 
 
 
-public:
-    static QString StandardHeader, StandardFooter;
+
 
 
 private:
 	PObject *parent;
 	RepositoryProperty *prop;
-	QDir tmpDir;
-	TextPropertyEditor *editor;
+    TextPropertyEditor *editor;
     TextPropertyLabel *label;
     //PdfViewer *label;
-	QString displayString;
-	bool editing;
+    bool editing;
     bool hidden;
     bool fit;
-    QProcess *p;
-    QString header,footer;
+
+
     QPixmap displayPm;
     QStackedWidget *stack;
        QSize displaySize;
-       QColor bgColor;
-     double width,height;
+    //   QColor bgColor;
+
 };
 /**
 	@author Marcus Dirks <marcus.dirks@web.de>
@@ -138,13 +214,13 @@ class TextPropertyEditorDialog : public QDialog
 Q_OBJECT
 
 public:
-        TextPropertyEditorDialog(PObject *parent, QString displayString, QWidget *pw=0L);
+       // TextPropertyEditorDialog(PObject *parent, QString displayString, QWidget *pw=0L);
 
     TextPropertyEditorDialog(PObject *parent, RepositoryProperty *prop, QWidget *pw=0L);
     ~TextPropertyEditorDialog();
 
     static void edit(RepositoryProperty *prop, PObject *parent);
-    static void display(QString displayString, PObject *parent);
+    //static void display(QString displayString, PObject *parent);
     //QString getCompileStringVorn();
 	//void compileVorn(bool reload);
 

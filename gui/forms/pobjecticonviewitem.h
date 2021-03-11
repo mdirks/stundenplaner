@@ -87,7 +87,8 @@ Q_OBJECT
 public:
     ActiveLabel(PObject *po, QWidget *parent=0);
 protected:
-    void mouseDoubleClickEvent( QMouseEvent * e );
+    //void mouseDoubleClickEvent( QMouseEvent * e );
+    void keyPressEvent(QKeyEvent *e);
 
 public slots:
     void stopEdit();
@@ -99,6 +100,7 @@ private:
     PObject *po;
     StringEditor *nameEditor;
     QLabel *nameLabel;
+    bool editing;
 };
 
 class PropertyButton : public QToolButton

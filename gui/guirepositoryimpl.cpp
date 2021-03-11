@@ -83,6 +83,7 @@
 #include "gui/actions/modenotes.h"
 #include "gui/actions/servicepdf.h"
 #include "gui/actions/modemaps.h"
+#include "gui/actions/modehome.h"
 #include "gui/data/themamapsatzmapper.h"
 
 #include <QPixmap>
@@ -343,6 +344,8 @@ void GuiRepositoryImpl::showFormForObject(PObject *o, QWidget *form, bool top){
 
         if(activeMode){
             activeMode->showForm(form);
+        } else  {
+            showDialog(form);
         }
 	} else { qDebug("GuiRepositoryImp: could not get a valid form");}
 	
@@ -470,6 +473,7 @@ void GuiRepositoryImpl::initGui()
 	PObjectTableControlerFactory::setInstance(new PObjectTableControlerFactoryImpl());
 
     //addMode(ModePlanung::getInstance());
+    addMode(new ModeHome());
     addMode(new ModeLesen());
     addMode(new ModeMaterial());
     addMode(new ModeLernen());
@@ -855,13 +859,13 @@ EditorBase::EditorBase(QWidget *parent,QString title) : QDialog(parent)
     contentsLayout->addWidget(mainWidget);
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
-    buttonsLayout->addStretch(1);
+    //buttonsLayout->addStretch(1);
     buttonsLayout->addWidget(closeButton);
 
     QVBoxLayout *mainLayout= new QVBoxLayout;
     mainLayout->addLayout(contentsLayout);
-    mainLayout->addStretch(1);
-    mainLayout->addSpacing(12);
+    //mainLayout->addStretch(1);
+    //mainLayout->addSpacing(12);
     mainLayout->addLayout(buttonsLayout);
     setLayout(mainLayout);
 

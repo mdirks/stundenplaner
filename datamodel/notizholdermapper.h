@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Di. Feb. 23 18:53:05 2021
+ // Written on Fr. März 5 14:01:09 2021
 // 
  #ifndef notizholderMAPPER_H 
  #define notizholderMAPPER_H 
@@ -21,6 +21,7 @@
  #include "notizholder.h" 
 #include "notiz.h" 
 #include "material.h" 
+#include "bookmark.h" 
 #include "orm/mapping/abstractmapper.h"
  #include "orm/persistence/variant.h"
  #include "orm/repository/repositoryentryimpl.h"
@@ -61,6 +62,8 @@
   list<notiz*> * findNotizen(int pri_id,string prop,string value);
   list<material*> * findMaterialien(int pri_id);
   list<material*> * findMaterialien(int pri_id,string prop,string value);
+  list<bookmark*> * findBookmarks(int pri_id);
+  list<bookmark*> * findBookmarks(int pri_id,string prop,string value);
 
 protected:
      notizholdermapper();
@@ -73,6 +76,7 @@ protected:
     string *columns;
   Association<notizholder, notiz> *asc_Notizen;
  Association<notizholder, material> *asc_Materialien;
+ Association<notizholder, bookmark> *asc_Bookmarks;
   
  
  };
