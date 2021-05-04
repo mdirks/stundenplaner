@@ -29,7 +29,7 @@
 
  reihemapper::reihemapper()
   {
- 	version = "0.4-0.4";
+ 	version = "0.4-0.5-0.5";
 	columns = new string[2];
  	columnTypes = new string[2];
  	columns[0] = "thema";

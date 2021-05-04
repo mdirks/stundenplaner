@@ -55,16 +55,17 @@ public slots:
     void addBookmark(double pos);
     void showBookmarks();
     void showTweets();
+    void showScndViewer();
 
 private:
     static ModeLesen *instance;
-    TextViewer *viewer;
+    TextViewer *viewer, *scndViewer;
     TextPropertyBrowser *browser;
     LernkartensatzViewer *lkViewer;
     PObjectDisplay *lkDisplay;
     PObjectDisplay *mDisplay;
     PObjectIconView *bmView;
-    TweetEditor *tweetEdit;
+    PObjectIconView *tweetEdit;
 
     list<lektuere*> *list_texte;
     lektuere *activeText;

@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Fr. März 5 14:01:09 2021
+ // Written on Mo. März 15 13:58:08 2021
 // 
  #ifndef notizholderMAPPER_H 
  #define notizholderMAPPER_H 

@@ -6,6 +6,7 @@
 class TweetEditor : public PObjectIconView
 {
 public:
+    TweetEditor(QWidget *parent=0);
     TweetEditor(RepositoryProperty *prop, PObject *parentObject, QWidget *parent=0);
     TweetEditor(AbstractMapper *mapper, QWidget *parent=0);
 protected:

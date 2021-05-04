@@ -65,18 +65,22 @@ public:
 
     //void setDisplayProperty(RepositoryProperty *p);
     void showFull(bool full);
+    void grepFocus();
 
 public slots:
      void editRequested();
      void setNewSize();
+     void switchVisible();
+
 
 private:
     QWidget *widget;
     QLabel *label1a;
     ActiveLabel *label1b;
     //TextPropertyViewer *label2;
-    QStackedWidget *sw;
-
+    //QStackedWidget *sw;
+    QWidget *editor;
+    QStackedWidget *editorStack;
 
 
 };
@@ -95,6 +99,7 @@ public slots:
 
 signals:
     void clicked();
+    void nextPropertyRequested();
 
 private:
     PObject *po;
@@ -107,16 +112,14 @@ class PropertyButton : public QToolButton
 {
 Q_OBJECT
 public:
-    PropertyButton(RepositoryProperty *rp, int i,QWidget *editor, QStackedWidget *editorStack, QWidget *parent);
-public slots:
-    void switchVisible();
+    PropertyButton(RepositoryProperty *rp, int i,QWidget *parent);
+
 
 signals:
     void resized();
 
 private:
     int ind;
-    QWidget *editor;
-    QStackedWidget *editorStack;
+
 };
 #endif

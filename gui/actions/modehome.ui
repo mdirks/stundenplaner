@@ -15,16 +15,23 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QListWidget" name="list1"/>
+    <widget class="PObjectIconView" name="list1"/>
    </item>
    <item>
-    <widget class="QListWidget" name="list2"/>
+    <widget class="PObjectIconView" name="list2"/>
    </item>
    <item>
     <widget class="QListWidget" name="list3"/>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PObjectIconView</class>
+   <extends>QListWidget</extends>
+   <header>pobjecticonview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

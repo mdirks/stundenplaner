@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Di. Feb. 23 18:53:05 2021
+ // Written on Mo. März 15 13:58:08 2021
 // 
  #ifndef noteMAPPER_H 
  #define noteMAPPER_H 

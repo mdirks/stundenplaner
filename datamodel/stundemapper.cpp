@@ -29,7 +29,7 @@
 
  stundemapper::stundemapper()
   {
- 	version = "1.1-0.4";
+ 	version = "1.1-0.5-0.5";
 	columns = new string[2];
  	columnTypes = new string[2];
  	columns[0] = "verlauf";

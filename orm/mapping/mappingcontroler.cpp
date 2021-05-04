@@ -266,6 +266,11 @@ PObject* MappingControler::create(string className)
 	return o;
 }
 
+PObject* MappingControler::loadById(int id)
+{
+    return Database::getInstance()->loadObjectById(id);
+}
+
 
 /*!
     \fn MappingControler::getRegisteredClasses();

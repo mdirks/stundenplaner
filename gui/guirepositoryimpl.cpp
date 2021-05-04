@@ -135,7 +135,6 @@ GuiRepositoryImpl::GuiRepositoryImpl()
 	activeIconViews = new list<PObjectIconView*>();
     modelist = new list<GuiMode*>();
 
-
 	
 
 
@@ -847,6 +846,54 @@ QString GuiRepositoryImpl::getDisplayString(PObject *po)
 }
 
 
+void GuiRepositoryImpl::addToGlobalCollection(QString key, PObject *o)
+{
+     getGlobalCollection(key)->push_front(o);
+     writeGlobalCollection(key);
+}
+
+
+list<PObject*>* GuiRepositoryImpl::getGlobalCollection(QString key)
+{
+    list<PObject*> *result = mapGlobalCollections[key];
+    if(!result){
+        result = new list<PObject*>();
+
+        QString idListStr=GuiConfig::getInstance()->readEntry("GlobalCollection",key);
+        QStringList idList=idListStr.split("/");
+        for(int i=0; i<idList.size(); i++){
+            int id=idList.at(i).toInt();
+            PObject *o=MappingControler::getInstance()->loadById(id);
+            if(o){
+                result->push_back(o);
+            } else {
+                qDebug()<< QString("FAILED: GuiRepositoryImpl::getGlobalCollection - no object for %1").arg(id);
+            }
+        }
+
+        mapGlobalCollections[key]=result;
+    }
+    return result;
+}
+
+void GuiRepositoryImpl::writeGlobalCollection(QString key)
+{
+    list<PObject*> *result=mapGlobalCollections[key];
+    QString idString;
+    if(result){
+        for(list<PObject*>::iterator it=result->begin(); it!=result->end(); it++){
+            int id = (*it)->getID();
+            QString ids = QString("%1").arg(id).append("/");
+            idString.append(ids);
+        }
+    }
+    GuiConfig::getInstance()->writeEntry("GlobalCollection",key,idString);
+}
+
+
+
+
+
 EditorBase::EditorBase(QWidget *parent,QString title) : QDialog(parent)
 {
     setWindowTitle(title);
@@ -884,3 +931,5 @@ void EditorBase::setMainWidget(QWidget *mw)
     contentsLayout->replaceWidget(mainWidget,mw);
     mainWidget=mw;
 }
+
+

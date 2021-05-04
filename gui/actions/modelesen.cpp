@@ -76,14 +76,21 @@ void ModeLesen::doCommonSetup()
 
         lkViewer = new LernkartensatzViewer(0,0,LernkarteViewer::Stacked);
 
-        AbstractMapper *m = tweetmapper::getInstance();
-        RepositoryProperty *rpBody=Repository::getInstance()->getRepositoryEntry("tweet")->getProperty("Body");
-        tweetEdit = new TweetEditor(m,sw);
-        tweetEdit->setDisplayProperty(rpBody);
+        tweetEdit = new PObjectIconView(sw);
+        tweetEdit->setObjectListProvider(new MapperListProvider(tweetmapper::getInstance()));
+        listDisplayProp = new list<RepositoryProperty*>();
+        listDisplayProp->push_back(Repository::getInstance()->getRepositoryEntry("tweet")->getProperty("Name"));
+        listDisplayProp->push_back(Repository::getInstance()->getRepositoryEntry("tweet")->getProperty("Body"));
+        tweetEdit->setDisplayProperties(listDisplayProp);
+
+
+        scndViewer = new TextViewer(sw);
+        scndViewer->setResizePolicy(true);
 
         QWidget *notew = new QWidget(splitter);
         QVBoxLayout *l= new QVBoxLayout(notew);
         l->setContentsMargins(0,0,0,0);
+        l->addWidget(scndViewer);
         l->addWidget(tweetEdit);
         l->addWidget(bmView);
         l->addWidget(browser);
@@ -100,6 +107,7 @@ void ModeLesen::doCommonSetup()
         splitter->setSizes(sizes);
         //sw->addWidget(splitter);
 
+        scndViewer->hide();
         tweetEdit->hide();
         bmView->hide();
         browser->hide();
@@ -112,7 +120,10 @@ void ModeLesen::doCommonSetup()
     setModeWidget(splitter);
 
     QAction *a;
-    QPixmap pm = GuiConfig::getInstance()->getIcon("Tweets");
+    QPixmap pm = GuiConfig::getInstance()->getIcon("Lektuere");
+    a=modeToolBar->addAction(pm,"",this,SLOT(showScndViewer()));
+    a->setToolTip("Lektuere");
+    pm = GuiConfig::getInstance()->getIcon("Tweets");
     a=modeToolBar->addAction(pm,"",this,SLOT(showTweets()));
     a->setToolTip("Tweets");
     pm = GuiConfig::getInstance()->getIcon("Bookmarks");
@@ -186,6 +197,15 @@ void ModeLesen::showBookmarks()
         bmView->hide();
     } else {
         bmView->show();
+    }
+}
+
+void ModeLesen::showScndViewer()
+{
+    if(scndViewer->isVisible()){
+        scndViewer->hide();
+    } else {
+        scndViewer->show();
     }
 }
 

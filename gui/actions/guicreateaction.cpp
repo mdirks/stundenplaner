@@ -205,5 +205,10 @@ PObject* GuiCreateAction::create(string className)
 			
 		} */
 	}
+
+    if(o){
+        GuiRepository::getInstance()->addToGlobalCollection("Recent",o);
+    }
+
 	return o;	
 }

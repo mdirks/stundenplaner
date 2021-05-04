@@ -383,6 +383,7 @@ void TextPropertyViewer::setScrollBarPolicy(Qt::ScrollBarPolicy policy){
 void TextPropertyViewer::editVorn()
 {
     stack->setCurrentWidget(editor);
+    editor->setFocus();
     editing = true;
 }
 
@@ -394,6 +395,7 @@ void TextPropertyViewer::stopEdit()
     label->read();
     stack->setCurrentWidget(label);
 	editing = false;
+    editor->clearFocus();
 }
 
 void TextPropertyEditorDialog::stopEdit()
@@ -514,7 +516,7 @@ void TextPropertyViewer::keyPressEvent ( QKeyEvent * e )
 		} else {
             qDebug() << QString("TextPropertyEditorDialog::keyPressEvent unknown key %1,%2").arg(e->text()).arg(e->key());
 		}
-    } else if(e->key()<128){
+    } else if(e->key() == Qt::Key_F2){
         label->emitEditRequested();
     } else {
         e->ignore();

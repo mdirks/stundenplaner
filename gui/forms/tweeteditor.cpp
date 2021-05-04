@@ -1,6 +1,13 @@
 #include "tweeteditor.h"
 #include <QVBoxLayout>
 
+
+TweetEditor::TweetEditor(QWidget *pw)
+    : PObjectIconView(pw)
+{
+
+}
+
 TweetEditor::TweetEditor(RepositoryProperty *prop, PObject *parentObject, QWidget *parent)
     : PObjectIconView(prop,parentObject,parent)
 {

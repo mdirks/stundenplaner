@@ -300,7 +300,7 @@
     <reference name="Verweis" refClass="orm/transactions/TransactionObject"></reference>
 </class>
 
-<class name="tweet" tname="tweet" base="notiz" version="0.2">
+<class name="tweet" tname="tweet" base="notiz" version="0.3">
 </class>
 
 <class name="notizholder" tname="notizholder" version="0.5">

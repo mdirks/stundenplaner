@@ -118,6 +118,7 @@ void TextPropertyEditor::setTextToParent()
 {
     QString text = toPlainText();
     property->fromString(text.toStdString(),parent);
+    Transactions::getCurrentTransaction()->add(parent);
     /*
     QString text = toPlainText();
     QTextStream str(&text);

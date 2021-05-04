@@ -29,7 +29,7 @@
 
  schultagmapper::schultagmapper()
   {
- 	version = "0.2-0.4";
+ 	version = "0.2-0.5-0.5";
 	columns = new string[1];
  	columnTypes = new string[1];
  	columns[0] = "datum";

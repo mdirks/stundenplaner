@@ -34,6 +34,7 @@ public:
     void registerPersistentClass(AbstractMapper *mapper);
     AbstractMapper* getMapperByName(string className);
     PObject* create(string className);
+    PObject* loadById(int id);
     bool initNewDatabase(string dbName);
     list<AbstractMapper*> *getRegisteredClasses();
     bool isOpen();

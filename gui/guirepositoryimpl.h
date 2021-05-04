@@ -111,6 +111,11 @@ public:
     //QWidget* getFormForType(string className, QWidget *parent);
     SitzplanMap*  getMapForSitzplan(sitzplan *sp);
 
+    void addToGlobalCollection(QString key, PObject *o);
+    list<PObject*>* getGlobalCollection(QString key);
+    void writeGlobalCollection(QString key);
+
+
 private:
      GuiRepositoryImpl();
 
@@ -125,7 +130,7 @@ private:
     
 	list<PropertyEditor*> *activeEditors;
     list<GuiMode*> *modelist;
-
+    map<QString,list<PObject*>*> mapGlobalCollections;
     
 private:
      static GuiRepositoryImpl* impl_instance;

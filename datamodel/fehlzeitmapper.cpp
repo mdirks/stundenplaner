@@ -29,7 +29,7 @@
 
  fehlzeitmapper::fehlzeitmapper()
   {
- 	version = "0.3-0.4";
+ 	version = "0.3-0.5-0.5";
 	columns = new string[4];
  	columnTypes = new string[4];
  	columns[0] = "von";

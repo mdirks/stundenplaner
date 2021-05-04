@@ -61,8 +61,10 @@ class PObjectIconViewActivationHandler
 {
 
 public:
-    virtual void handleActivation(PObject *o)=0;
+    virtual void handleActivation(PObject *o);
 };
+
+
 
 class PObjectIconViewDropHandler
 {

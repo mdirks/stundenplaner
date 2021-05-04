@@ -29,10 +29,16 @@
 
  tweetmapper::tweetmapper()
   {
- 	version = "0.2";
-	columns = new string[0];
- 	columnTypes = new string[0];
- }
+ 	version = "0.3-0.4";
+	columns = new string[2];
+ 	columnTypes = new string[2];
+ 	columns[0] = "title";
+ 	columnTypes[0] = "varchar(30)";
+	mapProperties["title"] = new Property("title");
+	columns[1] = "body";
+ 	columnTypes[1] = "text";
+	mapProperties["body"] = new Property("body");
+}
 
 
 tweetmapper::~tweetmapper(){}
@@ -72,14 +78,16 @@ tweetmapper::~tweetmapper(){}
  
  int tweetmapper::getColumnCount()
  {
-     return 0;
+     return 2;
  }
 
 
  string* tweetmapper::getValues(PObject *realSubject)
  {
- 	string *values = new string[0];  
+ 	string *values = new string[2];  
  	tweet *o = (tweet*) realSubject;
+	values[0] = to_string(o->getTitle());
+	values[1] = to_string(o->getBody());
 return values;
  }
 
@@ -101,7 +109,9 @@ void tweetmapper::save(PObject *realSubject)
 void tweetmapper::init(PObject* inito, Variant *res)
  {
  	tweet *o = (tweet*) inito;
-	inito->init();
+	o->setTitle( res[0].asstring());
+ 	o->setBody( res[1].asstring());
+ 	inito->init();
 }
 
 
@@ -115,6 +125,8 @@ RepositoryEntry* tweetmapper::getRepositoryEntry()
  	{
  	RepositoryEntry* entry = new RepositoryEntryImpl( "tweet" ); 
 	entry->addProperty( new StringProperty<tweet>("Name", "string", &tweet::getName, &tweet::setName, false) );
+	entry->addProperty( new StringProperty< tweet >( "Title" , "string", &tweet::getTitle, &tweet::setTitle, false ) );
+	entry->addProperty( new StringProperty< tweet >( "Body" , "string", &tweet::getBody, &tweet::setBody, true ) );
 	entry->registerBase( "notiz" );
 	return entry;
  }

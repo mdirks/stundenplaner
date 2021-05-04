@@ -29,7 +29,7 @@
 
  stundenplaneintragmapper::stundenplaneintragmapper()
   {
- 	version = "0.11-0.4";
+ 	version = "0.11-0.5-0.5";
 	columns = new string[5];
  	columnTypes = new string[5];
  	columns[0] = "datum";

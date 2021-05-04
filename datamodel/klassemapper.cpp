@@ -29,7 +29,7 @@
 
  klassemapper::klassemapper()
   {
- 	version = "0.11-0.4";
+ 	version = "0.11-0.5-0.5";
 	columns = new string[3];
  	columnTypes = new string[3];
  	columns[0] = "jhrg";

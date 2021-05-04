@@ -132,6 +132,7 @@ void PObjectIconView::doCommonSetup()
     this->prevWidget=0;
     this->displayPropList=0;
     this->m_listDropHandler = new list<PObjectIconViewDropHandler*>();
+    this->m_activationHandler=0;
 
     isLoaded=false;
 
@@ -164,6 +165,7 @@ void PObjectIconView::changeCurrent(QListWidgetItem *current, QListWidgetItem *p
     if(pitem) pitem->showFull(false);
     if(citem){
         citem->showFull(true);
+        citem->grepFocus();
     }
     emit currentChanged();
 }
@@ -300,14 +302,15 @@ void PObjectIconView::handleActivation(PObject *o)
 {
         if(!o) return;
 
-        if(m_activationHandler){
-            m_activationHandler->handleActivation(o);
-        } else {
-            doStandardActivation(o);
+        if(!m_activationHandler){
+            m_activationHandler = new PObjectIconViewActivationHandler();
         }
+
+        m_activationHandler->handleActivation(o);
+
 }
 
-void PObjectIconView::doStandardActivation(PObject *o)
+void PObjectIconViewActivationHandler::handleActivation(PObject *o)
 {
         material *m=0;
 		if(o->getClassName() == "material" && (m = dynamic_cast<material*>(o))){

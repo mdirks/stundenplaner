@@ -111,6 +111,10 @@ public:
     virtual QString getDisplayString(PObject *po)=0;
     virtual SitzplanMap*  getMapForSitzplan(sitzplan *sp)=0;
 
+   virtual void addToGlobalCollection(QString key, PObject *o)=0;
+    virtual list<PObject*>* getGlobalCollection(QString key)=0;
+   virtual void writeGlobalCollection(QString key)=0;
+
 private:
     /** */
     static GuiRepository* instance;

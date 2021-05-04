@@ -29,7 +29,7 @@
 
  stundenplanmapper::stundenplanmapper()
   {
- 	version = "0.3-0.4";
+ 	version = "0.3-0.5-0.5";
 	columns = new string[0];
  	columnTypes = new string[0];
  asc_TemplateEintraege = new Association<stundenplan, stundenplantemplateeintrag>("stundenplan_template","stundenplan_id","template_id","stundenplantemplateeintrag", &stundenplan::addToTemplateEintraege, &stundenplan::deleteFromTemplateEintraege);
