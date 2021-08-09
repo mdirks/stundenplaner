@@ -53,8 +53,15 @@ void ModeLesen::doCommonSetup()
         viewer->setResizePolicy(true);
         viewer->collectionDisplay()->addDropHandler_items(new LektuereDropHandler());
 
-        RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("lektuere")->getProperty("Bookmarks");
-        bmView = new PObjectIconView(rp,0,sw);
+        //tocWidget = new QWidget(sw);
+        //tocWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        tocSplitter = new QSplitter(Qt::Vertical,splitter);
+
+        RepositoryProperty *rp=Repository::getInstance()->getRepositoryEntry("lektuere")->getProperty("Toc");
+        tocView = new PObjectIconView(rp,0,tocSplitter);
+        tocView->setActivationHandler(new BookmarkActivationHandler(viewer));
+        rp=Repository::getInstance()->getRepositoryEntry("lektuere")->getProperty("Bookmarks");
+        bmView = new PObjectIconView(rp,0,tocSplitter);
         list<RepositoryProperty*> *listDisplayProp = new list<RepositoryProperty*>();
         listDisplayProp->push_back(Repository::getInstance()->getRepositoryEntry("bookmark")->getProperty("Name"));
         listDisplayProp->push_back(Repository::getInstance()->getRepositoryEntry("bookmark")->getProperty("Beschreibung"));
@@ -92,7 +99,7 @@ void ModeLesen::doCommonSetup()
         l->setContentsMargins(0,0,0,0);
         l->addWidget(scndViewer);
         l->addWidget(tweetEdit);
-        l->addWidget(bmView);
+        l->addWidget(tocSplitter);
         l->addWidget(browser);
         l->addWidget(lkDisplay);
         l->addWidget(mDisplay);
@@ -109,7 +116,7 @@ void ModeLesen::doCommonSetup()
 
         scndViewer->hide();
         tweetEdit->hide();
-        bmView->hide();
+        tocSplitter->hide();
         browser->hide();
         lkDisplay->hide();
         mDisplay->hide();
@@ -160,6 +167,7 @@ void ModeLesen::setupMode()
 
     viewer->addSelectionAction(new TakeNoteAction(this));
     viewer->addSelectionAction(new TakeCopyAction(this));
+    viewer->addSelectionAction(new AddTocEntryAction(this));
     viewer->addSelectionAction(new AddBookmarkAction(this));
     viewer->addContextMenuAction(PdfView::Zoom);
     viewer->addContextMenuAction(PdfView::Bookmarks);
@@ -193,10 +201,10 @@ void ModeLesen::setActivePage(int i)
 
 void ModeLesen::showBookmarks()
 {
-    if(bmView->isVisible()){
-        bmView->hide();
+    if(tocSplitter->isVisible()){
+        tocSplitter->hide();
     } else {
-        bmView->show();
+        tocSplitter->show();
     }
 }
 
@@ -301,6 +309,7 @@ void ModeLesen::setActiveText(lektuere *l)
 {
     activeText = l;
     bmView->setParentObject(activeText);
+    tocView->setParentObject(activeText);
     browser->setParentObject(activeText);
     lernkartensatz *lks = l->getLernkartensatz();
     if(lks==0){
@@ -456,6 +465,26 @@ void AddBookmarkAction::addBookmark()
 
 }
 
+AddTocEntryAction::AddTocEntryAction(ModeLesen *parent)
+    : PdfViewSelectionAction(QString("Toc Eintrag"), parent)
+{
+    connect(this,SIGNAL(triggered()),this,SLOT(addTocEntry()),Qt::UniqueConnection);
+    mode=parent;
+}
+
+void AddTocEntryAction::addTocEntry()
+{
+    bookmark *bm = (bookmark*) GuiCreateAction::getInstance()->create("bookmark");
+    lektuere *l = mode->getActiveText();
+    if(l){
+        bm->setName(std::to_string(getPosition()));
+        bm->setZiel(mode->getActiveText());
+        bm->setPosition(getPosition());
+        Transactions::getCurrentTransaction()->add(l);
+        l->addToToc(bm);
+    }
+    mode->tocView->reload();
+}
 
 bool LektuereDropHandler::canHandle(QDragEnterEvent *e)
 {

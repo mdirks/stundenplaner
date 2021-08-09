@@ -265,9 +265,10 @@
 <class name="krankmeldung" tname="krankmeldung" base="meldung" version="0.3">
 </class>
 
-<class name="lektuere" tname="lektuere" base="material" version="0.6">
+<class name="lektuere" tname="lektuere" base="material" version="0.7">
       <association name="Notizen" table="lektuere_notizen" priCol="lektuere_id" ascCol="notiz_id" ascClass="lektuerenotiz"></association>
       <association name="Bookmarks" table="lektuere_bookmarks" priCol="lektuere_id" ascCol="bookmark_id" ascClass="bookmark"></association>
+      <association name="Toc" table="lektuere_toc" priCol="lektuere_id" ascCol="bookmark_id" ascClass="bookmark"></association>
       <reference name="Lernkartensatz" refClass="datamodel/lernkartensatz"></reference>
       <reference name="Kopien" refClass="datamodel/materialsatz"></reference>
 </class>

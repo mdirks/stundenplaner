@@ -18,6 +18,8 @@ public:
     void setPosition(int pos);
     int getPosition();
 
+    int getPageNumber();
+
     void setBeschreibung(string desc);
     string getBeschreibung();
 

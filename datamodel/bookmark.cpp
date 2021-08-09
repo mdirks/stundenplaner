@@ -54,3 +54,9 @@ string bookmark::getBeschreibung()
 {
     return m_desc;
 }
+
+
+int bookmark::getPageNumber()
+{
+    return getPosition();
+}

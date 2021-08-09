@@ -29,7 +29,6 @@
 #include "orm/repository/repositoryproperty.h"
 #include "orm/repository/repositoryentry.h"
 
-#include "importtodocstoreaction.h"
 
 #include <QAction>
 #include <QDebug>
@@ -47,9 +46,16 @@ GuiPopupFactory* GuiPopupFactory::getInstance()
 
 GuiPopupFactory::GuiPopupFactory()
 {
-    addToActionMenu("lektuere",new ImportToDocStoreAction());
+    PObjectAction *a= new AddToRemarkableAction();
+    addToActionMenu("lektuere",a);
+    addToActionMenu("bookmark",a);
 
-    PObjectAction *a = new AddToThemaAction("To Thema");
+    addToActionMenu("lektuere",new ImportToDocStoreAction());
+    addToActionMenu("lektuere", new WriteBookmarksToRmAction());
+
+
+
+    a = new AddToThemaAction("To Thema");
     addToActionMenu("notiz", a);
     addToActionMenu("tweet", a);
     addToActionMenu("kopie", a);
@@ -59,6 +65,7 @@ GuiPopupFactory::GuiPopupFactory()
 
     a=new VocImportAction("Import");
     addToActionMenu("vokabelliste",a);
+
 
 
 }
@@ -173,8 +180,8 @@ QMenu* GuiPopupFactory::getPopupFor(PObjectIconView *iconView)
 		action->plug(pmenu);
         */
 
-		PObjectIconViewItem *item = dynamic_cast<PObjectIconViewItem*>(iconView->currentItem());
-		if(item){
+        QListWidgetItem *witem=iconView->currentItem();
+        if(PObjectIconViewItemBase *item = dynamic_cast<PObjectIconViewItemBase*>(witem)){
 			PObject *o = item->getObject();
 			if(o){
                 pmenu->addMenu(new DatenPopup(o,iconView));

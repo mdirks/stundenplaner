@@ -6,7 +6,10 @@ SOURCES += \
     *.cpp \
     docstore/annexdocstore.cpp \
     docstore/docstore.cpp \
-    filter/collectionpropertyfilter.cpp
+    filter/collectionpropertyfilter.cpp \
+    remarkable/rmbookmark.cpp \
+    remarkable/rmdevice.cpp \
+    remarkable/rmentry.cpp
 
 SOURCES += $$system(ls reports/*.cpp) $$system(ls filter/*.cpp) $$system(ls xml-export/*.cpp)
 SOURCES += $$system(ls utils/*.cpp) $$system(ls actions/*.cpp) $$system(ls docstore/*.cpp)
@@ -15,7 +18,10 @@ HEADERS += \
     *.h \
     docstore/annexdocstore.h \
     docstore/docstore.h \
-    filter/collectionpropertyfilter.h
+    filter/collectionpropertyfilter.h \
+    remarkable/rmbookmark.h \
+    remarkable/rmdevice.h \
+    remarkable/rmentry.h
 
 HEADERS += $$system(ls reports/*.h) $$system(ls filter/*.h) $$system(ls xml-export/*.h)
 HEADERS += $$system(ls utils/*.h) $$system(ls actions/*.h) $$system(ls docstore/*.h)

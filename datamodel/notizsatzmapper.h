@@ -8,7 +8,7 @@
  //  
  // Copyright: See COPYING file that comes with this distribution 
  // 
- // Written on Mo. März 15 13:58:08 2021
+ // Written on Sa. Mai 15 17:03:12 2021
 // 
  #ifndef notizsatzMAPPER_H 
  #define notizsatzMAPPER_H 

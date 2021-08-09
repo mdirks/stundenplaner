@@ -1,14 +1,24 @@
 #include "pobjectaction.h"
-#include "gui/forms/pobjectdialog.h"
+
+#include "guicreateaction.h"
+
 #include "datamodel/thema.h"
 #include "datamodel/lektuerenotiz.h"
 #include "datamodel/kopie.h"
 #include "datamodel/vokabelliste.h"
+#include "datamodel/material.h"
+
 #include "orm/transactions/transactions.h"
+
+#include "services/docstore/docstore.h"
+#include "services/remarkable/rmdevice.h"
+
+#include "gui/forms/pobjectdialog.h"
+
+
 #include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
-#include "guicreateaction.h"
 
 PObjectAction::PObjectAction(const QString &text)
     : QAction(text)
@@ -105,5 +115,87 @@ void VocImportAction::importFromFile()
             con=false;
         }
         }
+    }
+}
+
+
+ImportToDocStoreAction::ImportToDocStoreAction()
+    : PObjectAction("Import to Objectstore")
+{
+
+    connect(this,SIGNAL(triggered()),this,SLOT(importToDocStore()));
+}
+
+void ImportToDocStoreAction::importToDocStore()
+{
+    if(PObject *po = getPObject()){
+        if(material *m=dynamic_cast<material*>(po)){
+            Transactions::getCurrentTransaction()->add(m);
+
+            DocStore *ds = DocStore::getInstance();
+            ds->addDocument(m);
+        }
+    } else {
+        qDebug() << "ImportToObjectStoreAction ERROR: object was not set";
+    }
+}
+
+AddToRemarkableAction::AddToRemarkableAction()
+    : PObjectAction("Add to RM")
+{
+    connect(this,SIGNAL(triggered()),this,SLOT(addToRm()));
+}
+
+void AddToRemarkableAction::addToRm()
+{
+    if(PObject *po = getPObject()){
+        if(lektuere *l=dynamic_cast<lektuere*>(po)){
+            RmDevice::getInstance()->addDocument(l);
+        } else if(bookmark *b=dynamic_cast<bookmark*>(po)){
+            RmDevice::getInstance()->addBookmark(b);
+        } else {
+            qDebug() << QString("AddToRemarkableAction::addToRm(): could not add %1").arg(po->getClassName().c_str());
+        }
+    } else {
+        qDebug() << "ImportToObjectStoreAction ERROR: object was not set";
+    }
+}
+
+WriteBookmarksToRmAction::WriteBookmarksToRmAction()
+    : PObjectAction("Write Bookmarks to RM")
+{
+    connect(this,SIGNAL(triggered()),this,SLOT(writeToRm()));
+}
+
+void WriteBookmarksToRmAction::writeToRm()
+{
+    if(lektuere *l = dynamic_cast<lektuere*>(getPObject())){
+        RmDocument *rmd=RmDevice::getInstance()->getDocument(l);
+        list<bookmark*> *list_bm=l->getBookmarks();
+        if(rmd && list_bm){
+            rmd->setBookmarks(list_bm);
+            RmDevice::getInstance()->writeBookmarkList(rmd);
+        }
+
+    }
+}
+
+
+FindRmObjectAction::FindRmObjectAction()
+    : PObjectAction("Find RMObject")
+{
+    connect(this,SIGNAL(triggered()),this,SLOT(findRmObject()));
+}
+
+void FindRmObjectAction::findRmObject()
+{
+    if(PObject *po = getPObject()){
+        if(lektuere *l=dynamic_cast<lektuere*>(po)){
+            RmDocument *rmd = RmDevice::getInstance()->getDocument(l);
+            qDebug() << rmd->getHash();
+
+        }
+    } else {
+        qDebug() << "ImportToObjectStoreAction ERROR: object was not set";
     }
 }

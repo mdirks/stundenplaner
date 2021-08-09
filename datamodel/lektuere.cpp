@@ -8,6 +8,7 @@ lektuere::lektuere()
     setMapper(lektueremapper::getInstance());
     list_notizen=0;
     list_bookmarks=0;
+    list_toc=0;
     lks=0;
     kop=0;
 }
@@ -49,7 +50,29 @@ void lektuere::deleteFromBookmarks(bookmark *bm)
     getBookmarks()->remove(bm);
 }
 
+list<bookmark*>* lektuere::getToc()
+{
+    if(list_toc==0){
+        list_toc=lektueremapper::getInstance()->findToc(getID());
+    }
+    return list_toc;
+}
+void lektuere::addToToc(bookmark *bm)
+{
+    getToc()->push_back(bm);
+    getToc()->sort(lektuere::toc_compare);
+}
 
+bool lektuere::toc_compare(bookmark *bm1, bookmark *bm2)
+{
+    return bm1->getPosition() < bm2->getPosition();
+}
+
+
+void lektuere::deleteFromToc(bookmark *bm)
+{
+    getToc()->remove(bm);
+}
 
 void lektuere::setLernkartensatz(lernkartensatz *ls)
 {

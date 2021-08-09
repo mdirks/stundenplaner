@@ -16,7 +16,7 @@ unix {
 SOURCES += \
     *.cpp \
     actions/actionpopup.cpp \
-    actions/importtodocstoreaction.cpp \
+    actions/lektuereaction.cpp \
     actions/modehome.cpp \
     actions/modemaps.cpp \
     actions/modenotes.cpp \
@@ -59,7 +59,7 @@ SOURCES += $$system(ls forms/*.cpp)
 HEADERS += \
     *.h \
     actions/actionpopup.h \
-    actions/importtodocstoreaction.h \
+    actions/lektuereaction.h \
     actions/modehome.h \
     actions/modemaps.h \
     actions/pobjectaction.h \

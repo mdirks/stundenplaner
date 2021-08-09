@@ -18,6 +18,7 @@ class ModeLesen : public GuiMode //, public notizholder
 {
    Q_OBJECT
 friend class AddBookmarkAction;
+friend class AddTocEntryAction;
 
 public:
     ModeLesen();
@@ -64,15 +65,16 @@ private:
     LernkartensatzViewer *lkViewer;
     PObjectDisplay *lkDisplay;
     PObjectDisplay *mDisplay;
-    PObjectIconView *bmView;
+    PObjectIconView *bmView,*tocView;
     PObjectIconView *tweetEdit;
+    //QWidget *tocWidget;
 
     list<lektuere*> *list_texte;
     lektuere *activeText;
 
     QStackedWidget *stack;
     QWidget *blankWidget;
-    QSplitter *splitter;
+    QSplitter *splitter, *tocSplitter;
     QToolBar *toolBar;
 };
 
@@ -137,6 +139,19 @@ public slots:
     void addBookmark();
 
 
+private:
+    ModeLesen *mode;
+};
+
+
+class AddTocEntryAction : public PdfViewSelectionAction
+{
+    Q_OBJECT
+
+public:
+    AddTocEntryAction(ModeLesen *parent);
+public slots:
+    void addTocEntry();
 private:
     ModeLesen *mode;
 };

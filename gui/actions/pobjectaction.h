@@ -42,6 +42,53 @@ public slots:
     void importFromFile();
 };
 
+class ImportToDocStoreAction : public PObjectAction
+{
+Q_OBJECT
+
+public:
+    ImportToDocStoreAction();
+
+
+public slots:
+    void importToDocStore();
+
+
+
+};
+
+class AddToRemarkableAction : public PObjectAction
+{
+    Q_OBJECT
+
+public:
+    AddToRemarkableAction();
+
+public slots:
+    void addToRm();
+};
+
+class WriteBookmarksToRmAction : public PObjectAction
+{
+    Q_OBJECT
+
+public:
+    WriteBookmarksToRmAction();
+
+public slots:
+    void writeToRm();
+};
+
+class FindRmObjectAction : public PObjectAction
+{
+    Q_OBJECT
+
+public:
+    FindRmObjectAction();
+
+public slots:
+    void findRmObject();
+};
 
 
 #endif // POBJECTACTION_H

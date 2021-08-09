@@ -28,9 +28,16 @@ public:
     void addToBookmarks(bookmark *bm);
     void deleteFromBookmarks(bookmark *bm);
 
+    list<bookmark*> *getToc();
+    void addToToc(bookmark *bm);
+    void deleteFromToc(bookmark *bm);
+
+private:
+     static bool toc_compare(bookmark *bm1, bookmark *bm2);
 private:
     list<lektuerenotiz*> *list_notizen;
     list<bookmark*> *list_bookmarks;
+    list<bookmark*> *list_toc;
 
     lernkartensatz *lks;
     materialsatz *kop;
