@@ -42,7 +42,7 @@ QString TextPropertyLabel_pdf::StandardFooter = QString("\n\\end{document}");
 TextPropertyViewer::TextPropertyViewer(QWidget *pw, TextPropertyViewer::Type t) :
     QWidget(pw)
 {
-    this->parent=0;
+    this->po=0;
     this->prop=0;
 
 
@@ -50,10 +50,10 @@ TextPropertyViewer::TextPropertyViewer(QWidget *pw, TextPropertyViewer::Type t) 
 }
 
 /*
-TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw) :
+TextPropertyViewer::TextPropertyViewer(PObject *po, QString dT, QWidget *pw) :
     QWidget(pw)
 {
-	this->parent = parent;
+    this->po = po;
 	this->prop=0;
 	displayString=dT;
 
@@ -63,11 +63,11 @@ TextPropertyViewer::TextPropertyViewer(PObject *parent, QString dT, QWidget *pw)
 */
 
 
-TextPropertyViewer::TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw, double w, double h,
+TextPropertyViewer::TextPropertyViewer(PObject *po, RepositoryProperty *prop, QWidget *pw, double w, double h,
                                        TextPropertyViewer::Type t)
     : QWidget(pw)
 {
-	this->parent = parent;
+    this->po = po;
 	this->prop = prop;
 
 
@@ -84,11 +84,11 @@ void TextPropertyViewer::doCommonSetup(TextPropertyViewer::Type t)
 
     if(prop){
         if(t == PdfLabel){
-            label = new TextPropertyLabel_pdf(parent,prop,this);
+            label = new TextPropertyLabel_pdf(po,prop,this);
         } else {
-            label = new TextPropertyLabel_md(parent,prop,this);
+            label = new TextPropertyLabel_md(po,prop,this);
         }
-        editor = new TextPropertyEditor(parent,prop,this);
+        editor = new TextPropertyEditor(po,prop,this);
     } else {
         if(t == PdfLabel){
             label = new TextPropertyLabel_pdf(this);
@@ -127,8 +127,8 @@ void TextPropertyViewer::doCommonSetup(TextPropertyViewer::Type t)
 
 
 
-TextPropertyLabel_md::TextPropertyLabel_md(QWidget *parent, const char *name)
-    : TextPropertyLabel(parent,name), m_viewer(new QLabel /*QTextEdit(parent)*/)
+TextPropertyLabel_md::TextPropertyLabel_md(QWidget *po, const char *name)
+    : TextPropertyLabel(po,name), m_viewer(new QLabel /*QTextEdit(po)*/)
 {
     QVBoxLayout *l = new QVBoxLayout(this);
     m_viewer->setFrameStyle(QFrame::NoFrame);
@@ -155,7 +155,7 @@ void TextPropertyLabel_md::compileVorn(bool reload)
 
 void TextPropertyLabel_md::read()
 {
-    QString text=prop->asString(parent).c_str();
+    QString text=prop->asString(po).c_str();
     m_viewer->setText(text);
 }
 
@@ -207,7 +207,7 @@ TextPropertyLabel_pdf::TextPropertyLabel_pdf(PObject *o, RepositoryProperty *pro
 
 void TextPropertyViewer::setParentObject(PObject *o)
 {
-   this->parent = o;
+   this->po = o;
    editor->setParentObject(o);
    label->setParentObject(o);
    label->compileVorn(true);
@@ -232,7 +232,7 @@ void TextPropertyLabel::setFooter(QString f)
 
 
 /*
-TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, QString displayString, QWidget *pw) :
+TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *po, QString displayString, QWidget *pw) :
     QDialog(pw)
 {
     //ToDo: does chooser show up, add to layout ?
@@ -241,7 +241,7 @@ TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, QString disp
 	QWidget *displayWidget = new QWidget(this);
     QGridLayout *displayLayout = new QGridLayout(displayWidget);
 
-	viewer = new TextPropertyViewer(parent,displayString,displayWidget);
+    viewer = new TextPropertyViewer(po,displayString,displayWidget);
 	title = new QLabel(displayWidget);
 	
 	displayLayout->addWidget(title,0,0);
@@ -254,7 +254,7 @@ TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, QString disp
 */
 
 
-TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, RepositoryProperty *prop, QWidget *pw) :
+TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *po, RepositoryProperty *prop, QWidget *pw) :
     QDialog(pw)
 {
     //ToDo: does chooser show up, add to layout ?
@@ -265,7 +265,7 @@ TextPropertyEditorDialog::TextPropertyEditorDialog(PObject *parent, RepositoryPr
 	QWidget *displayWidget = new QWidget(this);
     QGridLayout *displayLayout = new QGridLayout(displayWidget);
 
-    viewer = new TextPropertyViewer(parent,prop,displayWidget);
+    viewer = new TextPropertyViewer(po,prop,displayWidget);
 	title = new QLabel(displayWidget);
     title->setText(prop->getName().c_str());
 	
@@ -292,10 +292,10 @@ TextPropertyEditorDialog::~TextPropertyEditorDialog()
 
 QString TextPropertyLabel_pdf::getTexFileName()
 {
-    if(prop && parent){
-        return tmpDir.filePath(QString("%1%2.tex").arg(parent->getID()).arg(prop->getName().c_str()));
-    } else if(parent) {
-        return tmpDir.filePath(QString("%1.tex").arg(parent->getID()));
+    if(prop && po){
+        return tmpDir.filePath(QString("%1%2.tex").arg(po->getID()).arg(prop->getName().c_str()));
+    } else if(po) {
+        return tmpDir.filePath(QString("%1.tex").arg(po->getID()));
     } else {
         return "nani.pdf";
     }
@@ -303,10 +303,10 @@ QString TextPropertyLabel_pdf::getTexFileName()
 
 QString TextPropertyLabel_pdf::getFileName()
 {
-    if(prop && parent){
-        return tmpDir.filePath(QString("%1%2.pdf").arg(parent->getID()).arg(prop->getName().c_str()));
-    } else if(parent) {
-        return tmpDir.filePath(QString("%1.pdf").arg(parent->getID()));
+    if(prop && po){
+        return tmpDir.filePath(QString("%1%2.pdf").arg(po->getID()).arg(prop->getName().c_str()));
+    } else if(po) {
+        return tmpDir.filePath(QString("%1.pdf").arg(po->getID()));
     } else {
         return "nani.pdf";
     }
@@ -433,8 +433,8 @@ QString TextPropertyLabel_pdf::getCompileStringVorn()
     QTextStream stream(&texFile);
     stream << header.arg(cheight).arg(cwidth);
 
-    if(prop && parent){
-        stream << prop->asString(parent).c_str();
+    if(prop && po){
+        stream << prop->asString(po).c_str();
     } else {
         stream << displayString;
     }
@@ -450,19 +450,19 @@ QString TextPropertyLabel_pdf::getCompileStringVorn()
 
 void TextPropertyLabel_pdf::compileVorn(bool reload)
 {
-    if(!parent) return;
+    if(!po) return;
 
     QString prog=QString("pdflatex");
     QStringList args;
     args << QString("-output-directory=%1").arg(tmpDir.path());
-    //args << QString("-jobname=%1").arg(parent->getID());
+    //args << QString("-jobname=%1").arg(po->getID());
     args << getCompileStringVorn();
 
     p  = new QProcess(this);
 
-    p->setStandardErrorFile(QString("/home/mopp/err%2.txt").arg(parent->getID()),
+    p->setStandardErrorFile(QString("/home/mopp/err%2.txt").arg(po->getID()),
                             QIODevice::Append);
-    p->setStandardOutputFile(QString("/home/mopp/out%2.txt").arg(parent->getID()),
+    p->setStandardOutputFile(QString("/home/mopp/out%2.txt").arg(po->getID()),
                             QIODevice::Append);
 
     qDebug() << prog << args;
@@ -487,9 +487,9 @@ void TextPropertyLabel_pdf::compileVorn(bool reload)
 
 
 /*
-void TextPropertyEditorDialog::display(QString displayText, PObject *parent)
+void TextPropertyEditorDialog::display(QString displayText, PObject *po)
 {
-	TextPropertyEditorDialog *instance = new TextPropertyEditorDialog(parent, displayText);
+    TextPropertyEditorDialog *instance = new TextPropertyEditorDialog(po, displayText);
 	instance->exec();
 }
 */
@@ -497,10 +497,10 @@ void TextPropertyEditorDialog::display(QString displayText, PObject *parent)
 
 
 
-void TextPropertyEditorDialog::edit(RepositoryProperty *prop, PObject *parent)
+void TextPropertyEditorDialog::edit(RepositoryProperty *prop, PObject *po)
 {
-	Transactions::getCurrentTransaction()->add(parent);
-	TextPropertyEditorDialog *instance = new TextPropertyEditorDialog(parent, prop);
+    Transactions::getCurrentTransaction()->add(po);
+    TextPropertyEditorDialog *instance = new TextPropertyEditorDialog(po, prop);
 	instance->exec();
 	instance->stopEdit();
 }
@@ -551,12 +551,13 @@ QSize TextPropertyViewer::sizeHint()
 TextPropertyLabel::TextPropertyLabel(QWidget *pw, const char *name)
     : QWidget(pw), header(""), footer("")
 {
-
+    po=0;
+    prop=0;
 }
 
 TextPropertyLabel::TextPropertyLabel(PObject *po, RepositoryProperty *p, QWidget *pw, const char *name)
     : QWidget(pw),
-      parent(po), prop(p), header(""), footer("")
+      po(po), prop(p), header(""), footer("")
 {
 
 }

@@ -66,6 +66,11 @@ void DateEditor::startEdit()
     if(prop && parent){
 	Transactions::getCurrentTransaction()->add(parent);
 	GuiControler::getInstance()->addActiveEditor(  this );
+
+    // stopEdit via GuiRepository not implemented at the moment
+    QDate d = date();
+    prop->fromString(d.toString().toStdString(), parent);
+
     }
 }
 

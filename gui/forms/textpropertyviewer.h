@@ -44,7 +44,7 @@ public:
     //void setText(QString s);
     //void setPixmap(QPixmap pm);
     void emitEditRequested();
-    void setParentObject(PObject *o){parent=o;};
+    void setParentObject(PObject *o){po=o;};
     void setProperty(RepositoryProperty *p){prop=p;};
 
     void setFooter(QString f);
@@ -68,7 +68,7 @@ signals:
 
 protected:
     //QLabel *label;
-    PObject *parent;
+    PObject *po;
     RepositoryProperty *prop;
     QString header,footer;
 
@@ -140,8 +140,8 @@ public:
 
 public:
     TextPropertyViewer(QWidget *pw=0L, TextPropertyViewer::Type = PdfLabel);
-    TextPropertyViewer(PObject *parent, RepositoryProperty *prop, QWidget *pw=0L, double w=18.0, double h=28.0, TextPropertyViewer::Type = PdfLabel);
-    //TextPropertyViewer(PObject *parent, QString displayString, QWidget *pw=0L);
+    TextPropertyViewer(PObject *po, RepositoryProperty *prop, QWidget *pw=0L, double w=18.0, double h=28.0, TextPropertyViewer::Type = PdfLabel);
+    //TextPropertyViewer(PObject *po, QString displayString, QWidget *pw=0L);
 	~TextPropertyViewer();
 
     void setParentObject(PObject *o);
@@ -190,7 +190,7 @@ private:
 
 
 private:
-	PObject *parent;
+    PObject *po;
 	RepositoryProperty *prop;
     TextPropertyEditor *editor;
     TextPropertyLabel *label;
@@ -216,11 +216,11 @@ Q_OBJECT
 public:
        // TextPropertyEditorDialog(PObject *parent, QString displayString, QWidget *pw=0L);
 
-    TextPropertyEditorDialog(PObject *parent, RepositoryProperty *prop, QWidget *pw=0L);
+    TextPropertyEditorDialog(PObject *po, RepositoryProperty *prop, QWidget *pw=0L);
     ~TextPropertyEditorDialog();
 
-    static void edit(RepositoryProperty *prop, PObject *parent);
-    //static void display(QString displayString, PObject *parent);
+    static void edit(RepositoryProperty *prop, PObject *po);
+    //static void display(QString displayString, PObject *po);
     //QString getCompileStringVorn();
 	//void compileVorn(bool reload);
 
@@ -248,7 +248,7 @@ private:
 	QLabel *title;
 
 /*
-	PObject *parent;
+    PObject *po;
 	RepositoryProperty *prop;
 	QDir tmpDir;
 */

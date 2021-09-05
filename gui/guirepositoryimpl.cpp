@@ -471,7 +471,7 @@ void GuiRepositoryImpl::initGui()
 	MapviewsPopupFactory::setInstance(GuiPopupFactory::getInstance());
 	PObjectTableControlerFactory::setInstance(new PObjectTableControlerFactoryImpl());
 
-    //addMode(ModePlanung::getInstance());
+    addMode(ModePlanung::getInstance());
     addMode(new ModeHome());
     addMode(new ModeLesen());
     addMode(new ModeMaterial());

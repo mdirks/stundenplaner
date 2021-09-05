@@ -126,7 +126,7 @@ void schuljahr::deleteFromFerien(ferien *f)
  */
 list<ferien*>* schuljahr::getFerien()
 {
-    	if ( !list_ferien)
+    if ( !list_ferien)
 	{
 		list_ferien = ( list<ferien*>* ) schuljahrmapper::getInstance()->findFerien ( getID() );
 	}

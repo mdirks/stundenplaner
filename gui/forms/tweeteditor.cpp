@@ -58,7 +58,8 @@ TweetEditorItemWidget::TweetEditorItemWidget(PObject *o, QListWidget *iv, Reposi
     textEdit = new QTextEdit(this);
     textEdit->setAutoFormatting(QTextEdit::AutoAll);
     //textEdit->setFixedHeight(200);
-    textEdit->setMarkdown(textProp->asString(o).c_str());
+    //textEdit->setMarkdown(textProp->asString(o).c_str());
+    textEdit->setPlainText(textProp->asString(o).c_str());
 
     l->addWidget(titleLabel,1);
     l->addWidget(textEdit,10);

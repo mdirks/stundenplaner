@@ -122,6 +122,9 @@ void ModePlanung::setupMode()
         //sw->addWidget(displayWidget);
         setModeWidget(displayWidget);
         stack->setCurrentWidget(dp);
+
+        kw->setMap(SKalender::getInstance()->getCurrentWeek());
+
     }
     //sw->setCurrentWidget(displayWidget);
 
